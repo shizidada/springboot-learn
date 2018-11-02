@@ -1,4 +1,4 @@
-package org.learn.rabbit;
+package org.learn.config;
 
 import org.learn.common.Constant;
 import org.springframework.amqp.core.Queue;

@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class HelloSender {
+public class SimpleSender {
 
     @Autowired
     private AmqpTemplate amqpTemplate;

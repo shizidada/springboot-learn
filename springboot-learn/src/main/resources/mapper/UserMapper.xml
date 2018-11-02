@@ -3,6 +3,10 @@
 
 <mapper namespace="org.learn.mapper.UserMapper">
 
+    <select id="selectAllUser" resultType="org.learn.bean.UserBO">
+        select * from user
+    </select>
+
 
 
 </mapper>

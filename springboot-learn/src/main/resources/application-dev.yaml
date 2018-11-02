@@ -26,7 +26,8 @@ spring:
   datasource:
     name: springboot
     url: jdbc:mysql://localhost:3306/springboot?useSSL=false
-    driver-class-name: com.mysql.jdbc.Driver
+#    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
@@ -99,10 +100,10 @@ spring:
 # rabbitmq
   rabbitmq:
     port: 5672
-    host: 192.168.245.100
-    username: admin
+    host: 192.168.1.101
+    username: shizidada
     password: 123456
-    virtual-host: /admin
+    virtual-host: /shizidada
     publisher-confirms: true
 
 ## mybatis settings
