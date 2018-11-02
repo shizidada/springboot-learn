@@ -1,0 +1,111 @@
+#server:
+#  port: 8080 # 设置端口号
+#  servlet:
+#    context-path: /foo # 设置虚拟访问路径
+# 配置服务器端口，默认是8080，可以不用配置
+
+# 模板配置
+# 这个开发配置为false，避免改了模板还要重启服务器
+
+spring:
+
+## thymeleaf settings
+#  thymeleaf:
+#    cache: false # 不适用缓存 默认为 true
+#    enabled: false
+#    prefix: classpath:/templates/ # 这个可以不配置，检查模板位置
+#    check-template-location: true
+#    # 下面3个，可以不配置
+#    suffix: .html
+#    encoding: utf-8
+#    servlet:
+#      content-type: text/html
+#    mode: HTML5 # 2.0.2 HTML  1.5.2 HTML5
+
+## 数据库配置
+  datasource:
+    name: springboot
+    url: jdbc:mysql://localhost:3306/springboot?useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+
+## file upload settings
+#  servlet:
+#    multipart:
+#      max-file-size: 10kb # 上传文件大小 默认 1MB
+#      max-request-size: 10kb #最大请求 默认 10MB
+#      enabled: false #开启是否可以进行文件上传 默认 true
+
+
+## freemarker settings
+#  freemarker:
+#    cache: false
+#    suffix: .ftl
+#    template-loader-path: classpath:/templates/
+
+## JSP settings
+#  mvc:
+#    view:
+#      prefix: /WEB-INF/
+#      suffix: .jsp
+
+#  devtools settings 默认为 true
+#  devtools:
+#    remote:
+#      restart:
+#        enabled: false
+
+## 设置读取配置文件属性
+#test:
+#  message: "Hello SpringBoot!"
+
+## 设置 sql 打印
+# Springboot 默认情况下，记录ERROR级别，WARN级别和INFO级别日志
+# 日志级别从低到高分为 TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为 WARN，则低于 WARN 的信息都不会输出。
+# 可以通过使用--debug标志启动应用程序来启用“调试”模式。
+# java -jar myapp.jar --debug 也可以通过配置文件设置 debug: true
+
+#logging:
+#  level:
+#    org.learn.mapper: debug
+#  path: logs
+#  file: springboot.log
+
+#upload:
+#  path: D:/upload/
+
+## security settings
+#security:
+#  basic:
+#    enabled: true
+#  user:
+#    name: admin
+#    password: admin
+#    role:
+#    - USER
+
+## https settings
+#  require-ssl: true # 告诉Spring Security 请求也需要透过HTTPS, 签名文件
+#server:
+#  port: 8443 # 指定 https 请求访问的端口
+#  ssl:
+#    key-store-type: PKCS12 # 指定密钥仓库类型
+#    key-store: classpath:keystore.p12 # 指定密钥仓库路径
+#    key-store-password: 123456 #指定签名密码
+#    key-alias: tomcat # 别名
+
+# rabbitmq
+  rabbitmq:
+    port: 5672
+    host: 192.168.245.100
+    username: admin
+    password: 123456
+    virtual-host: /admin
+    publisher-confirms: true
+
+## mybatis settings
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: org.learn.bean

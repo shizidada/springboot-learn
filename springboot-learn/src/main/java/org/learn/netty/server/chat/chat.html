@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Socket</title>
+
+    <style type="text/css">
+
+        .chat-box {
+            width: 900px;
+            margin: 0 auto;
+        }
+
+        .title {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        #respMessage, #inputMessage {
+            width: 100%;
+            height: 300px;
+            resize: none;
+            border-radius: 10px;
+            outline: none;
+            text-indent: .5em;
+        }
+
+        .welcome {
+        }
+
+        #inputMessage {
+            margin-top: 30px;
+            height: 30px;
+        }
+
+        #sendButton {
+            height: 30px;
+            line-height: 30px;
+            border-radius: 20px;
+            outline: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-box">
+    <p class="title"> Chat </p>
+    <p class="welcome" id="welcome"></p>
+    <textarea name="message" id="respMessage" placeholder="" disabled="disabled" readonly="readonly"></textarea>
+    <!--<input type="button" value="清空" onclick="reset();">-->
+    <input name="message" id="inputMessage" placeholder="请输入消息..."/>
+    <input type="button" id="sendButton" onclick="sendMessage();" value="发送"><br>
+</div>
+</body>
+<script type="text/javascript">
+	var websocket;
+	var welcome = document.getElementById("welcome");
+	var respMessage = document.getElementById("respMessage");
+
+	//如果浏览器支持WebSocket
+	if (window.WebSocket) {
+		websocket = new WebSocket("ws://127.0.0.1:8080/app/websocket");  //获得WebSocket对象
+
+		//当有消息过来的时候触发
+		websocket.onmessage = function (event) {
+			respMessage.value = respMessage.value + "\n" + event.data;
+			console.log("onmessage ==>", event);
+		};
+
+		//连接关闭的时候触发
+		websocket.onclose = function (event) {
+			welcome.innerHTML = "已断开连接...";
+			console.log("onmessage ==>", event);
+		};
+
+		//连接打开的时候触发
+		websocket.onopen = function (event) {
+			welcome.innerHTML = "已建立连接...";
+			console.log("onmessage ==>", event);
+		};
+	} else {
+		alert("浏览器不支持WebSocket");
+	}
+
+	function sendMessage() { //发送消息
+		var message = document.getElementById("inputMessage");
+		//		console.log(message.value);
+		var value = message.value;
+
+		if (window.WebSocket) {
+			if (websocket.readyState == WebSocket.OPEN) { //如果WebSocket是打开状态
+				var binary = new Uint8Array(2);
+				binary[0] = 11;
+				binary[1] = 12;
+
+				console.log(binary);
+
+				websocket.send(value == "" ? binary.buffer : value); //send()发送消息
+				message.value = "";
+			}
+		} else {
+			return;
+		}
+	}
+
+	function reset() {
+		messageElement.value = "";
+	}
+</script>
+</html>
