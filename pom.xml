@@ -10,7 +10,27 @@
 
     <modules>
         <module>springboot-learn</module>
+        <module>learn-dao</module>
+        <module>learn-entity</module>
+
+        <module>springmvc-learn</module>
     </modules>
 
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
