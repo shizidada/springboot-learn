@@ -10,9 +10,6 @@
 
     <modules>
         <module>springboot-learn</module>
-        <module>learn-dao</module>
-        <module>learn-entity</module>
-
         <module>springmvc-learn</module>
     </modules>
 
