@@ -100,11 +100,17 @@ spring:
 # rabbitmq
   rabbitmq:
     port: 5672
-    host: 192.168.1.103
-    username: shizidada
-    password: 123456
-    virtual-host: /shizidada
+    host: 127.0.0.1
+    username: guest
+    password: guest
+    virtual-host: /
     publisher-confirms: true
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+
 
 ## mybatis settings
 mybatis:
