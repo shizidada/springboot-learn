@@ -1,6 +1,7 @@
 package org.learn.web.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +12,7 @@ import java.util.List;
 public class SwaggerController extends AbstractBaseController {
 
 
-    @RequestMapping(value = "/api/v1/swagger", produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/api/v1/swagger", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     public void swagger(HttpServletResponse response){
 
         List<String> list = new ArrayList<String>();
