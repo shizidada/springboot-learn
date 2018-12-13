@@ -7,6 +7,6 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <typeAliases>
-        <package name="org.learn.bean"/>
+        <package name="org.learn.mvc.bean"/>
     </typeAliases>
 </configuration>

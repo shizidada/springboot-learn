@@ -27,6 +27,6 @@
     <!-- 配置扫描器 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!-- 扫描素有的dao接口的实现，加入到容器中 -->
-        <property name="basePackage" value="cn.stevengo.ssmtest.dao"></property>
+        <property name="basePackage" value="org.learn.mvc.mapper"></property>
     </bean>
 </beans>

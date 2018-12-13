@@ -35,6 +35,6 @@
     <!-- 切面 -->
     <aop:config>
         <aop:advisor advice-ref="txAdvice"
-                     pointcut="execution(* org.learn.web.service..*(..))"/>
+                     pointcut="execution(* org.learn.mvc.web.service.impl..*(..))"/>
     </aop:config>
 </beans>
