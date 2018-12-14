@@ -16,6 +16,11 @@ import java.util.Map;
 @Controller
 public class IndexController extends AbstractBaseController {
 
+    @RequestMapping("/")
+    public String index() {
+        return "index";
+    }
+
     @Autowired
     UserService userService;
 
