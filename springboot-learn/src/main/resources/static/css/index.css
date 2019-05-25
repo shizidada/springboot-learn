@@ -4,3 +4,14 @@ html, body {
     font-family: "微软雅黑";
     font-size: 30px;
 }
+
+.index-container {
+}
+
+.index-container .index-inner {
+    width: 600px;
+    height: 200px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    text-align: center;
+}

@@ -7,6 +7,6 @@
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="org.learn.netty.server.web"/>
+    <context:component-scan base-package="org.learn.backup.netty.server.web"/>
 
 </beans>

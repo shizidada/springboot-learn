@@ -22,16 +22,6 @@ spring:
 #      content-type: text/html
 #    mode: HTML5 # 2.0.2 HTML  1.5.2 HTML5
 
-## 数据库配置
-  datasource:
-    name: springboot
-    url: jdbc:mysql://localhost:3306/springboot?useSSL=false
-#    driver-class-name: com.mysql.jdbc.Driver
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: root
-    type: com.alibaba.druid.pool.DruidDataSource
-
 ## file upload settings
 #  servlet:
 #    multipart:
@@ -97,19 +87,29 @@ spring:
 #    key-store-password: 123456 #指定签名密码
 #    key-alias: tomcat # 别名
 
-# rabbitmq
-  rabbitmq:
-    port: 5672
-    host: 127.0.0.1
-    username: rabbit
+## 数据库配置
+  datasource:
+    name: springboot
+    url: jdbc:mysql://localhost:3306/springboot?useSSL=false
+    #    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
     password: 123456
-    virtual-host: /rabbit
-    publisher-confirms: true
+    type: com.alibaba.druid.pool.DruidDataSource
 
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    database: 0
+# rabbitmq
+#  rabbitmq:
+#    port: 5672
+#    host: 127.0.0.1
+#    username: rabbit
+#    password: 123456
+#    virtual-host: /rabbit
+#    publisher-confirms: true
+#
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    database: 0
 
 
 ## mybatis settings
