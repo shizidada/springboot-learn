@@ -16,7 +16,7 @@ debug: 当此属性设置为true时，将打印出logback内部日志信息，�
         用来定义变量值的标签，<property> 有两个属性，name 和 value；其中name的值是变量的名称，value的值时变量定义的值。
         通过<property>定义的值会被插入到 logger 上下文中。 定义变量后，可以使“${}”来使用变量。
     -->
-    <property name="log.path" value="/Users/taohua/works/Java works/log/logback.log"/>
+    <!--<property name="log.path" value="/Users/taohua/works/Java works/log/logback.log"/>-->
     <!--<property name="APP_Name" value="myAppName" />-->
     <!--<contextName>${APP_Name}</contextName>-->
 
@@ -191,6 +191,8 @@ debug: 当此属性设置为true时，将打印出logback内部日志信息，�
         <appender-ref ref="console"/>
         <!--<appender-ref ref="file"/>-->
     </root>
+
+    <logger name="org.learn.mapper" level="DEBUG"/>
 
     <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
     <!--<springProfile name="dev">-->

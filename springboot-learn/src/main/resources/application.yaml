@@ -2,3 +2,14 @@
 spring:
   profiles:
     active: dev
+
+
+## mybatis settings
+#mybatis:
+#  mapper-locations: classpath:/mapper/*.xml
+#  type-aliases-package: org.learn.bean
+
+## mybatis-plus settings
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: org.learn.bean

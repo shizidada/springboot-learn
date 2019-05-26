@@ -1,4 +1,4 @@
-package org.learn.bean;
+package org.learn.common;
 
 //@Data
 //@NoArgsConstructor

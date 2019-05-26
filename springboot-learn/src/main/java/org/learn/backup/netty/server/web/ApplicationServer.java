@@ -5,6 +5,6 @@
 //public class ApplicationServer {
 //
 //    public static void main(String[] args) {
-//        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applcationContext.xml");
+//        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 //    }
 //}
