@@ -4,6 +4,7 @@ package org.learn.bean;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.joda.time.DateTime;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;

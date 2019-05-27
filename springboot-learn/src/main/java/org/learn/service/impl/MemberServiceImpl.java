@@ -1,5 +1,6 @@
 package org.learn.service.impl;
 
+import org.joda.time.DateTime;
 import org.learn.bean.MemberBO;
 import org.learn.bean.MemberPasswordBO;
 import org.learn.common.SnowflakeIdWorker;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -40,6 +43,8 @@ public class MemberServiceImpl implements MemberService {
         }
 
         try {
+            memberBO.setCreateTime(new Date());
+
             memberBO.setId(snowflakeIdWorker.nextId());
             int memRow = memberMapper.insert(memberBO);
             passwordBO.setMId(memberBO.getId());

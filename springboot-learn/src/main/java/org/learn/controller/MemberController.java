@@ -33,9 +33,9 @@ public class MemberController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("username", memberBO.getUsername());
             map.put("nickname", memberBO.getNickname());
-            return AjaxResult.create(true, "注册成功", map);
+            return AjaxResult.success("注册成功", map);
         }
-        return AjaxResult.create(false, "注册失败", "注册失败.");
+        return AjaxResult.failed("注册失败");
     }
 
     @RequestMapping(value = "api/v1/member/login", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
