@@ -1,13 +1,12 @@
 package org.learn.service.impl;
 
-import org.joda.time.DateTime;
-import org.learn.bean.MemberBO;
-import org.learn.bean.MemberPasswordBO;
 import org.learn.common.SnowflakeIdWorker;
 import org.learn.common.api.ResultCode;
+import org.learn.entity.MemberDO;
+import org.learn.entity.MemberPasswordDO;
 import org.learn.exception.BusinessException;
 import org.learn.mapper.MemberMapper;
-import org.learn.mapper.PasswordMapper;
+import org.learn.mapper.MemberPasswordMapper;
 import org.learn.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -26,30 +25,30 @@ public class MemberServiceImpl implements MemberService {
     MemberMapper memberMapper;
 
     @Autowired
-    PasswordMapper passwordMapper;
+    MemberPasswordMapper memberPasswordMapper;
 
     @Transactional
-    public boolean register(MemberBO memberBO, MemberPasswordBO passwordBO) throws Exception {
+    public boolean register(MemberDO memberDO, MemberPasswordDO passwordBO) throws Exception {
 
         // 根据 UserName 查询是否存在相同 UserName
-        MemberBO userNameMember = memberMapper.selectMemberByUserName(memberBO);
+        MemberDO userNameMember = memberMapper.selectMemberByUserName(memberDO);
         if (userNameMember != null) {
             throw new BusinessException(ResultCode.USER_EXIST);
         }
         // 根据 NickName 查询是否存在相同 NickName
-        MemberBO nickNameMember = memberMapper.selectMemberByNickName(memberBO);
+        MemberDO nickNameMember = memberMapper.selectMemberByNickName(memberDO);
         if (nickNameMember != null) {
             throw new BusinessException(ResultCode.NICKNAME_EXIST);
         }
 
         try {
-            memberBO.setCreateTime(new Date());
+            memberDO.setCreateTime(new Date());
 
-            memberBO.setId(snowflakeIdWorker.nextId());
-            int memRow = memberMapper.insert(memberBO);
-            passwordBO.setMId(memberBO.getId());
+            memberDO.setId(snowflakeIdWorker.nextId());
+            int memRow = memberMapper.insertSelective(memberDO);
+            passwordBO.setMemberId(memberDO.getId());
             passwordBO.setId(snowflakeIdWorker.nextId());
-            int pwdRow = passwordMapper.insert(passwordBO);
+            int pwdRow = memberPasswordMapper.insertSelective(passwordBO);
             return memRow > 0 && pwdRow > 0;
         } catch (DuplicateKeyException e) {
             throw new BusinessException(ResultCode.PHONE_EXIST);

@@ -7,13 +7,13 @@
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
 
-<!--        <commentGenerator>-->
-<!--            &lt;!&ndash; 是否去除自动生成的注释 true：是 ： false:否 &ndash;&gt;-->
-<!--            <property name="suppressAllComments" value="true"/>-->
-<!--        </commentGenerator>-->
+        <property name="javaFileEncoding" value="UTF-8"/>
 
         <!-- 这里的type里写的是你的实现类的类全路径 -->
-        <commentGenerator type="org.learn.config.generator.LearnCommentGenerator"></commentGenerator>
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
 
         <!--数据库连接地址账号密码-->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
@@ -31,9 +31,9 @@
         <!--生成Model类（DataObject）(数据库对应的java实体)的存放位置-->
         <!--targetPackage 是存放的包的路径
             targetProject 是要放到工程中的哪个路径下，这个工程是针对ide开发环境目录而言的
-            连起来：在ide中的src/main/java下 org.learn.bean 包中
+            连起来：在ide中的src/main/java下 org.learn.dataobjectobject 包中
         -->
-        <javaModelGenerator targetPackage="org.learn.bean" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="org.learn.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -61,7 +61,20 @@
             <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
         </table>-->
         <!-- 生成对应的表及类名 不生成复杂操作的 Example 类 -->
-        <table tableName="t_member" domainObjectName="MemberDO"
+        <!--mapperName="MemberMapper"-->
+        <!--<table tableName="t_member"-->
+               <!--domainObjectName="MemberDO"-->
+               <!--mapperName="MemberMapper"-->
+               <!--enableCountByExample="false"-->
+               <!--enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+        <table tableName="t_member_password"
+               domainObjectName="MemberPasswordDO"
+               mapperName="MemberPasswordMapper"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

@@ -1,28 +1,33 @@
 package org.learn.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.learn.bean.MemberBO;
+import org.learn.entity.MemberDO;
 
-/**
- * 会员 mapper
- */
-@Mapper
-public interface MemberMapper extends BaseMapper<MemberBO> {
+public interface MemberMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(MemberDO record);
+
+    int insertSelective(MemberDO record);
+
+    MemberDO selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(MemberDO record);
+
+    int updateByPrimaryKey(MemberDO record);
 
     /**
      * 根据 NickName 查询是否存在相同 NickName
      *
-     * @param memberBO
+     * @param memberDO
      * @return
      */
-    MemberBO selectMemberByNickName(MemberBO memberBO);
+    MemberDO selectMemberByNickName(MemberDO memberDO);
 
     /**
      * 根据 UserName 查询是否存在相同 UserName
      *
-     * @param memberBO
+     * @param memberDO
      * @return
      */
-    MemberBO selectMemberByUserName(MemberBO memberBO);
+    MemberDO selectMemberByUserName(MemberDO memberDO);
 }

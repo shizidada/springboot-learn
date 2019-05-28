@@ -1,11 +1,18 @@
 package org.learn.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.learn.bean.MemberBO;
-import org.learn.bean.MemberPasswordBO;
 import org.learn.common.api.AjaxResult;
+import org.learn.common.api.ResultCode;
+import org.learn.entity.MemberDO;
+import org.learn.entity.MemberPasswordDO;
+import org.learn.exception.BusinessException;
 import org.learn.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,16 +33,18 @@ public class MemberController {
     MemberService memberService;
 
     @RequestMapping(value = "api/v1/member/register", method = {RequestMethod.POST})
-    public AjaxResult memberRegister(@Valid MemberBO memberBO, BindingResult memberResult,
-                                     @Valid MemberPasswordBO passwordBO, BindingResult passwordResult) throws Exception {
-        boolean isSuccess = memberService.register(memberBO, passwordBO);
+    public AjaxResult memberRegister(@Valid MemberDO memberDO, BindingResult memberResult,
+                                     @Valid MemberPasswordDO memberPasswordDO, BindingResult passwordResult) throws Exception {
+
+
+        boolean isSuccess = memberService.register(memberDO, memberPasswordDO);
         if (isSuccess) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("username", memberBO.getUsername());
-            map.put("nickname", memberBO.getNickname());
+            map.put("username", memberDO.getUsername());
+            map.put("nickname", memberDO.getNickname());
             return AjaxResult.success("注册成功", map);
         }
-        return AjaxResult.failed("注册失败");
+        return AjaxResult.failure("注册失败");
     }
 
     @RequestMapping(value = "api/v1/member/login", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")

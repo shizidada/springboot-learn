@@ -26,15 +26,15 @@ public class AjaxResult {
         return AjaxResult.create(true, message, result);
     }
 
-    public static AjaxResult failed() {
+    public static AjaxResult failure() {
         return AjaxResult.create(false, ResultCode.UNKNOWN_ERROR.getErrMessage(), null);
     }
 
-    public static AjaxResult failed(String message) {
+    public static AjaxResult failure(String message) {
         return AjaxResult.create(false, message, null);
     }
 
-    public static AjaxResult failed(String message, Object data) {
+    public static AjaxResult failure(String message, Object data) {
         return AjaxResult.create(false, message, data);
     }
 
@@ -62,4 +62,12 @@ public class AjaxResult {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "AjaxResult{" +
+                "status=" + status +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

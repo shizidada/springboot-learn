@@ -1,9 +1,10 @@
 package org.learn.service;
 
-import org.learn.bean.MemberBO;
-import org.learn.bean.MemberPasswordBO;
+
+import org.learn.entity.MemberDO;
+import org.learn.entity.MemberPasswordDO;
 
 public interface MemberService {
 
-    boolean register(MemberBO memberBO, MemberPasswordBO passwordBO) throws Exception;
+    boolean register(MemberDO memberDO, MemberPasswordDO memberPasswordDO) throws Exception;
 }

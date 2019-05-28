@@ -34,9 +34,9 @@ public class BindingResultAspect {
                 if (result.hasErrors()) {
                     FieldError fieldError = result.getFieldError();
                     if (fieldError != null) {
-                        return AjaxResult.failed(fieldError.getDefaultMessage());
+                        return AjaxResult.failure(fieldError.getDefaultMessage());
                     } else {
-                        return AjaxResult.failed();
+                        return AjaxResult.failure();
                     }
                 }
             }

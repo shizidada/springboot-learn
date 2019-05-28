@@ -5,11 +5,19 @@ spring:
 
 
 ## mybatis settings
-#mybatis:
-#  mapper-locations: classpath:/mapper/*.xml
-#  type-aliases-package: org.learn.bean
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: org.learn.entity
 
 ## mybatis-plus settings
-mybatis-plus:
-  mapper-locations: classpath:/mapper/*.xml
-  type-aliases-package: org.learn.bean
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/*.xml
+#  type-aliases-package: org.learn.entity
+
+# JWT
+jwt:
+  header: Authorization
+  secret: mySecret
+  #token有效期一天
+  expiration: 86400
+  tokenHead: "Bearer "

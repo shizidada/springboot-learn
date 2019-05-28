@@ -1,4 +1,4 @@
-//package org.learn.backup.netty.server.web.bean;
+//package org.learn.backup.netty.server.web.entity;
 //
 //import lombok.Data;
 //
