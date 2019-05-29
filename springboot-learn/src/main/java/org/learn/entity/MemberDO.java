@@ -1,14 +1,17 @@
 package org.learn.entity;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class MemberDO {
     private Long id;
 
+    @NotNull(message = "用户名称不能为空")
     private String username;
 
     private String nickname;
 
+    @NotNull(message = "手机号码不能为空")
     private String phone;
 
     private Integer status;
@@ -17,6 +20,7 @@ public class MemberDO {
 
     private String icon;
 
+    @NotNull(message = "性别不能为空")
     private Integer gender;
 
     private Date birthday;

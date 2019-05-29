@@ -1,10 +1,13 @@
 package org.learn.entity;
 
+import javax.validation.constraints.NotNull;
+
 public class MemberPasswordDO {
     private Long id;
 
     private Long memberId;
 
+    @NotNull(message = "密码不能为空")
     private String password;
 
     public Long getId() {
