@@ -34,6 +34,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (memberPasswordModel == null) {
             throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
         }
-        return new CustomUserDetails(memberModel, memberPasswordModel);
+        return new CustomUserDetails(memberModel, memberPasswordModel, memberModel.getRole());
     }
 }

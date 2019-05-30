@@ -1,6 +1,7 @@
 package org.learn.controller;
 
 import org.learn.common.api.AjaxResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/api/v1")
 public class IndexController {
 
     @RequestMapping("/")
@@ -16,7 +18,8 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/api/v1/test")
+    @PreAuthorize("hasRole('ROLE_member')")
+    @RequestMapping("/test")
     @ResponseBody
     public AjaxResult test() {
         Map<String, Object> data = new HashMap<>();

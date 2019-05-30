@@ -23,5 +23,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(JSON.toJSONString(AjaxResult.failure(ResultCode.MEMBER_LOGOUT_SUCCESS.getMessage())));
+        log.info("登出成功 :: {}", authentication.getDetails());
     }
 }

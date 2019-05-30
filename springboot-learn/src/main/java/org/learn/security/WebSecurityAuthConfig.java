@@ -35,6 +35,9 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
@@ -55,7 +58,8 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
                 .and().httpBasic().authenticationEntryPoint(customAuthenticationEntryPoint)
 
-                .and().authorizeRequests().antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
+                .and().authorizeRequests()
+                .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
                 "/",
                 "/*.html",
                 "/favicon.ico",
@@ -79,7 +83,10 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
                 // 测试时全部运行访问
                 // .antMatchers("/**")
                 // .permitAll()
-                .anyRequest()// 除上面外的所有请求全部需要鉴权认证
+                .antMatchers("/api/v1/test/**").access("hasRole('ROLE_MEMBER')")
+
+                // 除上面外的所有请求全部需要鉴权认证
+                .anyRequest()
                 .authenticated();
 
         // 由于使用的是JWT，这里不需要 csrf
@@ -87,6 +94,7 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
         // 无权访问 JSON 格式的数据
         httpSecurity.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+        httpSecurity.formLogin().successHandler(customAuthenticationSuccessHandler);
     }
 
     /**

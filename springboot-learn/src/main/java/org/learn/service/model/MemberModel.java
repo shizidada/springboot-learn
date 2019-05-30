@@ -34,7 +34,7 @@ public class MemberModel {
 
     private Integer sourceType;
 
-    private String role = "ROLE_member"; // 默认值 ROLE_member ？TODO
+    private String role;// = "ROLE_MEMBER"; // 默认值 ROLE_MEMBER ？TODO
 
     public Long getId() {
         return id;
