@@ -7,11 +7,11 @@ public enum ResultCode implements ICommonError {
 
     SUCCESS(200, "操作成功"),
 
-    // 通用错误码 10001
-    UNKNOWN_ERROR(10001, "未知错误"),
-    VALIDATE_FAILED(10002, "参数检验失败"),
+    // 通用错误码 10000
+    UNKNOWN_ERROR(10000, "未知错误"),
+    VALIDATE_FAILED(10001, "参数检验失败"),
 
-    // 用户错误
+    // 用户错误 20000
     MEMBER_PASSWORD_NOT_EXIST(20000, "用户名或密码错误"),
     MEMBER_EXIST(20001, "用户名已存在"),
     NICKNAME_EXIST(20002, "昵称已存在"),

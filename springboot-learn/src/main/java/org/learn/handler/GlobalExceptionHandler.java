@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Map<String, Object> exceptionHandler(Exception ex) {
-        ex.printStackTrace();
+//        ex.printStackTrace();
         // 创建一个Map进行封装
         Map<String, Object> responseData = new HashMap<String, Object>();
         responseData.put("status", false);
@@ -40,6 +40,8 @@ public class GlobalExceptionHandler {
             responseData.put("code", ResultCode.UNKNOWN_ERROR.getCode());
             responseData.put("message", ex.getMessage());
         }
+
+        log.debug("全局异常捕获 {} :: ",ex.getMessage());
         return responseData;
     }
 }

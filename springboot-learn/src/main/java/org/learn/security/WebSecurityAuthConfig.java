@@ -1,5 +1,6 @@
 package org.learn.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -21,6 +22,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Slf4j
 public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -54,15 +56,15 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().httpBasic().authenticationEntryPoint(customAuthenticationEntryPoint)
 
                 .and().authorizeRequests().antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
-                        "/",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js",
-                        "/swagger-resources/**",
-                        "/v2/api-docs/**"
-                ).permitAll()
+                "/",
+                "/*.html",
+                "/favicon.ico",
+                "/**/*.html",
+                "/**/*.css",
+                "/**/*.js",
+                "/swagger-resources/**",
+                "/v2/api-docs/**"
+        ).permitAll()
 
                 // druid 数据库监控
                 .antMatchers("/druid/**").permitAll()
@@ -104,5 +106,11 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 
-
+    public static void main(String[] args) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode("123456");
+        log.info("加密密码 :: {}", encode);
+        boolean matches = bCryptPasswordEncoder.matches("123456", encode);
+        log.info(" 是否相等 :: {} ", matches);
+    }
 }

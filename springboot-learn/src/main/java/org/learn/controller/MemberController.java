@@ -6,13 +6,11 @@ import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
 import org.learn.controller.viewobject.MemberVO;
 import org.learn.exception.BusinessException;
-import org.learn.security.CustomUserDetailsService;
 import org.learn.service.model.MemberModel;
 import org.learn.service.MemberService;
 import org.learn.service.model.MemberPasswordModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,17 +29,10 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @RequestMapping(value = "api/v1/member/register", method = {RequestMethod.POST})
     public AjaxResult memberRegister(@Valid MemberModel memberModel, BindingResult memberResult,
                                      @Valid MemberPasswordModel memberPasswordModel, BindingResult passwordResult) throws Exception {
 
-        memberPasswordModel.setPassword(bCryptPasswordEncoder.encode(memberPasswordModel.getPassword()));
         // TODO memberModel to memberVo
         MemberModel member = memberService.register(memberModel, memberPasswordModel);
         if (member == null) {
@@ -51,7 +42,7 @@ public class MemberController {
         return AjaxResult.success("注册成功", memberVO);
     }
 
-    @RequestMapping(value = "api/v1/member/login", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "api/v1/member/login", method = {RequestMethod.POST})
     public AjaxResult memberLogin(@RequestParam("username") String username,
                                   @RequestParam("password") String password, HttpServletResponse response, HttpServletRequest request) throws Exception {
         if (StringUtils.isAnyBlank(username, password)) {

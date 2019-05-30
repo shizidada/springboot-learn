@@ -1,5 +1,7 @@
 package org.learn.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.learn.common.SnowflakeIdWorker;
 import org.learn.common.api.ResultCode;
 import org.learn.security.CustomUserDetails;
@@ -15,13 +17,15 @@ import org.learn.service.model.MemberPasswordModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     @Autowired
@@ -36,9 +40,15 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public MemberModel findMemberByUsername(String username) {
         MemberDO memberDO = memberMapper.selectMemberByUserName(username);
+        if (memberDO == null) {
+            throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
+        }
         return convertMemberModelFromDataObject(memberDO);
     }
 
@@ -68,6 +78,8 @@ public class MemberServiceImpl implements MemberService {
 
             passwordDO.setMemberId(memberDO.getId()); // 设置 密码关联 生成ID
             passwordDO.setId(snowflakeIdWorker.nextId());
+
+            memberPasswordModel.setPassword(bCryptPasswordEncoder.encode(memberPasswordModel.getPassword()));
             memberPasswordMapper.insertSelective(passwordDO);
 
             memberModel = convertMemberModelFromDataObject(memberDO);
@@ -81,7 +93,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberModel login(String username, String password) throws Exception {
         CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(username);
-        if (!userDetails.getPassword().equals(password)) {
+        if (!bCryptPasswordEncoder.matches(password, userDetails.getPassword())) {
             throw new BusinessException(ResultCode.MEMBER_PASSWORD_NOT_EXIST);
         }
         return userDetails.getMemberModel();

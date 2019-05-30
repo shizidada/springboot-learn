@@ -187,10 +187,14 @@
   </update>
 
     <select id="selectMemberByUserName" resultType="org.learn.entity.MemberDO">
-        SELECT username FROM t_member WHERE username=#{username}
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_member WHERE username=#{username}
     </select>
 
     <select id="selectMemberByNickName" resultType="org.learn.entity.MemberDO">
-        SELECT nickname FROM t_member WHERE nickname=#{nickname}
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_member WHERE nickname=#{nickname}
     </select>
 </mapper>

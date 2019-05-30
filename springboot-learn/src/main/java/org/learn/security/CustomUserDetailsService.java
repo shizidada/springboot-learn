@@ -1,5 +1,6 @@
 package org.learn.security;
 
+import org.learn.common.api.ResultCode;
 import org.learn.service.MemberPasswordService;
 import org.learn.service.MemberService;
 import org.learn.service.model.MemberModel;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service("customUserDetailsService")
-public class CustomUserDetailsService implements  UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private MemberService memberService;
@@ -27,9 +28,12 @@ public class CustomUserDetailsService implements  UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MemberModel memberModel = memberService.findMemberByUsername(username);
         if (memberModel == null) {
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
         }
         MemberPasswordModel memberPasswordModel = memberPasswordService.findPasswordByMemberId(memberModel.getId());
+        if (memberPasswordModel == null) {
+            throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
+        }
         return new CustomUserDetails(memberModel, memberPasswordModel);
     }
 }

@@ -3,6 +3,7 @@ package org.learn.security;
 import org.learn.service.model.MemberModel;
 import org.learn.service.model.MemberPasswordModel;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -12,12 +13,18 @@ public class CustomUserDetails implements UserDetails {
     private MemberModel memberModel;
     private MemberPasswordModel memberPasswordModel;
 
+    //    private String role;
+//    , String role
     public CustomUserDetails(MemberModel memberModel, MemberPasswordModel memberPasswordModel) {
         this.memberModel = memberModel;
         this.memberPasswordModel = memberPasswordModel;
+//        this.role = role;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(role));
         return null;
     }
 
@@ -70,4 +77,11 @@ public class CustomUserDetails implements UserDetails {
         this.memberPasswordModel = memberPasswordModel;
     }
 
+//    public String getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(String role) {
+//        this.role = role;
+//    }
 }
