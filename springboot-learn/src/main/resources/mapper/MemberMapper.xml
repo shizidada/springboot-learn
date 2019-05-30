@@ -185,6 +185,7 @@
       source_type = #{sourceType,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
     <select id="selectMemberByUserName" resultType="org.learn.entity.MemberDO">
         SELECT username FROM t_member WHERE username=#{username}
     </select>

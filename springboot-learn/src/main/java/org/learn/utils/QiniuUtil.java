@@ -9,7 +9,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 
-public class Qiniu {
+public class QiniuUtil {
 
     // 根据七牛云的个人中心来填写  
     private static final String accessKey = "xxx";

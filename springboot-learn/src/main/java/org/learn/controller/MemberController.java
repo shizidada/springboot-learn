@@ -1,28 +1,27 @@
 package org.learn.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
-import org.learn.entity.MemberDO;
-import org.learn.entity.MemberPasswordDO;
+import org.learn.controller.viewobject.MemberVO;
 import org.learn.exception.BusinessException;
+import org.learn.security.CustomUserDetailsService;
+import org.learn.service.model.MemberModel;
 import org.learn.service.MemberService;
+import org.learn.service.model.MemberPasswordModel;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -30,25 +29,50 @@ public class MemberController {
 
 
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value = "api/v1/member/register", method = {RequestMethod.POST})
-    public AjaxResult memberRegister(@Valid MemberDO memberDO, BindingResult memberResult,
-                                     @Valid MemberPasswordDO memberPasswordDO, BindingResult passwordResult) throws Exception {
+    public AjaxResult memberRegister(@Valid MemberModel memberModel, BindingResult memberResult,
+                                     @Valid MemberPasswordModel memberPasswordModel, BindingResult passwordResult) throws Exception {
 
-
-        boolean isSuccess = memberService.register(memberDO, memberPasswordDO);
-        if (isSuccess) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("username", memberDO.getUsername());
-            map.put("nickname", memberDO.getNickname());
-            return AjaxResult.success("注册成功", map);
+        memberPasswordModel.setPassword(bCryptPasswordEncoder.encode(memberPasswordModel.getPassword()));
+        // TODO memberModel to memberVo
+        MemberModel member = memberService.register(memberModel, memberPasswordModel);
+        if (member == null) {
+            throw new BusinessException(ResultCode.REGISTER_FAILED);
         }
-        return AjaxResult.failure("注册失败");
+        MemberVO memberVO = convertFromModel(member);
+        return AjaxResult.success("注册成功", memberVO);
     }
 
     @RequestMapping(value = "api/v1/member/login", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-    public void login(HttpServletResponse response, HttpServletRequest request) {
+    public AjaxResult memberLogin(@RequestParam("username") String username,
+                                  @RequestParam("password") String password, HttpServletResponse response, HttpServletRequest request) throws Exception {
+        if (StringUtils.isAnyBlank(username, password)) {
+            throw new BusinessException(ResultCode.MEMBER_PASSWORD_NOT_EXIST);
+        }
+        MemberModel memberModel = memberService.login(username, password);
+        if (memberModel == null) {
+            throw new BusinessException(ResultCode.MEMBER_PASSWORD_NOT_EXIST);
+        }
+        MemberVO memberVO = convertFromModel(memberModel);
+        return AjaxResult.success("登录成功", memberVO);
+    }
+
+    //将Model转为VO
+    private MemberVO convertFromModel(MemberModel memberModel) {
+        if (memberModel == null) {
+            return null;
+        }
+        MemberVO memberVO = new MemberVO();
+        BeanUtils.copyProperties(memberModel, memberVO);
+        return memberVO;
     }
 }
 

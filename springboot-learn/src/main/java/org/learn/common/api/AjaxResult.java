@@ -7,35 +7,45 @@ public class AjaxResult {
     private boolean status;
     private String message;
     private Object data;
+    private long code;
 
-    public AjaxResult() {
+    private AjaxResult() {
     }
 
-    public AjaxResult(boolean status, String message, Object data) {
+    private AjaxResult(long code, boolean status, String message, Object data) {
+        this.code = code;
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    public static AjaxResult create(boolean status, String message, Object result) {
-        return new AjaxResult(status, message, result);
+    private static AjaxResult create(long code, boolean status, String message, Object result) {
+        return new AjaxResult(code, status, message, result);
     }
 
     //定义一个默认的成功的处理，只传数据的方法，默认认为是请求正确的
     public static AjaxResult success(String message, Object result) {
-        return AjaxResult.create(true, message, result);
+        return AjaxResult.create(ResultCode.SUCCESS.getCode(), true, message, result);
     }
 
     public static AjaxResult failure() {
-        return AjaxResult.create(false, ResultCode.UNKNOWN_ERROR.getErrMessage(), null);
+        return AjaxResult.create(ResultCode.UNKNOWN_ERROR.getCode(), false, ResultCode.UNKNOWN_ERROR.getMessage(), null);
     }
 
     public static AjaxResult failure(String message) {
-        return AjaxResult.create(false, message, null);
+        return AjaxResult.create(ResultCode.UNKNOWN_ERROR.getCode(), false, message, null);
     }
 
     public static AjaxResult failure(String message, Object data) {
-        return AjaxResult.create(false, message, data);
+        return AjaxResult.create(ResultCode.UNKNOWN_ERROR.getCode(), false, message, data);
+    }
+
+    public long getCode() {
+        return code;
+    }
+
+    public void setCode(long code) {
+        this.code = code;
     }
 
     public boolean isStatus() {

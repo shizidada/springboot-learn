@@ -15,21 +15,21 @@ public class BusinessException extends Exception implements ICommonError {
     public BusinessException(ICommonError commonError, String errMsg) {
         super();
         this.commonError = commonError;
-        this.commonError.setErrMessage(errMsg);
+        this.commonError.setMessage(errMsg);
     }
 
 
     //异常类中获取错误码和错误信息
-    public long getErrCode() {
-        return commonError.getErrCode();
+    public long getCode() {
+        return commonError.getCode();
     }
 
-    public String getErrMessage() {
-        return commonError.getErrMessage();
+    public String getMessage() {
+        return commonError.getMessage();
     }
 
-    public ICommonError setErrMessage(String errMsg) {
-        commonError.setErrMessage(errMsg);
+    public ICommonError setMessage(String errMsg) {
+        commonError.setMessage(errMsg);
         return this;
     }
 }

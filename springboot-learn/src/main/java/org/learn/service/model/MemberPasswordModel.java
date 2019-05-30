@@ -1,13 +1,13 @@
-package org.learn.entity;
+package org.learn.service.model;
 
-/**
- * 用户会员密码信息
- */
-public class MemberPasswordDO {
+import javax.validation.constraints.NotNull;
+
+public class MemberPasswordModel {
     private Long id;
 
     private Long memberId;
 
+    @NotNull(message = "密码不能为空")
     private String password;
 
     public Long getId() {

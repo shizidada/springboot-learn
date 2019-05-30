@@ -6,4 +6,6 @@ public interface MemberPasswordMapper {
     int insert(MemberPasswordDO record);
 
     int insertSelective(MemberPasswordDO record);
+
+    MemberPasswordDO findPasswordByMemberId(Long memberId);
 }

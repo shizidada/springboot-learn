@@ -18,16 +18,16 @@ public interface MemberMapper {
     /**
      * 根据 NickName 查询是否存在相同 NickName
      *
-     * @param memberDO
+     * @param nickName
      * @return
      */
-    MemberDO selectMemberByNickName(MemberDO memberDO);
+    MemberDO selectMemberByNickName(String nickName);
 
     /**
      * 根据 UserName 查询是否存在相同 UserName
      *
-     * @param memberDO
+     * @param username
      * @return
      */
-    MemberDO selectMemberByUserName(MemberDO memberDO);
+    MemberDO selectMemberByUserName(String username);
 }

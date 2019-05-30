@@ -1,17 +1,18 @@
-package org.learn.entity;
+package org.learn.service.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-/**
- * 用户会员信息
- */
-public class MemberDO {
+public class MemberModel {
+
     private Long id;
 
+    @NotNull(message = "用户名称不能为空")
     private String username;
 
     private String nickname;
 
+    @NotNull(message = "手机号码不能为空")
     private String phone;
 
     private Integer status;
@@ -20,6 +21,7 @@ public class MemberDO {
 
     private String icon;
 
+    @NotNull(message = "性别不能为空")
     private Integer gender;
 
     private Date birthday;
@@ -45,7 +47,7 @@ public class MemberDO {
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+        this.username = username;
     }
 
     public String getNickname() {
@@ -53,7 +55,7 @@ public class MemberDO {
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
+        this.nickname = nickname;
     }
 
     public String getPhone() {
@@ -61,7 +63,7 @@ public class MemberDO {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+        this.phone = phone;
     }
 
     public Integer getStatus() {
@@ -85,7 +87,7 @@ public class MemberDO {
     }
 
     public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
+        this.icon = icon;
     }
 
     public Integer getGender() {
@@ -109,7 +111,7 @@ public class MemberDO {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getJob() {
@@ -117,7 +119,7 @@ public class MemberDO {
     }
 
     public void setJob(String job) {
-        this.job = job == null ? null : job.trim();
+        this.job = job;
     }
 
     public String getPersonalizedSignature() {
@@ -125,7 +127,7 @@ public class MemberDO {
     }
 
     public void setPersonalizedSignature(String personalizedSignature) {
-        this.personalizedSignature = personalizedSignature == null ? null : personalizedSignature.trim();
+        this.personalizedSignature = personalizedSignature;
     }
 
     public Integer getSourceType() {

@@ -1,4 +1,4 @@
-package org.learn.common;
+package org.learn.backup;
 
 public interface RabbitMQConstant {
     String HOST = "192.168.245.100";
