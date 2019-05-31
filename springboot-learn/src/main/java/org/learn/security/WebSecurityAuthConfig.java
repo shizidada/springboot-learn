@@ -1,6 +1,8 @@
 package org.learn.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.learn.security.jwt.JwtAuthenticationFilter;
+import org.learn.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -115,7 +117,11 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
 
         // 基于token，所以不需要 session TODO will use jwt
-        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        /**  web security jwt 拦截鉴权 */
+        httpSecurity.addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()));
 
         // 除上面外的所有请求全部需要鉴权认证
         // 测试时全部运行访问
