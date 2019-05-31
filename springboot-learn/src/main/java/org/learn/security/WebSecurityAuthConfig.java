@@ -44,6 +44,9 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
+    @Autowired
+    private CustomLogoutHandler customLogoutHandler;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
@@ -57,15 +60,9 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         /** 访问资源控制链 */
-        httpSecurity
-                // 基于token，所以不需要 session TODO will use jwt
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                .and().httpBasic().authenticationEntryPoint(customAuthenticationEntryPoint)
-
-                .and().authorizeRequests()
-                .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
+        // 允许对于网站静态资源的无授权访问
+        httpSecurity.authorizeRequests()
+                .antMatchers(HttpMethod.GET,
                         "/",
                         "/*.html",
                         "/favicon.ico",
@@ -75,22 +72,9 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/v2/api-docs/**"
                 ).permitAll()
-
                 // druid 数据库监控
                 .antMatchers("/druid/**").permitAll()
-
-
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // 测试时全部运行访问
-                // .antMatchers("/**")
-                // .permitAll()
-
-                // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest()
-                .authenticated();
-
-        // 由于使用的是JWT，这里不需要 csrf
-        httpSecurity.csrf().disable();
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 
         // 设置需要权限访问的资源
         httpSecurity.authorizeRequests()
@@ -103,6 +87,7 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/v1/member/logout",
                 "/api/v1/upload/file").permitAll();
 
+        httpSecurity.httpBasic().authenticationEntryPoint(customAuthenticationEntryPoint);
         // 无权访问 JSON 格式的数据
         httpSecurity.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
 
@@ -114,7 +99,30 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(customAuthenticationFailureHandler); // 登录失败
 
         // 自定义登出成功 TODO 这个地方不知道怎么？？？
-        httpSecurity.logout().logoutUrl("/api/v1/member/logout").logoutSuccessHandler(customLogoutSuccessHandler);
+        httpSecurity.logout()
+                // 自定义 url
+                .logoutUrl("/api/v1/member/logout")
+                // 成功退出之后重定向 url
+                // .logoutSuccessUrl("")
+                // 自定义登出成功返回
+                .logoutSuccessHandler(customLogoutSuccessHandler)
+                // 自定义登出成功
+                .addLogoutHandler(customLogoutHandler)
+                // 清理 Session
+                .invalidateHttpSession(true);
+
+        // 由于使用的是JWT，这里不需要 csrf
+        httpSecurity.csrf().disable();
+
+        // 基于token，所以不需要 session TODO will use jwt
+        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // 除上面外的所有请求全部需要鉴权认证
+        // 测试时全部运行访问
+        // .antMatchers("/**") // For Test
+        // .permitAll()
+        httpSecurity.authorizeRequests().anyRequest().authenticated();
+
     }
 
     /**

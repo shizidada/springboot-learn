@@ -1,6 +1,7 @@
 package org.learn.security;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
@@ -34,7 +35,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         log.info("{} CustomAuthenticationSuccessHandler 登录认证成功 >>> {}", memberModel.getId(), memberModel.getUsername());
 // String jwtToken = JwtTokenUtil.generateToken(userDetails.getUsername(), 1500);
         MemberVO memberVO = convertFromModel(memberModel);
-        response.getWriter().write(JSON.toJSONString(AjaxResult.success(ResultCode.MEMBER_LOGIN_SUCCESS.getMessage(), memberVO)));
+        response.getWriter().write(JSON.toJSONString(AjaxResult.success(ResultCode.MEMBER_LOGIN_SUCCESS.getMessage(), authentication), SerializerFeature.DisableCircularReferenceDetect));
 
     }
 
