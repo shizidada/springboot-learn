@@ -1,7 +1,14 @@
 package org.learn.security;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.learn.common.api.AjaxResult;
+import org.learn.common.api.ResultCode;
+import org.learn.controller.viewobject.MemberVO;
+import org.learn.service.model.MemberModel;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 用户登录成功时返回给前端的数据
+ * 用户登录认证成功时返回给前端的数据
  */
 @Component
 @Slf4j
@@ -20,12 +27,24 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        log.info("{} 登录成功 :: {}",
-                customUserDetails.getMemberModel().getId(),
-                customUserDetails.getMemberModel().getUsername());
+        // 登录成功设置 authentication TODO ！！！？？
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        MemberModel memberModel = customUserDetails.getMemberModel();
+        log.info("{} CustomAuthenticationSuccessHandler 登录认证成功 >>> {}", memberModel.getId(), memberModel.getUsername());
 // String jwtToken = JwtTokenUtil.generateToken(userDetails.getUsername(), 1500);
-//        httpServletResponse.getWriter().write(JSON.toJSONString(ResultVO.result(ResultEnum.USER_LOGIN_SUCCESS,jwtToken,true)));
+        MemberVO memberVO = convertFromModel(memberModel);
+        response.getWriter().write(JSON.toJSONString(AjaxResult.success(ResultCode.MEMBER_LOGIN_SUCCESS.getMessage(), memberVO)));
 
+    }
 
+    //将Model转为VO
+    private MemberVO convertFromModel(MemberModel memberModel) {
+        if (memberModel == null) {
+            return null;
+        }
+        MemberVO memberVO = new MemberVO();
+        BeanUtils.copyProperties(memberModel, memberVO);
+        return memberVO;
     }
 }

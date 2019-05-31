@@ -13,17 +13,16 @@ public enum ResultCode implements ICommonError {
 
     // 用户错误 20000
     MEMBER_PASSWORD_NOT_EXIST(20000, "用户名或密码错误"),
-    MEMBER_EXIST(20001, "用户名已存在"),
+    MEMBER_EXIST(20001, "用户名已存在"), // TODO ??
     NICKNAME_EXIST(20002, "昵称已存在"),
     PHONE_EXIST(20003, "手机号码已存在"),
     REGISTER_FAILED(20004, "注册失败"),
-    MEMBER_NOT_EXIST(20005, "用户不存在"),
-    MEMBER_LOGOUT_SUCCESS(20006, "MEMBER LOGOUT SUCCESS"),
-    MEMBER_LOGIN_FAILED(200007, "MEMBER LOGIN FAILED"),
+    MEMBER_LOGOUT_SUCCESS(20005, "用户成功退出"),
+    MEMBER_LOGIN_SUCCESS(200006, "登录成功"),
 
     UNAUTHORIZED(401, "暂未登录或 token 已经过期"),
-    FORBIDDEN(403, "权限受限"),
-    ACCESS_DENIED(403, "ACCESS DENIED"),
+    FORBIDDEN(403, "FORBIDDEN 权限受限"),
+    ACCESS_DENIED(403, "ACCESS DENIED 权限被拒绝"),
 
     FAILED(500, "操作失败");
 

@@ -18,7 +18,8 @@ public class IndexController {
         return "index";
     }
 
-    @PreAuthorize("hasRole('ROLE_member')")
+//    @PreAuthorize("hasRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @RequestMapping("/test")
     @ResponseBody
     public AjaxResult test() {

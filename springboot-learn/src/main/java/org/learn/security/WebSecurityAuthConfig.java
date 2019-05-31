@@ -21,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用Security注解，例如最常用的@PreAuthorize
 @Slf4j
 public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
@@ -37,6 +37,12 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
+    @Autowired
+    private CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -60,30 +66,24 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
-                "/",
-                "/*.html",
-                "/favicon.ico",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js",
-                "/swagger-resources/**",
-                "/v2/api-docs/**"
-        ).permitAll()
+                        "/",
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/swagger-resources/**",
+                        "/v2/api-docs/**"
+                ).permitAll()
 
                 // druid 数据库监控
                 .antMatchers("/druid/**").permitAll()
 
-                // 对登录注册要允许匿名访问
-                .antMatchers(
-                        "/api/v1/member/register",
-                        "/api/v1/member/login",
-                        "/api/v1/upload/file").permitAll()
 
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // 测试时全部运行访问
                 // .antMatchers("/**")
                 // .permitAll()
-                .antMatchers("/api/v1/test/**").access("hasRole('ROLE_MEMBER')")
 
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest()
@@ -92,9 +92,29 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
         // 由于使用的是JWT，这里不需要 csrf
         httpSecurity.csrf().disable();
 
+        // 设置需要权限访问的资源
+        httpSecurity.authorizeRequests()
+                .antMatchers("/api/v1/test/**").access("hasRole('ROLE_MEMBER')");
+
+        // 对登录注册要允许匿名访问
+        httpSecurity.authorizeRequests().antMatchers(
+                "/api/v1/member/register",
+                "/api/v1/member/login",
+                "/api/v1/member/logout",
+                "/api/v1/upload/file").permitAll();
+
         // 无权访问 JSON 格式的数据
         httpSecurity.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
-        httpSecurity.formLogin().successHandler(customAuthenticationSuccessHandler);
+
+        // 自定义登录成功
+        httpSecurity
+                .formLogin()
+                .loginProcessingUrl("/api/v1/member/login")
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler); // 登录失败
+
+        // 自定义登出成功 TODO 这个地方不知道怎么？？？
+        httpSecurity.logout().logoutUrl("/api/v1/member/logout").logoutSuccessHandler(customLogoutSuccessHandler);
     }
 
     /**

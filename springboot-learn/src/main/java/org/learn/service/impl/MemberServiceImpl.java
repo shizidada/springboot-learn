@@ -74,12 +74,12 @@ public class MemberServiceImpl implements MemberService {
             MemberDO memberDO = convertMemberModel2MemberDO(memberModel);
             memberMapper.insertSelective(memberDO); // 插入数据库
 
+            memberPasswordModel.setPassword(bCryptPasswordEncoder.encode(memberPasswordModel.getPassword())); // BCryptPasswordEncoder 密码加密
             MemberPasswordDO passwordDO = convertPasswordModel2PasswordDO(memberPasswordModel);
 
             passwordDO.setMemberId(memberDO.getId()); // 设置 密码关联 生成ID
             passwordDO.setId(snowflakeIdWorker.nextId());
 
-            memberPasswordModel.setPassword(bCryptPasswordEncoder.encode(memberPasswordModel.getPassword()));
             memberPasswordMapper.insertSelective(passwordDO);
 
             memberModel = convertMemberModelFromDataObject(memberDO);

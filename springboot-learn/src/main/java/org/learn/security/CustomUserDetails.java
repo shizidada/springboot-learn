@@ -3,10 +3,8 @@ package org.learn.security;
 import org.learn.service.model.MemberModel;
 import org.learn.service.model.MemberPasswordModel;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,21 +12,18 @@ public class CustomUserDetails implements UserDetails {
 
     private MemberModel memberModel;
     private MemberPasswordModel memberPasswordModel;
-
-    private String role;
+    private List<GrantedAuthority> authorities; // 权限集合
 
     public CustomUserDetails(MemberModel memberModel,
                              MemberPasswordModel memberPasswordModel,
-                             String role) {
+                             List<GrantedAuthority> authorities) {
         this.memberModel = memberModel;
         this.memberPasswordModel = memberPasswordModel;
-        this.role = role;
+        this.authorities = authorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
         return authorities;
     }
 
@@ -81,11 +76,7 @@ public class CustomUserDetails implements UserDetails {
         this.memberPasswordModel = memberPasswordModel;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthorities(List<GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 }

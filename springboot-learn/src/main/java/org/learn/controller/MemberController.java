@@ -58,6 +58,10 @@ public class MemberController {
         return AjaxResult.success("登录成功", memberVO);
     }
 
+    @RequestMapping(value = "/logout", method = {RequestMethod.POST})
+    public void memberLogout(HttpServletResponse response, HttpServletRequest request) throws Exception {
+    }
+
     //将Model转为VO
     private MemberVO convertFromModel(MemberModel memberModel) {
         if (memberModel == null) {

@@ -21,8 +21,10 @@ import java.io.IOException;
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        log.info("CustomLogoutSuccessHandler 登出成功" );
+        // TODO ?? 没有 authentication 信息
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getDetails();
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(JSON.toJSONString(AjaxResult.failure(ResultCode.MEMBER_LOGOUT_SUCCESS.getMessage())));
-        log.info("登出成功 :: {}", authentication.getDetails());
     }
 }

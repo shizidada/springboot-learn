@@ -34,8 +34,6 @@ public class MemberModel {
 
     private Integer sourceType;
 
-    private String role;// = "ROLE_MEMBER"; // 默认值 ROLE_MEMBER ？TODO
-
     public Long getId() {
         return id;
     }
@@ -138,13 +136,5 @@ public class MemberModel {
 
     public void setSourceType(Integer sourceType) {
         this.sourceType = sourceType;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }
