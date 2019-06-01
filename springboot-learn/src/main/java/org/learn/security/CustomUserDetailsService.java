@@ -1,10 +1,13 @@
 package org.learn.security;
 
 import org.learn.common.api.ResultCode;
+import org.learn.security.CustomUserDetails;
 import org.learn.service.MemberPasswordService;
+import org.learn.service.MemberRoleService;
 import org.learn.service.MemberService;
 import org.learn.service.model.MemberModel;
 import org.learn.service.model.MemberPasswordModel;
+import org.learn.service.model.MemberRoleModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +32,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private MemberPasswordService memberPasswordService;
 
+    @Autowired
+    private MemberRoleService memberRoleService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MemberModel memberModel = memberService.findMemberByUsername(username);
@@ -39,9 +45,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (memberPasswordModel == null) {
             throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
         }
-        // TODO 数据查询权限 ？
+        MemberRoleModel memberRoleModel = memberRoleService.selectRoleByMemberId(memberModel.getId());
+        if (memberRoleModel == null) {
+            throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
+        }
         List<GrantedAuthority> authorities = new ArrayList<>(); // 权限集合
-        authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+        authorities.add(new SimpleGrantedAuthority(memberRoleModel.getRoleName()));
         return new CustomUserDetails(memberModel, memberPasswordModel, authorities);
     }
 }

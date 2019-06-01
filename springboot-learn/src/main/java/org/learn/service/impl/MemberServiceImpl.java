@@ -1,7 +1,6 @@
 package org.learn.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.learn.common.SnowflakeIdWorker;
 import org.learn.common.api.ResultCode;
 import org.learn.security.CustomUserDetails;

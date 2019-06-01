@@ -20,7 +20,7 @@ public class BusinessException extends Exception implements ICommonError {
 
 
     //异常类中获取错误码和错误信息
-    public long getCode() {
+    public Long getCode() {
         return commonError.getCode();
     }
 

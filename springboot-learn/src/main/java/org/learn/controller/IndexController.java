@@ -4,13 +4,13 @@ import org.learn.common.api.AjaxResult;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/api/v1")
 public class IndexController {
 
     @RequestMapping("/")
@@ -18,13 +18,22 @@ public class IndexController {
         return "index";
     }
 
-//    @PreAuthorize("hasRole('ROLE_MEMBER')")
+    //    @PreAuthorize("hasRole('ROLE_MEMBER')")
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
-    @RequestMapping("/test")
+    @RequestMapping(value = "/api/v1/test", method = {RequestMethod.POST})
     @ResponseBody
-    public AjaxResult test() {
+    public AjaxResult testMember() {
         Map<String, Object> data = new HashMap<>();
-        data.put("test", "this is test data");
+        data.put("test", "this is test member data");
+        return AjaxResult.success("访问测试接口", data);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/api/v1/test_admin", method = {RequestMethod.POST})
+    @ResponseBody
+    public AjaxResult testAdmin() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("test", "this is test admin data");
         return AjaxResult.success("访问测试接口", data);
     }
 }

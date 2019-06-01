@@ -1,4 +1,4 @@
-package org.learn.security;
+package org.learn.security.handler;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +23,9 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         log.info(" >>>> CustomAuthenticationFailureHandler >>>> 用户登录认证失败");
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JSON.toJSONString(AjaxResult.failure(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage())));
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        Long code = ResultCode.MEMBER_PASSWORD_NOT_EXIST.getCode();
+        String message = ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage();
+        response.getWriter().write(JSON.toJSONString(AjaxResult.failure(code, message)));
     }
 }

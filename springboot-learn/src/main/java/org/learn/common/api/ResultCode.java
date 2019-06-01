@@ -19,14 +19,20 @@ public enum ResultCode implements ICommonError {
     REGISTER_FAILED(20004, "注册失败"),
     MEMBER_LOGOUT_SUCCESS(20005, "用户成功退出"),
     MEMBER_LOGIN_SUCCESS(200006, "登录成功"),
+    MEMBER_DISABLED(200007, "账号被冻结"),
+
+    // json web token
+    JWT_EXPIRED(40001, "暂未登录或 Token 已经过期"),
+    JWT_SIGNATURE(40002, "Token 签名错误"),
 
     UNAUTHORIZED(401, "暂未登录或 token 已经过期"),
-    FORBIDDEN(403, "FORBIDDEN 权限受限"),
-    ACCESS_DENIED(403, "ACCESS DENIED 权限被拒绝"),
+    FORBIDDEN(403, "权限受限 FORBIDDEN"),
+    ACCESS_DENIED(403, "权限被拒绝 ACCESS DENIED"),
+    METHOD_NOT_ALLOWED(405, "Authentication method not supported "),
 
     FAILED(500, "操作失败");
 
-    private long code;
+    private Long code;
     private String message;
 
     private ResultCode(long code, String message) {
@@ -34,7 +40,7 @@ public enum ResultCode implements ICommonError {
         this.message = message;
     }
 
-    public long getCode() {
+    public Long getCode() {
         return this.code;
     }
 

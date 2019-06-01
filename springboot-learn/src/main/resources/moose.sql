@@ -1,16 +1,26 @@
 /*
-MySQL Data Transfer
-Source Host: localhost
-Source Database: moose
-Target Host: localhost
-Target Database: moose
-Date: 2019/5/29 13:38:28
+ Navicat MySQL Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 80013
+ Source Host           : localhost
+ Source Database       : moose
+
+ Target Server Type    : MySQL
+ Target Server Version : 80013
+ File Encoding         : utf-8
+
+ Date: 06/01/2019 09:18:23 AM
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8;
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- ----------------------------
--- Table structure for t_admin
+--  Table structure for `t_admin`
 -- ----------------------------
+DROP TABLE IF EXISTS `t_admin`;
 CREATE TABLE `t_admin` (
   `id` bigint(20) NOT NULL,
   `username` varchar(64) DEFAULT NULL,
@@ -25,20 +35,22 @@ CREATE TABLE `t_admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台用户表';
 
 -- ----------------------------
--- Table structure for t_admin_password
+--  Table structure for `t_admin_password`
 -- ----------------------------
+DROP TABLE IF EXISTS `t_admin_password`;
 CREATE TABLE `t_admin_password` (
-  `id` bigint(20) NOT NULL,
-  `a_id` bigint(20) NOT NULL,
+  `id` bigint(32) NOT NULL,
+  `admin_id` bigint(20) NOT NULL,
   `password` varchar(64) DEFAULT NULL COMMENT '密码',
   PRIMARY KEY (`id`),
-  KEY `a_id` (`a_id`),
-  CONSTRAINT `t_admin_password_ibfk_1` FOREIGN KEY (`a_id`) REFERENCES `t_admin` (`id`)
+  KEY `admin_id` (`admin_id`),
+  CONSTRAINT `t_admin_password_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `t_admin` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='密码表';
 
 -- ----------------------------
--- Table structure for t_member
+--  Table structure for `t_member`
 -- ----------------------------
+DROP TABLE IF EXISTS `t_member`;
 CREATE TABLE `t_member` (
   `id` bigint(32) NOT NULL,
   `username` varchar(64) DEFAULT NULL COMMENT '用户名',
@@ -59,10 +71,11 @@ CREATE TABLE `t_member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
--- Table structure for t_member_password
+--  Table structure for `t_member_password`
 -- ----------------------------
+DROP TABLE IF EXISTS `t_member_password`;
 CREATE TABLE `t_member_password` (
-  `id` bigint(20) NOT NULL COMMENT '主键',
+  `id` bigint(32) NOT NULL COMMENT '密码主键',
   `member_id` bigint(20) NOT NULL COMMENT '会员ID',
   `password` varchar(64) DEFAULT NULL COMMENT '密码',
   PRIMARY KEY (`id`),
@@ -71,5 +84,17 @@ CREATE TABLE `t_member_password` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='密码表';
 
 -- ----------------------------
--- Records 
+--  Table structure for `t_member_role`
 -- ----------------------------
+DROP TABLE IF EXISTS `t_member_role`;
+CREATE TABLE `t_member_role` (
+  `id` bigint(20) NOT NULL COMMENT '角色主键',
+  `member_id` bigint(20) NOT NULL COMMENT '会员ID',
+  `role_name` varchar(64) NOT NULL DEFAULT '' COMMENT '角色名称',
+  `description` varchar(200) NOT NULL DEFAULT '' COMMENT '角色描述',
+  PRIMARY KEY (`id`),
+  KEY `t_member_role_ibfk_1` (`member_id`),
+  CONSTRAINT `t_member_role_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `t_member` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色表';
+
+SET FOREIGN_KEY_CHECKS = 1;

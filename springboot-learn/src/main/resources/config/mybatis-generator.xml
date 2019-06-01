@@ -72,9 +72,9 @@
                <!--selectByExampleQueryId="false">-->
         <!--</table>-->
 
-        <table tableName="t_member_password"
-               domainObjectName="MemberPasswordDO"
-               mapperName="MemberPasswordMapper"
+        <table tableName="t_member_role"
+               domainObjectName="MemberRoleDO"
+               mapperName="MemberRoleMapper"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

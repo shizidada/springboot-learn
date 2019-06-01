@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.learn.common.api.AjaxResult;
+import org.learn.common.api.ResultCode;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,9 @@ public class BindingResultAspect {
                 if (result.hasErrors()) {
                     FieldError fieldError = result.getFieldError();
                     if (fieldError != null) {
-                        return AjaxResult.failure(fieldError.getDefaultMessage());
+                        Long code = ResultCode.VALIDATE_FAILED.getCode();
+                        String message = fieldError.getDefaultMessage();
+                        return AjaxResult.failure(code, message);
                     } else {
                         return AjaxResult.failure();
                     }

@@ -32,12 +32,12 @@ public class AjaxResult {
         return AjaxResult.create(ResultCode.UNKNOWN_ERROR.getCode(), false, ResultCode.UNKNOWN_ERROR.getMessage(), null);
     }
 
-    public static AjaxResult failure(String message) {
-        return AjaxResult.create(ResultCode.UNKNOWN_ERROR.getCode(), false, message, null);
+    public static AjaxResult failure(Long code, String message) {
+        return AjaxResult.create(code, false, message, null);
     }
 
-    public static AjaxResult failure(String message, Object data) {
-        return AjaxResult.create(ResultCode.UNKNOWN_ERROR.getCode(), false, message, data);
+    public static AjaxResult unauthorized(String message) {
+        return AjaxResult.create(ResultCode.UNAUTHORIZED.getCode(), false, message, null);
     }
 
     public long getCode() {

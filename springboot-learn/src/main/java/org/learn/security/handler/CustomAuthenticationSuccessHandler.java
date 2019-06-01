@@ -1,4 +1,4 @@
-package org.learn.security;
+package org.learn.security.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
 import org.learn.controller.viewobject.MemberVO;
+import org.learn.security.CustomUserDetails;
 import org.learn.service.model.MemberModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;

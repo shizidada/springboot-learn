@@ -91,7 +91,7 @@ public class MemberController {
 
 //        String username = request.getParameter("username");
 //        if (StringUtils.isEmpty(username)) {
-//            results.setCode(Constant.FAILD_CODE);
+//            results.setCode(Constants.FAILD_CODE);
 //            results.setStatus(Boolean.FALSE);
 //            results.setMessage("用户名不能为空!");
 //            this.print(response, results);

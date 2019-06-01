@@ -1,31 +1,23 @@
-package org.learn.security;
+package org.learn.security.session;
 
 import lombok.extern.slf4j.Slf4j;
-import org.learn.security.jwt.JwtAuthenticationFilter;
-import org.learn.security.jwt.JwtAuthorizationFilter;
+import org.learn.security.CustomUserDetailsService;
+import org.learn.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用Security注解，例如最常用的@PreAuthorize
+//@Configuration
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用Security注解，例如最常用的@PreAuthorize
 @Slf4j
-public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
+public class WebSecuritySessionAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     @Qualifier("customUserDetailsService")
@@ -119,33 +111,12 @@ public class WebSecurityAuthConfig extends WebSecurityConfigurerAdapter {
         // 基于token，所以不需要 session TODO will use jwt
         // httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        /**  web security jwt 拦截鉴权 */
-        httpSecurity.addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager()));
-
         // 除上面外的所有请求全部需要鉴权认证
         // 测试时全部运行访问
         // .antMatchers("/**") // For Test
         // .permitAll()
         httpSecurity.authorizeRequests().anyRequest().authenticated();
 
-    }
-
-    /**
-     * 允许跨域调用的过滤器
-     */
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.setAllowCredentials(true);
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(0);
-        return new CorsFilter(source);
     }
 
     public static void main(String[] args) {

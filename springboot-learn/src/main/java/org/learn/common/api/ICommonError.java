@@ -4,7 +4,7 @@ package org.learn.common.api;
  * 封装API的错误码
  */
 public interface ICommonError {
-    public long getCode();
+    public Long getCode();
 
     public String getMessage();
 
