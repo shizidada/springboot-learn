@@ -6,6 +6,7 @@ import org.learn.service.model.MemberPasswordModel;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface MemberService {
+    MemberModel check(MemberModel memberModel) throws Exception;
 
     MemberModel register(MemberModel memberModel, MemberPasswordModel memberPasswordModel) throws Exception;
 

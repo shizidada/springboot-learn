@@ -2,7 +2,7 @@ package org.learn.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.learn.common.api.AjaxResult;
-import org.learn.utils.QiniuUtil;
+import org.learn.manager.QiniuClientManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +26,7 @@ public class UploadController {
         try {
             imgBytes = multipartFile.getBytes();
             // MultipartFile 转 字节数组
-            String imgUrl = QiniuUtil.upLoadImage(imgBytes);
+            String imgUrl = QiniuClientManager.upLoadImage(imgBytes);
             map.put("imgUrl", imgUrl);
         } catch (IOException e) {
             e.printStackTrace();

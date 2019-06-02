@@ -47,7 +47,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         MemberRoleModel memberRoleModel = memberRoleService.selectRoleByMemberId(memberModel.getId());
         if (memberRoleModel == null) {
-            throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
+            throw new UsernameNotFoundException(ResultCode.MEMBER_ROLE_NOT_FOUND.getMessage());
         }
         List<GrantedAuthority> authorities = new ArrayList<>(); // 权限集合
         authorities.add(new SimpleGrantedAuthority(memberRoleModel.getRoleName()));

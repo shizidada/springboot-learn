@@ -3,6 +3,8 @@ package org.learn.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.learn.common.SnowflakeIdWorker;
 import org.learn.common.api.ResultCode;
+import org.learn.entity.MemberRoleDO;
+import org.learn.mapper.MemberRoleMapper;
 import org.learn.security.CustomUserDetails;
 import org.learn.security.CustomUserDetailsService;
 import org.learn.service.model.MemberModel;
@@ -13,6 +15,7 @@ import org.learn.mapper.MemberMapper;
 import org.learn.mapper.MemberPasswordMapper;
 import org.learn.service.MemberService;
 import org.learn.service.model.MemberPasswordModel;
+import org.learn.service.model.MemberRoleModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -37,6 +40,9 @@ public class MemberServiceImpl implements MemberService {
     private MemberPasswordMapper memberPasswordMapper;
 
     @Autowired
+    private MemberRoleMapper memberRoleMapper;
+
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
@@ -48,40 +54,51 @@ public class MemberServiceImpl implements MemberService {
         if (memberDO == null) {
             throw new UsernameNotFoundException(ResultCode.MEMBER_PASSWORD_NOT_EXIST.getMessage());
         }
-        return convertMemberModelFromDataObject(memberDO);
+        return convertModelFromMemberDO(memberDO);
+    }
+
+    @Override
+    public MemberModel check(MemberModel memberModel) throws Exception {
+        // 根据 UserName 查询是否存在相同 UserName
+        MemberDO member = memberMapper.selectMemberByUserName(memberModel.getUsername());
+        if (member != null) {
+            throw new BusinessException(ResultCode.MEMBER_EXIST);
+        }
+        // 根据 NickName 查询是否存在相同 NickName
+        member = memberMapper.selectMemberByNickName(memberModel.getNickname());
+        if (member != null) {
+            throw new BusinessException(ResultCode.NICKNAME_EXIST);
+        }
+        // 根据 phone 查询是否存在相同 phone
+        member = memberMapper.selectMemberByPhone(memberModel.getPhone());
+        if (member != null) {
+            throw new BusinessException(ResultCode.PHONE_EXIST);
+        }
+        return null;
     }
 
     @Transactional
     public MemberModel register(MemberModel memberModel, MemberPasswordModel memberPasswordModel) throws Exception {
-
-        // 根据 UserName 查询是否存在相同 UserName
-        MemberDO userNameMember = memberMapper.selectMemberByUserName(memberModel.getUsername());
-        if (userNameMember != null) {
-            throw new BusinessException(ResultCode.MEMBER_EXIST);
-        }
-        // 根据 NickName 查询是否存在相同 NickName
-        MemberDO nickNameMember = memberMapper.selectMemberByNickName(memberModel.getNickname());
-        if (nickNameMember != null) {
-            throw new BusinessException(ResultCode.NICKNAME_EXIST);
-        }
-
         try {
             memberModel.setCreateTime(new Date());
-
             memberModel.setId(snowflakeIdWorker.nextId()); // 设置 snowflakeIdWorker 生成ID
-
-            MemberDO memberDO = convertMemberModel2MemberDO(memberModel);
+            MemberDO memberDO = convertModel2MemberDO(memberModel);
             memberMapper.insertSelective(memberDO); // 插入数据库
 
             memberPasswordModel.setPassword(bCryptPasswordEncoder.encode(memberPasswordModel.getPassword())); // BCryptPasswordEncoder 密码加密
-            MemberPasswordDO passwordDO = convertPasswordModel2PasswordDO(memberPasswordModel);
-
-            passwordDO.setMemberId(memberDO.getId()); // 设置 密码关联 生成ID
+            MemberPasswordDO passwordDO = convertModel2PasswordDO(memberPasswordModel);
             passwordDO.setId(snowflakeIdWorker.nextId());
-
+            passwordDO.setMemberId(memberDO.getId()); // 设置 密码关联 生成ID
             memberPasswordMapper.insertSelective(passwordDO);
 
-            memberModel = convertMemberModelFromDataObject(memberDO);
+            MemberRoleDO memberRoleDO = new MemberRoleDO();
+            memberRoleDO.setId(snowflakeIdWorker.nextId());
+            memberRoleDO.setMemberId(memberDO.getId());
+            // 注册分配基本权限
+            memberRoleDO.setRoleName("ROLE_MEMBER");
+            memberRoleMapper.insertSelective(memberRoleDO);
+
+            memberModel = convertModelFromMemberDO(memberDO);
             return memberModel;
         } catch (DuplicateKeyException e) {
             throw new BusinessException(ResultCode.PHONE_EXIST);
@@ -99,7 +116,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 将 Model 转为 DO
-    private MemberDO convertMemberModel2MemberDO(MemberModel memberModel) {
+    private MemberDO convertModel2MemberDO(MemberModel memberModel) {
         if (memberModel == null) {
             return null;
         }
@@ -108,20 +125,26 @@ public class MemberServiceImpl implements MemberService {
         return memberDO;
     }
 
-    private MemberPasswordDO convertPasswordModel2PasswordDO(MemberPasswordModel memberPasswordModel) {
+    private MemberPasswordDO convertModel2PasswordDO(MemberPasswordModel memberPasswordModel) {
         MemberPasswordDO memberPasswordDO = new MemberPasswordDO();
         BeanUtils.copyProperties(memberPasswordModel, memberPasswordDO);
         return memberPasswordDO;
     }
 
+    private MemberRoleDO convertModel2PasswordDO(MemberRoleModel memberRoleModel) {
+        MemberRoleDO memberRoleDO = new MemberRoleDO();
+        BeanUtils.copyProperties(memberRoleModel, memberRoleDO);
+        return memberRoleDO;
+    }
+
     // DO to Model
-    private MemberModel convertMemberModelFromDataObject(MemberDO memberDO) {
+    private MemberModel convertModelFromMemberDO(MemberDO memberDO) {
         MemberModel memberModel = new MemberModel();
         BeanUtils.copyProperties(memberDO, memberModel);
         return memberModel;
     }
 
-    private MemberPasswordModel convertPasswordModelFromDataObject(MemberPasswordDO memberPasswordDO) {
+    private MemberPasswordModel convertModelFromMemberPasswordDO(MemberPasswordDO memberPasswordDO) {
         MemberPasswordModel memberPasswordModel = new MemberPasswordModel();
         BeanUtils.copyProperties(memberPasswordDO, memberPasswordModel);
         return memberPasswordModel;

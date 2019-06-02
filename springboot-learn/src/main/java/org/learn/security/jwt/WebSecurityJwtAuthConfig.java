@@ -66,13 +66,15 @@ public class WebSecurityJwtAuthConfig extends WebSecurityConfigurerAdapter {
         // 设置需要权限访问的资源
         httpSecurity.authorizeRequests()
                 .antMatchers("/api/v1/test/**").access("hasRole('ROLE_MEMBER')");
+//                .antMatchers("/api/v1/index/test").access("hasRole('ROLE_ADMINE')");
 
         // 对登录注册要允许匿名访问
         httpSecurity.authorizeRequests().antMatchers(
                 "/api/v1/member/register",
                 "/api/v1/member/login",
                 "/api/v1/member/logout",
-                "/api/v1/upload/file").permitAll();
+                "/api/v1/upload/file",
+                "/api/v1/member/check").permitAll();
 
         /* web security jwt 拦截鉴权 */
         httpSecurity.addFilter(new JwtAuthenticationFilter(authenticationManager()))

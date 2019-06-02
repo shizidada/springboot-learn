@@ -30,4 +30,12 @@ public interface MemberMapper {
      * @return
      */
     MemberDO selectMemberByUserName(String username);
+
+    /**
+     * 根据 Phone 查询是否存在相同 Phone
+     *
+     * @param phone
+     * @return
+     */
+    MemberDO selectMemberByPhone(String phone);
 }

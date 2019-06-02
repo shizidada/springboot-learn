@@ -28,6 +28,14 @@ public class IndexController {
         return AjaxResult.success("访问测试接口", data);
     }
 
+    @RequestMapping(value = "/api/v1/index/test", method = {RequestMethod.POST})
+    @ResponseBody
+    public AjaxResult test1() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("test", "this is /api/v1/index/test not PreAuthorize data");
+        return AjaxResult.success("访问测试接口", data);
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping(value = "/api/v1/test_admin", method = {RequestMethod.POST})
     @ResponseBody

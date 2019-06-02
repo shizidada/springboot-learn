@@ -34,7 +34,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         MemberModel memberModel = customUserDetails.getMemberModel();
         log.info("{} CustomAuthenticationSuccessHandler 登录认证成功 >>> {}", memberModel.getId(), memberModel.getUsername());
-// String jwtToken = JwtTokenUtil.generateToken(userDetails.getUsername(), 1500);
+// String jwtToken = JwtTokenManager.generateToken(userDetails.getUsername(), 1500);
         MemberVO memberVO = convertFromModel(memberModel);
         response.getWriter().write(JSON.toJSONString(AjaxResult.success(ResultCode.MEMBER_LOGIN_SUCCESS.getMessage(), authentication), SerializerFeature.DisableCircularReferenceDetect));
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -35,7 +36,6 @@ public class MemberController {
     public AjaxResult memberRegister(@Valid MemberModel memberModel, BindingResult memberResult,
                                      @Valid MemberPasswordModel memberPasswordModel, BindingResult passwordResult) throws Exception {
 
-        // TODO memberModel to memberVo
         MemberModel member = memberService.register(memberModel, memberPasswordModel);
         if (member == null) {
             throw new BusinessException(ResultCode.REGISTER_FAILED);
@@ -60,6 +60,15 @@ public class MemberController {
 
     @RequestMapping(value = "/logout", method = {RequestMethod.POST})
     public void memberLogout(HttpServletResponse response, HttpServletRequest request) throws Exception {
+    }
+
+    @RequestMapping(value = "/check", method = {RequestMethod.POST})
+    public AjaxResult memberCheck(MemberModel memberModel) throws Exception {
+        MemberModel member = memberService.check(memberModel);
+        if (member != null) {
+            return AjaxResult.failure();
+        }
+        return AjaxResult.success(ResultCode.SUCCESS.getMessage(), null);
     }
 
     //将Model转为VO

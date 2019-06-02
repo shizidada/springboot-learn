@@ -24,7 +24,7 @@ import java.io.IOException;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException, ServletException {
-        log.info(" >>>> 用户未登录 >>>>");
+        log.info("用户未登录");
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         ExceptionModel model = AuthExceptionUtil.processException(ex);

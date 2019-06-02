@@ -3,9 +3,11 @@ package org.learn.security.jwt;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.learn.common.Constants;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
 import org.learn.exception.ExceptionModel;
+import org.learn.manager.JwtTokenManager;
 import org.learn.security.CustomUserDetails;
 import org.learn.service.model.MemberModel;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,17 +36,23 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
+    private static final String LOGIN_URL = "/api/v1/member/login";
+
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        super.setFilterProcessesUrl("/api/v1/member/login");
+        super.setFilterProcessesUrl(LOGIN_URL);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-        if (!request.getMethod().equals("POST")) {
+
+        // TODO ?
+        String url = request.getRequestURL().toString();
+        if (!request.getMethod().equals("POST") && url.contains(LOGIN_URL)) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
+        log.info("contentType :: {} ", request.getContentType());
         // username password  验证
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -72,18 +80,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 所以就是 CustomUserDetails
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
         MemberModel memberModel = customUserDetails.getMemberModel();
+        log.info("用户 :: [{}] :: 登录成功", memberModel.getUsername());
         Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
         String role = "";
         for (GrantedAuthority authority : authorities) {
             role = authority.getAuthority();
         }
-        String token = JwtTokenUtil.createToken(customUserDetails.getUsername(), role, false);
+        String token = JwtTokenManager.createToken(customUserDetails.getUsername(), role, false);
         // 返回创建成功 token 但是这里创建 token 只是单纯 token
         // 按照 jwt 规定，最后请求的格式应该是 `Bearer token`
-        // response.setHeader("token", JwtTokenUtil.TOKEN_PREFIX + token);
+        // response.setHeader("token", JwtTokenManager.TOKEN_PREFIX + token);
         Map<String, Object> map = new HashMap<>();
-        map.put("info", memberModel);
-        map.put("token", token);
+        map.put("member_info", memberModel);
+        map.put("access_token", Constants.JWT.TOKEN_PREFIX + token);
         response.getWriter().write(JSON.toJSONString(AjaxResult.success("登录成功", map)));
     }
 
@@ -92,7 +101,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException ex) throws IOException, ServletException {
-        log.info("message :: {} ", ex.getMessage());
+        log.info("验证失败 :: {} ", ex.getMessage());
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         ExceptionModel model = AuthExceptionUtil.processException(ex);
