@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.learn.security.handler.CustomAccessDeniedHandler;
 import org.learn.security.handler.CustomAuthenticationEntryPoint;
 import org.learn.security.CustomUserDetailsService;
+import org.learn.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

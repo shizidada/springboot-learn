@@ -6,6 +6,7 @@ package org.learn.common.api;
 public enum ResultCode implements ICommonError {
 
     SUCCESS(200, "操作成功"),
+    FAILED(500, "操作失败"),
 
     // 通用错误码 10000
     UNKNOWN_ERROR(10000, "未知错误"),
@@ -23,15 +24,12 @@ public enum ResultCode implements ICommonError {
     MEMBER_ROLE_NOT_FOUND(20008, "未找到对应角色"),
 
     // json web token
-    JWT_EXPIRED(40001, "暂未登录或 Token 已经过期"),
+    JWT_EXPIRED(40001, "Token 已经过期"),
     JWT_SIGNATURE(40002, "Token 签名错误"),
 
-    UNAUTHORIZED(401, "暂未登录或 token 已经过期"),
-    FORBIDDEN(403, "权限受限 FORBIDDEN"),
-    ACCESS_DENIED(403, "权限被拒绝 ACCESS DENIED"),
+    UNAUTHORIZED(401, "暂未登录或 Token 已经过期"),
+    ACCESS_DENIED(403, "权限受限被拒绝 ACCESS DENIED FORBIDDEN"),
     METHOD_NOT_ALLOWED(405, "Authentication method not supported "),
-
-    FAILED(500, "操作失败"),
 
     IMAGE_UPLOAD_FAILED(60000, "图片上传失败"),
     FILE_UPLOAD_FAILED(60001, "文件上传失败"),

@@ -1,7 +1,6 @@
 package org.learn.security;
 
 import org.learn.common.api.ResultCode;
-import org.learn.security.CustomUserDetails;
 import org.learn.service.MemberPasswordService;
 import org.learn.service.MemberRoleService;
 import org.learn.service.MemberService;

@@ -7,9 +7,11 @@ import org.learn.common.Constants;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
 import org.learn.exception.ExceptionModel;
-import org.learn.manager.JwtTokenManager;
+import org.learn.utils.JwtTokenUtil;
 import org.learn.security.CustomUserDetails;
 import org.learn.service.model.MemberModel;
+import org.learn.utils.AuthExceptionUtil;
+import org.learn.utils.RedisUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +44,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authenticationManager = authenticationManager;
         super.setFilterProcessesUrl(LOGIN_URL);
     }
+
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
@@ -86,10 +89,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         for (GrantedAuthority authority : authorities) {
             role = authority.getAuthority();
         }
-        String token = JwtTokenManager.createToken(customUserDetails.getUsername(), role, false);
+        String token = JwtTokenUtil.createToken(customUserDetails.getUsername(), role, false);
         // 返回创建成功 token 但是这里创建 token 只是单纯 token
         // 按照 jwt 规定，最后请求的格式应该是 `Bearer token`
-        // response.setHeader("token", JwtTokenManager.TOKEN_PREFIX + token);
+        // response.setHeader("token", JwtTokenUtil.TOKEN_PREFIX + token);
+        // redisUtil.set(token, customUserDetails.getMemberModel().getId());
         Map<String, Object> map = new HashMap<>();
         map.put("member_info", memberModel);
         map.put("access_token", Constants.JWT.TOKEN_PREFIX + token);

@@ -2,7 +2,7 @@ package org.learn.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.learn.exception.ExceptionModel;
-import org.learn.security.jwt.AuthExceptionUtil;
+import org.learn.utils.AuthExceptionUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

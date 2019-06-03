@@ -6,7 +6,8 @@ import org.learn.common.Constants;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
 import org.learn.exception.ExceptionModel;
-import org.learn.manager.JwtTokenManager;
+import org.learn.utils.JwtTokenUtil;
+import org.learn.utils.AuthExceptionUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,10 +28,13 @@ import java.util.Collections;
 @Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
+    private AuthenticationManager authenticationManager;
+
     private static final String LOGIN_URL = "/api/v1/member/login";
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -56,6 +60,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // 如果请求头中有 token，则进行解析，并且设置认证信息
         try {
             UsernamePasswordAuthenticationToken authentication = getAuthentication(tokenHeader);
+//            authenticationManager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception ex) {
             // 判断处理异常类型 返回正确提示
@@ -71,9 +76,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader) {
         // 获取 token
         String token = tokenHeader.replace(Constants.JWT.TOKEN_PREFIX, "");
-        String username = JwtTokenManager.getUsername(token);
+        String username = JwtTokenUtil.getUsername(token);
         if (username != null) {
-            String userRole = JwtTokenManager.getUserRole(token);
+            String userRole = JwtTokenUtil.getUserRole(token);
             return new UsernamePasswordAuthenticationToken(
                     username,
                     null,

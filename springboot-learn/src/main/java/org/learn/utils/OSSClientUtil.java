@@ -1,4 +1,4 @@
-package org.learn.manager;
+package org.learn.utils;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.*;
@@ -17,22 +17,22 @@ import java.util.Random;
  * Aliyun OSS
  */
 @Slf4j
-public class OSSClientManager {
+public class OSSClientUtil {
 
     //阿里云API 内或外网域名
     private static final String ENDPOINT = "http://oss-cn-shenzhen.aliyuncs.com";
     //阿里云API的密钥Access Key ID
-    private static final String ACCESS_KEY_ID = "xxx";
+    private static final String ACCESS_KEY_ID = "LTAI8GpKG1CZsv4S";
     //阿里云API的密钥Access Key Secret
-    private static final String ACCESS_KEY_SECRET = "xxxx";
+    private static final String ACCESS_KEY_SECRET = "p7FhsSiX31CWCfLNVmExP2AkaAOS4Z";
     //阿里云API的bucket名称
-    private static final String BACKET_NAME = "xxx";
+    private static final String BACKET_NAME = "xiaotaohua";
     //阿里云API的文件夹名称
-    private static final String FOLDER_NAME = "xxx/";
+    private static final String FOLDER_NAME = "xiaotaohua/";
 
     private OSSClient ossClient;
 
-    public OSSClientManager() {
+    public OSSClientUtil() {
         ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
     }
 
@@ -264,7 +264,7 @@ public class OSSClientManager {
 
     //测试
     public static void main(String[] args) throws FileNotFoundException {
-        OSSClientManager ossClientManager = new OSSClientManager();
+        OSSClientUtil ossClientManager = new OSSClientUtil();
         //上传文件
         String fileStr = "/Users/taohua/Pictures/15699356.jpeg";
         String[] fileArray = fileStr.split(",");

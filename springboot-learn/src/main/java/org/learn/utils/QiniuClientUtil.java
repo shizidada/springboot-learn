@@ -1,4 +1,4 @@
-package org.learn.manager;
+package org.learn.utils;
 
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
@@ -9,7 +9,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 
-public class QiniuClientManager {
+public class QiniuClientUtil {
 
     // 根据七牛云的个人中心来填写  
     private static final String accessKey = "xxx";

@@ -1,4 +1,4 @@
-package org.learn.security.jwt;
+package org.learn.utils;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.learn.common.api.ResultCode;
 import org.learn.exception.BusinessException;
 import org.learn.exception.ExceptionModel;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -40,6 +41,9 @@ public class AuthExceptionUtil {
         ) {
             exceptionModel.setMessage(ResultCode.UNAUTHORIZED.getMessage());
             exceptionModel.setCode(ResultCode.UNAUTHORIZED.getCode());
+        } else if(ex instanceof AccessDeniedException) {
+            exceptionModel.setMessage(ResultCode.ACCESS_DENIED.getMessage());
+            exceptionModel.setCode(ResultCode.ACCESS_DENIED.getCode());
         } else if (ex instanceof AuthenticationServiceException
                 || ex instanceof HttpRequestMethodNotSupportedException
         ) {

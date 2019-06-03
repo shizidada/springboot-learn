@@ -1,4 +1,4 @@
-package org.learn.manager;
+package org.learn.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +9,7 @@ import org.learn.service.model.MemberModel;
 import java.util.Date;
 import java.util.HashMap;
 
-public class JwtTokenManager {
+public class JwtTokenUtil {
 
     // 创建token
     public static String createToken(String username, String role, boolean isRememberMe) {

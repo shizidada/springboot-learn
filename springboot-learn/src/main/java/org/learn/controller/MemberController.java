@@ -25,14 +25,13 @@ import java.util.HashMap;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/member")
 public class MemberController {
 
 
     @Autowired
     private MemberService memberService;
 
-    @RequestMapping(value = "/register", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/v1/member/register", method = {RequestMethod.POST})
     public AjaxResult memberRegister(@Valid MemberModel memberModel, BindingResult memberResult,
                                      @Valid MemberPasswordModel memberPasswordModel, BindingResult passwordResult) throws Exception {
 
@@ -44,25 +43,25 @@ public class MemberController {
         return AjaxResult.success("注册成功", memberVO);
     }
 
-    @RequestMapping(value = "/login", method = {RequestMethod.POST})
-    public AjaxResult memberLogin(@RequestParam("username") String username,
-                                  @RequestParam("password") String password, HttpServletResponse response, HttpServletRequest request) throws Exception {
-        if (StringUtils.isAnyBlank(username, password)) {
-            throw new BusinessException(ResultCode.MEMBER_PASSWORD_NOT_EXIST);
-        }
-        MemberModel memberModel = memberService.login(username, password);
-        if (memberModel == null) {
-            throw new BusinessException(ResultCode.MEMBER_PASSWORD_NOT_EXIST);
-        }
-        MemberVO memberVO = convertFromModel(memberModel);
-        return AjaxResult.success("登录成功", memberVO);
-    }
+//    @RequestMapping(value = "/api/v1/member/login", method = {RequestMethod.POST})
+//    public AjaxResult memberLogin(@RequestParam("username") String username,
+//                                  @RequestParam("password") String password, HttpServletResponse response, HttpServletRequest request) throws Exception {
+//        if (StringUtils.isAnyBlank(username, password)) {
+//            throw new BusinessException(ResultCode.MEMBER_PASSWORD_NOT_EXIST);
+//        }
+//        MemberModel memberModel = memberService.login(username, password);
+//        if (memberModel == null) {
+//            throw new BusinessException(ResultCode.MEMBER_PASSWORD_NOT_EXIST);
+//        }
+//        MemberVO memberVO = convertFromModel(memberModel);
+//        return AjaxResult.success("登录成功", memberVO);
+//    }
 
-    @RequestMapping(value = "/logout", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/v1/member/logout", method = {RequestMethod.POST})
     public void memberLogout(HttpServletResponse response, HttpServletRequest request) throws Exception {
     }
 
-    @RequestMapping(value = "/check", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/v1/member/check", method = {RequestMethod.POST})
     public AjaxResult memberCheck(MemberModel memberModel) throws Exception {
         MemberModel member = memberService.check(memberModel);
         if (member != null) {
