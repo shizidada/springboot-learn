@@ -5,8 +5,7 @@ import org.learn.common.SnowflakeIdWorker;
 import org.learn.common.api.ResultCode;
 import org.learn.entity.MemberRoleDO;
 import org.learn.mapper.MemberRoleMapper;
-import org.learn.security.CustomUserDetails;
-import org.learn.security.CustomUserDetailsService;
+import org.learn.service.model.CustomUserDetails;
 import org.learn.service.model.MemberModel;
 import org.learn.entity.MemberDO;
 import org.learn.entity.MemberPasswordDO;
@@ -43,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
     private MemberRoleMapper memberRoleMapper;
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsServiceImpl customUserDetailsService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -82,6 +81,8 @@ public class MemberServiceImpl implements MemberService {
         try {
             memberModel.setCreateTime(new Date());
             memberModel.setId(snowflakeIdWorker.nextId()); // 设置 snowflakeIdWorker 生成ID
+            // TODO 设置账号状态是否存在问题呢？
+            memberModel.setStatus(1);
             MemberDO memberDO = convertModel2MemberDO(memberModel);
             memberMapper.insertSelective(memberDO); // 插入数据库
 

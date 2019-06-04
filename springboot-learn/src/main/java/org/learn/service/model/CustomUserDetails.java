@@ -1,7 +1,5 @@
-package org.learn.security;
+package org.learn.service.model;
 
-import org.learn.service.model.MemberModel;
-import org.learn.service.model.MemberPasswordModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

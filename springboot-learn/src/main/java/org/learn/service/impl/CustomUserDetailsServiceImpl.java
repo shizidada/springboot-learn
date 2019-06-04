@@ -1,9 +1,10 @@
-package org.learn.security;
+package org.learn.service.impl;
 
 import org.learn.common.api.ResultCode;
 import org.learn.service.MemberPasswordService;
 import org.learn.service.MemberRoleService;
 import org.learn.service.MemberService;
+import org.learn.service.model.CustomUserDetails;
 import org.learn.service.model.MemberModel;
 import org.learn.service.model.MemberPasswordModel;
 import org.learn.service.model.MemberRoleModel;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 
 @Service("customUserDetailsService")
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private MemberService memberService;

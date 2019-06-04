@@ -1,7 +1,7 @@
 package org.learn.security.session;
 
 import lombok.extern.slf4j.Slf4j;
-import org.learn.security.CustomUserDetailsService;
+import org.learn.service.impl.CustomUserDetailsServiceImpl;
 import org.learn.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,7 +21,7 @@ public class WebSecuritySessionAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     @Qualifier("customUserDetailsService")
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsServiceImpl customUserDetailsService;
 
     @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;

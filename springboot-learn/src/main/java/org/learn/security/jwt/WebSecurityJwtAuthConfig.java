@@ -3,8 +3,7 @@ package org.learn.security.jwt;
 import lombok.extern.slf4j.Slf4j;
 import org.learn.security.handler.CustomAccessDeniedHandler;
 import org.learn.security.handler.CustomAuthenticationEntryPoint;
-import org.learn.security.CustomUserDetailsService;
-import org.learn.utils.RedisUtil;
+import org.learn.service.impl.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +26,7 @@ public class WebSecurityJwtAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     @Qualifier("customUserDetailsService")
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsServiceImpl customUserDetailsService;
 
     @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;

@@ -15,12 +15,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 @Slf4j
-public class AuthExceptionUtil {
+public class ExceptionUtil {
 
-    private AuthExceptionUtil() {
+    private ExceptionUtil() {
     }
 
-    public static ExceptionModel processException(Exception ex) {
+    public static ExceptionModel handlerException(Exception ex) {
         ExceptionModel exceptionModel = new ExceptionModel();
         if (ex instanceof SignatureException) {
             exceptionModel.setMessage(ResultCode.JWT_SIGNATURE.getMessage());
@@ -58,7 +58,7 @@ public class AuthExceptionUtil {
             exceptionModel.setCode(ResultCode.UNKNOWN_ERROR.getCode());
             exceptionModel.setMessage(ex.getMessage());
         }
-        log.info("AuthExceptionUtil :: message {} ex.toString :: {}", ex.getMessage(), ex.toString());
+        log.info("ExceptionUtil :: message {} ex.toString :: {}", ex.getMessage(), ex.toString());
         return exceptionModel;
     }
 }

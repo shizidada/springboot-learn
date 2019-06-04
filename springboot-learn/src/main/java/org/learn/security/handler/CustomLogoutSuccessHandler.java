@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
-import org.learn.security.CustomUserDetails;
+import org.learn.service.model.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;

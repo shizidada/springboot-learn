@@ -7,11 +7,10 @@ import org.learn.common.Constants;
 import org.learn.common.api.AjaxResult;
 import org.learn.common.api.ResultCode;
 import org.learn.exception.ExceptionModel;
+import org.learn.utils.ExceptionUtil;
 import org.learn.utils.JwtTokenUtil;
-import org.learn.security.CustomUserDetails;
+import org.learn.service.model.CustomUserDetails;
 import org.learn.service.model.MemberModel;
-import org.learn.utils.AuthExceptionUtil;
-import org.learn.utils.RedisUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -108,7 +107,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("验证失败 :: {} ", ex.getMessage());
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        ExceptionModel model = AuthExceptionUtil.processException(ex);
+        ExceptionModel model = ExceptionUtil.handlerException(ex);
         response.getWriter().write(JSON.toJSONString(AjaxResult.failure(model.getCode(), model.getMessage())));
     }
 }
