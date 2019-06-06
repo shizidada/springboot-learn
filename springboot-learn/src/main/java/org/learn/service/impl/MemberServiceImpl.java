@@ -79,6 +79,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public MemberModel register(MemberModel memberModel, MemberPasswordModel memberPasswordModel) throws Exception {
         try {
+            this.check(memberModel);
+
             memberModel.setCreateTime(new Date());
             memberModel.setId(snowflakeIdWorker.nextId()); // 设置 snowflakeIdWorker 生成ID
             // TODO 设置账号状态是否存在问题呢？
