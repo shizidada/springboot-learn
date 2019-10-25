@@ -75,7 +75,10 @@ public class WebSecurityJwtAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/v1/member/logout",
                 "/api/v1/upload/file",
                 "/api/v1/member/check",
-                "/api/v1/excel/upload").permitAll();
+                "/api/v1/excel/upload",
+                "/api/v1/excel/download",
+                "/api/v1/excel/download/diff",
+                "/api/v1/excel/download/same").permitAll();
 
         /* web security jwt 拦截鉴权 */
         httpSecurity.addFilter(new JwtAuthenticationFilter(authenticationManager()))

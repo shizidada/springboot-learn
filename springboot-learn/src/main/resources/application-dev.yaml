@@ -66,6 +66,9 @@ spring:
 
 #upload:
 #  path: D:/upload/
+  http:
+    multipart:
+      location: D:/upload/
 
 ## security settings
 #security:
