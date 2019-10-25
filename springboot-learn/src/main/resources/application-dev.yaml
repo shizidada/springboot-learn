@@ -124,12 +124,12 @@ spring:
           stat:
             mergeSql: true
             slowSqlMillis: 5000
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    pool:
-      max-active: 20
-      max-idle: 8
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    pool:
+#      max-active: 20
+#      max-idle: 8
 
 # rabbitmq
 #  rabbitmq:
