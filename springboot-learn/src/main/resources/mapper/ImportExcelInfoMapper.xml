@@ -36,7 +36,7 @@
     order by receiver
   </select>
 
-  <select id="selectDiffReceiverAndPhoneAndAddress">
+  <select id="selectDiffReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
     select * from t_excel_info a where (a.receiver,a.phone,a.address) in (select
     receiver,phone,address from t_excel_info group by receiver,phone,address having count(*) &lt;=
     1) order by receiver
