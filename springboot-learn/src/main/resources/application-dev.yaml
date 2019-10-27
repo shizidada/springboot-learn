@@ -68,7 +68,7 @@ spring:
 #  path: D:/upload/
   http:
     multipart:
-      location: D:/upload/
+      location: /Users/taohua/upload #D:/upload/
 
 ## security settings
 #security:

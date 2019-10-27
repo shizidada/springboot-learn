@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.learn.mapper.ImportExcelInfoMapper">
+<mapper namespace="org.learn.mapper.ImportExcelMapper">
   <resultMap id="BaseResultMap" type="org.learn.entity.ImportExcelInfoDO">
     <id column="id" jdbcType="BIGINT" property="id"/>
     <result column="iccid" jdbcType="VARCHAR" property="iccid"/>
@@ -31,13 +31,14 @@
 
   <select id="selectSameReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
     <!--      group by receiver-->
-    select * from t_excel_info a where (a.receiver,a.phone,a.address) in (select
+    select iccid, operators, receiver, phone, address from t_excel_info a where
+    (a.receiver,a.phone,a.address) in (select
     receiver,phone,address from t_excel_info group by receiver,phone,address having count(*) > 1)
     order by receiver
   </select>
 
   <select id="selectDiffReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
-    select * from t_excel_info a where (a.receiver,a.phone,a.address) in (select
+    select iccid, operators, receiver, phone, address from t_excel_info a where (a.receiver,a.phone,a.address) in (select
     receiver,phone,address from t_excel_info group by receiver,phone,address having count(*) &lt;=
     1) order by receiver
   </select>
