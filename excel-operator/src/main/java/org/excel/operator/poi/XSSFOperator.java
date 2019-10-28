@@ -1,24 +1,19 @@
 package org.excel.operator.poi;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.excel.operator.entity.ImportExcelDO;
-import org.excel.operator.mapper.ImportExcelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,44 +33,11 @@ public class XSSFOperator {
 
   private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-  private SqlSession sqlSession;
-
-  private ImportExcelMapper importExcelMapper;
-
   public XSSFOperator() {
-    init();
-    importExcelMapper = sqlSession.getMapper(ImportExcelMapper.class);
-    //  String filePath = XSSFOperator.class.getResource("/").getPath() + "anqin2.xlsx";
   }
 
-  private void init() {
-    InputStream inputStream = null;
+  public List<ImportExcelDO> importExcelFile(InputStream inputStream) {
     try {
-      inputStream = Resources.getResourceAsStream("mybatis-config.xml");
-      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-      sqlSession = sqlSessionFactory.openSession();
-    } catch (IOException e) {
-      e.printStackTrace();
-      logger.error(e.getMessage());
-    } finally {
-      if (inputStream != null) {
-        try {
-          inputStream.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-          logger.error(e.getMessage());
-        }
-      }
-    }
-  }
-
-  public void importExcelFile(String filePath) {
-
-    try {
-      // 1、获取文件输入流
-      FileInputStream inputStream = new FileInputStream(filePath);
-
-      // 2、获取Excel工作簿对象
       XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 
       XSSFSheet sheet = workbook.getSheetAt(0);
@@ -108,30 +70,16 @@ public class XSSFOperator {
 
         importExcelInfoList.add(importExcelDO);
       }
-
-      importExcelMapper.addImportExcelInfoBatch(importExcelInfoList);
-      sqlSession.commit();
+      return importExcelInfoList;
     } catch (FileNotFoundException e) {
       e.printStackTrace();
-      sqlSession.rollback();
     } catch (IOException e) {
       e.printStackTrace();
-      sqlSession.rollback();
-    } finally {
-      if (sqlSession != null) {
-        sqlSession.close();
-      }
     }
+    return null;
   }
 
-  public void exportExcelFile() {
-
-    //ImportExcelDO importExcelDO = importExcelMapper.selectByPrimaryKey(14607L);
-
-    //List<ImportExcelDO> importExcelDOList = importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
-
-    //List<ImportExcelDO> importExcelDOList = importExcelMapper.selectSameReceiverAndPhoneAndAddress();
-
+  public void exportExcelFile(List<ImportExcelDO> exportDiffList, OutputStream outputStream) {
     XSSFWorkbook workbook = new XSSFWorkbook();
 
     //XSSFCellStyle cellStyle = workbook.createCellStyle();
@@ -148,8 +96,6 @@ public class XSSFOperator {
     titleRow.createCell(3).setCellValue("收货手机号");
     titleRow.createCell(4).setCellValue("收货地址");
 
-    List<ImportExcelDO> exportDiffList = importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
-    //List<ImportExcelDO> exportDiffList = importExcelMapper.selectSameReceiverAndPhoneAndAddress();
     for (ImportExcelDO excelInfo : exportDiffList) {
       // 填充内容
       int lastRowNum = sheet.getLastRowNum();
@@ -160,19 +106,15 @@ public class XSSFOperator {
       dataRow.createCell(3).setCellValue(excelInfo.getPhone());
       dataRow.createCell(4).setCellValue(excelInfo.getAddress());
     }
-
     try {
-      FileOutputStream fileOutputStream = new FileOutputStream("D:\\upload\\相同.xlsx");
-      workbook.write(fileOutputStream);
+      workbook.write(outputStream);
       workbook.close();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      if (sqlSession != null) {
-        sqlSession.close();
-      }
+
     }
   }
 }

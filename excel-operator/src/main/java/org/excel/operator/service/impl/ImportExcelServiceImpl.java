@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.mapper.ImportExcelMapper;
 import org.excel.operator.service.ImportExcelService;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -16,6 +17,7 @@ import org.excel.operator.service.ImportExcelService;
  * @date 2019 2019/10/27 15:10
  * @see org.excel.operator.service.impl
  */
+@Service
 public class ImportExcelServiceImpl implements ImportExcelService {
 
   @Resource
@@ -35,5 +37,13 @@ public class ImportExcelServiceImpl implements ImportExcelService {
 
   @Override public int addImportExcelRecordBatch(List<ImportExcelDO> importExcelDO) {
     return importExcelMapper.addImportExcelInfoBatch(importExcelDO);
+  }
+
+  @Override public List<ImportExcelDO> exportSameReceiverAndPhoneAndAddress() {
+    return importExcelMapper.selectSameReceiverAndPhoneAndAddress();
+  }
+
+  @Override public List<ImportExcelDO> exportDiffReceiverAndPhoneAndAddress() {
+    return importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
   }
 }

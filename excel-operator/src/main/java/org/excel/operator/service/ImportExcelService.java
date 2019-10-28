@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
  * @date 2019 2019/10/27 15:09
  * @see org.excel.operator.service
  */
-@Service
 public interface ImportExcelService {
   /**
    * 根据主键查询
+   *
    * @param id 主键
    * @return ImportExcelDO
    */
@@ -25,6 +25,7 @@ public interface ImportExcelService {
 
   /**
    * 根据 importExcelDO 查询
+   *
    * @param importExcelDO 实体
    * @return ImportExcelDO
    */
@@ -33,7 +34,6 @@ public interface ImportExcelService {
   /**
    * 添加一条 excel 数据
    *
-   * @param importExcelDO
    * @return 添加成功
    */
   int addImportExcelRecord(ImportExcelDO importExcelDO);
@@ -41,8 +41,21 @@ public interface ImportExcelService {
   /**
    * 批量添加 excel 数据
    *
-   * @param importExcelDO
    * @return 添加成功
    */
   int addImportExcelRecordBatch(List<ImportExcelDO> importExcelDO);
+
+  /**
+   * 批量导出相同 excel 数据 Receiver Phone Address
+   *
+   * @return 导出成功
+   */
+  List<ImportExcelDO> exportSameReceiverAndPhoneAndAddress();
+
+  /**
+   * 批量导出不同 excel 数据 Receiver Phone Address
+   *
+   * @return 导出成功
+   */
+  List<ImportExcelDO> exportDiffReceiverAndPhoneAndAddress();
 }
