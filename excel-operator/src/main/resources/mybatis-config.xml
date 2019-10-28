@@ -28,6 +28,7 @@
   </environments>
 
   <mappers>
-    <mapper class="org.excel.operator.mapper.ImportExcelMapper"/>
+    <!--    <mapper class="org.excel.operator.mapper.ImportExcelMapper"/>-->
+    <mapper resource="mapper/ImportExcelMapper.xml"/>
   </mappers>
 </configuration>

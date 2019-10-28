@@ -17,9 +17,9 @@ public class XSSFOperatorTest {
   private static final Logger logger = LoggerFactory.getLogger(XSSFOperatorTest.class);
 
   public static void main(String[] args) {
-    //String filePath = XSSFOperator.class.getResource("/").getPath() + "/excel/tianpeng.xlsx";
-    //XSSFOperator xssfOperator = new XSSFOperator();
+    String filePath = XSSFOperator.class.getResource("/").getPath() + "/excel/tianpeng.xlsx";
+    XSSFOperator xssfOperator = new XSSFOperator();
     //xssfOperator.importExcelFile(filePath);
-    //xssfOperator.exportExcelFile();
+    xssfOperator.exportExcelFile();
   }
 }
