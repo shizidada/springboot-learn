@@ -25,6 +25,10 @@ public class ImportExcelServiceImpl implements ImportExcelService {
     return importExcelMapper.selectByPrimaryKey(id);
   }
 
+  @Override public ImportExcelDO selectByImportExcel(ImportExcelDO importExcelDO) {
+    return importExcelMapper.selectByImportExcel(importExcelDO);
+  }
+
   @Override public int addImportExcelRecord(ImportExcelDO importExcelDO) {
     return importExcelMapper.addImportExcelRecord(importExcelDO);
   }

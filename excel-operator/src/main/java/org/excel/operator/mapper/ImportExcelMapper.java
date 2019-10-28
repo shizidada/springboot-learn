@@ -27,6 +27,14 @@ public interface ImportExcelMapper {
   ImportExcelDO selectByPrimaryKey(Long id);
 
   /**
+   * 根据 ImportExcelDO 查询
+   *
+   * @param importExcelDO 实体
+   * @return ImportExcelDO
+   */
+  ImportExcelDO selectByImportExcel(ImportExcelDO importExcelDO);
+
+  /**
    * 根据主键查询
    *
    * @param excelDOList

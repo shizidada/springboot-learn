@@ -149,6 +149,7 @@ public class XSSFOperator {
     titleRow.createCell(4).setCellValue("收货地址");
 
     List<ImportExcelDO> exportDiffList = importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
+    //List<ImportExcelDO> exportDiffList = importExcelMapper.selectSameReceiverAndPhoneAndAddress();
     for (ImportExcelDO excelInfo : exportDiffList) {
       // 填充内容
       int lastRowNum = sheet.getLastRowNum();
@@ -161,7 +162,7 @@ public class XSSFOperator {
     }
 
     try {
-      FileOutputStream fileOutputStream = new FileOutputStream("/Users/taohua/upload/diff2.xlsx");
+      FileOutputStream fileOutputStream = new FileOutputStream("D:\\upload\\相同.xlsx");
       workbook.write(fileOutputStream);
       workbook.close();
     } catch (FileNotFoundException e) {

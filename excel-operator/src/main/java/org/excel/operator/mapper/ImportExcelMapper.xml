@@ -37,6 +37,18 @@
     WHERE id = #{id,jdbcType=BIGINT}
   </select>
 
+  <select id="selectByImportExcel" parameterType="org.excel.operator.entity.ImportExcelDO"
+      resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_excel_info
+    <where>
+      <if test="iccid != null and iccid != ''">
+        iccid = #{iccid} AND
+      </if>
+    </where>
+  </select>
+
   <select id="selectSameReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
     SELECT iccid, operators, receiver, phone, address,create_time,update_time FROM t_excel_info a
     WHERE

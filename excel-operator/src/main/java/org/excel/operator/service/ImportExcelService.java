@@ -24,6 +24,13 @@ public interface ImportExcelService {
   ImportExcelDO selectByPrimaryKey(Long id);
 
   /**
+   * 根据 importExcelDO 查询
+   * @param importExcelDO 实体
+   * @return ImportExcelDO
+   */
+  ImportExcelDO selectByImportExcel(ImportExcelDO importExcelDO);
+
+  /**
    * 添加一条 excel 数据
    *
    * @param importExcelDO
