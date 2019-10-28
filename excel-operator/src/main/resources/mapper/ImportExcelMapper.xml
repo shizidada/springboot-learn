@@ -17,32 +17,39 @@
     id, iccid, operators, receiver, phone, address,create_time,update_time
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_excel_info
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+  <insert id="addImportExcelRecord" parameterType="org.excel.operator.entity.ImportExcelDO">
+    INSERT INTO t_excel_info(iccid, operators, receiver, phone, address, create_time, update_time)
+    VALUES (#{iccid},#{operators},#{receiver},#{phone},#{address},#{createTime},#{updateTime})
+  </insert>
 
   <insert id="addImportExcelInfoBatch">
     INSERT INTO t_excel_info(iccid, operators, receiver, phone, address, create_time, update_time)
     VALUES
-    <foreach collection="excelInfos" item="info" separator=",">
+    <foreach collection="excelDOList" item="info" separator=",">
       (#{info.iccid},#{info.operators},#{info.receiver},#{info.phone},#{info.address},#{info.createTime},#{info.updateTime})
     </foreach>
   </insert>
 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_excel_info
+    WHERE id = #{id,jdbcType=BIGINT}
+  </select>
+
   <select id="selectSameReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
-    select iccid, operators, receiver, phone, address,create_time,update_time from t_excel_info a where
-    (a.receiver,a.phone,a.address) in (select
-    receiver,phone,address from t_excel_info group by receiver,phone,address having count(*) > 1)
-    order by receiver
+    SELECT iccid, operators, receiver, phone, address,create_time,update_time FROM t_excel_info a
+    WHERE
+    (a.receiver,a.phone,a.address) IN (SELECT
+    receiver,phone,address from t_excel_info GROUP BY receiver,phone,address HAVING COUNT(*) > 1)
+    ORDER BY receiver
   </select>
 
   <select id="selectDiffReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
-    select iccid, operators, receiver, phone, address,create_time,update_time from t_excel_info a where (a.receiver,a.phone,a.address) in (select
-    receiver,phone,address from t_excel_info group by receiver,phone,address having count(*) &lt;=
-    1) order by receiver
+    SELECT iccid, operators, receiver, phone, address,create_time,update_time FROM t_excel_info a
+    where (a.receiver,a.phone,a.address) IN (SELECT
+    receiver,phone,address from t_excel_info GROUP BY receiver,phone,address HAVING COUNT(*) &lt;=
+    1) ORDER BY receiver
   </select>
 
 </mapper>

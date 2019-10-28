@@ -4,23 +4,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.model.StylesTable;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.mapper.ImportExcelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -34,7 +34,7 @@ import org.excel.operator.mapper.ImportExcelMapper;
  */
 public class XSSFOperator {
 
-  private static final Logger logger = Logger.getLogger(XSSFOperator.class);
+  private static final Logger logger = LoggerFactory.getLogger(XSSFOperator.class);
 
   private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -42,10 +42,31 @@ public class XSSFOperator {
 
   private ImportExcelMapper importExcelMapper;
 
-  public XSSFOperator(SqlSession sqlSession) {
-    this.sqlSession = sqlSession;
+  public XSSFOperator() {
+    init();
+    importExcelMapper = sqlSession.getMapper(ImportExcelMapper.class);
+    //  String filePath = XSSFOperator.class.getResource("/").getPath() + "anqin2.xlsx";
+  }
 
-    this.importExcelMapper = sqlSession.getMapper(ImportExcelMapper.class);
+  private void init() {
+    InputStream inputStream = null;
+    try {
+      inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+      sqlSession = sqlSessionFactory.openSession();
+    } catch (IOException e) {
+      e.printStackTrace();
+      logger.error(e.getMessage());
+    } finally {
+      if (inputStream != null) {
+        try {
+          inputStream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+          logger.error(e.getMessage());
+        }
+      }
+    }
   }
 
   public void importExcelFile(String filePath) {
@@ -126,7 +147,6 @@ public class XSSFOperator {
     titleRow.createCell(2).setCellValue("收货人");
     titleRow.createCell(3).setCellValue("收货手机号");
     titleRow.createCell(4).setCellValue("收货地址");
-
 
     List<ImportExcelDO> exportDiffList = importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
     for (ImportExcelDO excelInfo : exportDiffList) {
