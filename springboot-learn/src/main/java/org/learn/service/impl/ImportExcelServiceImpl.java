@@ -3,14 +3,14 @@ package org.learn.service.impl;
 import java.util.List;
 import javax.annotation.Resource;
 import org.learn.entity.ImportExcelInfoDO;
-import org.learn.mapper.ImportExcelInfoMapper;
-import org.learn.service.ImportExcelFileService;
+import org.learn.mapper.ImportExcelMapper;
+import org.learn.service.ImportExcelService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ImportExcelFileServiceImpl implements ImportExcelFileService {
+public class ImportExcelServiceImpl implements ImportExcelService {
 
-  @Resource ImportExcelInfoMapper importExcelInfoMapper;
+  @Resource ImportExcelMapper importExcelInfoMapper;
 
   @Override public int addImportExcelRecord(List<ImportExcelInfoDO> list) {
     return importExcelInfoMapper.addImportExcelInfoBatch(list);

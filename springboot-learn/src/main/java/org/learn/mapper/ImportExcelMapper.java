@@ -4,7 +4,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.learn.entity.ImportExcelInfoDO;
 
-public interface ImportExcelInfoMapper {
+public interface ImportExcelMapper {
+
+  List<ImportExcelInfoDO> selectByPrimaryKey(Long id);
 
   int addImportExcelInfoBatch(@Param("excelInfos") List<ImportExcelInfoDO> excelInfos);
 

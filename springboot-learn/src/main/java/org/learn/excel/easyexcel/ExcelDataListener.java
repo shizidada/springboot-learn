@@ -1,4 +1,4 @@
-package org.learn.excel;
+package org.learn.excel.easyexcel;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
