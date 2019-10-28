@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.excel.operator.mapper.ImportExcelMapper">
+  <resultMap id="BaseResultMap" type="org.excel.operator.entity.ImportExcelDO">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="iccid" jdbcType="VARCHAR" property="iccid"/>
+    <result column="operators" jdbcType="VARCHAR" property="operators"/>
+    <result column="receiver" jdbcType="VARCHAR" property="receiver"/>
+    <result column="phone" jdbcType="VARCHAR" property="phone"/>
+    <result column="address" jdbcType="VARCHAR" property="address"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, iccid, operators, receiver, phone, address,create_time,update_time
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_excel_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <insert id="addImportExcelInfoBatch">
+    INSERT INTO t_excel_info(iccid, operators, receiver, phone, address, create_time, update_time)
+    VALUES
+    <foreach collection="excelInfos" item="info" separator=",">
+      (#{info.iccid},#{info.operators},#{info.receiver},#{info.phone},#{info.address},#{info.createTime},#{info.updateTime})
+    </foreach>
+  </insert>
+
+  <select id="selectSameReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
+    select iccid, operators, receiver, phone, address,create_time,update_time from t_excel_info a where
+    (a.receiver,a.phone,a.address) in (select
+    receiver,phone,address from t_excel_info group by receiver,phone,address having count(*) > 1)
+    order by receiver
+  </select>
+
+  <select id="selectDiffReceiverAndPhoneAndAddress" resultMap="BaseResultMap">
+    select iccid, operators, receiver, phone, address,create_time,update_time from t_excel_info a where (a.receiver,a.phone,a.address) in (select
+    receiver,phone,address from t_excel_info group by receiver,phone,address having count(*) &lt;=
+    1) order by receiver
+  </select>
+
+</mapper>
