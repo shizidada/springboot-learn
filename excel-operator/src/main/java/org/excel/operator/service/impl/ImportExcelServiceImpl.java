@@ -23,6 +23,10 @@ public class ImportExcelServiceImpl implements ImportExcelService {
   @Resource
   private ImportExcelMapper importExcelMapper;
 
+  @Override public List<ImportExcelDO> selectAll() {
+    return importExcelMapper.selectAll();
+  }
+
   @Override public ImportExcelDO selectByPrimaryKey(Long id) {
     return importExcelMapper.selectByPrimaryKey(id);
   }
@@ -36,7 +40,7 @@ public class ImportExcelServiceImpl implements ImportExcelService {
   }
 
   @Override public int addImportExcelRecordBatch(List<ImportExcelDO> importExcelDO) {
-    return importExcelMapper.addImportExcelInfoBatch(importExcelDO);
+    return importExcelMapper.addImportExcelRecordBatch(importExcelDO);
   }
 
   @Override public List<ImportExcelDO> exportSameReceiverAndPhoneAndAddress() {

@@ -14,6 +14,6 @@ public class ExcelOperatorApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(ExcelOperatorApplication.class, args);
-    logger.info("ExcelOperatorApplication init success ...");
+    logger.info("init success ...");
   }
 }

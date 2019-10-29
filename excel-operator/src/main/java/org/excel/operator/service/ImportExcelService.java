@@ -2,7 +2,6 @@ package org.excel.operator.service;
 
 import java.util.List;
 import org.excel.operator.entity.ImportExcelDO;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -15,6 +14,14 @@ import org.springframework.stereotype.Service;
  * @see org.excel.operator.service
  */
 public interface ImportExcelService {
+
+  /**
+   * 查询所有数据
+   *
+   * @return List<ImportExcelDO>
+   */
+  List<ImportExcelDO> selectAll();
+
   /**
    * 根据主键查询
    *
@@ -34,6 +41,7 @@ public interface ImportExcelService {
   /**
    * 添加一条 excel 数据
    *
+   * @param importExcelDO 实体
    * @return 添加成功
    */
   int addImportExcelRecord(ImportExcelDO importExcelDO);
@@ -41,6 +49,7 @@ public interface ImportExcelService {
   /**
    * 批量添加 excel 数据
    *
+   * @param importExcelDO 实体集合
    * @return 添加成功
    */
   int addImportExcelRecordBatch(List<ImportExcelDO> importExcelDO);

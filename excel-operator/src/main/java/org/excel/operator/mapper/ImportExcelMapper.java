@@ -17,6 +17,12 @@ import org.excel.operator.entity.ImportExcelDO;
  */
 @Mapper
 public interface ImportExcelMapper {
+  /**
+   * 查询所有数据
+   *
+   * @return List<ImportExcelDO>
+   */
+  List<ImportExcelDO> selectAll();
 
   /**
    * 根据主键查询
@@ -35,15 +41,15 @@ public interface ImportExcelMapper {
   ImportExcelDO selectByImportExcel(ImportExcelDO importExcelDO);
 
   /**
-   * 根据主键查询
+   * 批量添加 excel record
    *
    * @param excelDOList
    * @return 是否添加成功
    */
-  int addImportExcelInfoBatch(@Param("excelDOList") List<ImportExcelDO> excelDOList);
+  int addImportExcelRecordBatch(@Param("excelDOList") List<ImportExcelDO> excelDOList);
 
   /**
-   * 根据主键查询
+   * 添加一条 excel record
    *
    * @param importExcelDO
    * @return 是否添加成功
@@ -51,14 +57,14 @@ public interface ImportExcelMapper {
   int addImportExcelRecord(ImportExcelDO importExcelDO);
 
   /**
-   * 根据主键查询
+   * 查询相同 Receiver Phone Address
    *
    * @return ImportExcelDO
    */
   List<ImportExcelDO> selectSameReceiverAndPhoneAndAddress();
 
   /**
-   * 根据主键查询
+   * 查询不同 Receiver Phone Address
    *
    * @return List<ImportExcelDO>
    */

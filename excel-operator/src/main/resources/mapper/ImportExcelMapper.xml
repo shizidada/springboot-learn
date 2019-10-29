@@ -22,13 +22,19 @@
     VALUES (#{iccid},#{operators},#{receiver},#{phone},#{address},#{createTime},#{updateTime})
   </insert>
 
-  <insert id="addImportExcelInfoBatch">
+  <insert id="addImportExcelRecordBatch">
     INSERT INTO t_excel_info(iccid, operators, receiver, phone, address, create_time, update_time)
     VALUES
     <foreach collection="excelDOList" item="info" separator=",">
       (#{info.iccid},#{info.operators},#{info.receiver},#{info.phone},#{info.address},#{info.createTime},#{info.updateTime})
     </foreach>
   </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_excel_info
+  </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
@@ -44,7 +50,19 @@
     FROM t_excel_info
     <where>
       <if test="iccid != null and iccid != ''">
-        iccid = #{iccid} AND
+        AND iccid = #{iccid,jdbcType=VARCHAR}
+      </if>
+      <if test="operators != null and operators != ''">
+        AND operators = #{operators,jdbcType=VARCHAR}
+      </if>
+      <if test="receiver != null and receiver != ''">
+        AND receiver = #{receiver,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null and phone != ''">
+        AND phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="address != null and address != ''">
+        AND address = #{address,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

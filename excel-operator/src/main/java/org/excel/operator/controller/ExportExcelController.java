@@ -10,11 +10,14 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.excel.operator.common.ResponseResult;
 import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.poi.XSSFOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019 2019/10/27 15:06
  * @see org.excel.operator.controller
  */
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequestMapping(value = "/api/v1/excel")
 public class ExportExcelController {
 
   private static final Logger logger = LoggerFactory.getLogger(ExportExcelController.class);
@@ -40,7 +45,14 @@ public class ExportExcelController {
   @Resource
   private ImportExcelServiceImpl importExcelService;
 
-  @RequestMapping(value = "/api/v1/excel/export")
+  // TODO pagation
+  @GetMapping(value = "/list")
+  public ResponseResult<List<ImportExcelDO>> list() {
+    List<ImportExcelDO> importExcelDOS = importExcelService.selectAll();
+    return new ResponseResult(200L, true, "success", importExcelDOS);
+  }
+
+  @RequestMapping(value = "/export")
   public void exportFile(HttpServletResponse response, HttpServletRequest request) {
     String type = request.getParameter("type");
     downLoadExportExcelFile(response, type);
