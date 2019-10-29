@@ -5,12 +5,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.excel.operator.common.ResponseResult;
+import org.excel.operator.common.ExcelSearchParam;
 import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.poi.XSSFOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
@@ -45,11 +47,10 @@ public class ExportExcelController {
   @Resource
   private ImportExcelServiceImpl importExcelService;
 
-  // TODO pagation
   @GetMapping(value = "/list")
-  public ResponseResult<List<ImportExcelDO>> list() {
-    List<ImportExcelDO> importExcelDOS = importExcelService.selectAll();
-    return new ResponseResult(200L, true, "success", importExcelDOS);
+  public ResponseResult<Object> list(ExcelSearchParam excelSearchParam) {
+    Map<String, Object> map = importExcelService.selectAll(excelSearchParam);
+    return new ResponseResult(200L, true, "success", map);
   }
 
   @RequestMapping(value = "/export")

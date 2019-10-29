@@ -1,4 +1,4 @@
-package org.excel.operator.entity;
+package org.excel.operator.common;
 
 import java.util.Date;
 import lombok.Data;
@@ -10,11 +10,16 @@ import lombok.Data;
  *
  * @author taohua
  * @version v1.0.0
- * @date 2019 2019/10/27 15:06
- * @see org.excel.operator.entity
+ * @date 2019 2019/10/29 21:01
+ * @see org.excel.operator.common
  */
+
 @Data
-public class ImportExcelDO {
+public class ExcelSearchParam {
+
+  private int pageNum;
+
+  private int pageSize;
 
   /**
    * 主键 id

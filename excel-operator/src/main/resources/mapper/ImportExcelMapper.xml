@@ -30,10 +30,28 @@
     </foreach>
   </insert>
 
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap"
+      parameterType="org.excel.operator.common.ExcelSearchParam">
     SELECT
     <include refid="Base_Column_List"/>
     FROM t_excel_info
+    <where>
+      <if test="iccid != null and iccid != ''">
+        AND iccid = #{iccid,jdbcType=VARCHAR}
+      </if>
+      <if test="operators != null and operators != ''">
+        AND operators = #{operators,jdbcType=VARCHAR}
+      </if>
+      <if test="receiver != null and receiver != ''">
+        AND receiver = #{receiver,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null and phone != ''">
+        AND phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="address != null and address != ''">
+        AND address = #{address,jdbcType=VARCHAR}
+      </if>
+    </where>
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

@@ -1,10 +1,15 @@
 package org.excel.operator.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
+import org.excel.operator.common.ExcelSearchParam;
 import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.mapper.ImportExcelMapper;
 import org.excel.operator.service.ImportExcelService;
+import org.excel.operator.util.PageInfoUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,8 +28,14 @@ public class ImportExcelServiceImpl implements ImportExcelService {
   @Resource
   private ImportExcelMapper importExcelMapper;
 
-  @Override public List<ImportExcelDO> selectAll() {
-    return importExcelMapper.selectAll();
+  @Override public Map<String, Object> selectAll(ExcelSearchParam excelSearchParam) {
+    if (excelSearchParam.getPageNum() > 0 && excelSearchParam.getPageSize() > 0) {
+      PageHelper.startPage(excelSearchParam.getPageNum(), excelSearchParam.getPageSize());
+    }
+    List<ImportExcelDO> list = importExcelMapper.selectAll(excelSearchParam);
+    PageInfo page = new PageInfo<>(list);
+    Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(page);
+    return basePageInfo;
   }
 
   @Override public ImportExcelDO selectByPrimaryKey(Long id) {

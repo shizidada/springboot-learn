@@ -1,6 +1,8 @@
 package org.excel.operator.service;
 
 import java.util.List;
+import java.util.Map;
+import org.excel.operator.common.ExcelSearchParam;
 import org.excel.operator.entity.ImportExcelDO;
 
 /**
@@ -16,11 +18,12 @@ import org.excel.operator.entity.ImportExcelDO;
 public interface ImportExcelService {
 
   /**
-   * 查询所有数据
+   * 根据对应条件查询数据
    *
-   * @return List<ImportExcelDO>
+   * @param excelSearchParam 搜索参数
+   * @return Map<String ,   Object>
    */
-  List<ImportExcelDO> selectAll();
+  Map<String, Object> selectAll(ExcelSearchParam excelSearchParam);
 
   /**
    * 根据主键查询
