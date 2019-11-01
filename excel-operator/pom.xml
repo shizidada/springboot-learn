@@ -52,7 +52,7 @@
       <artifactId>druid-spring-boot-starter</artifactId>
       <version>1.1.10</version>
     </dependency>
-    
+
     <!--pagehelper-->
     <dependency>
       <groupId>com.github.pagehelper</groupId>
@@ -63,6 +63,13 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+
+    <!--logstash-->
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>5.2</version>
     </dependency>
 
     <!--    <dependency>-->
