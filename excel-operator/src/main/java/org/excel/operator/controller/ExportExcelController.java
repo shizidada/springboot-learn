@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019 2019/10/27 15:06
  * @see org.excel.operator.controller
  */
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/excel")
 public class ExportExcelController {

@@ -38,7 +38,7 @@ spring:
             slowSqlMillis: 5000
 
 logging:
-  path: E:/elk/logs
+  path: /Users/taohua/develop/elk/logs
 
 ## mybatis settings
 mybatis:
