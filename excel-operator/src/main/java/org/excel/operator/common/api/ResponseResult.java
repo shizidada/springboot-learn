@@ -1,4 +1,4 @@
-package org.excel.operator.common;
+package org.excel.operator.common.api;
 
 /**
  * <p>
@@ -11,7 +11,7 @@ package org.excel.operator.common;
  * @see org.excel.operator.common
  */
 public class ResponseResult<T> {
-  private Long code;
+  private Integer code;
 
   private Boolean status;
 
@@ -22,18 +22,36 @@ public class ResponseResult<T> {
   public ResponseResult() {
   }
 
-  public ResponseResult(Long code, Boolean status, String message, T data) {
+  private ResponseResult(Integer code, Boolean status, String message, T data) {
     this.code = code;
     this.status = status;
     this.data = data;
     this.message = message;
   }
 
-  public Long getCode() {
+  public static ResponseResult success(Object data) {
+    return new ResponseResult<>(ResponseCode.SUCCESS.getCode(), Boolean.TRUE,
+        ResponseCode.SUCCESS.getMessage(), data);
+  }
+
+  public static ResponseResult success() {
+    return success(null);
+  }
+
+  public static ResponseResult fail(Object data) {
+    return new ResponseResult<>(ResponseCode.FAIL.getCode(), Boolean.FALSE,
+        ResponseCode.FAIL.getMessage(), data);
+  }
+
+  public static ResponseResult fail() {
+    return fail(null);
+  }
+
+  public Integer getCode() {
     return code;
   }
 
-  public void setCode(Long code) {
+  public void setCode(Integer code) {
     this.code = code;
   }
 

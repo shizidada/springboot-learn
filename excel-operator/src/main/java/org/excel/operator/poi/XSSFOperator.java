@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -49,18 +50,39 @@ public class XSSFOperator {
         if (row.getRowNum() == 0) {
           continue;
         }
-        String iccId = row.getCell(0).getStringCellValue();
-        String operators = row.getCell(1).getStringCellValue();
-        String receiver = row.getCell(2).getStringCellValue();
-        String phone = row.getCell(3).getStringCellValue();
-        String address = row.getCell(4).getStringCellValue();
 
         ImportExcelDO importExcelDO = new ImportExcelDO();
-        importExcelDO.setIccid(iccId);
-        importExcelDO.setOperators(operators);
-        importExcelDO.setReceiver(receiver);
-        importExcelDO.setPhone(phone);
-        importExcelDO.setAddress(address);
+
+        Cell iccIdCell = row.getCell(0);
+        if (iccIdCell != null) {
+          String iccId = iccIdCell.getStringCellValue();
+          importExcelDO.setIccid(iccId);
+          int rowNum = row.getRowNum();
+          logger.info("最后一条数据 {} ", rowNum);
+        }
+        Cell operatorsCell = row.getCell(1);
+        if (operatorsCell != null) {
+          String operators = operatorsCell.getStringCellValue();
+          importExcelDO.setOperators(operators);
+        }
+
+        Cell receiverCell = row.getCell(2);
+        if (receiverCell != null) {
+          String receiver = receiverCell.getStringCellValue();
+          importExcelDO.setReceiver(receiver);
+        }
+
+        Cell phoneCell = row.getCell(3);
+        if (phoneCell != null) {
+          String phone = phoneCell.getStringCellValue();
+          importExcelDO.setPhone(phone);
+        }
+
+        Cell addressCell = row.getCell(4);
+        if (addressCell != null) {
+          String address = addressCell.getStringCellValue();
+          importExcelDO.setAddress(address);
+        }
 
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
         importExcelDO.setCreateTime(new Date());

@@ -15,11 +15,7 @@ import lombok.Data;
  */
 
 @Data
-public class ExcelSearchParam {
-
-  private int pageNum;
-
-  private int pageSize;
+public class ExcelSearchParam extends SearchParam {
 
   /**
    * 主键 id

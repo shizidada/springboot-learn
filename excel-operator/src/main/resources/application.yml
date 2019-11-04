@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: excle-operator
+    name: excle-operator-service
   profiles:
     active:
       - dev

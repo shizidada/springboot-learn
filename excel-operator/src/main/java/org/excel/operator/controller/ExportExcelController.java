@@ -11,7 +11,8 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.excel.operator.common.ResponseResult;
+import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.common.ExcelSearchParam;
 import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.poi.XSSFOperator;
@@ -48,9 +49,9 @@ public class ExportExcelController {
   private ImportExcelServiceImpl importExcelService;
 
   @GetMapping(value = "/list")
-  public ResponseResult<Object> list(ExcelSearchParam excelSearchParam) {
+  public ResponseResult<Map<String, Object>> list(ExcelSearchParam excelSearchParam) {
     Map<String, Object> map = importExcelService.selectAll(excelSearchParam);
-    return new ResponseResult(200L, true, "success", map);
+    return ResponseResult.success(map);
   }
 
   @RequestMapping(value = "/export")

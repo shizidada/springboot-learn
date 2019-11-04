@@ -3,7 +3,8 @@ package org.excel.operator.controller;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.Resource;
-import org.excel.operator.common.ResponseResult;
+import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.poi.XSSFOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
@@ -45,16 +46,17 @@ public class ImportExcelController {
   public ResponseResult importFile(@RequestParam(value = "file") MultipartFile file) {
     String fileName = file.getOriginalFilename();
     if (!fileName.endsWith(SUBFIX_FILE_NAME)) {
-      return new ResponseResult(10000L, false, "the file not support. ", null);
+      return ResponseResult.fail("该上传不支持，请重新上传。");
     }
     try {
       XSSFOperator xssfOperator = new XSSFOperator();
       List<ImportExcelDO> importExcelDOList = xssfOperator.importExcelFile(file.getInputStream());
       importExcelService.addImportExcelRecordBatch(importExcelDOList);
-      return new ResponseResult(200L, true, "success", null);
+      return ResponseResult.success();
     } catch (IOException e) {
       e.printStackTrace();
-      return new ResponseResult(10000L, false, "fail", null);
+      logger.error("导入 excel 文件失败", e);
+      return ResponseResult.fail(e);
     }
   }
 }
