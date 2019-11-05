@@ -37,10 +37,18 @@ public class XSSFOperator {
   public XSSFOperator() {
   }
 
+  /**
+   * 读取 excel 数据
+   *
+   * @param inputStream
+   * @return
+   */
   public List<ImportExcelDO> importExcelFile(InputStream inputStream) {
     try {
+      // 创建 XSSFWorkbook 操作 xlsx xls ==> HSSFWorkbook
       XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 
+      // 获取第 0 个 Sheet
       XSSFSheet sheet = workbook.getSheetAt(0);
 
       List<ImportExcelDO> importExcelInfoList = new ArrayList<>();
@@ -54,56 +62,75 @@ public class XSSFOperator {
         ImportExcelDO importExcelDO = new ImportExcelDO();
 
         Cell iccIdCell = row.getCell(0);
+        Cell operatorsCell = row.getCell(1);
+        Cell receiverCell = row.getCell(2);
+        Cell phoneCell = row.getCell(3);
+        Cell addressCell = row.getCell(4);
+
+        // read excel cell will be null
+        if (iccIdCell == null
+            && operatorsCell == null
+            && receiverCell == null
+            && phoneCell == null
+            && addressCell == null) {
+          logger.info("read excel cell null row num {} ", row.getRowNum());
+          continue;
+        }
+
         if (iccIdCell != null) {
+          // SIM卡卡号
           String iccId = iccIdCell.getStringCellValue();
           importExcelDO.setIccid(iccId);
-          int rowNum = row.getRowNum();
-          logger.info("最后一条数据 {} ", rowNum);
         }
-        Cell operatorsCell = row.getCell(1);
         if (operatorsCell != null) {
+          // 运营商
           String operators = operatorsCell.getStringCellValue();
           importExcelDO.setOperators(operators);
         }
 
-        Cell receiverCell = row.getCell(2);
         if (receiverCell != null) {
+          // 收货人
           String receiver = receiverCell.getStringCellValue();
           importExcelDO.setReceiver(receiver);
         }
 
-        Cell phoneCell = row.getCell(3);
         if (phoneCell != null) {
+          // 收货手机号
           String phone = phoneCell.getStringCellValue();
           importExcelDO.setPhone(phone);
         }
-
-        Cell addressCell = row.getCell(4);
         if (addressCell != null) {
+          // 收货地址
           String address = addressCell.getStringCellValue();
           importExcelDO.setAddress(address);
         }
-
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
         importExcelDO.setCreateTime(new Date());
 
         //importExcelDO.setUpdateTime(dateFormat.format(new Date()));
         importExcelDO.setUpdateTime(new Date());
 
+        // add to list, need to optimize list add any more data
         importExcelInfoList.add(importExcelDO);
       }
       return importExcelInfoList;
-    } catch (FileNotFoundException e) {
+    } catch (Exception e) {
       e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage());
     }
     return null;
   }
 
+  /**
+   * 写出 excel
+   *
+   * @param exportDiffList
+   * @param outputStream
+   */
   public void exportExcelFile(List<ImportExcelDO> exportDiffList, OutputStream outputStream) {
     XSSFWorkbook workbook = new XSSFWorkbook();
 
+    // 设置 XSSFCellStyle 样式
     //XSSFCellStyle cellStyle = workbook.createCellStyle();
     //XSSFColor color = new XSSFColor(new java.awt.Color(255, 0, 0));
     //cellStyle.setFillForegroundColor(color);
@@ -130,13 +157,18 @@ public class XSSFOperator {
     }
     try {
       workbook.write(outputStream);
-      workbook.close();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+      logger.error("workbook 写出失败。");
     } finally {
-
+      if (workbook != null) {
+        try {
+          workbook.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+          logger.error("workbook 写出失败。");
+        }
+      }
     }
   }
 }

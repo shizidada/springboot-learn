@@ -10,6 +10,7 @@ import org.excel.operator.poi.XSSFOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,8 @@ public class ImportExcelController {
 
   private static final String SUBFIX_FILE_NAME = ".xlsx";
 
+  private static final Long FILE_SIZE = DataSize.ofMegabytes(5).toKilobytes();
+
   @Resource
   private ImportExcelServiceImpl importExcelService;
 
@@ -47,6 +50,9 @@ public class ImportExcelController {
     String fileName = file.getOriginalFilename();
     if (!fileName.endsWith(SUBFIX_FILE_NAME)) {
       return ResponseResult.fail("该上传不支持，请重新上传。");
+    }
+    if (file.getSize() > FILE_SIZE) {
+      return ResponseResult.fail("该上传太大，请重新上传。");
     }
     try {
       XSSFOperator xssfOperator = new XSSFOperator();
