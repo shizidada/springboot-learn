@@ -51,9 +51,9 @@ public class ImportExcelController {
     if (!fileName.endsWith(SUBFIX_FILE_NAME)) {
       return ResponseResult.fail("该上传不支持，请重新上传。");
     }
-    if (file.getSize() > FILE_SIZE) {
-      return ResponseResult.fail("该上传太大，请重新上传。");
-    }
+    //if (file.getSize() > FILE_SIZE) {
+    //  return ResponseResult.fail("该上传太大，请重新上传。");
+    //}
     try {
       XSSFOperator xssfOperator = new XSSFOperator();
       List<ImportExcelDO> importExcelDOList = xssfOperator.importExcelFile(file.getInputStream());

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -79,11 +80,13 @@ public class XSSFOperator {
 
         if (iccIdCell != null) {
           // SIM卡卡号
+          iccIdCell.setCellType(CellType.STRING);
           String iccId = iccIdCell.getStringCellValue();
           importExcelDO.setIccid(iccId);
         }
         if (operatorsCell != null) {
           // 运营商
+          operatorsCell.setCellType(CellType.STRING);
           String operators = operatorsCell.getStringCellValue();
           importExcelDO.setOperators(operators);
         }
@@ -96,11 +99,13 @@ public class XSSFOperator {
 
         if (phoneCell != null) {
           // 收货手机号
+          phoneCell.setCellType(CellType.STRING);
           String phone = phoneCell.getStringCellValue();
           importExcelDO.setPhone(phone);
         }
         if (addressCell != null) {
           // 收货地址
+          addressCell.setCellType(CellType.STRING);
           String address = addressCell.getStringCellValue();
           importExcelDO.setAddress(address);
         }
