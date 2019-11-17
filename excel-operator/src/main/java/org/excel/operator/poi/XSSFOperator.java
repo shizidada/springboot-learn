@@ -1,7 +1,5 @@
 package org.excel.operator.poi;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,7 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.excel.operator.entity.ImportExcelDO;
+import org.excel.operator.service.model.ImportExcelModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +42,7 @@ public class XSSFOperator {
    * @param inputStream
    * @return
    */
-  public List<ImportExcelDO> importExcelFile(InputStream inputStream) {
+  public List<ImportExcelModel> importExcelFile(InputStream inputStream) {
     try {
       // 创建 XSSFWorkbook 操作 xlsx xls ==> HSSFWorkbook
       XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
@@ -52,7 +50,7 @@ public class XSSFOperator {
       // 获取第 0 个 Sheet
       XSSFSheet sheet = workbook.getSheetAt(0);
 
-      List<ImportExcelDO> importExcelInfoList = new ArrayList<>();
+      List<ImportExcelModel> importExcelInfoList = new ArrayList<>();
 
       for (Row row : sheet) {
         // header
@@ -60,7 +58,7 @@ public class XSSFOperator {
           continue;
         }
 
-        ImportExcelDO importExcelDO = new ImportExcelDO();
+        ImportExcelModel importExcelModel = new ImportExcelModel();
 
         Cell iccIdCell = row.getCell(0);
         Cell operatorsCell = row.getCell(1);
@@ -82,41 +80,41 @@ public class XSSFOperator {
           // SIM卡卡号
           iccIdCell.setCellType(CellType.STRING);
           String iccId = iccIdCell.getStringCellValue();
-          importExcelDO.setIccid(iccId);
+          importExcelModel.setIccid(iccId);
         }
         if (operatorsCell != null) {
           // 运营商
           operatorsCell.setCellType(CellType.STRING);
           String operators = operatorsCell.getStringCellValue();
-          importExcelDO.setOperators(operators);
+          importExcelModel.setOperators(operators);
         }
 
         if (receiverCell != null) {
           // 收货人
           String receiver = receiverCell.getStringCellValue();
-          importExcelDO.setReceiver(receiver);
+          importExcelModel.setReceiver(receiver);
         }
 
         if (phoneCell != null) {
           // 收货手机号
           phoneCell.setCellType(CellType.STRING);
           String phone = phoneCell.getStringCellValue();
-          importExcelDO.setPhone(phone);
+          importExcelModel.setPhone(phone);
         }
         if (addressCell != null) {
           // 收货地址
           addressCell.setCellType(CellType.STRING);
           String address = addressCell.getStringCellValue();
-          importExcelDO.setAddress(address);
+          importExcelModel.setAddress(address);
         }
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
-        importExcelDO.setCreateTime(new Date());
+        importExcelModel.setCreateTime(new Date());
 
         //importExcelDO.setUpdateTime(dateFormat.format(new Date()));
-        importExcelDO.setUpdateTime(new Date());
+        importExcelModel.setUpdateTime(new Date());
 
         // add to list, need to optimize list add any more data
-        importExcelInfoList.add(importExcelDO);
+        importExcelInfoList.add(importExcelModel);
       }
       return importExcelInfoList;
     } catch (Exception e) {
@@ -129,10 +127,10 @@ public class XSSFOperator {
   /**
    * 写出 excel
    *
-   * @param exportDiffList
+   * @param importExcelModels
    * @param outputStream
    */
-  public void exportExcelFile(List<ImportExcelDO> exportDiffList, OutputStream outputStream) {
+  public void exportExcelFile(List<ImportExcelModel> importExcelModels, OutputStream outputStream) {
     XSSFWorkbook workbook = new XSSFWorkbook();
 
     // 设置 XSSFCellStyle 样式
@@ -150,15 +148,15 @@ public class XSSFOperator {
     titleRow.createCell(3).setCellValue("收货手机号");
     titleRow.createCell(4).setCellValue("收货地址");
 
-    for (ImportExcelDO excelInfo : exportDiffList) {
+    for (ImportExcelModel importExcelModel : importExcelModels) {
       // 填充内容
       int lastRowNum = sheet.getLastRowNum();
       XSSFRow dataRow = sheet.createRow(lastRowNum + 1);
-      dataRow.createCell(0).setCellValue(excelInfo.getIccid());
-      dataRow.createCell(1).setCellValue(excelInfo.getOperators());
-      dataRow.createCell(2).setCellValue(excelInfo.getReceiver());
-      dataRow.createCell(3).setCellValue(excelInfo.getPhone());
-      dataRow.createCell(4).setCellValue(excelInfo.getAddress());
+      dataRow.createCell(0).setCellValue(importExcelModel.getIccid());
+      dataRow.createCell(1).setCellValue(importExcelModel.getOperators());
+      dataRow.createCell(2).setCellValue(importExcelModel.getReceiver());
+      dataRow.createCell(3).setCellValue(importExcelModel.getPhone());
+      dataRow.createCell(4).setCellValue(importExcelModel.getAddress());
     }
     try {
       workbook.write(outputStream);

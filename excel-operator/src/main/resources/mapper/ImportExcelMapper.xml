@@ -31,7 +31,7 @@
   </insert>
 
   <select id="selectAll" resultMap="BaseResultMap"
-      parameterType="org.excel.operator.common.ExcelSearchParam">
+      parameterType="org.excel.operator.entity.ImportExcelDO">
     SELECT
     <include refid="Base_Column_List"/>
     FROM t_excel_info

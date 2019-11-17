@@ -1,6 +1,5 @@
-package org.excel.operator.common;
+package org.excel.operator.service.model;
 
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -10,12 +9,11 @@ import lombok.Data;
  *
  * @author taohua
  * @version v1.0.0
- * @date 2019 2019/10/29 21:01
- * @see org.excel.operator.common
+ * @date 2019 2019/11/17 00:02
+ * @see org.excel.operator.service.model
  */
-
 @Data
-public class ExcelSearchParam extends SearchParam {
+public class ImportExcelModel extends BaseSearchModel {
 
   /**
    * 主键 id
@@ -46,14 +44,4 @@ public class ExcelSearchParam extends SearchParam {
    * 收货地址
    */
   private String address;
-
-  /**
-   * 创建时间
-   */
-  private Date createTime;
-
-  /**
-   * 修改时间
-   */
-  private Date updateTime;
 }

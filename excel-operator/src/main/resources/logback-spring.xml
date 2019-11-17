@@ -95,10 +95,10 @@
   <springProfile name="prod">
     <root level="INFO">
       <appender-ref ref="STDOUT"/>
+      <!--<appender-ref ref="appLogFileAppender"/>-->
     </root>
   </springProfile>
 
   <root level="INFO">
-    <appender-ref ref="appLogFileAppender"/>
   </root>
 </configuration>

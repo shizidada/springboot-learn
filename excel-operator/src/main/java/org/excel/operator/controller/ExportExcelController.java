@@ -11,12 +11,10 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.excel.operator.common.api.ResponseCode;
 import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.common.ExcelSearchParam;
-import org.excel.operator.entity.ImportExcelDO;
 import org.excel.operator.poi.XSSFOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
+import org.excel.operator.service.model.ImportExcelModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,8 +47,8 @@ public class ExportExcelController {
   private ImportExcelServiceImpl importExcelService;
 
   @GetMapping(value = "/list")
-  public ResponseResult<Map<String, Object>> list(ExcelSearchParam excelSearchParam) {
-    Map<String, Object> map = importExcelService.selectAll(excelSearchParam);
+  public ResponseResult<Map<String, Object>> list(ImportExcelModel importExcelModel) {
+    Map<String, Object> map = importExcelService.selectAll(importExcelModel);
     return ResponseResult.success(map);
   }
 
@@ -63,7 +61,7 @@ public class ExportExcelController {
   private void downLoadExportExcelFile(HttpServletResponse response, String type) {
     response.setContentType("application/vnd.ms-excel");
     response.setCharacterEncoding("utf-8");
-    List<ImportExcelDO> exportList = new ArrayList<>();
+    List<ImportExcelModel> exportList = new ArrayList<>();
     try {
       String fileName = URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8");
       response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");

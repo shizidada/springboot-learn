@@ -3,7 +3,6 @@ package org.excel.operator.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.excel.operator.common.ExcelSearchParam;
 import org.excel.operator.entity.ImportExcelDO;
 
 /**
@@ -21,10 +20,10 @@ public interface ImportExcelMapper {
   /**
    * 查询所有数据
    *
-   * @param searchParam 查询条件
+   * @param importExcelDO 查询条件
    * @return List<ImportExcelDO>
    */
-  List<ImportExcelDO> selectAll(ExcelSearchParam searchParam);
+  List<ImportExcelDO> selectAll(ImportExcelDO importExcelDO);
 
   /**
    * 根据主键查询
@@ -47,7 +46,7 @@ public interface ImportExcelMapper {
    *
    * @return 是否添加成功
    */
-  int addImportExcelRecordBatch(@Param("excelDOList") List<ImportExcelDO> excelDOList);
+  int addImportExcelRecordBatch(@Param("excelDOList") List<ImportExcelDO> importExcelDOList);
 
   /**
    * 添加一条 excel record

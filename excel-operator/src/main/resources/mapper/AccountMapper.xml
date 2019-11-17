@@ -3,4 +3,22 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.excel.operator.mapper.AccountMapper">
 
+  <resultMap id="BaseResultMap" type="org.excel.operator.entity.AccountDO">
+    <id column="account_id" jdbcType="BIGINT" property="accountId"/>
+    <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <sql id="Base_Column">
+    account_id, account_name
+  </sql>
+
+  <select id="findByAccountName" parameterType="org.excel.operator.entity.AccountDO"
+      resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM t_account WHERE account_name=#{accountName}
+  </select>
+
 </mapper>

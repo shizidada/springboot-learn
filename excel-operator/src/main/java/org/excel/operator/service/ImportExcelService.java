@@ -2,8 +2,7 @@ package org.excel.operator.service;
 
 import java.util.List;
 import java.util.Map;
-import org.excel.operator.common.ExcelSearchParam;
-import org.excel.operator.entity.ImportExcelDO;
+import org.excel.operator.service.model.ImportExcelModel;
 
 /**
  * <p>
@@ -20,10 +19,10 @@ public interface ImportExcelService {
   /**
    * 根据对应条件查询数据
    *
-   * @param excelSearchParam 搜索参数
+   * @param importExcelModel 搜索参数
    * @return Map<String ,   Object>
    */
-  Map<String, Object> selectAll(ExcelSearchParam excelSearchParam);
+  Map<String, Object> selectAll(ImportExcelModel importExcelModel);
 
   /**
    * 根据主键查询
@@ -31,43 +30,43 @@ public interface ImportExcelService {
    * @param id 主键
    * @return ImportExcelDO
    */
-  ImportExcelDO selectByPrimaryKey(Long id);
+  ImportExcelModel selectByPrimaryKey(Long id);
 
   /**
    * 根据 importExcelDO 查询
    *
-   * @param importExcelDO 实体
+   * @param model 实体
    * @return ImportExcelDO
    */
-  ImportExcelDO selectByImportExcel(ImportExcelDO importExcelDO);
+  ImportExcelModel selectByImportExcel(ImportExcelModel model);
 
   /**
    * 添加一条 excel 数据
    *
-   * @param importExcelDO 实体
+   * @param model 实体
    * @return 添加成功
    */
-  int addImportExcelRecord(ImportExcelDO importExcelDO);
+  int addImportExcelRecord(ImportExcelModel model);
 
   /**
    * 批量添加 excel 数据
    *
-   * @param importExcelDO 实体集合
+   * @param models 实体集合
    * @return 添加成功
    */
-  int addImportExcelRecordBatch(List<ImportExcelDO> importExcelDO);
+  int addImportExcelRecordBatch(List<ImportExcelModel> models);
 
   /**
    * 批量导出相同 excel 数据 Receiver Phone Address
    *
    * @return 导出成功
    */
-  List<ImportExcelDO> exportSameReceiverAndPhoneAndAddress();
+  List<ImportExcelModel> exportSameReceiverAndPhoneAndAddress();
 
   /**
    * 批量导出不同 excel 数据 Receiver Phone Address
    *
    * @return 导出成功
    */
-  List<ImportExcelDO> exportDiffReceiverAndPhoneAndAddress();
+  List<ImportExcelModel> exportDiffReceiverAndPhoneAndAddress();
 }

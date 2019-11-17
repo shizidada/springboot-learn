@@ -1,4 +1,4 @@
-package org.excel.operator.common;
+package org.excel.operator.service.model;
 
 import lombok.Data;
 
@@ -13,7 +13,7 @@ import lombok.Data;
  * @see org.excel.operator.common
  */
 @Data
-public class SearchParam {
+public class BaseSearchModel extends BaseModel {
 
   private int pageNum;
 

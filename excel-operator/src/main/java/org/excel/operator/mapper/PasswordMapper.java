@@ -1,7 +1,7 @@
 package org.excel.operator.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.excel.operator.entity.AccountDO;
+import org.excel.operator.entity.PasswordDO;
 
 /**
  * <p>
@@ -14,15 +14,10 @@ import org.excel.operator.entity.AccountDO;
  * @see org.excel.operator.mapper
  */
 @Mapper
-public interface AccountMapper {
+public interface PasswordMapper {
 
   /**
-   * 根据用户名查找
-   *
-   * @param accountName
-   *
-   * @return
+   * 根据用户名 accountId 查找
    */
-  AccountDO findByAccountName(String accountName);
-
+  PasswordDO findByAccountId(Long accountId);
 }

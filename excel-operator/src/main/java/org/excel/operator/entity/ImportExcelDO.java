@@ -14,7 +14,7 @@ import lombok.Data;
  * @see org.excel.operator.entity
  */
 @Data
-public class ImportExcelDO {
+public class ImportExcelDO extends BaseDO {
 
   /**
    * 主键 id
@@ -45,14 +45,4 @@ public class ImportExcelDO {
    * 收货地址
    */
   private String address;
-
-  /**
-   * 创建时间
-   */
-  private Date createTime;
-
-  /**
-   * 修改时间
-   */
-  private Date updateTime;
 }
