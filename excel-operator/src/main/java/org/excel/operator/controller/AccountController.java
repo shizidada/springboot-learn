@@ -24,12 +24,13 @@ public class AccountController {
     }
     String password = request.getParameter("password");
     if (password == null) {
-      return ResponseResult.success("password can't be null.");
+      return ResponseResult.success("Password can't be null.");
     }
     boolean isLogin = accountService.login(accountName, password);
     if (isLogin) {
+      request.getSession().setAttribute("accountName", accountName);
       return ResponseResult.success("Login Success.");
     }
-    return ResponseResult.fail("Username Or Password Error.");
+    return ResponseResult.fail("AccountName Or Password Error.");
   }
 }

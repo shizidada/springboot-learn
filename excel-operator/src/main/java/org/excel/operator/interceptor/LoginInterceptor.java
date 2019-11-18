@@ -1,9 +1,8 @@
-package org.excel.operator.component.interceptor;
+package org.excel.operator.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,15 +19,17 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/11/16 22:43
- * @see org.excel.operator.component.interceptor
+ * @see org.excel.operator.interceptor
  */
 public class LoginInterceptor implements HandlerInterceptor {
+
+  public static final String ACCOUNT_NAME = "accountName";
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
       Object handler) {
     HttpSession session = request.getSession();
-    if (session.getAttribute("accountName") == null) {
+    if (session.getAttribute(ACCOUNT_NAME) == null) {
       try {
         this.write(response);
         return false;

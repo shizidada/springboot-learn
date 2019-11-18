@@ -27,8 +27,10 @@ public class PasswordServiceImpl implements PasswordService {
 
   @Override public PasswordModel findByAccountId(Long accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
-    PasswordModel passwordModel = this.convertModelFormDataObject(passwordDO);
-    return passwordModel;
+    if (passwordDO == null) {
+      return null;
+    }
+    return this.convertModelFormDataObject(passwordDO);
   }
 
   private PasswordModel convertModelFormDataObject(PasswordDO passwordDO) {

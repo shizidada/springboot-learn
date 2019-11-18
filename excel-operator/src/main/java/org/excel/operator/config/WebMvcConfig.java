@@ -1,6 +1,5 @@
 package org.excel.operator.config;
 
-import org.excel.operator.component.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
