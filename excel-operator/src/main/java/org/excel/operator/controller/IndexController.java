@@ -18,11 +18,11 @@ import java.time.LocalDate;
  * @see org.excel.operator.controller
  */
 @RestController
-public class IndexController {
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+public class IndexController extends BaseController {
+  private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    @GetMapping("/")
-    public String index() {
-        return "success " + LocalDate.now();
-    }
+  @GetMapping("/")
+  public String index() {
+    return "success " + LocalDate.now();
+  }
 }

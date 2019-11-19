@@ -1,7 +1,6 @@
 package org.excel.operator.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,9 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.excel.operator.common.api.ResponseCode;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.exception.BusinessException;
 import org.excel.operator.poi.XSSFOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
 import org.excel.operator.service.model.ImportExcelModel;
@@ -35,9 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/excel")
-public class ExportExcelController {
+public class ExportExcelController extends BaseController {
 
-  private static final Logger logger = LoggerFactory.getLogger(ExportExcelController.class);
+  private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
   private static final String EXCEL_SAME = "same";
 
@@ -75,10 +76,11 @@ public class ExportExcelController {
 
       XSSFOperator xssfOperator = new XSSFOperator();
       xssfOperator.exportExcelFile(exportList, outputStream);
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+      logger.error(e.getMessage());
+      throw new BusinessException(ResponseCode.EXCEL_EXPORT_FAIL.getMessage(),
+          ResponseCode.EXCEL_EXPORT_FAIL.getCode());
     }
   }
 }

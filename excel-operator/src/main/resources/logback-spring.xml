@@ -100,5 +100,6 @@
   </springProfile>
 
   <root level="INFO">
+    <!--<appender-ref ref="appLogFileAppender"/>-->
   </root>
 </configuration>

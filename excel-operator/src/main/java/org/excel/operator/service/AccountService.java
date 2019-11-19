@@ -15,5 +15,5 @@ public interface AccountService {
   /**
    * 登录
    */
-  boolean login(String accountName, String password);
+  void login(String accountName, String password);
 }

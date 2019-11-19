@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.Resource;
+import org.excel.operator.common.api.ResponseCode;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.exception.BusinessException;
 import org.excel.operator.poi.XSSFOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
 import org.excel.operator.service.model.ImportExcelModel;
@@ -31,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/excel")
-public class ImportExcelController {
+public class ImportExcelController extends BaseController {
 
   private static final Logger logger = LoggerFactory.getLogger(ImportExcelController.class);
 
@@ -58,12 +60,18 @@ public class ImportExcelController {
    */
   @PostMapping(value = "/upload")
   public ResponseResult upload(@RequestParam(value = "file") MultipartFile file) {
+    if (file.isEmpty()) {
+      throw new BusinessException(ResponseCode.FILE_NOT_EMPTY.getMessage(),
+          ResponseCode.FILE_NOT_EMPTY.getCode());
+    }
     String fileName = file.getOriginalFilename();
     if (!fileName.endsWith(SUBFIX_FILE_NAME)) {
-      return ResponseResult.fail("该上传不支持，请重新上传。");
+      throw new BusinessException(ResponseCode.FILE_NOT_SUPPORT.getMessage(),
+          ResponseCode.FILE_NOT_SUPPORT.getCode());
     }
     if (file.getSize() > FILE_SIZE) {
-      return ResponseResult.fail("该上传太大，请重新上传。");
+      throw new BusinessException(ResponseCode.FILE_MUCH.getMessage(),
+          ResponseCode.FILE_MUCH.getCode());
     }
     try {
       XSSFOperator xssfOperator = new XSSFOperator();
@@ -74,7 +82,8 @@ public class ImportExcelController {
     } catch (IOException e) {
       e.printStackTrace();
       logger.error("导入 excel 文件失败", e);
-      return ResponseResult.fail(e);
+      throw new BusinessException(ResponseCode.EXCEL_IMPORT_FAIL.getMessage(),
+          ResponseCode.EXCEL_IMPORT_FAIL.getCode());
     }
   }
 }
