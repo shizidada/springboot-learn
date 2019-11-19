@@ -52,11 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
     response.setHeader("Content-Type", "application/json");
     ServletOutputStream out = response.getOutputStream();
-    ResponseResult<Object> result = new ResponseResult<>();
-    result.setCode(HttpStatus.UNAUTHORIZED.value());
-    result.setStatus(Boolean.FALSE);
-    result.setMessage(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-    out.print(JSON.toJSONString(result));
+    out.print(JSON.toJSONString(ResponseResult.fail(HttpStatus.UNAUTHORIZED.getReasonPhrase())));
     out.flush();
     out.close();
   }

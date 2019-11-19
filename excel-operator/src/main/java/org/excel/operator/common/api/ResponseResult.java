@@ -19,7 +19,7 @@ public class ResponseResult<T> {
 
   private String message;
 
-  public ResponseResult() {
+  private ResponseResult() {
   }
 
   private ResponseResult(Integer code, Boolean status, String message, T data) {

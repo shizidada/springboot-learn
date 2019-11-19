@@ -21,9 +21,9 @@ public enum ResponseCode {
    */
   FAIL(400, "请求失败");
 
-  private Integer code;
+  private final Integer code;
 
-  private String message;
+  private final String message;
 
   ResponseCode(Integer code, String message) {
     this.code = code;
@@ -34,15 +34,7 @@ public enum ResponseCode {
     return code;
   }
 
-  public void setCode(Integer code) {
-    this.code = code;
-  }
-
   public String getMessage() {
     return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
   }
 }
