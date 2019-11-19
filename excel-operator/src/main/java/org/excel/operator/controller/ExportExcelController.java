@@ -47,7 +47,7 @@ public class ExportExcelController {
   private ImportExcelServiceImpl importExcelService;
 
   @GetMapping(value = "/list")
-  public ResponseResult<Map<String, Object>> list(ImportExcelModel importExcelModel) {
+  public ResponseResult list(ImportExcelModel importExcelModel) {
     Map<String, Object> map = importExcelService.selectAll(importExcelModel);
     return ResponseResult.success(map);
   }

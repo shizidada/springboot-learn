@@ -110,7 +110,7 @@ public class ImportExcelServiceImpl implements ImportExcelService {
    */
   private ImportExcelModel convertModelFromDataObject(ImportExcelDO importExcelDO) {
     ImportExcelModel importExcelModel = new ImportExcelModel();
-    BeanUtils.copyProperties(importExcelModel, importExcelDO);
+    BeanUtils.copyProperties(importExcelDO, importExcelModel);
     return importExcelModel;
   }
 }

@@ -23,7 +23,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
-  @Resource PasswordMapper passwordMapper;
+  @Resource
+  private PasswordMapper passwordMapper;
 
   @Override public PasswordModel findByAccountId(Long accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);

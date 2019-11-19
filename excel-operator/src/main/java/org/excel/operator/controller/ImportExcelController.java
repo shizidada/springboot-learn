@@ -36,7 +36,7 @@ public class ImportExcelController {
 
   private static final String SUBFIX_FILE_NAME = ".xlsx";
 
-  private static final Long FILE_SIZE = DataSize.ofMegabytes(5).toMegabytes();
+  private static final Long FILE_SIZE = 1024 * 1024 * 5L;
 
   @Resource
   private ImportExcelServiceImpl importExcelService;

@@ -21,9 +21,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-  @Resource AccountMapper accountMapper;
+  @Resource
+  private AccountMapper accountMapper;
 
-  @Resource PasswordServiceImpl passwordService;
+  @Resource
+  private PasswordServiceImpl passwordService;
 
   @Override public boolean login(String accountName, String password) {
     AccountDO accountDO = accountMapper.findByAccountName(accountName);
