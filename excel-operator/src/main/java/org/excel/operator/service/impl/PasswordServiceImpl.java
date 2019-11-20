@@ -1,8 +1,10 @@
 package org.excel.operator.service.impl;
 
 import javax.annotation.Resource;
+import org.excel.operator.common.api.ResponseCode;
 import org.excel.operator.entity.AccountDO;
 import org.excel.operator.entity.PasswordDO;
+import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.PasswordMapper;
 import org.excel.operator.service.PasswordService;
 import org.excel.operator.service.model.PasswordModel;
@@ -29,12 +31,29 @@ public class PasswordServiceImpl implements PasswordService {
   @Override public PasswordModel findByAccountId(Long accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
     if (passwordDO == null) {
-      return null;
+      throw new BusinessException(ResponseCode.PASSWORD_NOT_NULL.getMessage(),
+          ResponseCode.PASSWORD_NOT_NULL.getCode());
     }
-    return this.convertModelFormDataObject(passwordDO);
+    return this.convertPasswordModelFormDataObject(passwordDO);
   }
 
-  private PasswordModel convertModelFormDataObject(PasswordDO passwordDO) {
+  @Override public PasswordModel insertPassword(PasswordModel passwordModel) {
+    if (passwordModel == null) {
+      throw new BusinessException(ResponseCode.REGISTER_FAIL.getMessage(),
+          ResponseCode.REGISTER_FAIL.getCode());
+    }
+    PasswordDO passwordDO = this.convertPasswordModelToDataObject(passwordModel);
+    passwordMapper.insertPassword(passwordDO);
+    return passwordModel;
+  }
+
+  private PasswordDO convertPasswordModelToDataObject(PasswordModel passwordModel) {
+    PasswordDO passwordDO = new PasswordDO();
+    BeanUtils.copyProperties(passwordModel, passwordDO);
+    return passwordDO;
+  }
+
+  private PasswordModel convertPasswordModelFormDataObject(PasswordDO passwordDO) {
     PasswordModel passwordModel = new PasswordModel();
     BeanUtils.copyProperties(passwordDO, passwordModel);
     return passwordModel;

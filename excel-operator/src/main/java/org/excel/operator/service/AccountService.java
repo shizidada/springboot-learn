@@ -1,5 +1,8 @@
 package org.excel.operator.service;
 
+import org.excel.operator.service.model.AccountModel;
+import org.excel.operator.service.model.RegisterInfoModel;
+
 /**
  * <p>
  * Description
@@ -14,6 +17,24 @@ public interface AccountService {
 
   /**
    * 登录
+   *
+   * @param accountName 账号
+   * @param password 密码
    */
   void login(String accountName, String password);
+
+  /**
+   * 注册
+   *
+   * @param registerInfoModel 注册信息
+   */
+  void register(RegisterInfoModel registerInfoModel);
+
+
+  /**
+   * 更具账号查找用户
+   *
+   * @param accountName 账号
+   */
+  AccountModel getAccountByAccountName(String accountName);
 }

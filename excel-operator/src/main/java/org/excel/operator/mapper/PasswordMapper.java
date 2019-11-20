@@ -20,4 +20,11 @@ public interface PasswordMapper {
    * 根据用户名 accountId 查找
    */
   PasswordDO findByAccountId(Long accountId);
+
+  /**
+   *  插入密码
+   * @param passwordDO 密码持久化
+   * @return passwordDO
+   */
+  void insertPassword(PasswordDO passwordDO);
 }

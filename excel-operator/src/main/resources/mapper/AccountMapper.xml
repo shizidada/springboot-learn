@@ -21,4 +21,8 @@
     FROM t_account WHERE account_name=#{accountName}
   </select>
 
+  <insert id="insertAccount" parameterType="org.excel.operator.entity.AccountDO"
+      useGeneratedKeys="true" keyProperty="accountId">
+  INSERT INTO t_account(account_name) VALUES (#{accountName})
+  </insert>
 </mapper>

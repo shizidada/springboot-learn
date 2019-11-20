@@ -25,4 +25,10 @@ public interface AccountMapper {
    */
   AccountDO findByAccountName(String accountName);
 
+  /**
+   * 插入 AccountDO 数据
+   * @param accountDO 账号信息
+   * @return AccountDO
+   */
+  void insertAccount(AccountDO accountDO);
 }

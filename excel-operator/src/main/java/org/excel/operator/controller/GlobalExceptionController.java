@@ -66,7 +66,7 @@ public class GlobalExceptionController extends AbstractErrorController {
       // 将 map 封装后的错误信息传入，统一返回
       return ResponseResult.fail(status, error);
     }
-    logger.error("全局异常捕获.", e.getCause());
+    logger.error("全局异常捕获.[{}]", e);
     if (e.getCause() instanceof BusinessException) {
       BusinessException businessException = (BusinessException) e.getCause();
       return ResponseResult.fail(businessException.getCode(), businessException.getMessage());

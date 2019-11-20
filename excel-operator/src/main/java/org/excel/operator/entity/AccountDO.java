@@ -18,6 +18,4 @@ public class AccountDO extends BaseDO {
   private Long accountId;
 
   private String accountName;
-
-  private String password;
 }

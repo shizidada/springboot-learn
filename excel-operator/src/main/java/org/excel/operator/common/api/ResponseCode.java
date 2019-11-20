@@ -27,9 +27,16 @@ public enum ResponseCode {
   ACCOUNT_NOT_NULL(10001, "账号不能为空"),
   PASSWORD_NOT_NULL(10002, "密码不能为空"),
   ACCOUNT_OR_PASSWORD_ERROR(10003, "账号或密码错误"),
+  ACCOUNT_NAME_EXITS(10004, "账号已存在"),
 
   LOGIN_SUCCESS(20001, "登录成功"),
   LOGIN_FAIL(20002, "登录失败"),
+
+  RE_PASSWORD_ERROR(20003, "两次密码不一致"),
+  REGISTER_SUCCESS(20004, "注册成功"),
+  REGISTER_FAIL(20005, "注册失败"),
+
+  MEMBER_LOGOUT_SUCCESS(20006, "登出成功"),
 
   /**
    * 文件上传

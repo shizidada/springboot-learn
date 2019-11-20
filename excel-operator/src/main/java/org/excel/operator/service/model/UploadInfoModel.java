@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public class UploadInfoModel {
+public class UploadInfoModel extends BaseModel {
 
   @NotBlank(message = "上传 {type} 类型不能为空。")
   private String type;
