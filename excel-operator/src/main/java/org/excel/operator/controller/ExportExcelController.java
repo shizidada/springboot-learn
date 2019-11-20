@@ -36,9 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/excel")
-public class ExportExcelController extends BaseController {
+public class ExportExcelController {
 
-  private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
+  private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionController.class);
 
   private static final String EXCEL_SAME = "same";
 

@@ -21,6 +21,9 @@ public enum ResponseCode {
    */
   FAIL(400, "请求失败"),
 
+  /**
+   * 登录
+   */
   ACCOUNT_NOT_NULL(10001, "账号不能为空"),
   PASSWORD_NOT_NULL(10002, "密码不能为空"),
   ACCOUNT_OR_PASSWORD_ERROR(10003, "账号或密码错误"),
@@ -40,6 +43,11 @@ public enum ResponseCode {
    */
   EXCEL_IMPORT_FAIL(40001, "Excel 导入失败"),
   EXCEL_EXPORT_FAIL(40002, "Excel 导出失败"),
+
+  /**
+   * 参数校验
+   */
+  VALIDATE_FAIL(-10000, "参数校验失败"),
 
   /**
    * 未知错误

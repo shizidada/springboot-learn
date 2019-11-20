@@ -43,6 +43,10 @@ public class ResponseResult<T> {
         ResponseCode.FAIL.getMessage(), data);
   }
 
+  public static ResponseResult fail(Integer code, String message) {
+    return new ResponseResult<>(code, Boolean.FALSE, message, null);
+  }
+
   public static ResponseResult fail() {
     return fail(null);
   }

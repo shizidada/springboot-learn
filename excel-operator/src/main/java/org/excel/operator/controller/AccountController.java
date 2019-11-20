@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author taohua
  */
 @RestController
-public class AccountController extends BaseController {
+public class AccountController {
 
   @Resource AccountServiceImpl accountService;
 
