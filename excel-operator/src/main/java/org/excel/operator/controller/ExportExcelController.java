@@ -18,7 +18,6 @@ import org.excel.operator.service.impl.ImportExcelServiceImpl;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019 2019/10/27 15:06
  * @see org.excel.operator.controller
  */
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/excel")
 public class ExportExcelController {

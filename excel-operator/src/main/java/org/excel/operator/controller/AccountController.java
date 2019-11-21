@@ -3,7 +3,6 @@ package org.excel.operator.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import org.excel.operator.common.api.ResponseCode;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.service.impl.AccountServiceImpl;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author taohua
  */
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/account")
 public class AccountController {

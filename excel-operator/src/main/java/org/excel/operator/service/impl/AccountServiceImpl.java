@@ -57,13 +57,11 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override public void login(String accountName, String password) {
-    accountName = accountName.trim();
     if (StringUtils.isEmpty(accountName)) {
       throw new BusinessException(ResponseCode.ACCOUNT_NOT_NULL.getMessage(),
           ResponseCode.ACCOUNT_NOT_NULL.getCode());
     }
 
-    password = password.trim();
     if (StringUtils.isEmpty(password)) {
       throw new BusinessException(ResponseCode.PASSWORD_NOT_NULL.getMessage(),
           ResponseCode.PASSWORD_NOT_NULL.getCode());

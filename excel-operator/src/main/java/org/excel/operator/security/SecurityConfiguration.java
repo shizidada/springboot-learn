@@ -54,12 +54,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
   @Override protected void configure(HttpSecurity http) throws Exception {
-    // 开启模拟请求
-    http.csrf().disable();
-
-    // 开启跨域访问
-    http.cors().and();
-
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
             "/",
@@ -73,46 +67,52 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         ).permitAll()
         // druid 数据库监控
         .antMatchers("/druid/**").permitAll()
-        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-    // 对登录注册要允许匿名访问
-    http.authorizeRequests().antMatchers(
+        // 对登录注册要允许匿名访问
+        .and()
+        .authorizeRequests().antMatchers(
         // 注册
         "/api/v1/account/register",
-
         // 登录
         "/api/v1/account/login",
-        "/api/v1/account/signin",
-
         // 退出
-        "/api/v1/account/logout",
-        "/api/v1/account/signout").permitAll();
+        "/api/v1/account/logout").permitAll()
 
-    http.exceptionHandling()
+        .and()
+        .exceptionHandling()
         .accessDeniedHandler(customAccessDeniedHandler)
-        .authenticationEntryPoint(customAuthenticationEntryPoint);
+        .authenticationEntryPoint(customAuthenticationEntryPoint)
 
-    // 自定义登录
-    http
+        // 自定义登录
+        .and()
         .formLogin()
-        .loginProcessingUrl("/api/v1/account/signin")
+        .loginProcessingUrl("/api/v1/account/login")
+        .usernameParameter("accountName")
+        .passwordParameter("password")
         // 登录成功
         .successHandler(customAuthenticationSuccessHandler)
         // 登录失败
-        .failureHandler(customAuthenticationFailureHandler);
+        .failureHandler(customAuthenticationFailureHandler)
 
-    // 自定义登出成功
-    http.logout()
+        // 自定义登出成功
+        .and()
+        .logout()
         // 自定义 url
-        .logoutUrl("/api/v1/account/signout")
+        .logoutUrl("/api/v1/account/logout")
         // 自定义登出成功返回
         .logoutSuccessHandler(customLogoutSuccessHandler)
         // 自定义登出成功
         .addLogoutHandler(customLogoutHandler)
         // 清理 Session
-        .invalidateHttpSession(true);
+        .invalidateHttpSession(true)
 
-    http.authorizeRequests().anyRequest().authenticated();
+        .and()
+        .authorizeRequests().anyRequest().authenticated()
+
+        .and().cors()
+
+        .and().csrf().disable();
   }
 
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -120,11 +120,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .passwordEncoder(passwordEncoder());
   }
 
+  /**
+   * 设置跨域
+   *
+   * @return CorsConfigurationSource
+   */
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Collections.singletonList("*"));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+    configuration.setAllowCredentials(Boolean.TRUE);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
