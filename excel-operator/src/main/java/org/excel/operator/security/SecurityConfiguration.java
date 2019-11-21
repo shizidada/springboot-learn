@@ -1,5 +1,7 @@
 package org.excel.operator.security;
 
+import java.util.Arrays;
+import java.util.Collections;
 import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * <p>
@@ -49,7 +54,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
   @Override protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable().authorizeRequests();
+    // 开启模拟请求
+    http.csrf().disable();
+
+    // 开启跨域访问
+    http.cors().and();
 
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
@@ -79,9 +88,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/api/v1/account/logout",
         "/api/v1/account/signout").permitAll();
 
-    http.httpBasic().authenticationEntryPoint(customAuthenticationEntryPoint);
-
-    http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+    http.exceptionHandling()
+        .accessDeniedHandler(customAccessDeniedHandler)
+        .authenticationEntryPoint(customAuthenticationEntryPoint);
 
     // 自定义登录
     http
@@ -109,6 +118,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(customUserDetailsService())
         .passwordEncoder(passwordEncoder());
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Collections.singletonList("*"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 
   /**
