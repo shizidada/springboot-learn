@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author taohua
  */
-@CrossOrigin(value = "*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/account")
 public class AccountController {

@@ -2,6 +2,7 @@ package org.excel.operator.security;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +34,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     logger.info(" >>>> CustomAuthenticationFailureHandler >>>> 用户登录失败。");
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    String json =
+    PrintWriter writer = response.getWriter();
+    writer.write(
         JSON.toJSONString(ResponseResult.fail(ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getCode(),
-            ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage()));
-    response.getWriter().write(json);
+            ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage())));
+    writer.close();
   }
 }

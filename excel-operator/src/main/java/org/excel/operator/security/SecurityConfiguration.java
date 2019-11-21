@@ -42,7 +42,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Resource
   private CustomLogoutHandler customLogoutHandler;
 
+  @Resource
+  private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+  @Resource
+  private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
   @Override protected void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable().authorizeRequests();
+
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
             "/",
@@ -71,6 +79,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/api/v1/account/logout",
         "/api/v1/account/signout").permitAll();
 
+    http.httpBasic().authenticationEntryPoint(customAuthenticationEntryPoint);
+
+    http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+
     // 自定义登录
     http
         .formLogin()
@@ -90,8 +102,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .addLogoutHandler(customLogoutHandler)
         // 清理 Session
         .invalidateHttpSession(true);
-
-    http.csrf().disable();
 
     http.authorizeRequests().anyRequest().authenticated();
   }

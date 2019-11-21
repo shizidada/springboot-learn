@@ -2,6 +2,7 @@ package org.excel.operator.security;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +40,8 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     response.setContentType("application/json;charset=UTF-8");
     Integer code = ResponseCode.MEMBER_LOGOUT_SUCCESS.getCode();
     String message = ResponseCode.MEMBER_LOGOUT_SUCCESS.getMessage();
-    response.getWriter().write(JSON.toJSONString(ResponseResult.fail(code, message)));
+    PrintWriter writer = response.getWriter();
+    writer.write(JSON.toJSONString(ResponseResult.fail(code, message)));
+    writer.close();
   }
 }
