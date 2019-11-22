@@ -1,6 +1,5 @@
 package org.excel.operator.entity;
 
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -45,4 +44,9 @@ public class ImportExcelDO extends BaseDO {
    * 收货地址
    */
   private String address;
+
+  /**
+   * 平台
+   */
+  private String platform;
 }

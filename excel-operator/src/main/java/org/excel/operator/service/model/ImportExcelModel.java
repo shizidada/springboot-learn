@@ -44,4 +44,9 @@ public class ImportExcelModel extends BaseSearchModel {
    * 收货地址
    */
   private String address;
+
+  /**
+   * 平台
+   */
+  private String platform;
 }

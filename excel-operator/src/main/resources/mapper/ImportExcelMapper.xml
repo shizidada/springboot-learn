@@ -23,10 +23,10 @@
   </insert>
 
   <insert id="addImportExcelRecordBatch">
-    INSERT INTO t_excel_info(iccid, operators, receiver, phone, address, create_time, update_time)
+    INSERT INTO t_excel_info(iccid, operators, receiver, phone, address, platform, create_time, update_time)
     VALUES
     <foreach collection="excelDOList" item="info" separator=",">
-      (#{info.iccid},#{info.operators},#{info.receiver},#{info.phone},#{info.address},#{info.createTime},#{info.updateTime})
+      (#{info.iccid},#{info.operators},#{info.receiver},#{info.phone},#{info.address},#{info.platform},#{info.createTime},#{info.updateTime})
     </foreach>
   </insert>
 

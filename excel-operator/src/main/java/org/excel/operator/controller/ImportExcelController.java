@@ -3,6 +3,7 @@ package org.excel.operator.controller;
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.excel.operator.common.api.ResponseCode;
@@ -51,16 +52,35 @@ public class ImportExcelController {
   public ResponseResult importFile(
       @RequestParam(value = "file") MultipartFile file,
       @Valid UploadInfoModel uploadInfoModel, BindingResult result) {
-    logger.info(JSON.toJSONString(uploadInfoModel));
-    logger.info(file.getOriginalFilename());
-    return ResponseResult.success();
+    logger.info(file.getOriginalFilename(), JSON.toJSONString(uploadInfoModel));
+
+    /**
+     * 判断上传文件
+     */
+    this.estimateUploadFile(file);
+
+    try {
+      List<ImportExcelModel> importExcelModels =
+          this.convertReadExcelToModel(file, uploadInfoModel);
+
+      // 存入数据库
+      importExcelService.addImportExcelRecordBatch(importExcelModels);
+
+      return ResponseResult.success(importExcelModels.size());
+    } catch (IOException e) {
+      e.printStackTrace();
+      logger.error("导入 excel 文件失败", e);
+      throw new BusinessException(ResponseCode.EXCEL_IMPORT_FAIL.getMessage(),
+          ResponseCode.EXCEL_IMPORT_FAIL.getCode());
+    }
   }
 
   /**
-   * @param file 上传的文件
+   * 判断上传的文件
+   *
+   * @param file 文件
    */
-  @PostMapping(value = "/upload")
-  public ResponseResult upload(@RequestParam(value = "file") MultipartFile file) {
+  private void estimateUploadFile(MultipartFile file) {
     if (file.isEmpty()) {
       throw new BusinessException(ResponseCode.FILE_NOT_EMPTY.getMessage(),
           ResponseCode.FILE_NOT_EMPTY.getCode());
@@ -74,17 +94,26 @@ public class ImportExcelController {
       throw new BusinessException(ResponseCode.FILE_MUCH.getMessage(),
           ResponseCode.FILE_MUCH.getCode());
     }
-    try {
-      XSSFOperator xssfOperator = new XSSFOperator();
-      List<ImportExcelModel> importExcelModels =
-          xssfOperator.importExcelFile(file.getInputStream());
-      importExcelService.addImportExcelRecordBatch(importExcelModels);
-      return ResponseResult.success();
-    } catch (IOException e) {
-      e.printStackTrace();
-      logger.error("导入 excel 文件失败", e);
-      throw new BusinessException(ResponseCode.EXCEL_IMPORT_FAIL.getMessage(),
-          ResponseCode.EXCEL_IMPORT_FAIL.getCode());
-    }
+  }
+
+  /**
+   * 转换 model from excel file
+   *
+   * @throws IOException
+   */
+  private List<ImportExcelModel> convertReadExcelToModel(MultipartFile file,
+      UploadInfoModel uploadInfoModel)
+      throws IOException {
+
+    XSSFOperator xssfOperator = new XSSFOperator();
+
+    List<ImportExcelModel> importExcelModels = xssfOperator.importExcelFile(file.getInputStream());
+
+    importExcelModels.stream().map(importExcelModel -> {
+      importExcelModel.setPlatform(uploadInfoModel.getPlatform());
+      return importExcelModel;
+    }).collect(Collectors.toList());
+
+    return importExcelModels;
   }
 }
