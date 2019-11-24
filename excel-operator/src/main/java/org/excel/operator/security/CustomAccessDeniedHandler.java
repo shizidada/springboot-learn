@@ -33,7 +33,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
       IOException {
     logger.info(" >>>> CustomAccessDeniedHandler >>>> 用户无权访问");
     response.setContentType("application/json;charset=UTF-8");
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter writer = response.getWriter();
     writer.write(JSON.toJSONString(ResponseResult.fail(e.getMessage())));
     writer.close();

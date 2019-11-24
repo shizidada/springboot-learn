@@ -33,7 +33,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
       throws IOException, ServletException {
     logger.info(" >>>> CustomAuthenticationFailureHandler >>>> 用户登录失败。");
     response.setContentType("application/json;charset=UTF-8");
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter writer = response.getWriter();
     writer.write(
         JSON.toJSONString(ResponseResult.fail(ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getCode(),

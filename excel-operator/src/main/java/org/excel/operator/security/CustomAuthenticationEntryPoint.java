@@ -32,7 +32,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       throws IOException, ServletException {
     logger.info("用户未登录");
     response.setContentType("application/json;charset=UTF-8");
-    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter writer = response.getWriter();
     writer.write(JSON.toJSONString(ResponseResult.fail(HttpServletResponse.SC_FORBIDDEN, e.getMessage())));
     writer.close();
