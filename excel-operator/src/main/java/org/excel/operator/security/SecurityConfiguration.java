@@ -78,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/api/v1/account/login",
 
         // for test
-        //"/api/v1/excel/**",
+        "/api/v1/excel/**",
 
         // 退出
         "/api/v1/account/logout").permitAll()
