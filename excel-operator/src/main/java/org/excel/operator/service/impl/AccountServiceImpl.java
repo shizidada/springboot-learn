@@ -1,11 +1,10 @@
 package org.excel.operator.service.impl;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotBlank;
+
 import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResponseCode;
 import org.excel.operator.entity.AccountDO;
-import org.excel.operator.entity.PasswordDO;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.AccountMapper;
 import org.excel.operator.service.AccountService;

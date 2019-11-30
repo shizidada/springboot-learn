@@ -36,6 +36,7 @@ spring:
           stat:
             mergeSql: true
             slowSqlMillis: 5000
+
 # elasticsearch settings
   data:
     elasticsearch:
@@ -43,8 +44,8 @@ spring:
       cluster-nodes: localhost:9300
 
 # logging settings
-logging:
-  path: /Users/taohua/develop/elk/logs
+#logging:
+#  path: /Users/taohua/develop/elk/logs
 
 ## mybatis settings
 mybatis:

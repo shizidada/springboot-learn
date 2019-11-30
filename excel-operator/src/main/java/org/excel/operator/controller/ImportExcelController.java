@@ -64,7 +64,7 @@ public class ImportExcelController {
           this.convertReadExcelToModel(file, uploadInfoModel);
 
       // 存入数据库
-      importExcelService.addImportExcelRecordBatch(importExcelModels);
+      importExcelService.addBatchImportExcelRecord(importExcelModels);
 
       return ResponseResult.success(importExcelModels.size());
     } catch (IOException e) {

@@ -3,10 +3,10 @@ package org.excel.operator.poi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.excel.operator.service.model.ImportExcelModel;
+import org.excel.operator.util.SnowflakeIdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,9 @@ public class XSSFOperator {
 
   private static final Logger logger = LoggerFactory.getLogger(XSSFOperator.class);
 
-  private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//  private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  
+  private SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0,0);
 
   public XSSFOperator() {
   }
@@ -43,9 +46,11 @@ public class XSSFOperator {
    * @return
    */
   public List<ImportExcelModel> importExcelFile(InputStream inputStream) {
+	
+	XSSFWorkbook workbook = null;
     try {
       // 创建 XSSFWorkbook 操作 xlsx xls ==> HSSFWorkbook
-      XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+      workbook = new XSSFWorkbook(inputStream);
 
       // 获取第 0 个 Sheet
       XSSFSheet sheet = workbook.getSheetAt(0);
@@ -107,6 +112,9 @@ public class XSSFOperator {
           String address = addressCell.getStringCellValue();
           importExcelModel.setAddress(address);
         }
+        
+        importExcelModel.setId(snowflakeIdWorker.nextId());
+        
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
         importExcelModel.setCreateTime(new Date());
 
@@ -120,7 +128,16 @@ public class XSSFOperator {
     } catch (Exception e) {
       e.printStackTrace();
       logger.error(e.getMessage());
-    }
+    } finally {
+        if (workbook != null) {
+          try {
+            workbook.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("workbook 写出失败。");
+          }
+        }
+	}
     return null;
   }
 

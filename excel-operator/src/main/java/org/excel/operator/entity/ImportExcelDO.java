@@ -1,5 +1,8 @@
 package org.excel.operator.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import lombok.Data;
 
 /**
@@ -13,11 +16,13 @@ import lombok.Data;
  * @see org.excel.operator.entity
  */
 @Data
+@Document(indexName = "moose", type = "excel_info")
 public class ImportExcelDO extends BaseDO {
 
   /**
    * 主键 id
    */
+	@Id()
   private Long id;
 
   /**

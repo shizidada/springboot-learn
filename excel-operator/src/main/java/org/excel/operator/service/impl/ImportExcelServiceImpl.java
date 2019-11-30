@@ -1,21 +1,22 @@
 package org.excel.operator.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import javax.annotation.Resource;
+
 import org.excel.operator.entity.ImportExcelDO;
-import org.excel.operator.es.document.ImportExcelDoc;
 import org.excel.operator.es.repository.ImportExcelRepository;
 import org.excel.operator.mapper.ImportExcelMapper;
 import org.excel.operator.service.ImportExcelService;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.excel.operator.util.PageInfoUtils;
-import org.excel.operator.util.SnowflakeIdWorker;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * <p>
@@ -35,9 +36,6 @@ public class ImportExcelServiceImpl implements ImportExcelService {
 
   @Resource
   private ImportExcelRepository importExcelRepository;
-
-  @Resource
-  private SnowflakeIdWorker snowflakeIdWorker;
 
   @Override public Map<String, Object> selectAll(ImportExcelModel importExcelModel) {
     if (importExcelModel.getPageNum() > 0 && importExcelModel.getPageSize() > 0) {
@@ -68,26 +66,18 @@ public class ImportExcelServiceImpl implements ImportExcelService {
     return importExcelMapper.addImportExcelRecord(importExcelDO);
   }
 
-  @Override public int addImportExcelRecordBatch(List<ImportExcelModel> importExcelModels) {
-    importExcelModels = importExcelModels.stream().map(importExcelMode -> {
-      importExcelMode.setId(snowflakeIdWorker.nextId());
-      return importExcelMode;
-    }).collect(Collectors.toList());
-
+  @Override public int addBatchImportExcelRecord(List<ImportExcelModel> importExcelModels) {
     List<ImportExcelDO> importExcelDOList = importExcelModels.stream().map(importExcelModel -> {
       ImportExcelDO importExcelDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
       return importExcelDO;
     }).collect(Collectors.toList());
-
-    List<ImportExcelDoc> importExcelDocs = importExcelModels.stream().map(importExcelModel -> {
-      ImportExcelDoc importExcelDoc = this.convertModel2Doc(importExcelModel);
-      return importExcelDoc;
-    }).collect(Collectors.toList());
+    
+    int result = importExcelMapper.addImportExcelRecordBatch(importExcelDOList);
 
     // es 操作
     // Iterable<ImportExcelDoc> excelDocs =
-    importExcelRepository.saveAll(importExcelDocs);
-    return importExcelMapper.addImportExcelRecordBatch(importExcelDOList);
+    importExcelRepository.saveAll(importExcelDOList);
+    return result;
   }
 
   @Override public List<ImportExcelModel> exportSameReceiverAndPhoneAndAddress() {
@@ -111,20 +101,7 @@ public class ImportExcelServiceImpl implements ImportExcelService {
     }).collect(Collectors.toList());
     return importExcelModels;
   }
-
-  private ImportExcelDoc convertModel2Doc(ImportExcelModel model) {
-    ImportExcelDoc doc = new ImportExcelDoc();
-    doc.setId(model.getId());
-    doc.setIccid(model.getIccid());
-    doc.setOperators(model.getOperators());
-    doc.setPhone(model.getPhone());
-    doc.setPlatform(model.getPlatform());
-    doc.setAddress(model.getAddress());
-    doc.setReceiver(model.getReceiver());
-    doc.setCreateTime(model.getCreateTime());
-    doc.setUpdateTime(model.getUpdateTime());
-    return doc;
-  }
+ 
 
   /**
    * 将 ImportExcelModel 转为 ImportExcelDO

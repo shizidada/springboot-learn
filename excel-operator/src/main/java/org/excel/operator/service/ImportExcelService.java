@@ -54,7 +54,7 @@ public interface ImportExcelService {
    * @param models 实体集合
    * @return 添加成功
    */
-  int addImportExcelRecordBatch(List<ImportExcelModel> models);
+  int addBatchImportExcelRecord(List<ImportExcelModel> models);
 
   /**
    * 批量导出相同 excel 数据 Receiver Phone Address
