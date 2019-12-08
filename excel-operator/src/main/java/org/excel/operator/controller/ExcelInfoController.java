@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.poi.XSSFOperator;
+import org.excel.operator.poi.ExcelOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.excel.operator.service.model.UploadInfoModel;
@@ -34,9 +35,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping(value = "/api/v1/excel")
-public class ImportExcelController {
+public class ExcelInfoController {
 
-  private static final Logger logger = LoggerFactory.getLogger(ImportExcelController.class);
+  private static final Logger logger = LoggerFactory.getLogger(ExcelInfoController.class);
 
   private static final String SUBFIX_FILE_NAME = ".xlsx";
 
@@ -44,6 +45,9 @@ public class ImportExcelController {
 
   @Resource
   private ImportExcelServiceImpl importExcelService;
+
+  @Resource
+  private SnowflakeIdWorker snowflakeIdWorker;
 
   /**
    * @param uploadInfoModel 上传文件表单
@@ -70,8 +74,8 @@ public class ImportExcelController {
     } catch (IOException e) {
       e.printStackTrace();
       logger.error("导入 excel 文件失败", e);
-      throw new BusinessException(ResponseCode.EXCEL_IMPORT_FAIL.getMessage(),
-          ResponseCode.EXCEL_IMPORT_FAIL.getCode());
+      throw new BusinessException(ResultCode.EXCEL_IMPORT_FAIL.getMessage(),
+          ResultCode.EXCEL_IMPORT_FAIL.getCode());
     }
   }
 
@@ -82,17 +86,17 @@ public class ImportExcelController {
    */
   private void estimateUploadFile(MultipartFile file) {
     if (file.isEmpty()) {
-      throw new BusinessException(ResponseCode.FILE_NOT_EMPTY.getMessage(),
-          ResponseCode.FILE_NOT_EMPTY.getCode());
+      throw new BusinessException(ResultCode.FILE_NOT_EMPTY.getMessage(),
+          ResultCode.FILE_NOT_EMPTY.getCode());
     }
     String fileName = file.getOriginalFilename();
     if (!fileName.endsWith(SUBFIX_FILE_NAME)) {
-      throw new BusinessException(ResponseCode.FILE_NOT_SUPPORT.getMessage(),
-          ResponseCode.FILE_NOT_SUPPORT.getCode());
+      throw new BusinessException(ResultCode.FILE_NOT_SUPPORT.getMessage(),
+          ResultCode.FILE_NOT_SUPPORT.getCode());
     }
     if (file.getSize() > FILE_SIZE) {
-      throw new BusinessException(ResponseCode.FILE_MUCH.getMessage(),
-          ResponseCode.FILE_MUCH.getCode());
+      throw new BusinessException(ResultCode.FILE_MUCH.getMessage(),
+          ResultCode.FILE_MUCH.getCode());
     }
   }
 
@@ -105,9 +109,10 @@ public class ImportExcelController {
       UploadInfoModel uploadInfoModel)
       throws IOException {
 
-    XSSFOperator xssfOperator = new XSSFOperator();
+    ExcelOperator excelOperator = new ExcelOperator();
+    excelOperator.setSnowflakeIdWorker(snowflakeIdWorker);
 
-    List<ImportExcelModel> importExcelModels = xssfOperator.importExcelFile(file.getInputStream());
+    List<ImportExcelModel> importExcelModels = excelOperator.importExcelFile(file.getInputStream());
 
     importExcelModels.stream().map(importExcelModel -> {
       importExcelModel.setPlatform(uploadInfoModel.getPlatform());

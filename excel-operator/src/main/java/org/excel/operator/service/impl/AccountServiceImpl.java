@@ -3,7 +3,7 @@ package org.excel.operator.service.impl;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.entity.AccountDO;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.AccountMapper;
@@ -42,14 +42,14 @@ public class AccountServiceImpl implements AccountService {
   @Override public AccountModel getAccountByAccountName(String accountName) {
     accountName = accountName.trim();
     if (StringUtils.isEmpty(accountName)) {
-      throw new BusinessException(ResponseCode.ACCOUNT_NOT_NULL.getMessage(),
-          ResponseCode.ACCOUNT_NOT_NULL.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_NOT_NULL.getMessage(),
+          ResultCode.ACCOUNT_NOT_NULL.getCode());
     }
 
     AccountDO accountDO = accountMapper.findByAccountName(accountName);
     if (accountDO == null) {
-      throw new BusinessException(ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
+          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
     }
 
     return this.convertAccountModelFromDataObject(accountDO);
@@ -57,30 +57,30 @@ public class AccountServiceImpl implements AccountService {
 
   @Override public void login(String accountName, String password) {
     if (StringUtils.isEmpty(accountName)) {
-      throw new BusinessException(ResponseCode.ACCOUNT_NOT_NULL.getMessage(),
-          ResponseCode.ACCOUNT_NOT_NULL.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_NOT_NULL.getMessage(),
+          ResultCode.ACCOUNT_NOT_NULL.getCode());
     }
 
     if (StringUtils.isEmpty(password)) {
-      throw new BusinessException(ResponseCode.PASSWORD_NOT_NULL.getMessage(),
-          ResponseCode.PASSWORD_NOT_NULL.getCode());
+      throw new BusinessException(ResultCode.PASSWORD_NOT_NULL.getMessage(),
+          ResultCode.PASSWORD_NOT_NULL.getCode());
     }
 
     AccountDO accountDO = accountMapper.findByAccountName(accountName);
     if (accountDO == null) {
-      throw new BusinessException(ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
+          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
     }
 
     PasswordModel passwordModel = passwordService.findByAccountId(accountDO.getAccountId());
     if (passwordModel == null) {
-      throw new BusinessException(ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
+          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
     }
 
     if (!StringUtils.equals(password, passwordModel.getPassword())) {
-      throw new BusinessException(ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
+          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
     }
   }
 
@@ -91,14 +91,14 @@ public class AccountServiceImpl implements AccountService {
     String rePassword = registerInfoModel.getRePassword();
 
     if (!StringUtils.equals(password, rePassword)) {
-      throw new BusinessException(ResponseCode.RE_PASSWORD_ERROR.getMessage(),
-          ResponseCode.RE_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.RE_PASSWORD_ERROR.getMessage(),
+          ResultCode.RE_PASSWORD_ERROR.getCode());
     }
 
     AccountDO account = accountMapper.findByAccountName(accountName);
     if (account != null) {
-      throw new BusinessException(ResponseCode.ACCOUNT_NAME_EXITS.getMessage(),
-          ResponseCode.ACCOUNT_NAME_EXITS.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_NAME_EXITS.getMessage(),
+          ResultCode.ACCOUNT_NAME_EXITS.getCode());
     }
 
     AccountDO accountDO = this.convertAccountDoFromModel(registerInfoModel);

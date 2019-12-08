@@ -1,4 +1,4 @@
-package org.excel.operator.util;
+package org.excel.operator.component;
 
 /**
  * Twitter_Snowflake<br> SnowFlake的结构如下(每部分用-分开):<br> 0 - 0000000000 0000000000 0000000000

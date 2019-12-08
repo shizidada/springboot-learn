@@ -30,8 +30,8 @@ public class ResponseResult<T> {
   }
 
   public static ResponseResult success(Object data) {
-    return new ResponseResult<>(ResponseCode.SUCCESS.getCode(), Boolean.TRUE,
-        ResponseCode.SUCCESS.getMessage(), data);
+    return new ResponseResult<>(ResultCode.SUCCESS.getCode(), Boolean.TRUE,
+        ResultCode.SUCCESS.getMessage(), data);
   }
 
   public static ResponseResult success() {
@@ -39,8 +39,8 @@ public class ResponseResult<T> {
   }
 
   public static ResponseResult fail(Object data) {
-    return new ResponseResult<>(ResponseCode.FAIL.getCode(), Boolean.FALSE,
-        ResponseCode.FAIL.getMessage(), data);
+    return new ResponseResult<>(ResultCode.FAIL.getCode(), Boolean.FALSE,
+        ResultCode.FAIL.getMessage(), data);
   }
 
   public static ResponseResult fail(Integer code, String message) {

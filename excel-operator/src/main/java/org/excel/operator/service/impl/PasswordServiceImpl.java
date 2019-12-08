@@ -2,7 +2,7 @@ package org.excel.operator.service.impl;
 
 import javax.annotation.Resource;
 
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.entity.PasswordDO;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.PasswordMapper;
@@ -31,16 +31,16 @@ public class PasswordServiceImpl implements PasswordService {
   @Override public PasswordModel findByAccountId(Long accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
     if (passwordDO == null) {
-      throw new BusinessException(ResponseCode.PASSWORD_NOT_NULL.getMessage(),
-          ResponseCode.PASSWORD_NOT_NULL.getCode());
+      throw new BusinessException(ResultCode.PASSWORD_NOT_NULL.getMessage(),
+          ResultCode.PASSWORD_NOT_NULL.getCode());
     }
     return this.convertPasswordModelFormDataObject(passwordDO);
   }
 
   @Override public PasswordModel insertPassword(PasswordModel passwordModel) {
     if (passwordModel == null) {
-      throw new BusinessException(ResponseCode.REGISTER_FAIL.getMessage(),
-          ResponseCode.REGISTER_FAIL.getCode());
+      throw new BusinessException(ResultCode.REGISTER_FAIL.getMessage(),
+          ResultCode.REGISTER_FAIL.getCode());
     }
     PasswordDO passwordDO = this.convertPasswordModelToDataObject(passwordModel);
     passwordMapper.insertPassword(passwordDO);

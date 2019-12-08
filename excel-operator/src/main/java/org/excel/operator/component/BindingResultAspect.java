@@ -4,7 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -32,11 +32,11 @@ public class BindingResultAspect {
         BindingResult result = (BindingResult) arg;
         if (result.hasErrors()) {
           FieldError fieldError = result.getFieldError();
-          String message = ResponseCode.VALIDATE_FAIL.getMessage();
+          String message = ResultCode.VALIDATE_FAIL.getMessage();
           if (fieldError != null) {
             message = fieldError.getDefaultMessage();
           }
-          throw new BusinessException(message, ResponseCode.VALIDATE_FAIL.getCode());
+          throw new BusinessException(message, ResultCode.VALIDATE_FAIL.getCode());
         }
       }
     }

@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +36,8 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter writer = response.getWriter();
     writer.write(
-        JSON.toJSONString(ResponseResult.fail(ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getCode(),
-            ResponseCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage())));
+        JSON.toJSONString(ResponseResult.fail(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode(),
+            ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage())));
     writer.close();
   }
 }

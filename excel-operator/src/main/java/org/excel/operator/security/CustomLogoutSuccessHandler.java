@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +38,8 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         customUserDetails.getUsername());
 
     response.setContentType("application/json;charset=UTF-8");
-    Integer code = ResponseCode.MEMBER_LOGOUT_SUCCESS.getCode();
-    String message = ResponseCode.MEMBER_LOGOUT_SUCCESS.getMessage();
+    Integer code = ResultCode.MEMBER_LOGOUT_SUCCESS.getCode();
+    String message = ResultCode.MEMBER_LOGOUT_SUCCESS.getMessage();
     PrintWriter writer = response.getWriter();
     writer.write(JSON.toJSONString(ResponseResult.fail(code, message)));
     writer.close();

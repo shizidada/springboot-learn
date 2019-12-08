@@ -1,10 +1,8 @@
 package org.excel.operator.controller;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.exception.BusinessException;
 import org.slf4j.Logger;
@@ -72,7 +70,7 @@ public class GlobalExceptionController extends AbstractErrorController {
       return ResponseResult.fail(businessException.getCode(), businessException.getMessage());
     } else {
       // 从枚举类中取出自定义的错误码和错误信息
-      return ResponseResult.fail(ResponseCode.KNOWN_ERROR.getCode(), e.getCause().getMessage());
+      return ResponseResult.fail(ResultCode.KNOWN_ERROR.getCode(), e.getCause().getMessage());
     }
   }
 
@@ -95,7 +93,7 @@ public class GlobalExceptionController extends AbstractErrorController {
   //    responseData.put("errMsg", businessException.getMessage());
   //  } else {
   //    // 从枚举类中取出自定义的错误码和错误信息
-  //    responseData.put("errCode", ResponseCode.KNOWN_ERROR.getCode());
+  //    responseData.put("errCode", ResultCode.KNOWN_ERROR.getCode());
   //    responseData.put("errMsg", ex.getMessage());
   //  }
   //

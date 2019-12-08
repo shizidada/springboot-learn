@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.excel.operator.entity.ImportExcelDO;
+import org.excel.operator.entity.ExcelInfoDO;
 import org.excel.operator.es.repository.ImportExcelRepository;
-import org.excel.operator.mapper.ImportExcelMapper;
+import org.excel.operator.mapper.ExcelInfoMapper;
 import org.excel.operator.service.ImportExcelService;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.excel.operator.util.PageInfoUtils;
@@ -32,7 +32,7 @@ import com.github.pagehelper.PageInfo;
 public class ImportExcelServiceImpl implements ImportExcelService {
 
   @Resource
-  private ImportExcelMapper importExcelMapper;
+  private ExcelInfoMapper excelInfoMapper;
 
   @Resource
   private ImportExcelRepository importExcelRepository;
@@ -41,51 +41,51 @@ public class ImportExcelServiceImpl implements ImportExcelService {
     if (importExcelModel.getPageNum() > 0 && importExcelModel.getPageSize() > 0) {
       PageHelper.startPage(importExcelModel.getPageNum(), importExcelModel.getPageSize());
     }
-    ImportExcelDO importExcelDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
-    List<ImportExcelDO> list = importExcelMapper.selectAll(importExcelDO);
+    ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
+    List<ExcelInfoDO> list = excelInfoMapper.selectAll(excelInfoDO);
     PageInfo page = new PageInfo<>(list);
     Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(page);
     return basePageInfo;
   }
 
   @Override public ImportExcelModel selectByPrimaryKey(Long id) {
-    ImportExcelDO importExcelDO = importExcelMapper.selectByPrimaryKey(id);
-    ImportExcelModel importExcelModel = this.convertModelFromDataObject(importExcelDO);
+    ExcelInfoDO excelInfoDO = excelInfoMapper.selectByPrimaryKey(id);
+    ImportExcelModel importExcelModel = this.convertModelFromDataObject(excelInfoDO);
     return importExcelModel;
   }
 
   @Override public ImportExcelModel selectByImportExcel(ImportExcelModel importExcelModel) {
-    ImportExcelDO importExcelDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
-    importExcelDO = importExcelMapper.selectByImportExcel(importExcelDO);
-    ImportExcelModel excelModel = this.convertModelFromDataObject(importExcelDO);
+    ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
+    excelInfoDO = excelInfoMapper.selectByImportExcel(excelInfoDO);
+    ImportExcelModel excelModel = this.convertModelFromDataObject(excelInfoDO);
     return excelModel;
   }
 
   @Override public int addImportExcelRecord(ImportExcelModel importExcelModel) {
-    ImportExcelDO importExcelDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
-    return importExcelMapper.addImportExcelRecord(importExcelDO);
+    ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
+    return excelInfoMapper.addImportExcelRecord(excelInfoDO);
   }
 
   @Override public int addBatchImportExcelRecord(List<ImportExcelModel> importExcelModels) {
-    List<ImportExcelDO> importExcelDOList = importExcelModels.stream().map(importExcelModel -> {
-      ImportExcelDO importExcelDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
-      return importExcelDO;
+    List<ExcelInfoDO> excelInfoDOList = importExcelModels.stream().map(importExcelModel -> {
+      ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
+      return excelInfoDO;
     }).collect(Collectors.toList());
     
-    int result = importExcelMapper.addImportExcelRecordBatch(importExcelDOList);
+    int result = excelInfoMapper.addImportExcelRecordBatch(excelInfoDOList);
 
     // es 操作
     // Iterable<ImportExcelDoc> excelDocs =
-    importExcelRepository.saveAll(importExcelDOList);
+    importExcelRepository.saveAll(excelInfoDOList);
     return result;
   }
 
   @Override public List<ImportExcelModel> exportSameReceiverAndPhoneAndAddress() {
-    List<ImportExcelDO> importExcelDOList =
-        importExcelMapper.selectSameReceiverAndPhoneAndAddress();
+    List<ExcelInfoDO> excelInfoDOList =
+        excelInfoMapper.selectSameReceiverAndPhoneAndAddress();
 
-    List<ImportExcelModel> importExcelModels = importExcelDOList.stream().map(importExcelDO -> {
-      ImportExcelModel itemModel = this.convertModelFromDataObject(importExcelDO);
+    List<ImportExcelModel> importExcelModels = excelInfoDOList.stream().map(excelInfoDO -> {
+      ImportExcelModel itemModel = this.convertModelFromDataObject(excelInfoDO);
       return itemModel;
     }).collect(Collectors.toList());
 
@@ -93,10 +93,10 @@ public class ImportExcelServiceImpl implements ImportExcelService {
   }
 
   @Override public List<ImportExcelModel> exportDiffReceiverAndPhoneAndAddress() {
-    List<ImportExcelDO> importExcelDOList =
-        importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
-    List<ImportExcelModel> importExcelModels = importExcelDOList.stream().map(importExcelDO -> {
-      ImportExcelModel importExcelModel = this.convertModelFromDataObject(importExcelDO);
+    List<ExcelInfoDO> excelInfoDOList =
+        excelInfoMapper.selectDiffReceiverAndPhoneAndAddress();
+    List<ImportExcelModel> importExcelModels = excelInfoDOList.stream().map(excelInfoDO -> {
+      ImportExcelModel importExcelModel = this.convertModelFromDataObject(excelInfoDO);
       return importExcelModel;
     }).collect(Collectors.toList());
     return importExcelModels;
@@ -104,27 +104,27 @@ public class ImportExcelServiceImpl implements ImportExcelService {
  
 
   /**
-   * 将 ImportExcelModel 转为 ImportExcelDO
+   * 将 ImportExcelModel 转为 ExcelInfoDO
    *
-   * @return ImportExcelDO
+   * @return ExcelInfoDO
    */
-  private ImportExcelDO convertImportExcelModel2ImportExcelDO(ImportExcelModel importExcelModel) {
+  private ExcelInfoDO convertImportExcelModel2ImportExcelDO(ImportExcelModel importExcelModel) {
     if (importExcelModel == null) {
       return null;
     }
-    ImportExcelDO importExcelDO = new ImportExcelDO();
-    BeanUtils.copyProperties(importExcelModel, importExcelDO);
-    return importExcelDO;
+    ExcelInfoDO excelInfoDO = new ExcelInfoDO();
+    BeanUtils.copyProperties(importExcelModel, excelInfoDO);
+    return excelInfoDO;
   }
 
   /**
-   * 将 ImportExcelDO 转为 ImportExcelModel
+   * 将 ExcelInfoDO 转为 ImportExcelModel
    *
    * @return ImportExcelModel
    */
-  private ImportExcelModel convertModelFromDataObject(ImportExcelDO importExcelDO) {
+  private ImportExcelModel convertModelFromDataObject(ExcelInfoDO excelInfoDO) {
     ImportExcelModel importExcelModel = new ImportExcelModel();
-    BeanUtils.copyProperties(importExcelDO, importExcelModel);
+    BeanUtils.copyProperties(excelInfoDO, importExcelModel);
     return importExcelModel;
   }
 }

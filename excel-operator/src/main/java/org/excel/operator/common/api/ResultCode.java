@@ -10,7 +10,7 @@ package org.excel.operator.common.api;
  * @date 2019 2019/11/4 20:10
  * @see org.excel.operator.common
  */
-public enum ResponseCode {
+public enum ResultCode {
   /**
    * 成功
    */
@@ -65,7 +65,7 @@ public enum ResponseCode {
 
   private final String message;
 
-  ResponseCode(Integer code, String message) {
+  ResultCode(Integer code, String message) {
     this.code = code;
     this.message = message;
   }

@@ -3,14 +3,13 @@ package org.excel.operator.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.service.impl.AccountServiceImpl;
 import org.excel.operator.service.model.RegisterInfoModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +34,7 @@ public class AccountController {
     logger.info("[accountName {}, ip {}, url {}]", accountName, ip, url);
     accountService.login(accountName, password);
     request.getSession().setAttribute("accountName", accountName);
-    return ResponseResult.success(ResponseCode.LOGIN_SUCCESS.getMessage());
+    return ResponseResult.success(ResultCode.LOGIN_SUCCESS.getMessage());
   }
 
   @PostMapping(value = "/register")
@@ -45,6 +44,6 @@ public class AccountController {
     String ip = request.getRemoteAddr();
     logger.info("[accountName {}, ip {}, url {}]", ip, url);
     accountService.register(registerInfoModel);
-    return ResponseResult.success(ResponseCode.REGISTER_SUCCESS.getMessage());
+    return ResponseResult.success(ResultCode.REGISTER_SUCCESS.getMessage());
   }
 }

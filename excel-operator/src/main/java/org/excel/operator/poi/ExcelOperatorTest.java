@@ -16,8 +16,8 @@
 //import org.apache.poi.xssf.usermodel.XSSFRow;
 //import org.apache.poi.xssf.usermodel.XSSFSheet;
 //import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-//import org.excel.operator.entity.ImportExcelDO;
-//import org.excel.operator.mapper.ImportExcelMapper;
+//import org.excel.operator.entity.ExcelInfoDO;
+//import org.excel.operator.mapper.ExcelInfoMapper;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //
@@ -36,11 +36,11 @@
 //
 //  private SqlSession sqlSession;
 //
-//  private ImportExcelMapper importExcelMapper;
+//  private ExcelInfoMapper importExcelMapper;
 //
 //  public static void main(String[] args) {
-//    //String filePath = XSSFOperator.class.getResource("/").getPath() + "/excel/tianpeng.xlsx";
-//    //XSSFOperator xssfOperator = new XSSFOperator();
+//    //String filePath = ExcelOperator.class.getResource("/").getPath() + "/excel/tianpeng.xlsx";
+//    //ExcelOperator xssfOperator = new ExcelOperator();
 //    //FileInputStream inputStream = new FileInputStream(filePath);
 //    //xssfOperator.importExcelFile(filePath);
 //    //xssfOperator.exportExcelFile();
@@ -48,7 +48,7 @@
 //
 //  private void init() {
 //    InputStream inputStream = null;
-//    importExcelMapper = sqlSession.getMapper(ImportExcelMapper.class);
+//    importExcelMapper = sqlSession.getMapper(ExcelInfoMapper.class);
 //    try {
 //      inputStream = Resources.getResourceAsStream("mybatis-config.xml");
 //      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -70,13 +70,13 @@
 //    }
 //  }
 //
-//  //public List<ImportExcelDO> importExcelFile(FileInputStream inputStream) {
+//  //public List<ExcelInfoDO> importExcelFile(FileInputStream inputStream) {
 //  //  try {
 //  //    XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 //  //
 //  //    XSSFSheet sheet = workbook.getSheetAt(0);
 //  //
-//  //    List<ImportExcelDO> importExcelInfoList = new ArrayList<>();
+//  //    List<ExcelInfoDO> importExcelInfoList = new ArrayList<>();
 //  //
 //  //    for (Row row : sheet) {
 //  //      // header
@@ -89,7 +89,7 @@
 //  //      String phone = row.getCell(3).getStringCellValue();
 //  //      String address = row.getCell(4).getStringCellValue();
 //  //
-//  //      ImportExcelDO importExcelDO = new ImportExcelDO();
+//  //      ExcelInfoDO importExcelDO = new ExcelInfoDO();
 //  //      importExcelDO.setIccid(iccId);
 //  //      importExcelDO.setOperators(operators);
 //  //      importExcelDO.setReceiver(receiver);
@@ -114,7 +114,7 @@
 //  //  return null;
 //  //}
 //
-//  //public void exportExcelFile(List<ImportExcelDO> exportDiffList) {
+//  //public void exportExcelFile(List<ExcelInfoDO> exportDiffList) {
 //  //  XSSFWorkbook workbook = new XSSFWorkbook();
 //  //
 //  //  // 创建表头
@@ -126,9 +126,9 @@
 //  //  titleRow.createCell(3).setCellValue("收货手机号");
 //  //  titleRow.createCell(4).setCellValue("收货地址");
 //  //
-//  //  //List<ImportExcelDO> exportDiffList = importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
-//  //  //List<ImportExcelDO> exportDiffList = importExcelMapper.selectSameReceiverAndPhoneAndAddress();
-//  //  for (ImportExcelDO excelInfo : exportDiffList) {
+//  //  //List<ExcelInfoDO> exportDiffList = importExcelMapper.selectDiffReceiverAndPhoneAndAddress();
+//  //  //List<ExcelInfoDO> exportDiffList = importExcelMapper.selectSameReceiverAndPhoneAndAddress();
+//  //  for (ExcelInfoDO excelInfo : exportDiffList) {
 //  //    // 填充内容
 //  //    int lastRowNum = sheet.getLastRowNum();
 //  //    XSSFRow dataRow = sheet.createRow(lastRowNum + 1);

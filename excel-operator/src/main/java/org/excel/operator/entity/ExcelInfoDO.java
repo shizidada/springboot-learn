@@ -17,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @Document(indexName = "moose", type = "excel_info")
-public class ImportExcelDO extends BaseDO {
+public class ExcelInfoDO extends BaseDO {
 
   /**
    * 主键 id

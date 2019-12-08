@@ -14,7 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.excel.operator.service.model.ImportExcelModel;
-import org.excel.operator.util.SnowflakeIdWorker;
+import org.excel.operator.component.SnowflakeIdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,26 +28,26 @@ import org.slf4j.LoggerFactory;
  * @date 2019 2019/10/27 12:33
  * @see org.excel.operator.poi
  */
-public class XSSFOperator {
+public class ExcelOperator {
 
-  private static final Logger logger = LoggerFactory.getLogger(XSSFOperator.class);
+  private static final Logger logger = LoggerFactory.getLogger(ExcelOperator.class);
 
-//  private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  
-  private SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0,0);
+  //  private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-  public XSSFOperator() {
+  private SnowflakeIdWorker snowflakeIdWorker;
+  public void setSnowflakeIdWorker(SnowflakeIdWorker snowflakeIdWorker) {
+    this.snowflakeIdWorker = snowflakeIdWorker;
+  }
+
+  public ExcelOperator() {
   }
 
   /**
    * 读取 excel 数据
-   *
-   * @param inputStream
-   * @return
    */
   public List<ImportExcelModel> importExcelFile(InputStream inputStream) {
-	
-	XSSFWorkbook workbook = null;
+
+    XSSFWorkbook workbook = null;
     try {
       // 创建 XSSFWorkbook 操作 xlsx xls ==> HSSFWorkbook
       workbook = new XSSFWorkbook(inputStream);
@@ -112,9 +112,9 @@ public class XSSFOperator {
           String address = addressCell.getStringCellValue();
           importExcelModel.setAddress(address);
         }
-        
+
         importExcelModel.setId(snowflakeIdWorker.nextId());
-        
+
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
         importExcelModel.setCreateTime(new Date());
 
@@ -129,23 +129,13 @@ public class XSSFOperator {
       e.printStackTrace();
       logger.error(e.getMessage());
     } finally {
-        if (workbook != null) {
-          try {
-            workbook.close();
-          } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("workbook 写出失败。");
-          }
-        }
-	}
+      this.closeWorkbook(workbook);
+    }
     return null;
   }
 
   /**
    * 写出 excel
-   *
-   * @param importExcelModels
-   * @param outputStream
    */
   public void exportExcelFile(List<ImportExcelModel> importExcelModels, OutputStream outputStream) {
     XSSFWorkbook workbook = new XSSFWorkbook();
@@ -181,13 +171,22 @@ public class XSSFOperator {
       e.printStackTrace();
       logger.error("workbook 写出失败。");
     } finally {
-      if (workbook != null) {
-        try {
-          workbook.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-          logger.error("workbook 写出失败。");
-        }
+      this.closeWorkbook(workbook);
+    }
+  }
+
+  /**
+   * 关闭资源
+   *
+   * @param workbook XSSFWorkbook
+   */
+  private void closeWorkbook(XSSFWorkbook workbook) {
+    if (workbook != null) {
+      try {
+        workbook.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+        logger.error("workbook 写出失败。");
       }
     }
   }

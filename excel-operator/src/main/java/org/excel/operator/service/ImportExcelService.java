@@ -28,7 +28,7 @@ public interface ImportExcelService {
    * 根据主键查询
    *
    * @param id 主键
-   * @return ImportExcelDO
+   * @return ExcelInfoDO
    */
   ImportExcelModel selectByPrimaryKey(Long id);
 
@@ -36,7 +36,7 @@ public interface ImportExcelService {
    * 根据 importExcelDO 查询
    *
    * @param model 实体
-   * @return ImportExcelDO
+   * @return ExcelInfoDO
    */
   ImportExcelModel selectByImportExcel(ImportExcelModel model);
 

@@ -10,10 +10,10 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.excel.operator.common.api.ResponseCode;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.poi.XSSFOperator;
+import org.excel.operator.poi.ExcelOperator;
 import org.excel.operator.service.impl.ImportExcelServiceImpl;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.slf4j.Logger;
@@ -72,13 +72,13 @@ public class ExportExcelController {
       }
       ServletOutputStream outputStream = response.getOutputStream();
 
-      XSSFOperator xssfOperator = new XSSFOperator();
-      xssfOperator.exportExcelFile(exportList, outputStream);
+      ExcelOperator excelOperator = new ExcelOperator();
+      excelOperator.exportExcelFile(exportList, outputStream);
     } catch (IOException e) {
       e.printStackTrace();
       logger.error(e.getMessage());
-      throw new BusinessException(ResponseCode.EXCEL_EXPORT_FAIL.getMessage(),
-          ResponseCode.EXCEL_EXPORT_FAIL.getCode());
+      throw new BusinessException(ResultCode.EXCEL_EXPORT_FAIL.getMessage(),
+          ResultCode.EXCEL_EXPORT_FAIL.getCode());
     }
   }
 }
