@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.service.impl.AccountServiceImpl;
 import org.excel.operator.service.model.RegisterInfoModel;
 import org.slf4j.Logger;
@@ -23,7 +24,8 @@ public class AccountController {
 
   private final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
-  @Resource AccountServiceImpl accountService;
+  @Resource
+  private AccountServiceImpl accountService;
 
   @PostMapping(value = "/login")
   public ResponseResult login(HttpServletRequest request) {

@@ -23,6 +23,6 @@
 
   <insert id="insertAccount" parameterType="org.excel.operator.entity.AccountDO"
       useGeneratedKeys="true" keyProperty="accountId">
-  INSERT INTO t_account(account_name) VALUES (#{accountName})
+  INSERT INTO t_account(account_id, account_name) VALUES (#{accountId}, #{accountName})
   </insert>
 </mapper>

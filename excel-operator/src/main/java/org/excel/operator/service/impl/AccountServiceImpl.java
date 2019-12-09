@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
+import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.entity.AccountDO;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.AccountMapper;
@@ -38,6 +39,9 @@ public class AccountServiceImpl implements AccountService {
 
   @Resource
   private PasswordEncoder passwordEncoder;
+
+  @Resource
+  private SnowflakeIdWorker snowflakeIdWorker;
 
   @Override public AccountModel getAccountByAccountName(String accountName) {
     accountName = accountName.trim();
@@ -105,6 +109,7 @@ public class AccountServiceImpl implements AccountService {
     PasswordModel passwordModel = this.convertPasswordModelFromRegisterInfoModel(registerInfoModel);
     accountMapper.insertAccount(accountDO);
 
+    passwordModel.setPasswordId(snowflakeIdWorker.nextId());
     passwordModel.setAccountId(accountDO.getAccountId());
     passwordService.insertPassword(passwordModel);
   }
@@ -125,6 +130,7 @@ public class AccountServiceImpl implements AccountService {
 
   private AccountDO convertAccountDoFromModel(RegisterInfoModel registerInfoModel) {
     AccountDO accountDO = new AccountDO();
+    accountDO.setAccountId(snowflakeIdWorker.nextId());
     accountDO.setAccountName(registerInfoModel.getAccountName());
     return accountDO;
   }

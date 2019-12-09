@@ -74,9 +74,9 @@ public class ImportExcelServiceImpl implements ImportExcelService {
     
     int result = excelInfoMapper.addImportExcelRecordBatch(excelInfoDOList);
 
-    // es 操作
+    // TODO: es 操作
     // Iterable<ImportExcelDoc> excelDocs =
-    importExcelRepository.saveAll(excelInfoDOList);
+    // importExcelRepository.saveAll(excelInfoDOList);
     return result;
   }
 

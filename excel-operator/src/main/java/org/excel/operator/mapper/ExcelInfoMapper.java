@@ -46,7 +46,7 @@ public interface ExcelInfoMapper {
    *
    * @return 是否添加成功
    */
-  int addImportExcelRecordBatch(@Param("excelInfoDOList") List<ExcelInfoDO> list);
+  int addImportExcelRecordBatch(@Param("excelDOList") List<ExcelInfoDO> list);
 
   /**
    * 添加一条 excel record

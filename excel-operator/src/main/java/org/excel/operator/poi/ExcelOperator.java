@@ -45,7 +45,7 @@ public class ExcelOperator {
   /**
    * 读取 excel 数据
    */
-  public List<ImportExcelModel> importExcelFile(InputStream inputStream) {
+  public List<ImportExcelModel> importExcelFile(InputStream inputStream, String platform) {
 
     XSSFWorkbook workbook = null;
     try {
@@ -113,7 +113,15 @@ public class ExcelOperator {
           importExcelModel.setAddress(address);
         }
 
+        /**
+         * 设置 ID
+         */
         importExcelModel.setId(snowflakeIdWorker.nextId());
+
+        /**
+         * 设置平台
+         */
+        importExcelModel.setPlatform(platform);
 
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
         importExcelModel.setCreateTime(new Date());

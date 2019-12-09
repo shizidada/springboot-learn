@@ -112,12 +112,7 @@ public class ExcelInfoController {
     ExcelOperator excelOperator = new ExcelOperator();
     excelOperator.setSnowflakeIdWorker(snowflakeIdWorker);
 
-    List<ImportExcelModel> importExcelModels = excelOperator.importExcelFile(file.getInputStream());
-
-    importExcelModels.stream().map(importExcelModel -> {
-      importExcelModel.setPlatform(uploadInfoModel.getPlatform());
-      return importExcelModel;
-    }).collect(Collectors.toList());
+    List<ImportExcelModel> importExcelModels = excelOperator.importExcelFile(file.getInputStream(), uploadInfoModel.getPlatform());
 
     return importExcelModels;
   }
