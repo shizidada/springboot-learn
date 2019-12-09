@@ -6,5 +6,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 /**
  * @author taohua
  */
-public interface ImportExcelRepository extends ElasticsearchRepository<ExcelInfoDO, Integer> {
+public interface ExcelInfoRepository extends ElasticsearchRepository<ExcelInfoDO, Integer> {
 }

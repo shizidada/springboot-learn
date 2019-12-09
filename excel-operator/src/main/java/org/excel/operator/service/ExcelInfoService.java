@@ -14,7 +14,7 @@ import org.excel.operator.service.model.ImportExcelModel;
  * @date 2019 2019/10/27 15:09
  * @see org.excel.operator.service
  */
-public interface ImportExcelService {
+public interface ExcelInfoService {
 
   /**
    * 根据对应条件查询数据

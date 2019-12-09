@@ -3,7 +3,6 @@ package org.excel.operator.controller;
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.excel.operator.common.api.ResultCode;
@@ -11,7 +10,7 @@ import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.poi.ExcelOperator;
-import org.excel.operator.service.impl.ImportExcelServiceImpl;
+import org.excel.operator.service.impl.ExcelInfoInfoServiceImpl;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.excel.operator.service.model.UploadInfoModel;
 import org.slf4j.Logger;
@@ -44,7 +43,7 @@ public class ExcelInfoController {
   private static final Long FILE_SIZE = 1024 * 1024 * 5L;
 
   @Resource
-  private ImportExcelServiceImpl importExcelService;
+  private ExcelInfoInfoServiceImpl importExcelService;
 
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;

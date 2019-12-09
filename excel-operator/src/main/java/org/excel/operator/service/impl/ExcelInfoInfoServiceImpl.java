@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.excel.operator.entity.ExcelInfoDO;
-import org.excel.operator.es.repository.ImportExcelRepository;
+import org.excel.operator.es.repository.ExcelInfoRepository;
 import org.excel.operator.mapper.ExcelInfoMapper;
-import org.excel.operator.service.ImportExcelService;
+import org.excel.operator.service.ExcelInfoService;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.excel.operator.util.PageInfoUtils;
 import org.springframework.beans.BeanUtils;
@@ -29,13 +29,13 @@ import com.github.pagehelper.PageInfo;
  * @see org.excel.operator.service.impl
  */
 @Service
-public class ImportExcelServiceImpl implements ImportExcelService {
+public class ExcelInfoInfoServiceImpl implements ExcelInfoService {
 
   @Resource
   private ExcelInfoMapper excelInfoMapper;
 
   @Resource
-  private ImportExcelRepository importExcelRepository;
+  private ExcelInfoRepository excelInfoRepository;
 
   @Override public Map<String, Object> selectAll(ImportExcelModel importExcelModel) {
     if (importExcelModel.getPageNum() > 0 && importExcelModel.getPageSize() > 0) {
@@ -76,7 +76,7 @@ public class ImportExcelServiceImpl implements ImportExcelService {
 
     // TODO: es 操作
     // Iterable<ImportExcelDoc> excelDocs =
-    // importExcelRepository.saveAll(excelInfoDOList);
+    // excelInfoRepository.saveAll(excelInfoDOList);
     return result;
   }
 

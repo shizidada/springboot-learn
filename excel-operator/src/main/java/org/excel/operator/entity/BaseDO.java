@@ -3,6 +3,8 @@ package org.excel.operator.entity;
 import java.util.Date;
 
 import lombok.Data;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
  * <p>
@@ -20,10 +22,12 @@ public class BaseDO {
   /**
    * 创建时间
    */
+  @Field(type = FieldType.Date)
   private Date createTime;
 
   /**
    * 修改时间
    */
+  @Field(type = FieldType.Date)
   private Date updateTime;
 }

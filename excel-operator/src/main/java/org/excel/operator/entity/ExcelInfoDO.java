@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import lombok.Data;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
  * <p>
@@ -22,36 +24,42 @@ public class ExcelInfoDO extends BaseDO {
   /**
    * 主键 id
    */
-	@Id()
+  @Id()
   private Long id;
 
   /**
    * iccid SIM卡卡号
    */
+  @Field(type = FieldType.Keyword)
   private String iccid;
 
   /**
    * 运营商
    */
+  @Field(type = FieldType.Keyword)
   private String operators;
 
   /**
    * 收货人
    */
+  @Field(type = FieldType.Text, analyzer = "ik_max_word")
   private String receiver;
 
   /**
    * 收货手机号
    */
+  @Field(type = FieldType.Keyword)
   private String phone;
 
   /**
    * 收货地址
    */
+  @Field(type = FieldType.Text, analyzer = "ik_max_word")
   private String address;
 
   /**
    * 平台
    */
+  @Field(type = FieldType.Keyword)
   private String platform;
 }

@@ -14,7 +14,7 @@ import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.poi.ExcelOperator;
-import org.excel.operator.service.impl.ImportExcelServiceImpl;
+import org.excel.operator.service.impl.ExcelInfoInfoServiceImpl;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class ExportExcelController {
   private static final String EXCEL_DIFF = "diff";
 
   @Resource
-  private ImportExcelServiceImpl importExcelService;
+  private ExcelInfoInfoServiceImpl importExcelService;
 
   @GetMapping(value = "/list")
   public ResponseResult list(ImportExcelModel importExcelModel) {
