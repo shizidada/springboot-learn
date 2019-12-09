@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.service.impl.AccountServiceImpl;
 import org.excel.operator.service.model.RegisterInfoModel;
 import org.slf4j.Logger;
@@ -27,17 +26,20 @@ public class AccountController {
   @Resource
   private AccountServiceImpl accountService;
 
-  @PostMapping(value = "/login")
-  public ResponseResult login(HttpServletRequest request) {
-    String url = request.getRequestURL().toString();
-    String ip = request.getRemoteAddr();
-    String accountName = request.getParameter("accountName");
-    String password = request.getParameter("password");
-    logger.info("[accountName {}, ip {}, url {}]", accountName, ip, url);
-    accountService.login(accountName, password);
-    request.getSession().setAttribute("accountName", accountName);
-    return ResponseResult.success(ResultCode.LOGIN_SUCCESS.getMessage());
-  }
+  /**
+   * spring security to login
+   */
+  //@PostMapping(value = "/login")
+  //public ResponseResult login(HttpServletRequest request) {
+  //  String url = request.getRequestURL().toString();
+  //  String ip = request.getRemoteAddr();
+  //  String accountName = request.getParameter("accountName");
+  //  String password = request.getParameter("password");
+  //  logger.info("[accountName {}, ip {}, url {}]", accountName, ip, url);
+  //  accountService.login(accountName, password);
+  //  request.getSession().setAttribute("accountName", accountName);
+  //  return ResponseResult.success(ResultCode.LOGIN_SUCCESS.getMessage());
+  //}
 
   @PostMapping(value = "/register")
   public ResponseResult register(@Valid RegisterInfoModel registerInfoModel, BindingResult result,

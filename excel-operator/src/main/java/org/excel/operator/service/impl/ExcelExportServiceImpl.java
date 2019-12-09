@@ -1,26 +1,21 @@
-package org.excel.operator.controller;
+package org.excel.operator.service.impl;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.excel.operator.common.api.ResultCode;
-import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.poi.ExcelOperator;
-import org.excel.operator.service.impl.ExcelInfoInfoServiceImpl;
+import org.excel.operator.service.ExcelExportService;
 import org.excel.operator.service.model.ImportExcelModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -29,35 +24,24 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author taohua
  * @version v1.0.0
- * @date 2019 2019/10/27 15:06
- * @see org.excel.operator.controller
+ * @date 2019 2019/12/9 22:56
+ * @see org.excel.operator.service.impl
  */
-@RestController
-@RequestMapping(value = "/api/v1/excel")
-public class ExportExcelController {
 
-  private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionController.class);
+@Service
+public class ExcelExportServiceImpl implements ExcelExportService {
+
+  private static final Logger logger = LoggerFactory.getLogger(ExcelExportServiceImpl.class);
 
   private static final String EXCEL_SAME = "same";
 
   private static final String EXCEL_DIFF = "diff";
 
   @Resource
-  private ExcelInfoInfoServiceImpl importExcelService;
+  private ExcelInfoServiceImpl excelInfoService;
 
-  @GetMapping(value = "/list")
-  public ResponseResult list(ImportExcelModel importExcelModel) {
-    Map<String, Object> map = importExcelService.selectAll(importExcelModel);
-    return ResponseResult.success(map);
-  }
-
-  @RequestMapping(value = "/export")
-  public void exportFile(HttpServletResponse response, HttpServletRequest request) {
-    String type = request.getParameter("type");
-    downLoadExportExcelFile(response, type);
-  }
-
-  private void downLoadExportExcelFile(HttpServletResponse response, String type) {
+  @Override
+  public void downLoadExportExcelFile(HttpServletResponse response, String type) {
     response.setContentType("application/vnd.ms-excel");
     response.setCharacterEncoding("utf-8");
     List<ImportExcelModel> exportList = new ArrayList<>();
@@ -66,16 +50,15 @@ public class ExportExcelController {
       response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
 
       if (EXCEL_SAME.equals(type)) {
-        exportList = importExcelService.exportSameReceiverAndPhoneAndAddress();
+        exportList = excelInfoService.exportSameReceiverAndPhoneAndAddress();
       } else if (EXCEL_DIFF.equals(type)) {
-        exportList = importExcelService.exportDiffReceiverAndPhoneAndAddress();
+        exportList = excelInfoService.exportDiffReceiverAndPhoneAndAddress();
       }
       ServletOutputStream outputStream = response.getOutputStream();
 
       ExcelOperator excelOperator = new ExcelOperator();
       excelOperator.exportExcelFile(exportList, outputStream);
     } catch (IOException e) {
-      e.printStackTrace();
       logger.error(e.getMessage());
       throw new BusinessException(ResultCode.EXCEL_EXPORT_FAIL.getMessage(),
           ResultCode.EXCEL_EXPORT_FAIL.getCode());

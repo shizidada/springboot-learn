@@ -3,6 +3,8 @@ package org.excel.operator.service;
 import java.util.List;
 import java.util.Map;
 import org.excel.operator.service.model.ImportExcelModel;
+import org.excel.operator.service.model.UploadInfoModel;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -51,10 +53,11 @@ public interface ExcelInfoService {
   /**
    * 批量添加 excel 数据
    *
-   * @param models 实体集合
+   * @param file 上传文件
+   * @param uploadInfoModel 实体集合
    * @return 添加成功
    */
-  int addBatchImportExcelRecord(List<ImportExcelModel> models);
+  int addBatchImportExcelRecord(MultipartFile file, UploadInfoModel uploadInfoModel);
 
   /**
    * 批量导出相同 excel 数据 Receiver Phone Address
