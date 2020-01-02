@@ -1,10 +1,10 @@
 package org.excel.operator.controller;
 
+import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.common.api.ResultCode;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.excel.operator.common.api.ResultCode;
-import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.service.impl.AccountServiceImpl;
 import org.excel.operator.service.model.RegisterInfoModel;
 import org.slf4j.Logger;

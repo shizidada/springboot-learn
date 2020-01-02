@@ -1,8 +1,5 @@
 package org.excel.operator.service.impl;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.entity.AccountDO;
@@ -12,6 +9,8 @@ import org.excel.operator.service.AccountService;
 import org.excel.operator.service.model.AccountModel;
 import org.excel.operator.service.model.PasswordModel;
 import org.excel.operator.service.model.RegisterInfoModel;
+import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

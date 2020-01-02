@@ -43,6 +43,9 @@ spring:
       cluster-name: my-application
       cluster-nodes: localhost:9300
 
+  mongodb:
+    uri: mongodb://127.0.0.1:27017/learn
+
 # logging settings
 #logging:
 #  path: /Users/taohua/develop/elk/logs

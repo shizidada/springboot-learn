@@ -1,6 +1,5 @@
 package org.excel.operator.service.model;
 
-import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -21,14 +20,4 @@ public class AccountModel extends BaseModel {
 
   @NotBlank(message = "账号不能为空。")
   private String accountName;
-
-  /**
-   * 创建时间
-   */
-  private Date createTime;
-
-  /**
-   * 修改时间
-   */
-  private Date updateTime;
 }

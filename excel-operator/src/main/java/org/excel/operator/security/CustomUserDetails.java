@@ -1,9 +1,9 @@
 package org.excel.operator.security;
 
-import java.util.Collection;
-import java.util.List;
 import org.excel.operator.service.model.AccountModel;
 import org.excel.operator.service.model.PasswordModel;
+import java.util.Collection;
+import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
