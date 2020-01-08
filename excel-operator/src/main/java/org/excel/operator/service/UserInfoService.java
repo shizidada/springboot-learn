@@ -1,5 +1,6 @@
 package org.excel.operator.service;
 
+import java.util.List;
 import org.excel.operator.mongo.entity.User;
 
 public interface UserInfoService {
@@ -8,5 +9,5 @@ public interface UserInfoService {
 
   Object getUserProducts();
 
-  Object getAllUsers();
+  List<User> getAllUsers();
 }

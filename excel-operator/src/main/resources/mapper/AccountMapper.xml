@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="java.org.excel.operator.mapper.AccountMapper">
+<mapper namespace="org.excel.operator.mapper.AccountMapper">
 
-  <resultMap id="BaseResultMap" type="java.org.excel.operator.entity.AccountDO">
+  <resultMap id="BaseResultMap" type="org.excel.operator.entity.AccountDO">
     <id column="account_id" jdbcType="BIGINT" property="accountId"/>
     <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -14,14 +14,14 @@
     account_id, account_name
   </sql>
 
-  <select id="findByAccountName" parameterType="java.org.excel.operator.entity.AccountDO"
+  <select id="findByAccountName" parameterType="org.excel.operator.entity.AccountDO"
       resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column"/>
     FROM t_account WHERE account_name=#{accountName}
   </select>
 
-  <insert id="insertAccount" parameterType="java.org.excel.operator.entity.AccountDO"
+  <insert id="insertAccount" parameterType="org.excel.operator.entity.AccountDO"
       useGeneratedKeys="true" keyProperty="accountId">
   INSERT INTO t_account(account_id, account_name) VALUES (#{accountId}, #{accountName})
   </insert>

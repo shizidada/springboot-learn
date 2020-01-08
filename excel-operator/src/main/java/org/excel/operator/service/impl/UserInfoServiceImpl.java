@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +21,11 @@ public class UserInfoServiceImpl implements UserInfoService {
   private MongoTemplate mongoTemplate;
 
   @Override public User getUser(String userId) {
-    return this.mongoTemplate.findById(userId, User.class);
+    //Query query = new Query();
+    //query.addCriteria(Criteria.where("user_id").is(userId));
+
+    Query query = Query.query(Criteria.where("user_id").is(userId));
+    return this.mongoTemplate.findOne(query, User.class);
   }
 
   @Override public Object getUserProducts() {
@@ -33,19 +38,21 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     operations.add(productAggregation);
 
-    AggregationOperation userIdOperation = Aggregation.match(Criteria.where("user_id").is("5e0b6d05424ac70ab28b70b6"));
+    AggregationOperation userIdOperation =
+        Aggregation.match(Criteria.where("user_id").is("5e0b6d05424ac70ab28b70b6"));
     operations.add(userIdOperation);
 
     operations.add(Aggregation.project("username", "user_id", "products").andExclude("_id"));
 
     Aggregation aggregation = Aggregation.newAggregation(operations);
 
-    List<Map> user = this.mongoTemplate.aggregate(aggregation, "user", Map.class).getMappedResults();
+    List<Map> user =
+        this.mongoTemplate.aggregate(aggregation, "user", Map.class).getMappedResults();
     return user;
   }
 
   @Override
-  public Object getAllUsers() {
+  public List<User> getAllUsers() {
     return mongoTemplate.findAll(User.class);
   }
 }

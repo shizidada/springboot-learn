@@ -35,6 +35,14 @@ public class ExcelOperatorApplicationTests {
   }
 
   @Test
+  public void testFindUserById() {
+    //User user = mongoTemplate.findById("5e1533374af7df1d503039e4", User.class);
+    //User user2 = mongoTemplate.findById("5e1533374af7df1d503039e4", User.class, "user");
+    //log.info("user {}", user);
+    //log.info("user2 {}", user2);
+  }
+
+  @Test
   public void testFind() {
     List<User> all = mongoTemplate.findAll(User.class);
     System.out.println(all);

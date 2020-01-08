@@ -2,6 +2,7 @@ package org.excel.operator.websocket.handler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
 import org.excel.operator.mongo.entity.Message;
 import org.excel.operator.mongo.entity.User;
 import org.excel.operator.service.MessageService;
@@ -51,7 +52,7 @@ public class MessageHandler extends TextWebSocketHandler {
     String userId = (String) session.getAttributes().get("uid");
     // 将消息序列化成JSON串
     JsonNode jsonNode = MAPPER.readTree(textMessage.getPayload());
-    String toId = jsonNode.get("toId").toString();
+    String toId = jsonNode.get("toId").asText();
     String msg = jsonNode.get("msg").asText();
 
     User fromUser = userInfoService.getUser(userId);
@@ -62,6 +63,9 @@ public class MessageHandler extends TextWebSocketHandler {
         .from(fromUser)
         .to(toUser)
         .msg(msg)
+        .isRead(1)
+        .sendDate(new Date())
+        .readDate(new Date())
         .build();
     //将消息保存到mongodb数据库中
     message = this.messageService.saveMessage(message);

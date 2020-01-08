@@ -80,6 +80,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // for test
         "/api/v1/excel/**",
 
+        "/ws/*",
+        "/friends/*",
+
         // 退出
         "/api/v1/account/logout").permitAll()
 
