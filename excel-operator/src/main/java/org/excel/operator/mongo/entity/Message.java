@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Builder
 @Document(collection = "message")
 public class Message {
-  @Id
+
   @Field("message_id")
   private String messageId;
 

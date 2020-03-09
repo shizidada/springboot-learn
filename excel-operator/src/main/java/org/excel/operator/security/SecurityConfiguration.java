@@ -3,8 +3,10 @@ package org.excel.operator.security;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.annotation.Resource;
+import org.excel.operator.common.SecurityConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -16,6 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -53,6 +58,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Resource
   private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+  @Resource
+  private RedisTemplate redisTemplate;
+
   @Override protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
@@ -73,18 +81,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests().antMatchers(
         // 注册
-        "/api/v1/account/register",
+        SecurityConstants.REGISTER_URL,
+
         // 登录
-        "/api/v1/account/login",
+        SecurityConstants.LOGIN_IN_URL,
+
+        // 退出
+        SecurityConstants.LOGIN_OUT_URL,
 
         // for test
         "/api/v1/excel/**",
 
         "/ws/*",
-        "/friends/*",
-
-        // 退出
-        "/api/v1/account/logout").permitAll()
+        "/friends/*").permitAll()
 
         .and()
         .exceptionHandling()
@@ -94,7 +103,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 自定义登录
         .and()
         .formLogin()
-        .loginProcessingUrl("/api/v1/account/login")
+        .loginProcessingUrl(SecurityConstants.LOGIN_IN_URL)
         .usernameParameter("accountName")
         .passwordParameter("password")
         // 登录成功
@@ -106,7 +115,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .logout()
         // 自定义 url
-        .logoutUrl("/api/v1/account/logout")
+        .logoutUrl(SecurityConstants.LOGIN_OUT_URL)
         // 自定义登出成功返回
         .logoutSuccessHandler(customLogoutSuccessHandler)
         // 自定义登出成功
@@ -119,7 +128,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         .and().cors()
 
-        .and().csrf().disable();
+        .and()
+        .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    //.exceptionHandling().addObjectPostProcessor()
+
+    http.csrf().disable();
+  }
+
+  @Bean
+  RedisTokenFilter redisTokenFilter() {
+    return new RedisTokenFilter(customAuthenticationFailureHandler, redisTemplate);
   }
 
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {

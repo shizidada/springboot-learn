@@ -3,6 +3,7 @@ package org.excel.operator.security;
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.ServletOutputStream;
 import org.excel.operator.common.api.ResponseResult;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +39,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         principal.getUsername());
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
-    PrintWriter writer = response.getWriter();
+    ServletOutputStream writer = response.getOutputStream();
     writer.write(
-        JSON.toJSONString(ResponseResult.success(authentication.getDetails())));
+        JSON.toJSONString(ResponseResult.success(authentication.getDetails())).getBytes());
     writer.close();
   }
 }

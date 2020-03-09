@@ -1,5 +1,7 @@
 package org.excel.operator.exception;
 
+import org.springframework.security.core.AuthenticationException;
+
 /**
  * <p>
  * Description
@@ -10,13 +12,14 @@ package org.excel.operator.exception;
  * @date 2019 2019/11/19 18:47
  * @see org.excel.operator.exception
  */
-public class BusinessException extends RuntimeException {
+public class BusinessException extends AuthenticationException {
 
   private String message;
 
   private Integer code;
 
   public BusinessException(String message, Integer code) {
+    super(message);
     this.message = message;
     this.code = code;
   }

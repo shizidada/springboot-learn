@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
   @Override
   public UpdateResult updateMessageState(String messageId, Integer status) {
 
-    Query query = Query.query(Criteria.where("id").is(messageId));
+    Query query = Query.query(Criteria.where("message_id").is(messageId));
     Update update = Update.update("is_read", status);
     // 更新发送时间
     if (MESSAGE_IS_READ.equals(status)) {

@@ -56,6 +56,8 @@ public enum ResultCode {
    */
   VALIDATE_FAIL(-10000, "参数校验失败"),
 
+  TOKEN_VALIDATE_FAIL(-10001, "Token 校验失败"),
+
   /**
    * 未知错误
    */

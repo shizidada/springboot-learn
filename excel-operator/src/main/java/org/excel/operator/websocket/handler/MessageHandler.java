@@ -3,6 +3,7 @@ package org.excel.operator.websocket.handler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
+import org.bson.types.ObjectId;
 import org.excel.operator.mongo.entity.Message;
 import org.excel.operator.mongo.entity.User;
 import org.excel.operator.service.MessageService;
@@ -60,6 +61,7 @@ public class MessageHandler extends TextWebSocketHandler {
 
     // 构造消息对象
     Message message = Message.builder()
+        .messageId(ObjectId.get().toHexString())
         .from(fromUser)
         .to(toUser)
         .msg(msg)
