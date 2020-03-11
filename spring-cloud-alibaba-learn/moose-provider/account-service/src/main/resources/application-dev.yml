@@ -1,0 +1,9 @@
+spring:
+  ## 数据库配置
+  datasource:
+    name: moose
+    url: jdbc:mysql://120.25.244.170:3306/moose?serverTimezone=GMT%2B8&useUnicode=true&&characterEncoding=UTF-8&&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: moose
+    password: moose123.
+    type: com.alibaba.druid.pool.DruidDataSource
