@@ -30,16 +30,15 @@ security:
     resource:
       token-info-uri: http://${base.config.oauth.hostname}:${base.config.oauth.port}/oauth/check_token
 
-
-dubbo:
-  application:
-    name: user-web-service-dubbo
-  protocol:
-    name: dubbo
-    port: -1
-  registry:
-    address: nacos://127.0.0.1
-    port: 8848
+#dubbo:
+#  application:
+#    name: user-web-service-dubbo
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  registry:
+#    address: nacos://127.0.0.1
+#    port: 8848
 
 management:
   endpoints:

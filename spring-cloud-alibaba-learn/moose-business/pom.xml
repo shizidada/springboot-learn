@@ -14,7 +14,7 @@
   <artifactId>moose-business</artifactId>
 
   <modules>
-    <module>oauth2-service</module>
+    <module>oauth2-web-service</module>
     <module>user-web-service</module>
   </modules>
 
