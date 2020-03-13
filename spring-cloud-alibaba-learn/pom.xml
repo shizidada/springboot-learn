@@ -11,10 +11,9 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>moose-provider</module>
-    <module>moose-provider-api</module>
     <module>moose-business</module>
-    <module>moose-common</module>
+    <module>moose-commons</module>
+    <module>moose-provider</module>
   </modules>
 
   <properties>

@@ -1,0 +1,12 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: oauth-service
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
