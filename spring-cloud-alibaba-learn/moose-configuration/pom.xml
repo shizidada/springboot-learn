@@ -9,13 +9,12 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>moose-configuration</artifactId>
   <packaging>pom</packaging>
 
-  <artifactId>moose-business</artifactId>
-
   <modules>
-    <module>business-oauth2-service</module>
-    <module>business-user-service</module>
+    <module>configuration-security</module>
   </modules>
 
 </project>
