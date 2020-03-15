@@ -16,6 +16,7 @@
 
 
   <dependencies>
+    <!-- Spring Framework -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -27,10 +28,17 @@
     </dependency>
 
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+
+    <!-- Spring Cloud Alibaba -->
+    <dependency>
       <groupId>com.alibaba.cloud</groupId>
       <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
     </dependency>
 
+    <!-- DataBase -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -49,16 +57,6 @@
     <dependency>
       <groupId>org.mybatis.spring.boot</groupId>
       <artifactId>mybatis-spring-boot-starter</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>net.logstash.logback</groupId>
-      <artifactId>logstash-logback-encoder</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
     </dependency>
 
     <!-- Apache Dubbo -->
@@ -82,6 +80,8 @@
       <groupId>org.apache.dubbo</groupId>
       <artifactId>dubbo</artifactId>
     </dependency>
+
+    <!-- Commons -->
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
@@ -93,9 +93,21 @@
     </dependency>
 
     <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
+    <!-- Projects -->
+
+    <dependency>
       <groupId>shizidada.github.io</groupId>
       <artifactId>provider-account-service-api</artifactId>
-      <version>${parent.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
   </dependencies>
 
@@ -115,8 +127,9 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.2.5.RELEASE</version>
         <configuration>
-          <mainClass>org.moose.AccountServiceApplication</mainClass>
+          <mainClass>org.moose.ProviderAccountServiceApplication</mainClass>
           <executable>true</executable>
         </configuration>
       </plugin>

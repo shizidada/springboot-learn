@@ -15,6 +15,7 @@
 
   <modules>
     <module>business-oauth2-service</module>
+    <module>business-oauth2-api</module>
     <module>business-user-service</module>
   </modules>
 

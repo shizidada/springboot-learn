@@ -8,4 +8,10 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
 
 logging:
-  path: E:\Code\java\logs
+  file:
+    path: /Users/taohua/logs
+
+## mybatis settings
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: org.excel.operator.entity

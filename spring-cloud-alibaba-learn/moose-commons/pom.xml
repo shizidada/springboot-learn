@@ -13,4 +13,8 @@
   <artifactId>moose-commons</artifactId>
   <packaging>pom</packaging>
 
+  <modules>
+    <module>commons-base</module>
+  </modules>
+
 </project>

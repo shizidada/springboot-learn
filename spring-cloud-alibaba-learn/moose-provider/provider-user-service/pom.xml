@@ -73,7 +73,7 @@
     <dependency>
       <groupId>shizidada.github.io</groupId>
       <artifactId>provider-user-service-api</artifactId>
-      <version>${parent.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
 
   </dependencies>
@@ -94,8 +94,9 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.2.5.RELEASE</version>
         <configuration>
-          <mainClass>org.moose.UserServiceApplication</mainClass>
+          <mainClass>org.moose.ProviderUserServiceApplication</mainClass>
           <executable>true</executable>
         </configuration>
       </plugin>

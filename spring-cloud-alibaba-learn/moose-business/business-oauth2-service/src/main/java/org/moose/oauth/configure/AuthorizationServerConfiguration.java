@@ -4,7 +4,6 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -17,8 +16,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 /**
@@ -45,14 +44,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   @Autowired
   private AuthenticationManager authenticationManager;
 
-  @Override
-  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-    endpoints
-        // 用于支持密码模式
-        .authenticationManager(authenticationManager)
-        .tokenStore(tokenStore());
-  }
+  @Autowired
+  private WebResponseExceptionTranslator webResponseExceptionTranslator;
 
+  /**
+   * 配置数据库数据源
+   *
+   * @return 数据库数据源
+   */
   @Bean
   @Primary
   @ConfigurationProperties(prefix = "spring.datasource")
@@ -61,6 +60,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     return DruidDataSourceBuilder.create().build();
   }
 
+  /**
+   * Token 持久化
+   *
+   * @return TokenStore
+   */
   @Bean
   public TokenStore tokenStore() {
     // 保存在内存中
@@ -70,13 +74,38 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     //return new RedisTokenStore(redisConnectionFactory);
   }
 
+  /**
+   * A service that provides the details about an OAuth2 client.
+   *
+   * @return ClientDetailsService
+   */
   @Bean
   public ClientDetailsService jdbcClientDetailsService() {
     // 基于 JDBC 实现，需要事先在数据库配置客户端信息
     return new JdbcClientDetailsService(dataSource());
   }
 
-  @Override public void configure(AuthorizationServerSecurityConfigurer oauthServer)
+  /**
+   * Authorization Server endpoints.
+   *
+   * @throws Exception
+   */
+  @Override
+  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    endpoints
+        // 用于支持密码模式
+        .authenticationManager(authenticationManager)
+        .tokenStore(tokenStore())
+        .exceptionTranslator(webResponseExceptionTranslator);
+  }
+
+  /**
+   * 授权服务安全配置
+   *
+   * @throws Exception
+   */
+  @Override
+  public void configure(AuthorizationServerSecurityConfigurer oauthServer)
       throws Exception {
     oauthServer
         .tokenKeyAccess("permitAll()")
@@ -84,6 +113,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         .allowFormAuthenticationForClients();
   }
 
+  /**
+   * 授权客户端配置
+   *
+   * @throws Exception
+   */
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
     // 客户端配置

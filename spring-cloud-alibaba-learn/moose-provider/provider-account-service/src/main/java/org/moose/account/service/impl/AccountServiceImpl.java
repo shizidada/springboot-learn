@@ -1,6 +1,7 @@
 package org.moose.account.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.moose.account.model.domain.AccountDO;
 import org.moose.account.service.AccountService;
 import org.apache.dubbo.config.annotation.Service;
 
@@ -17,10 +18,13 @@ import org.apache.dubbo.config.annotation.Service;
 @Service(version = "1.0.0")
 @Slf4j
 public class AccountServiceImpl implements AccountService {
+  @Override
+  public int add(AccountDO accountDODTO) {
+    return 0;
+  }
 
   @Override
-  public String login(String accountName, String password) {
-    log.info(accountName + " :: " + password);
-    return "Hello " + accountName + ", Welcome ~";
+  public AccountDO get(String accountName) {
+    return null;
   }
 }

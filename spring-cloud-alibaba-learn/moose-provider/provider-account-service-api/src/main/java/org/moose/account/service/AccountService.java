@@ -1,5 +1,7 @@
 package org.moose.account.service;
 
+import org.moose.account.model.domain.AccountDO;
+
 /**
  * <p>
  * Description
@@ -11,12 +13,20 @@ package org.moose.account.service;
  * @see org.moose.account.service
  */
 public interface AccountService {
+
   /**
-   * 登录
+   * 添加账号
+   *
+   * @param accountDODTO 账号类
+   * @return 是否添加成功
+   */
+  int add(AccountDO accountDODTO);
+
+  /**
+   * 通过用户名查询用户
    *
    * @param accountName 账号
-   * @param password 密码
-   * @return 登录信息
+   * @return 用户信息
    */
-  String login(String accountName, String password);
+  AccountDO get(String accountName);
 }
