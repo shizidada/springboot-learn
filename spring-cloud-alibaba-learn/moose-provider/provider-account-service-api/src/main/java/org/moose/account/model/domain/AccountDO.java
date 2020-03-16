@@ -27,7 +27,7 @@ public class AccountDO extends BaseEntity implements Serializable {
   /**
    * 账号 ID
    */
-  private Long accountId;
+  private String accountId;
 
   /**
    * 账号名称

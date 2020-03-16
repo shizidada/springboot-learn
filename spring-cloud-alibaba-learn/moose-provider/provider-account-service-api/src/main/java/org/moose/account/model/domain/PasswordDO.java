@@ -23,9 +23,9 @@ public class PasswordDO extends BaseEntity implements Serializable {
 
   private static final long serialVersionUID = -5182470846148201141L;
 
-  private Long passwordId;
+  private String passwordId;
 
-  private Long accountId;
+  private String accountId;
 
   private String password;
 }

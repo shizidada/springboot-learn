@@ -6,7 +6,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_account`;
 CREATE TABLE `t_account` (
-  `id` bigint(32) NOT NULL COMMENT '账号主键',
+  `id` varchar(64) NOT NULL COMMENT '账号主键',
   `account_name` varchar(64) DEFAULT NULL COMMENT '账号名',
   `nick_name` varchar(64) DEFAULT NULL COMMENT '昵称',
   `phone` varchar(11) DEFAULT NULL COMMENT '手机号码',
@@ -27,8 +27,8 @@ CREATE TABLE `t_account` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_password`;
 CREATE TABLE `t_password` (
-  `id` bigint(32) NOT NULL COMMENT '密码主键',
-  `account_id` bigint(32) NOT NULL COMMENT '会员 ID',
+  `id` varchar(64) NOT NULL COMMENT '密码主键',
+  `account_id` varchar(64) NOT NULL COMMENT '会员 ID',
   `password` varchar(64) DEFAULT NULL COMMENT '密码',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
