@@ -1,9 +1,9 @@
-package org.moose.account.model.domain;
+package org.moose.account.model.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import org.moose.commons.base.entity.BaseDO;
+import org.moose.commons.base.dto.BaseDTO;
 
 /**
  * <p>
@@ -13,11 +13,12 @@ import org.moose.commons.base.entity.BaseDO;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/11 23:06
- * @see org.moose.account.model.domain
+ * @see org.moose.account.model.dto
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class PasswordDO extends BaseDO {
+public class PasswordDTO extends BaseDTO implements Serializable {
+
   /**
    * 密码 id
    */

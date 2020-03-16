@@ -2,9 +2,6 @@ package org.moose.commons.base.entity;
 
 import java.util.Date;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * <p>
@@ -16,10 +13,15 @@ import lombok.ToString;
  * @date 2020 2020/3/15 18:02
  * @see org.moose.commons.base.entity
  */
-@Getter
-@Setter
-@ToString
-public class BaseEntity {
+@Data
+public class BaseDO {
+  /**
+   * 创建时间
+   */
   private Date createTime;
+
+  /**
+   * 修改时间
+   */
   private Date updateTime;
 }

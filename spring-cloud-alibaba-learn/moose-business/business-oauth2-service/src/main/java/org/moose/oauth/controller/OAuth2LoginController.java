@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 授权登录
+ *
  * <p>
  * Description:
  * </p>
@@ -15,11 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020-03-13 13:15:13:15
  * @see org.moose.oauth.controller
  */
-@RestController
+@RestController("/oauth")
 public class OAuth2LoginController {
 
-  @GetMapping("/user/login")
+  @GetMapping("/login")
   public ResponseResult<LoginInfoDTO> login() {
+    return new ResponseResult<>(null);
+  }
+
+  @GetMapping("/info")
+  public ResponseResult<LoginInfoDTO> info() {
     LoginInfoDTO loginInfo = new LoginInfoDTO();
     loginInfo.setName("张世豪");
     loginInfo.setAvatar(

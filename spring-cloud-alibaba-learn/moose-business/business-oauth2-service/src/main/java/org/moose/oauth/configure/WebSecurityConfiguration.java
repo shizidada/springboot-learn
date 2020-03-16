@@ -55,10 +55,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   * 用于支持 password 模式
-   * 密码模式需要 AuthenticationManager 支持
+   * 用于支持 password 模式 密码模式需要 AuthenticationManager 支持
    *
-   * @return
    * @throws Exception
    */
   @Bean
@@ -83,7 +81,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         // 授权访问
-        .antMatchers("/user/info").hasAuthority("USER")
-        .antMatchers("/user/logout").hasAuthority("USER");
+        .antMatchers("/oauth/login").permitAll()
+        .antMatchers("/oauth/logout").hasAuthority("USER")
+        .antMatchers("/oauth/info").hasAuthority("USER");
   }
 }

@@ -32,16 +32,12 @@
     </dependency>
 
     <dependency>
-      <groupId>com.alibaba.cloud</groupId>
-      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
 
+    <!-- DataSource -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -52,12 +48,17 @@
       <artifactId>mysql-connector-java</artifactId>
     </dependency>
 
+    <!-- Alibaba -->
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>druid-spring-boot-starter</artifactId>
     </dependency>
 
-    <!-- nacos -->
     <dependency>
       <groupId>com.alibaba.nacos</groupId>
       <artifactId>nacos-client</artifactId>
@@ -68,11 +69,29 @@
       <artifactId>fastjson</artifactId>
     </dependency>
 
+    <!-- Apache Dubbo -->
+    <dependency>
+      <groupId>org.apache.dubbo</groupId>
+      <artifactId>dubbo-registry-nacos</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.dubbo</groupId>
+      <artifactId>dubbo</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
 
+    <!-- Commons -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -84,12 +103,7 @@
       <version>${project.parent.version}</version>
     </dependency>
 
-    <!--<dependency>-->
-      <!--<groupId>shizidada.github.io</groupId>-->
-      <!--<artifactId>commons-handle</artifactId>-->
-      <!--<version>${project.parent.version}</version>-->
-    <!--</dependency>-->
-
+    <!-- Projects -->
     <dependency>
       <groupId>shizidada.github.io</groupId>
       <artifactId>business-oauth2-api</artifactId>

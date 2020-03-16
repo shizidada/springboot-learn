@@ -26,6 +26,17 @@ public interface AccountMapper {
 
   /**
    * 根据账号 id 查询
+   *
+   * @param accountId 账号 id
+   * @return AccountDO
    */
-  AccountDO findAccountById(String accountId);
+  AccountDO findById(String accountId);
+
+  /**
+   * 根据账号名称查询
+   *
+   * @param accountName 账号名称
+   * @return AccountDO
+   */
+  AccountDO findByAccountName(String accountName);
 }

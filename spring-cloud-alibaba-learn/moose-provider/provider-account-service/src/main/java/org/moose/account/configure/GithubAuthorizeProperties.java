@@ -1,4 +1,4 @@
-package org.moose.account.config;
+package org.moose.account.configure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/7 20:57
- * @see org.moose.account.config
+ * @see org.moose.account.configure
  */
 @Data
 @ConfigurationProperties(prefix = "github.authorize")

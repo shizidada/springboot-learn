@@ -23,4 +23,12 @@ public interface PasswordMapper {
    * @return 是否添加成功
    */
   int insert(PasswordDO passwordDO);
+
+  /**
+   * 查询密码
+   *
+   * @param accountId 账号 id
+   * @return 密码
+   */
+  PasswordDO findByAccountId(String accountId);
 }

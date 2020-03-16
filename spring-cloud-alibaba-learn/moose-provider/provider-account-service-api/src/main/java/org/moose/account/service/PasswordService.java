@@ -1,5 +1,7 @@
 package org.moose.account.service;
 
+import org.moose.account.model.dto.PasswordDTO;
+
 /**
  * <p>
  * Description
@@ -11,4 +13,12 @@ package org.moose.account.service;
  * @see org.moose.account.service
  */
 public interface PasswordService {
+
+  /**
+   * 通过账号 id 查询密码
+   *
+   * @param accountId 账号
+   * @return 用户信息
+   */
+  PasswordDTO get(String accountId);
 }

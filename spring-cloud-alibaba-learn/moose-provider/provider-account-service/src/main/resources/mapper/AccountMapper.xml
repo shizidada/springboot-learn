@@ -30,11 +30,17 @@
     #{birthday}, #{sourceType}, #{createTime}, #{updateTime})
   </insert>
 
-
-  <select id="findAccountById" resultMap="BaseResultMap" parameterType="string">
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT
     <include refid="Base_Column"/>
     FROM
     t_account WHERE id=#{accountId}
+  </select>
+
+  <select id="findByAccountName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM
+    t_account WHERE account_name=#{accountName}
   </select>
 </mapper>

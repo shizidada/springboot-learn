@@ -1,10 +1,10 @@
-package org.moose.account.model.domain;
+package org.moose.account.model.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import org.moose.commons.base.entity.BaseDO;
+import org.moose.commons.base.dto.BaseDTO;
 
 /**
  * <p>
@@ -13,12 +13,14 @@ import org.moose.commons.base.entity.BaseDO;
  *
  * @author taohua
  * @version v1.0.0
- * @date 2020 2020/3/11 22:58
- * @see org.moose.account.model.domain
+ * @date 2020 2020/3/16 23:19
+ * @see org.moose.account.model.dto
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AccountDO extends BaseDO {
+public class AccountDTO extends BaseDTO implements Serializable {
+
+  private static final long serialVersionUID = -5760620294163161236L;
 
   /**
    * 账号 ID
@@ -64,18 +66,4 @@ public class AccountDO extends BaseDO {
    * 注册来源
    */
   private Integer sourceType;
-
-  @Override public String toString() {
-    return "AccountDO{" +
-        "accountId=" + accountId +
-        ", accountName='" + accountName + '\'' +
-        ", nickName='" + nickName + '\'' +
-        ", phone='" + phone + '\'' +
-        ", status=" + status +
-        ", icon='" + icon + '\'' +
-        ", gender=" + gender +
-        ", birthday=" + birthday +
-        ", sourceType='" + sourceType + '\'' +
-        '}';
-  }
 }

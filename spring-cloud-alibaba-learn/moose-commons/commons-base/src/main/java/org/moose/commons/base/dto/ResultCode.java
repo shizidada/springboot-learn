@@ -22,6 +22,11 @@ public enum ResultCode {
   FAIL(400, "请求失败"),
 
   /**
+   * 账号或密码错误
+   */
+  ACCOUNT_PASSWORD_ERROR(100001, "用户名或密码错误"),
+
+  /**
    * 未知错误
    */
   UNKNOWN(-99999, "未知错误");

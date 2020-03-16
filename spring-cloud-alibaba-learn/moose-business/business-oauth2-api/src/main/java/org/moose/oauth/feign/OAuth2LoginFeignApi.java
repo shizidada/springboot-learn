@@ -4,9 +4,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- *
- * TODO: mock
- *
  * OAuth2 登录 Api
  * <p>
  * Description
@@ -22,12 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface OAuth2LoginFeignApi {
 
   /**
-   * TODO: mock
-   *
    * 授权登录
    *
+   * @param accountName 账号
+   * @param password 密码
    * @return 登录信息
    */
-  @GetMapping("/user/login")
-  String login();
+  @GetMapping("/oauth/login")
+  String login(String accountName, String password);
 }

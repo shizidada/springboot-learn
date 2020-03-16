@@ -32,6 +32,11 @@
       <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-oauth2</artifactId>
+    </dependency>
+
     <!-- Spring Cloud Alibaba -->
     <dependency>
       <groupId>com.alibaba.cloud</groupId>
@@ -59,12 +64,13 @@
       <artifactId>mybatis-spring-boot-starter</artifactId>
     </dependency>
 
-    <!-- Apache Dubbo -->
+    <!-- Alibaba Nacos -->
     <dependency>
       <groupId>com.alibaba.nacos</groupId>
       <artifactId>nacos-client</artifactId>
     </dependency>
 
+    <!-- Apache Dubbo -->
     <dependency>
       <groupId>org.apache.dubbo</groupId>
       <artifactId>dubbo-registry-nacos</artifactId>

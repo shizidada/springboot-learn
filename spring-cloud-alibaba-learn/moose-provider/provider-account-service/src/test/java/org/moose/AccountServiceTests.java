@@ -12,6 +12,7 @@ import org.moose.account.mapper.PasswordMapper;
 import org.moose.account.model.domain.AccountDO;
 import org.moose.account.model.domain.PasswordDO;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
-@Rollback
+//@Transactional
+//@Rollback
 @Slf4j
 public class AccountServiceTests {
 
@@ -41,6 +42,9 @@ public class AccountServiceTests {
   @Resource
   private PasswordMapper passwordMapper;
 
+  @Resource
+  private PasswordEncoder passwordEncoder;
+
   @Test
   public void createAccountTest() {
 
@@ -48,9 +52,9 @@ public class AccountServiceTests {
 
     AccountDO accountDO = new AccountDO();
     accountDO.setAccountId(accountId);
-    accountDO.setAccountName("阿豪 zhang 123");
-    accountDO.setNickName("世豪张 123");
-    accountDO.setPhone("13586968682");
+    accountDO.setAccountName("张世豪");
+    accountDO.setNickName("阿豪");
+    accountDO.setPhone("13612341234");
     accountDO.setStatus(1);
     accountDO.setIcon("https://icon.com");
     accountDO.setGender(1);
@@ -64,7 +68,8 @@ public class AccountServiceTests {
     PasswordDO passwordDO = new PasswordDO();
     passwordDO.setAccountId(accountId);
     passwordDO.setPasswordId(passwordId);
-    passwordDO.setPassword("ahao123456");
+    passwordDO.setPassword(passwordEncoder.encode("123456"));
+
     accountMapper.insert(accountDO);
 
     //int a = 10 / 0;
