@@ -22,6 +22,8 @@ spring:
 dubbo:
   application:
     name: business-oauth2-service-dubbo
+  scan:
+    base-packages: org.moose.oauth.service
   protocol:
     name: dubbo
     port: -1

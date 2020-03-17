@@ -3,7 +3,6 @@ package org.moose.oauth.service;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.apache.dubbo.config.annotation.Reference;
-import org.moose.account.model.domain.AccountDO;
 import org.moose.account.model.dto.AccountDTO;
 import org.moose.account.model.dto.PasswordDTO;
 import org.moose.account.service.AccountService;
