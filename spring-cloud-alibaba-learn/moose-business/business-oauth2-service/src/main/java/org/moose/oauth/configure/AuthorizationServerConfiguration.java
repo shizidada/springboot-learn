@@ -95,8 +95,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     endpoints
         // 用于支持密码模式
         .authenticationManager(authenticationManager)
-        .tokenStore(tokenStore());
-        //.exceptionTranslator(webResponseExceptionTranslator);
+        .tokenStore(tokenStore())
+        .exceptionTranslator(webResponseExceptionTranslator);
   }
 
   /**

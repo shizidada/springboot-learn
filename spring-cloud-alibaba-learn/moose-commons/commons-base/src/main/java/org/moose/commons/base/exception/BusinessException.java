@@ -8,7 +8,7 @@ package org.moose.commons.base.exception;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/14 22:11
- * @see org.moose.commons.exception
+ * @see org.moose.commons.base.exception
  */
 public class BusinessException extends RuntimeException {
 

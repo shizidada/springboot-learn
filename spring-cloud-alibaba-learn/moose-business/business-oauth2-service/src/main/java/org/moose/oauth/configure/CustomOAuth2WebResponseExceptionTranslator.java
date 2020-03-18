@@ -1,6 +1,9 @@
 package org.moose.oauth.configure;
 
+import lombok.extern.slf4j.Slf4j;
+import org.moose.commons.base.dto.ResultCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Component;
  * @see org.moose.oauth.configure
  */
 @Component
+@Slf4j
 public class CustomOAuth2WebResponseExceptionTranslator
     implements WebResponseExceptionTranslator {
 
@@ -24,11 +28,15 @@ public class CustomOAuth2WebResponseExceptionTranslator
 
   @Override
   public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
-
-    OAuth2Exception exception = (OAuth2Exception) e;
-
+    log.info("WebResponseExceptionTranslator 【{}】", e.getMessage());
+    if (e instanceof InvalidGrantException) {
+      OAuth2Exception exception = (OAuth2Exception) e;
+      return ResponseEntity
+          .status(exception.getHttpErrorCode())
+          .body(new CustomOAuth2Exception(exception.getMessage()));
+    }
     return ResponseEntity
-        .status(exception.getHttpErrorCode())
-        .body(new CustomOAuth2Exception(exception.getMessage()));
+        .status(ResultCode.UNKNOWN.getCode())
+        .body(new CustomOAuth2Exception(e.getMessage()));
   }
 }
