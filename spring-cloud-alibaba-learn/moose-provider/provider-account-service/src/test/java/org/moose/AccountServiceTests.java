@@ -11,6 +11,7 @@ import org.moose.account.mapper.AccountMapper;
 import org.moose.account.mapper.PasswordMapper;
 import org.moose.account.model.domain.AccountDO;
 import org.moose.account.model.domain.PasswordDO;
+import org.moose.account.service.AccountService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
@@ -45,6 +46,9 @@ public class AccountServiceTests {
   @Resource
   private PasswordEncoder passwordEncoder;
 
+  @Resource
+  private AccountService accountService;
+
   @Test
   public void createAccountTest() {
 
@@ -56,6 +60,7 @@ public class AccountServiceTests {
     accountDO.setNickName("阿豪");
     accountDO.setPhone("13612341234");
     accountDO.setStatus(1);
+    accountDO.setRole("ADMIN");
     accountDO.setIcon("https://icon.com");
     accountDO.setGender(1);
     accountDO.setBirthday(new Date());
@@ -77,5 +82,35 @@ public class AccountServiceTests {
     passwordMapper.insert(passwordDO);
 
     log.info("[{}]", accountDO);
+  }
+
+  @Test
+  public void addAccountAndPassword() {
+    AccountDO accountDO = new AccountDO();
+    String accountId = UUID.randomUUID().toString().replace("-", "");
+    accountDO.setAccountId(accountId);
+    accountDO.setAccountName("test");
+    accountDO.setNickName("测试");
+    accountDO.setPhone("13777777777");
+    accountDO.setStatus(0);
+    accountDO.setRole("USER");
+    accountDO.setIcon("https://icon.com");
+    accountDO.setGender(1);
+    accountDO.setBirthday(new Date());
+    accountDO.setSourceType(2);
+    accountDO.setCreateTime(new Date());
+    accountDO.setUpdateTime(new Date());
+
+    String passwordId = UUID.randomUUID().toString().replace("-", "");
+
+    PasswordDO passwordDO = new PasswordDO();
+    passwordDO.setAccountId(accountId);
+    passwordDO.setPasswordId(passwordId);
+    passwordDO.setCreateTime(new Date());
+    passwordDO.setUpdateTime(new Date());
+    passwordDO.setPassword(passwordEncoder.encode("123456"));
+
+    boolean result = accountService.add(accountDO, passwordDO);
+    log.info("是否添加成功 [{}]", result);
   }
 }

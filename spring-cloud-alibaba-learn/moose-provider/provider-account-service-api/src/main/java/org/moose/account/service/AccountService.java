@@ -1,6 +1,7 @@
 package org.moose.account.service;
 
 import org.moose.account.model.domain.AccountDO;
+import org.moose.account.model.domain.PasswordDO;
 import org.moose.account.model.dto.AccountDTO;
 
 /**
@@ -22,6 +23,15 @@ public interface AccountService {
    * @return 是否添加成功
    */
   int add(AccountDO accountDO);
+
+  /**
+   * 添加账号 和 密码
+   *
+   * @param accountDO 账号
+   * @param passwordDO 密码
+   * @return 是否添加成功
+   */
+  boolean add(AccountDO accountDO, PasswordDO passwordDO);
 
   /**
    * 通过用户名查询用户

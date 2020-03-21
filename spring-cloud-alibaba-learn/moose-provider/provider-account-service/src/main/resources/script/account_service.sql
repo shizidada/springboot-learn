@@ -15,6 +15,7 @@ CREATE TABLE `t_account` (
   `gender` int(1) DEFAULT NULL COMMENT '性别: 0->女; 1->男',
   `birthday` date DEFAULT NULL COMMENT '生日',
   `source_type` int(1) DEFAULT NULL COMMENT '用户来源: 1->web; 2->app; 3->小程序',
+  `role` varchar(20) DEFAULT NULL COMMENT '账号角色',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`),

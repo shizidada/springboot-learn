@@ -1,6 +1,7 @@
 package org.moose.oauth.configure;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -35,17 +36,17 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-  @Autowired
+  @Resource
   private BCryptPasswordEncoder passwordEncoder;
 
   /**
    * 注入用于支持 password 模式
    */
-  @Autowired
+  @Resource
   private AuthenticationManager authenticationManager;
 
-  @Autowired
-  private WebResponseExceptionTranslator webResponseExceptionTranslator;
+  @Resource
+  private WebResponseExceptionTranslator customOAuth2ResponseExceptionTranslator;
 
   /**
    * 配置数据库数据源
@@ -96,7 +97,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         // 用于支持密码模式
         .authenticationManager(authenticationManager)
         .tokenStore(tokenStore())
-        .exceptionTranslator(webResponseExceptionTranslator);
+        .exceptionTranslator(customOAuth2ResponseExceptionTranslator);
   }
 
   /**

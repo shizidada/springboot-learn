@@ -40,7 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring()
-        .antMatchers("/user/login");
+        .antMatchers("/v1/user/login");
   }
 
   @Bean
@@ -69,7 +69,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     ///**
     // * 将授权访问配置改为注解方式
-    // * @see LoginController#info()
+    // * @see OAuth2LoginController#info()
     // */
     //http.exceptionHandling()
     //    .and()
@@ -81,8 +81,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         // 授权访问
-        .antMatchers("/oauth/login").permitAll()
-        .antMatchers("/oauth/logout").hasAuthority("USER")
-        .antMatchers("/oauth/info").hasAuthority("USER");
+        .antMatchers("/v1/user/logout").hasAuthority("USER");
   }
 }

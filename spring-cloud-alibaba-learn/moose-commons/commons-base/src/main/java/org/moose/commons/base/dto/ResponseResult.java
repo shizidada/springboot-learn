@@ -1,5 +1,6 @@
 package org.moose.commons.base.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 
 /**
@@ -19,8 +20,7 @@ public class ResponseResult<T> implements Serializable {
 
   private Integer code;
 
-  private Boolean status;
-
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private T data;
 
   private String message;
@@ -31,18 +31,15 @@ public class ResponseResult<T> implements Serializable {
   public ResponseResult(T data) {
     this.code = ResultCode.SUCCESS.getCode();
     this.message = ResultCode.SUCCESS.getMessage();
-    this.status = Boolean.TRUE;
     this.data = data;
   }
 
   public ResponseResult(Integer code, String message) {
-    this.status = Boolean.FALSE;
     this.code = code;
     this.message = message;
   }
 
   public ResponseResult(Integer code, Throwable throwable) {
-    this.status = Boolean.FALSE;
     this.message = throwable.getMessage();
     this.code = code;
   }
@@ -53,14 +50,6 @@ public class ResponseResult<T> implements Serializable {
 
   public void setCode(Integer code) {
     this.code = code;
-  }
-
-  public Boolean getStatus() {
-    return status;
-  }
-
-  public void setStatus(Boolean status) {
-    this.status = status;
   }
 
   public T getData() {
@@ -82,7 +71,6 @@ public class ResponseResult<T> implements Serializable {
   @Override public String toString() {
     return "ResponseResult{" +
         "code=" + code +
-        ", status=" + status +
         ", data=" + data +
         ", message='" + message + '\'' +
         '}';

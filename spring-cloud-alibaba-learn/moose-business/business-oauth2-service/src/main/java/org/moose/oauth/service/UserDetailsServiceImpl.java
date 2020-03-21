@@ -8,7 +8,7 @@ import org.moose.account.model.dto.PasswordDTO;
 import org.moose.account.service.AccountService;
 import org.moose.account.service.PasswordService;
 import org.moose.commons.base.dto.ResultCode;
-import org.moose.commons.base.exception.BusinessException;
+import org.moose.oauth.configure.CustomOAuth2Exception;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -30,10 +30,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-  private static final String USERNAME = "admin";
-  private static final String PASSWORD =
-      "$2a$10$YNUV/BtCel2orbhgrxyPJeljdKVty6yTAL.Cj4v3XhwHWXBkgyPYW";
-
   @Reference(version = "1.0.0")
   private AccountService accountService;
 
@@ -45,13 +41,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     AccountDTO accountDTO = accountService.get(username);
     if (accountDTO == null) {
-      throw new BusinessException(ResultCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
+      throw new CustomOAuth2Exception(ResultCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
           ResultCode.ACCOUNT_PASSWORD_ERROR.getCode());
     }
 
     PasswordDTO passwordDTO = passwordService.get(accountDTO.getAccountId());
     if (passwordDTO == null) {
-      throw new BusinessException(ResultCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
+      throw new CustomOAuth2Exception(ResultCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
           ResultCode.ACCOUNT_PASSWORD_ERROR.getCode());
     }
 

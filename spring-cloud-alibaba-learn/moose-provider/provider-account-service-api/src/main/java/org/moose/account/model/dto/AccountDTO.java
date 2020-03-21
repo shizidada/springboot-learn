@@ -48,6 +48,11 @@ public class AccountDTO extends BaseDTO implements Serializable {
   private Integer status;
 
   /**
+   * 账号角色
+   */
+  private String role;
+
+  /**
    * 头像
    */
   private String icon;

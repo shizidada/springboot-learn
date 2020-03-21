@@ -17,14 +17,24 @@ public enum ResultCode {
   SUCCESS(200, "请求成功"),
 
   /**
-   * 失败
-   */
-  FAIL(400, "请求失败"),
-
-  /**
    * 账号或密码错误
    */
   ACCOUNT_PASSWORD_ERROR(100001, "用户名或密码错误"),
+
+  /**
+   * OAuth2 授权异常
+   */
+  OAUTH_ERROR(200001, "授权异常"),
+
+  /**
+   * 参数校验
+   */
+  VALIDATE_FAIL(-10000, "参数校验失败"),
+
+  /**
+   * 网络错误
+   */
+  NET_WORK_UNKNOWN(460, "网络错误，请检查网络。"),
 
   /**
    * 未知错误

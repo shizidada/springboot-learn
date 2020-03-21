@@ -7,6 +7,7 @@ import org.moose.account.model.domain.PasswordDO;
 import org.moose.account.model.dto.PasswordDTO;
 import org.moose.account.service.PasswordService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * <p>
@@ -18,11 +19,19 @@ import org.springframework.beans.BeanUtils;
  * @date 2020 2020/3/16 23:40
  * @see org.moose.account.service.impl
  */
+@Component
 @Service(version = "1.0.0")
 public class PasswordServiceImpl implements PasswordService {
 
   @Resource
   private PasswordMapper passwordMapper;
+
+  @Override
+  public int add(PasswordDTO passwordDTO) {
+    PasswordDO passwordDO = new PasswordDO();
+    BeanUtils.copyProperties(passwordDTO, passwordDO);
+    return passwordMapper.insert(passwordDO);
+  }
 
   @Override
   public PasswordDTO get(String accountId) {

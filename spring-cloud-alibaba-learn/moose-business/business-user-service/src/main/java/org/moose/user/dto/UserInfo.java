@@ -16,6 +16,8 @@ import lombok.Data;
 @Data
 public class UserInfo {
   private Long userId;
+  private String avatar;
+  private String nickName;
   private String username;
   private Date birthday;
 }

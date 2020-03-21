@@ -29,15 +29,11 @@ public class CustomOAuth2ExceptionSerializer extends StdSerializer<CustomOAuth2E
       SerializerProvider serializerProvider) throws IOException {
     //HttpServletRequest request =
     //    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
     jsonGenerator.writeStartObject();
-    jsonGenerator.writeStringField("code", String.valueOf(e.getHttpErrorCode()));
+    jsonGenerator.writeNumberField("code", e.getCode());
     jsonGenerator.writeStringField("message", e.getMessage());
-
-    // jsonGenerator.writeStringField("message", "用户名或密码错误");
-    // jsonGenerator.writeStringField("path", request.getServletPath());
-    // jsonGenerator.writeStringField("timestamp", String.valueOf(System.currentTimeMillis()));
-
+    //jsonGenerator.writeStringField("path", request.getServletPath());
+    //jsonGenerator.writeNumberField("timestamp", System.currentTimeMillis());
     if (e.getAdditionalInformation() != null) {
       for (Map.Entry<String, String> entry : e.getAdditionalInformation().entrySet()) {
         String key = entry.getKey();

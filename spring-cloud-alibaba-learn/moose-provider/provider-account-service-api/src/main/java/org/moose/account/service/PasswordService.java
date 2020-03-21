@@ -14,6 +14,9 @@ import org.moose.account.model.dto.PasswordDTO;
  */
 public interface PasswordService {
 
+
+  int add(PasswordDTO passwordDTO);
+
   /**
    * 通过账号 id 查询密码
    *
