@@ -14,7 +14,7 @@ import lombok.Data;
  * @see org.moose.user.dto
  */
 @Data
-public class UserInfo {
+public class UserInfoDTO {
   private Long userId;
   private String avatar;
   private String nickName;

@@ -20,6 +20,12 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 
+feign:
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+
 security:
   oauth2:
     client:
@@ -45,3 +51,7 @@ management:
     web:
       exposure:
         include: "*"
+
+logging:
+  level:
+    org.moose.oauth.feign.*: debug
