@@ -9,7 +9,6 @@
     <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
     <result column="phone" property="phone" jdbcType="VARCHAR"/>
     <result column="status" property="status" jdbcType="INTEGER"/>
-    <result column="role" property="role" jdbcType="VARCHAR"/>
     <result column="icon" property="icon" jdbcType="VARCHAR"/>
     <result column="gender" property="gender" jdbcType="INTEGER"/>
     <result column="birthday" property="birthday" jdbcType="DATE"/>
@@ -19,15 +18,15 @@
   </resultMap>
 
   <sql id="Base_Column">
-    id, account_name, nick_name, phone, status, role, icon, gender, birthday, source_type, create_time,
+    id, account_name, nick_name, phone, status, icon, gender, birthday, source_type, create_time,
     update_time
   </sql>
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="accountId">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="accountId" parameterType="org.moose.account.model.domain.AccountDO">
     INSERT INTO
-    t_account(id, account_name, nick_name, phone, status, role, icon, gender, birthday, source_type,
+    t_account(id, account_name, nick_name, phone, status, icon, gender, birthday, source_type,
     create_time, update_time)
-    VALUES (#{accountId}, #{accountName}, #{nickName}, #{phone}, #{status}, #{role}, #{icon}, #{gender},
+    VALUES (#{accountId}, #{accountName}, #{nickName}, #{phone}, #{status}, #{icon}, #{gender},
     #{birthday}, #{sourceType}, #{createTime}, #{updateTime})
   </insert>
 

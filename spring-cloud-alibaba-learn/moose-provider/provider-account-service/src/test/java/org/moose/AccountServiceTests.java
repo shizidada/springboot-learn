@@ -11,6 +11,10 @@ import org.moose.account.mapper.AccountMapper;
 import org.moose.account.mapper.PasswordMapper;
 import org.moose.account.model.domain.AccountDO;
 import org.moose.account.model.domain.PasswordDO;
+import org.moose.account.model.domain.RoleDO;
+import org.moose.account.model.dto.AccountDTO;
+import org.moose.account.model.dto.PasswordDTO;
+import org.moose.account.model.dto.RoleDTO;
 import org.moose.account.service.AccountService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,7 +64,6 @@ public class AccountServiceTests {
     accountDO.setNickName("阿豪");
     accountDO.setPhone("13612341234");
     accountDO.setStatus(1);
-    accountDO.setRole("ADMIN");
     accountDO.setIcon("https://icon.com");
     accountDO.setGender(1);
     accountDO.setBirthday(new Date());
@@ -86,31 +89,38 @@ public class AccountServiceTests {
 
   @Test
   public void addAccountAndPassword() {
-    AccountDO accountDO = new AccountDO();
+
     String accountId = UUID.randomUUID().toString().replace("-", "");
-    accountDO.setAccountId(accountId);
-    accountDO.setAccountName("test");
-    accountDO.setNickName("测试");
-    accountDO.setPhone("13777777777");
-    accountDO.setStatus(0);
-    accountDO.setRole("USER");
-    accountDO.setIcon("https://icon.com");
-    accountDO.setGender(1);
-    accountDO.setBirthday(new Date());
-    accountDO.setSourceType(2);
-    accountDO.setCreateTime(new Date());
-    accountDO.setUpdateTime(new Date());
+    AccountDTO accountDTO = new AccountDTO();
+    accountDTO.setAccountId(accountId);
+    accountDTO.setAccountName("tom");
+    accountDTO.setNickName("净空法师");
+    accountDTO.setPhone("13777777777");
+    accountDTO.setStatus(1);
+    accountDTO.setIcon("https://icon.com");
+    accountDTO.setGender(1);
+    accountDTO.setBirthday(new Date());
+    accountDTO.setSourceType(2);
+    accountDTO.setCreateTime(new Date());
+    accountDTO.setUpdateTime(new Date());
 
     String passwordId = UUID.randomUUID().toString().replace("-", "");
+    PasswordDTO passwordDTO = new PasswordDTO();
+    passwordDTO.setAccountId(accountId);
+    passwordDTO.setPasswordId(passwordId);
+    passwordDTO.setCreateTime(new Date());
+    passwordDTO.setUpdateTime(new Date());
+    passwordDTO.setPassword(passwordEncoder.encode("123456"));
 
-    PasswordDO passwordDO = new PasswordDO();
-    passwordDO.setAccountId(accountId);
-    passwordDO.setPasswordId(passwordId);
-    passwordDO.setCreateTime(new Date());
-    passwordDO.setUpdateTime(new Date());
-    passwordDO.setPassword(passwordEncoder.encode("123456"));
+    String roleId = UUID.randomUUID().toString().replace("-", "");
+    RoleDTO roleDTO = new RoleDTO();
+    roleDTO.setRoleId(roleId);
+    roleDTO.setRole("ADMIN");
+    roleDTO.setAccountId(accountId);
+    roleDTO.setCreateTime(new Date());
+    roleDTO.setUpdateTime(new Date());
 
-    boolean result = accountService.add(accountDO, passwordDO);
+    boolean result = accountService.add(accountDTO, passwordDTO, roleDTO);
     log.info("是否添加成功 [{}]", result);
   }
 }

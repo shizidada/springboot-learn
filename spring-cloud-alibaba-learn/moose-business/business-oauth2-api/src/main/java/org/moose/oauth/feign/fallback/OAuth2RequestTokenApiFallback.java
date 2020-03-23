@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OAuth2RequestTokenApiFallback implements OAuth2RequestTokenApi {
 
-  public String getOAuthToken(Map<String, String> parameters) {
+  public Map<String, Object> getOAuthToken(Map<String, String> parameters) {
     log.warn("OAuth2LoginFeignApiFallback #getOAuthToken Fail");
     return null;
   }

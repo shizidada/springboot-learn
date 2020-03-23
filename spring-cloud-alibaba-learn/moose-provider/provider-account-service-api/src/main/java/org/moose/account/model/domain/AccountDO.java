@@ -46,11 +46,6 @@ public class AccountDO extends BaseDO {
   private Integer status;
 
   /**
-   * 账号角色
-   */
-  private String role;
-
-  /**
    * 头像
    */
   private String icon;

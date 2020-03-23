@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.moose.account.mapper.AccountMapper;
 import org.moose.account.model.domain.AccountDO;
 import org.moose.account.model.domain.PasswordDO;
+import org.moose.account.model.domain.RoleDO;
 import org.moose.account.model.dto.AccountDTO;
 import org.moose.account.model.dto.PasswordDTO;
+import org.moose.account.model.dto.RoleDTO;
 import org.moose.account.service.AccountService;
 import org.apache.dubbo.config.annotation.Service;
 import org.moose.account.service.PasswordService;
+import org.moose.account.service.RoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +37,13 @@ public class AccountServiceImpl implements AccountService {
   @Resource
   private PasswordService passwordService;
 
+  @Resource
+  private RoleService roleService;
+
   @Override
-  public int add(AccountDO accountDO) {
+  public int add(AccountDTO accountDTO) {
+    AccountDO accountDO = new AccountDO();
+    BeanUtils.copyProperties(accountDTO, accountDO);
     return accountMapper.insert(accountDO);
   }
 
@@ -52,16 +60,16 @@ public class AccountServiceImpl implements AccountService {
 
   @Transactional(rollbackFor = {Exception.class})
   @Override
-  public boolean add(AccountDO accountDO, PasswordDO passwordDO) {
+  public boolean add(AccountDTO accountDTO, PasswordDTO passwordDTO, RoleDTO roleDTO) {
 
     // add account
-    int result = this.add(accountDO);
+    int result = this.add(accountDTO);
 
     // add password
-    PasswordDTO passwordDTO = new PasswordDTO();
-    BeanUtils.copyProperties(passwordDO, passwordDTO);
     int result2 = passwordService.add(passwordDTO);
 
-    return result > 0 && result2 > 0;
+    // add role
+    int result3 = roleService.add(roleDTO);
+    return result > 0 && result2 > 0 && result3 > 0;
   }
 }

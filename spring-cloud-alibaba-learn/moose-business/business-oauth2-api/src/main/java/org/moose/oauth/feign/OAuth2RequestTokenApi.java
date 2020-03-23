@@ -3,7 +3,6 @@ package org.moose.oauth.feign;
 import java.util.Map;
 import org.moose.oauth.configure.OAuth2RequestTokenConfiguration;
 import org.moose.oauth.feign.fallback.OAuth2RequestTokenApiFallback;
-import org.moose.oauth.model.params.OAuth2Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,9 +32,6 @@ public interface OAuth2RequestTokenApi {
    * @param parameters 授权参数
    * @return 授权信息
    */
-  //@RequestLine("POST /oauth/token")
-  //@Headers({"Content-Type: multipart/form-data"})
-  //@Headers({"Content-Type: application/x-www-form-urlencoded"})
   @RequestMapping(method = RequestMethod.POST, value = "/oauth/token")
-  String getOAuthToken(Map<String, String> parameters);
+  Map<String, Object> getOAuthToken(Map<String, String> parameters);
 }

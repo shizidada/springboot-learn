@@ -3,6 +3,7 @@ package org.moose.oauth.model.params;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import org.moose.commons.base.dto.BaseDTO;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import lombok.Data;
  * @see org.moose.oauth.model
  */
 @Data
-public class LoginParam implements Serializable {
+public class LoginParam extends BaseDTO implements Serializable {
 
   private static final long serialVersionUID = 8989667558166315317L;
 

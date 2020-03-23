@@ -20,17 +20,26 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 
+# feign client 配置
 feign:
   okhttp:
     enabled: true
   httpclient:
     enabled: false
+#  hystrix:
+#    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 600000
 
 security:
   oauth2:
     client:
       client-id: client
       client-secret: secret
+      grant-type: password
       access-token-uri: http://${base.config.oauth.hostname}:${base.config.oauth.port}/oauth/token
       user-authorization-uri: http://${base.config.oauth.hostname}:${base.config.oauth.port}/oauth/authorize
     resource:
