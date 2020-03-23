@@ -2,8 +2,7 @@ package org.moose.oauth.feign.fallback;
 
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.oauth.feign.OAuth2LoginFeignApi;
-import org.moose.oauth.model.params.OAuthParam;
+import org.moose.oauth.feign.OAuth2RequestTokenApi;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class OAuth2LoginFeignApiFallback implements OAuth2LoginFeignApi {
+public class OAuth2RequestTokenApiFallback implements OAuth2RequestTokenApi {
 
   public String getOAuthToken(Map<String, String> parameters) {
     log.warn("OAuth2LoginFeignApiFallback #getOAuthToken Fail");

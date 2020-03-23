@@ -4,20 +4,16 @@ import com.google.common.collect.Maps;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.account.model.dto.AccountDTO;
 import org.moose.account.model.dto.PasswordDTO;
 import org.moose.commons.base.dto.ResponseResult;
-import org.moose.oauth.feign.OAuth2LoginFeignApi;
+import org.moose.oauth.feign.OAuth2RequestTokenApi;
 import org.moose.oauth.model.params.LoginParam;
-import org.moose.oauth.model.params.OAuthParam;
+import org.moose.oauth.model.params.OAuth2Param;
 import org.moose.user.dto.UserInfoDTO;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   @Resource
-  private OAuth2LoginFeignApi oAuth2LoginFeignApi;
+  private OAuth2RequestTokenApi oAuth2RequestTokenApi;
 
   @PostMapping("/register")
   public ResponseResult<Map<String, Object>> register(
@@ -106,7 +102,7 @@ public class UserController {
     //param.setClientSecret("secret");
     //param.setGrantType("password");
 
-    String jsonString = oAuth2LoginFeignApi.getOAuthToken(param);
+    String jsonString = oAuth2RequestTokenApi.getOAuthToken(param);
     log.info("获取结果 {}", jsonString);
     return new ResponseResult<>(jsonString);
   }

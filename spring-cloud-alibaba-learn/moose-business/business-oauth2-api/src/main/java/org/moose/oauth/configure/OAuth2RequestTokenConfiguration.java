@@ -3,7 +3,7 @@ package org.moose.oauth.configure;
 import feign.Logger;
 import feign.codec.Encoder;
 import feign.form.FormEncoder;
-import org.moose.oauth.interceptor.FeignRequestInterceptor;
+import org.moose.oauth.interceptor.OAuth2RequestTokenInterceptor;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
@@ -21,11 +21,11 @@ import org.springframework.context.annotation.Configuration;
  * @see org.moose.oauth.configure
  */
 @Configuration
-public class FeignRequestConfiguration {
+public class OAuth2RequestTokenConfiguration {
 
   @Bean
-  FeignRequestInterceptor oAuth2FeignRequestInterceptor() {
-    return new FeignRequestInterceptor();
+  OAuth2RequestTokenInterceptor oAuth2FeignRequestInterceptor() {
+    return new OAuth2RequestTokenInterceptor();
   }
 
   /**

@@ -24,7 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @see org.moose.oauth.interceptor
  */
 @Slf4j
-public class FeignRequestInterceptor implements RequestInterceptor {
+public class OAuth2RequestTokenInterceptor implements RequestInterceptor {
 
   /**
    * The name of the token.
@@ -55,30 +55,13 @@ public class FeignRequestInterceptor implements RequestInterceptor {
       }
     }
 
-    // 设置请求体
-    Enumeration<String> parameterNames = request.getParameterNames();
     StringBuilder body = new StringBuilder();
-
-    if (parameterNames != null) {
-      while (parameterNames.hasMoreElements()) {
-        String name = parameterNames.nextElement();
-        String value = request.getParameter(name);
-        // 设置 access_token
-        if ("access_token".equals(name)) {
-          requestTemplate.header(AUTHORIZATION, String.format("%s %s", BEARER, value));
-        } else {
-          // 其它参数加入请求体
-          body.append(name).append("=").append(value).append("&");
-        }
-      }
-    }
-
     // TODO: feign application/json auto cover application/x-www-form-urlencoded ??
+    // set TODO: auto cover
+    requestTemplate.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE);
     try {
       byte[] bytes = requestTemplate.body();
       if (bytes.length > 0) {
-        // set TODO: auto cover
-        requestTemplate.header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         String jsonString = new String(bytes, "UTF-8");
         if (jsonString.length() > 0) {
           Map<String, Object> map = MapperUtils.json2map(jsonString);
@@ -96,10 +79,8 @@ public class FeignRequestInterceptor implements RequestInterceptor {
       log.warn("RequestTemplate Body json2map {}", e);
     }
 
-    log.info("bodyTemplate {}", requestTemplate.bodyTemplate());
-
-    log.info("requestTemplate.body() {} ", body);
-
+    //log.info("bodyTemplate {}", requestTemplate.bodyTemplate());
+    //log.info("requestTemplate.body() {} ", body);
     // 设置请求体
     if (body.length() > 0) {
       // 去掉最后一位 & 符号

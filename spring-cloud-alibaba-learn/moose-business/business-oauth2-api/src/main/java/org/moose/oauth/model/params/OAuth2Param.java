@@ -11,10 +11,10 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 22:38
- * @see org.moose.oauth.model.dto
+ * @see org.moose.oauth.model.params
  */
 @Data
-public class OAuthParam implements Serializable {
+public class OAuth2Param implements Serializable {
   private String username;
   private String password;
   private String grantType;

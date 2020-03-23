@@ -1,14 +1,10 @@
 package org.moose.oauth.feign;
 
-import feign.Headers;
-import feign.RequestLine;
 import java.util.Map;
-import org.moose.oauth.configure.FeignRequestConfiguration;
-import org.moose.oauth.feign.fallback.OAuth2LoginFeignApiFallback;
-import org.moose.oauth.model.params.OAuthParam;
+import org.moose.oauth.configure.OAuth2RequestTokenConfiguration;
+import org.moose.oauth.feign.fallback.OAuth2RequestTokenApiFallback;
+import org.moose.oauth.model.params.OAuth2Param;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(
     value = "business-oauth2-service",
-    configuration = FeignRequestConfiguration.class,
-    fallback = OAuth2LoginFeignApiFallback.class
+    configuration = OAuth2RequestTokenConfiguration.class,
+    fallback = OAuth2RequestTokenApiFallback.class
 )
-public interface OAuth2LoginFeignApi {
+public interface OAuth2RequestTokenApi {
 
   /**
    * 通过 Feign 登录获取授权码
