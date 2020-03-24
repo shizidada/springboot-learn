@@ -23,4 +23,9 @@ public class OAuth2RequestTokenApiFallback implements OAuth2RequestTokenApi {
     log.warn("OAuth2LoginFeignApiFallback #getOAuthToken Fail");
     return null;
   }
+
+  public boolean deleteToken(String accessToken) {
+    log.warn("OAuth2LoginFeignApiFallback #deleteToken Fail");
+    return false;
+  }
 }

@@ -11,5 +11,11 @@ package org.moose.user.service;
  * @see org.moose.user.service
  */
 public interface AvatarService {
-  String insertAvatar();
+
+  /**
+   * 添加头像
+   *
+   * @return 是否添加成功
+   */
+  int addAvatar();
 }

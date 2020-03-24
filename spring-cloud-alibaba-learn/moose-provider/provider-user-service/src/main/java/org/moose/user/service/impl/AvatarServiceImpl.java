@@ -17,7 +17,7 @@ import org.moose.user.service.AvatarService;
 public class AvatarServiceImpl implements AvatarService {
 
   @Override
-  public String insertAvatar() {
-    return null;
+  public int addAvatar() {
+    return 0;
   }
 }

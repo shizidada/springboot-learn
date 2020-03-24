@@ -40,7 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring()
-        .antMatchers("/v1/user/login");
+        .antMatchers("/oauth/login");
   }
 
   @Bean
@@ -81,6 +81,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         // 授权访问
-        .antMatchers("/v1/user/logout").hasAuthority("USER");
+        .antMatchers("/**").hasAuthority("USER");
   }
 }

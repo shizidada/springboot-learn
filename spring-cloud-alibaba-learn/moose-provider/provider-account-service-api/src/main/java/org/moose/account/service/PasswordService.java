@@ -15,6 +15,11 @@ import org.moose.account.model.dto.PasswordDTO;
 public interface PasswordService {
 
 
+  /**
+   * 添加密码
+   * @param passwordDTO 密码
+   * @return 是否添加成功
+   */
   int add(PasswordDTO passwordDTO);
 
   /**

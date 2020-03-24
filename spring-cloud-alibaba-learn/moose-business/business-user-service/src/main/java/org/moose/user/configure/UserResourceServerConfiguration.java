@@ -2,6 +2,7 @@ package org.moose.user.configure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,6 +24,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@Order(1)
 public class UserResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
   @Bean
@@ -38,7 +40,9 @@ public class UserResourceServerConfiguration extends ResourceServerConfigurerAda
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers("/v1/user/register", "/v1/user/login", "/v1/user/info").permitAll()
+        .antMatchers("/user/register", "/user/login").permitAll()
+        .and()
+        .authorizeRequests()
         .antMatchers("/**").hasAuthority("USER");
   }
 

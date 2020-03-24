@@ -1,13 +1,13 @@
 server:
   port: 9001
 
-base:
+moose:
   config:
     oauth:
-      hostname: localhost
+      hostname: 127.0.0.1
       port: 9000
     nacos:
-      hostname: localhost
+      hostname: 127.0.0.1
       port: 8848
 
 spring:
@@ -18,7 +18,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: ${moose.config.nacos.hostname}:${moose.config.nacos.port}
 
 # feign client 配置
 feign:
@@ -26,8 +26,8 @@ feign:
     enabled: true
   httpclient:
     enabled: false
-#  hystrix:
-#    enabled: true
+  #  hystrix:
+  #    enabled: true
   client:
     config:
       default:
@@ -40,20 +40,20 @@ security:
       client-id: client
       client-secret: secret
       grant-type: password
-      access-token-uri: http://${base.config.oauth.hostname}:${base.config.oauth.port}/oauth/token
-      user-authorization-uri: http://${base.config.oauth.hostname}:${base.config.oauth.port}/oauth/authorize
+      access-token-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/token
+      user-authorization-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/authorize
     resource:
-      token-info-uri: http://${base.config.oauth.hostname}:${base.config.oauth.port}/oauth/check_token
+      token-info-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/check_token
 
-#dubbo:
-#  application:
-#    name: business-user-service-dubbo
-#  protocol:
-#    name: dubbo
-#    port: -1
-#  registry:
-#    address: nacos://127.0.0.1
-#    port: 8848
+dubbo:
+  application:
+    name: business-user-service-dubbo
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://${moose.config.nacos.hostname}
+    port: ${moose.config.nacos.port}
 
 management:
   endpoints:
@@ -63,4 +63,4 @@ management:
 
 logging:
   level:
-    org.moose.oauth.feign.*: debug
+    org.moose.user.*: info

@@ -76,7 +76,7 @@ public class MapperUtils {
    */
   public static <T> Map<String, T> json2map(String jsonString, Class<T> clazz) throws Exception {
     Map<String, T> map = objectMapper.readValue(jsonString, new TypeReference<Map<String, T>>() {});
-    Map<String, T> result = new HashMap<String, T>();
+    Map<String, T> result = new HashMap<String, T>(16);
     for (Map.Entry<String, T> entry : map.entrySet()) {
       result.put(entry.getKey(), map2pojo(entry.getValue(), clazz));
     }

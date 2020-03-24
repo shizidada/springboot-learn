@@ -1,8 +1,9 @@
-package org.moose.oauth.model.params;
+package org.moose.user.model.params;
 
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.moose.commons.base.dto.BaseDTO;
 
 /**
@@ -13,8 +14,9 @@ import org.moose.commons.base.dto.BaseDTO;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 15:17
- * @see org.moose.oauth.model
+ * @see org.moose.user.model
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class LoginParam extends BaseDTO implements Serializable {
 

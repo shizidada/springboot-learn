@@ -6,6 +6,7 @@ import org.moose.oauth.feign.fallback.OAuth2RequestTokenApiFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * OAuth2 登录 Api
@@ -34,4 +35,13 @@ public interface OAuth2RequestTokenApi {
    */
   @RequestMapping(method = RequestMethod.POST, value = "/oauth/token")
   Map<String, Object> getOAuthToken(Map<String, String> parameters);
+
+  /**
+   * 退出，删除 access_token
+   *
+   * @param accessToken 令牌
+   * @return 是否删除令牌成功
+   */
+  @RequestMapping(method = RequestMethod.POST, value = "/oauth/token/delete")
+  boolean deleteToken(@RequestParam("accessToken") String accessToken);
 }

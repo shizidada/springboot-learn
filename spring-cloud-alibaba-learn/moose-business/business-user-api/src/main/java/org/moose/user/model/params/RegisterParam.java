@@ -1,8 +1,9 @@
-package org.moose.oauth.model.params;
+package org.moose.user.model.params;
 
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -12,8 +13,9 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 22:38
- * @see org.moose.oauth.model.params
+ * @see org.moose.user.model.params
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class RegisterParam extends LoginParam implements Serializable {
 
