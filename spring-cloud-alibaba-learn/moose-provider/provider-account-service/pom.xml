@@ -116,7 +116,7 @@
 
     <dependency>
       <groupId>shizidada.github.io</groupId>
-      <artifactId>provider-account-service-api</artifactId>
+      <artifactId>provider-account-api</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
   </dependencies>

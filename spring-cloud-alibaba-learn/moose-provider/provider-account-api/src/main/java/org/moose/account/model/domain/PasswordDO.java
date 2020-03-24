@@ -15,8 +15,8 @@ import org.moose.commons.base.entity.BaseDO;
  * @date 2020 2020/3/11 23:06
  * @see org.moose.account.model.domain
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class PasswordDO extends BaseDO {
   /**
    * 密码 id

@@ -36,7 +36,7 @@ public class OAuth2RequestTokenInterceptor implements RequestInterceptor {
    */
   public static final String AUTHORIZATION = "Authorization";
 
-  public void apply(RequestTemplate requestTemplate) {
+  @Override public void apply(RequestTemplate requestTemplate) {
 
     ServletRequestAttributes attributes =
         (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

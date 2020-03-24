@@ -1,6 +1,7 @@
 package org.moose.account.model.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.moose.commons.base.entity.BaseDO;
 
 /**
@@ -14,6 +15,7 @@ import org.moose.commons.base.entity.BaseDO;
  * @see org.moose.account.model.domain
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class RoleDO extends BaseDO {
 
   /**
@@ -30,5 +32,4 @@ public class RoleDO extends BaseDO {
    * 账号 id
    */
   private String accountId;
-
 }

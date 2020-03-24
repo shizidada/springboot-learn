@@ -122,11 +122,11 @@ public class OkHttpClientUtil {
     // 执行 Call
     call.enqueue(new Callback() {
 
-      public void onResponse(Call call, Response response) throws IOException {
+      @Override public void onResponse(Call call, Response response) throws IOException {
         myNetCall.success(call, response);
       }
 
-      public void onFailure(Call call, IOException e) {
+      @Override public void onFailure(Call call, IOException e) {
         myNetCall.failed(call, e);
       }
     });
@@ -217,11 +217,11 @@ public class OkHttpClientUtil {
     Call call = okHttpClient.newCall(request);
     // 执行 Call
     call.enqueue(new Callback() {
-      public void onResponse(Call call, Response response) throws IOException {
+      @Override public void onResponse(Call call, Response response) throws IOException {
         myNetCall.success(call, response);
       }
 
-      public void onFailure(Call call, IOException e) {
+      @Override public void onFailure(Call call, IOException e) {
         myNetCall.failed(call, e);
       }
     });

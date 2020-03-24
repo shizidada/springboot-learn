@@ -15,9 +15,9 @@
 
   <modules>
     <module>provider-account-service</module>
-    <module>provider-account-service-api</module>
+    <module>provider-account-api</module>
     <module>provider-user-service</module>
-    <module>provider-user-service-api</module>
+    <module>provider-user-api</module>
   </modules>
 
 </project>

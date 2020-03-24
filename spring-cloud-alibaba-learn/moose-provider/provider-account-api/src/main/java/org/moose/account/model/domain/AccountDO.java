@@ -16,8 +16,8 @@ import org.moose.commons.base.entity.BaseDO;
  * @date 2020 2020/3/11 22:58
  * @see org.moose.account.model.domain
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class AccountDO extends BaseDO {
 
   /**

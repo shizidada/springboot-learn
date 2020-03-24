@@ -11,22 +11,8 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>jar</packaging>
 
-  <artifactId>provider-account-service-api</artifactId>
+  <artifactId>provider-user-api</artifactId>
 
-  <name>provider-account-service-api</name>
-
-  <dependencies>
-    <dependency>
-      <groupId>shizidada.github.io</groupId>
-      <artifactId>commons-base</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
+  <name>provider-user-api</name>
 
 </project>

@@ -31,7 +31,7 @@ public class CorsWebFilter implements WebFilter {
    * @param chain WebFilterChain
    * @return Mono<Void>
    */
-  public Mono<Void> filter(ServerWebExchange ctx, WebFilterChain chain) {
+  @Override public Mono<Void> filter(ServerWebExchange ctx, WebFilterChain chain) {
     ServerHttpRequest request = ctx.getRequest();
     if (!CorsUtils.isCorsRequest(request)) {
       return chain.filter(ctx);

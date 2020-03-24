@@ -15,8 +15,8 @@ import org.moose.commons.base.dto.BaseDTO;
  * @date 2020 2020/3/23 22:28
  * @see org.moose.account.model.domain
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class RoleDTO extends BaseDTO implements Serializable {
 
   /**

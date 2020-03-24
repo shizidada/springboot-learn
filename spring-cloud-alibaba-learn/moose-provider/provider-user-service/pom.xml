@@ -72,7 +72,7 @@
 
     <dependency>
       <groupId>shizidada.github.io</groupId>
-      <artifactId>provider-user-service-api</artifactId>
+      <artifactId>provider-user-api</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
 

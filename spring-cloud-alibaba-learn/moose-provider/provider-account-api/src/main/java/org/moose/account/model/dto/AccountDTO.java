@@ -16,8 +16,8 @@ import org.moose.commons.base.dto.BaseDTO;
  * @date 2020 2020/3/16 23:19
  * @see org.moose.account.model.dto
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class AccountDTO extends BaseDTO implements Serializable {
 
   private static final long serialVersionUID = -5760620294163161236L;

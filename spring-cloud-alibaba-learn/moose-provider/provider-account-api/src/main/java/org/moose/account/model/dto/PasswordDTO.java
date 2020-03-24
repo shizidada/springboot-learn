@@ -15,8 +15,8 @@ import org.moose.commons.base.dto.BaseDTO;
  * @date 2020 2020/3/11 23:06
  * @see org.moose.account.model.dto
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class PasswordDTO extends BaseDTO implements Serializable {
 
   /**
