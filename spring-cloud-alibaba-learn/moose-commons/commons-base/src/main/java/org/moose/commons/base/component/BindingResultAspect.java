@@ -19,7 +19,7 @@ import org.springframework.validation.FieldError;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 15:38
- * @see org.moose.oauth.component
+ * @see org.moose.business.oauth.component
  */
 @Aspect
 @Component

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.moose.account.mapper.AccountMapper">
+<mapper namespace="org.moose.provider.account.mapper.AccountMapper">
 
-  <resultMap id="BaseResultMap" type="org.moose.account.model.domain.AccountDO">
+  <resultMap id="BaseResultMap" type="org.moose.provider.account.model.domain.AccountDO">
     <id column="id" property="accountId" jdbcType="VARCHAR"/>
     <result column="account_name" property="accountName" jdbcType="VARCHAR"/>
     <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
@@ -22,7 +22,7 @@
     update_time
   </sql>
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="accountId" parameterType="org.moose.account.model.domain.AccountDO">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="accountId" parameterType="org.moose.provider.account.model.domain.AccountDO">
     INSERT INTO
     t_account(id, account_name, nick_name, phone, status, icon, gender, birthday, source_type,
     create_time, update_time)

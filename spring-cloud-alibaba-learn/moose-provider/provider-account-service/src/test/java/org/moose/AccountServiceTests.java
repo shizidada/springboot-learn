@@ -7,20 +7,17 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moose.account.mapper.AccountMapper;
-import org.moose.account.mapper.PasswordMapper;
-import org.moose.account.model.domain.AccountDO;
-import org.moose.account.model.domain.PasswordDO;
-import org.moose.account.model.domain.RoleDO;
-import org.moose.account.model.dto.AccountDTO;
-import org.moose.account.model.dto.PasswordDTO;
-import org.moose.account.model.dto.RoleDTO;
-import org.moose.account.service.AccountService;
+import org.moose.provider.account.mapper.AccountMapper;
+import org.moose.provider.account.mapper.PasswordMapper;
+import org.moose.provider.account.model.domain.AccountDO;
+import org.moose.provider.account.model.domain.PasswordDO;
+import org.moose.provider.account.model.dto.AccountDTO;
+import org.moose.provider.account.model.dto.PasswordDTO;
+import org.moose.provider.account.model.dto.RoleDTO;
+import org.moose.provider.account.service.AccountService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 账号服务测试类

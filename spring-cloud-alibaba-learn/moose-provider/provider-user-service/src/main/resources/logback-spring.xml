@@ -18,7 +18,7 @@
   <logger name="java.sql.Statement" level="debug"/>
   <logger name="java.sql.PreparedStatement" level="debug"/>
   <logger name="java.sql.ResultSet" level="debug"/>
-  <logger name="org.moose.account.mapper" level="debug"/>
+  <logger name="org.moose.provider.account.mapper" level="debug"/>
 
   <!-- 控制台输出 -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

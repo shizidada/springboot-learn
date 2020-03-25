@@ -13,7 +13,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/13 20:20
- * @see org.moose.oauth
+ * @see org.moose.business.oauth
  */
 @SpringBootApplication
 @EnableDiscoveryClient

@@ -37,6 +37,16 @@ public enum ResultCode {
   NET_WORK_UNKNOWN(460, "网络错误，请检查网络。"),
 
   /**
+   * Invalid Token
+   */
+  INVALID_TOKEN(401, "Invalid Token"),
+
+  /**
+   * Unauthorized
+   */
+  UNAUTHORIZED(401, "Unauthorized"),
+
+  /**
    * 未知错误
    */
   UNKNOWN(-99999, "未知错误");

@@ -9,7 +9,7 @@ github:
 
 spring:
   application:
-    name: account-service
+    name: provider-account-service
   main:
     allow-bean-definition-overriding: true
   cloud:
@@ -21,9 +21,9 @@ spring:
 
 dubbo:
   application:
-    name: account-service-dubbo
+    name: provider-account-service-dubbo
   scan:
-    base-packages: org.moose.account.service
+    base-packages: org.moose.provider.account.service
   protocol:
     name: dubbo
     port: -1

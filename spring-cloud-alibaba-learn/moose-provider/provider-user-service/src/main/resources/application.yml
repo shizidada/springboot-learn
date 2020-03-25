@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: user-service
+    name: provider-user-service
   main:
     allow-bean-definition-overriding: true
   cloud:
@@ -15,9 +15,9 @@ spring:
 
 dubbo:
   application:
-    name: user-service-dubbo
+    name: provider-user-service-dubbo
   scan:
-    base-packages: org.moose.user.service
+    base-packages: org.moose.provider.user.service
   protocol:
     name: dubbo
     port: -1

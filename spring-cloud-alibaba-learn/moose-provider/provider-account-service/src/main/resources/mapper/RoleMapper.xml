@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.moose.account.mapper.RoleMapper">
+<mapper namespace="org.moose.provider.account.mapper.RoleMapper">
 
-  <resultMap id="BaseResultMap" type="org.moose.account.model.domain.RoleDO">
+  <resultMap id="BaseResultMap" type="org.moose.provider.account.model.domain.RoleDO">
     <id column="id" property="roleId" jdbcType="VARCHAR"/>
     <result column="account_id" property="accountId" jdbcType="VARCHAR"/>
     <result column="role" property="role" jdbcType="VARCHAR"/>
@@ -16,7 +16,7 @@
   </sql>
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="roleId"
-      parameterType="org.moose.account.model.domain.AccountDO">
+      parameterType="org.moose.provider.account.model.domain.AccountDO">
     INSERT INTO
     t_role(id, role, account_id, create_time, update_time)
     VALUES (#{roleId}, #{role}, #{accountId}, #{createTime}, #{updateTime})
