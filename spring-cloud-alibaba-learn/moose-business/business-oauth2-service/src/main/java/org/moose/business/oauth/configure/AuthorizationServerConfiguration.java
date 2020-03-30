@@ -1,13 +1,18 @@
 package org.moose.business.oauth.configure;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import org.moose.business.oauth.configure.granter.SmsCodeTokenGranter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -15,6 +20,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.CompositeTokenGranter;
+import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -45,6 +52,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   private AuthenticationManager authenticationManager;
 
   @Resource
+  private UserDetailsService userDetailsService;
+
+  @Resource
   private WebResponseExceptionTranslator customOAuth2ResponseExceptionTranslator;
 
   /**
@@ -72,6 +82,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     // 基于 JDBC 实现，令牌保存到数据库
     return new JdbcTokenStore(dataSource());
     //return new RedisTokenStore(redisConnectionFactory);
+    //return new JwtTokenStore(accessTokenConverter());
   }
 
   /**
@@ -86,6 +97,17 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   }
 
   /**
+   * 添加自定义授权类型
+   *
+   * @return List<TokenGranter>
+   */
+  private TokenGranter tokenGranter(final AuthorizationServerEndpointsConfigurer endpoints) {
+    List<TokenGranter> granters = new ArrayList<TokenGranter>(Arrays.asList(endpoints.getTokenGranter()));
+    granters.add( new SmsCodeTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory()));
+    return new CompositeTokenGranter(granters);
+  }
+
+  /**
    * Authorization Server endpoints.
    *
    * @throws Exception
@@ -95,6 +117,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     endpoints
         // 用于支持密码模式
         .authenticationManager(authenticationManager)
+        .tokenGranter(tokenGranter(endpoints))
         .tokenStore(tokenStore())
         .exceptionTranslator(customOAuth2ResponseExceptionTranslator);
   }

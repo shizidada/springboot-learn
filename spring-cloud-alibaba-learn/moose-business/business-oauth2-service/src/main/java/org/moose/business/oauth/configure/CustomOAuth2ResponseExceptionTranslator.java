@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
+import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,8 @@ public class CustomOAuth2ResponseExceptionTranslator
     log.warn("授权异常 ExceptionTranslator【{}】【{}】", e.getClass().getName(), e.getMessage());
 
     if (e instanceof InternalAuthenticationServiceException ||
-        e instanceof InvalidGrantException) {
+        e instanceof InvalidGrantException ||
+        e instanceof InvalidRequestException) {
       return ResponseEntity
           .status(HttpStatus.OK)
           .body(new CustomOAuth2Exception(e.getMessage(), ResultCode.OAUTH_ERROR.getCode()));

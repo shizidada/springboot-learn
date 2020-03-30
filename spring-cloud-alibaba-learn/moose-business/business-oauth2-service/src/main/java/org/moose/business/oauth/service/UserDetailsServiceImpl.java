@@ -3,19 +3,18 @@ package org.moose.business.oauth.service;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.apache.dubbo.config.annotation.Reference;
+import org.moose.business.oauth.configure.CustomOAuth2Exception;
+import org.moose.commons.base.dto.ResultCode;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
 import org.moose.provider.account.service.AccountService;
 import org.moose.provider.account.service.PasswordService;
-import org.moose.commons.base.dto.ResultCode;
-import org.moose.business.oauth.configure.CustomOAuth2Exception;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 
 /**
  * <p>
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Component;
  * @date 2020-03-13 12:51:12:51
  * @see org.moose.business.oauth.service
  */
-@Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Reference(version = "1.0.0")
