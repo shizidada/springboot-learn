@@ -108,6 +108,13 @@
       <artifactId>lombok</artifactId>
     </dependency>
 
+    <!-- Projects -->
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
+      <artifactId>configuration-aop</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>shizidada.github.io</groupId>
       <artifactId>commons-base</artifactId>

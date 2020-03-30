@@ -1,4 +1,4 @@
-package org.moose.commons.base.handle;
+package org.moose.configuration.handle;
 
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/14 22:07
- * @see org.moose.commons.base.handle
+ * @see org.moose.configuration.handle
  */
 
 @Slf4j
@@ -35,7 +35,7 @@ public class BusinessExceptionHandler {
       code = bse.getCode();
       message = bse.getMessage();
     }
-    log.warn("[全局业务异常] {} ", ex);
+    log.warn("[全局业务异常] BusinessExceptionHandler ", ex);
     return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
   }
 }

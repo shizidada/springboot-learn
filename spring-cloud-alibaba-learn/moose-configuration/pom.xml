@@ -16,6 +16,7 @@
   <modules>
     <module>configuration-security</module>
     <module>configuration-feign</module>
+    <module>configuration-aop</module>
   </modules>
 
 </project>

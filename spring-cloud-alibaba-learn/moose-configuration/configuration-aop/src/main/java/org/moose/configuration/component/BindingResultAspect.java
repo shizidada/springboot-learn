@@ -1,4 +1,4 @@
-package org.moose.commons.base.component;
+package org.moose.configuration.component;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -19,13 +19,13 @@ import org.springframework.validation.FieldError;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 15:38
- * @see org.moose.business.oauth.component
+ * @see org.moose.configuration.component
  */
 @Aspect
 @Component
 @Order(2)
 public class BindingResultAspect {
-  @Pointcut("execution(public * org.moose.*.controller.*.*(..))")
+  @Pointcut("execution(public * org.moose.*.*.controller.*.*(..))")
   public void validateAnnotation() {
   }
 
