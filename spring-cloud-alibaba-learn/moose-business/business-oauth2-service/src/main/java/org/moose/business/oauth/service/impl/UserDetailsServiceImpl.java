@@ -1,14 +1,18 @@
-package org.moose.business.oauth.service;
+package org.moose.business.oauth.service.impl;
 
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.apache.dubbo.config.annotation.Reference;
 import org.moose.business.oauth.configure.CustomOAuth2Exception;
+import org.moose.business.oauth.model.dto.OAuth2UserDetails;
+import org.moose.business.oauth.service.OAuth2Service;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
+import org.moose.provider.account.model.dto.RoleDTO;
 import org.moose.provider.account.service.AccountService;
 import org.moose.provider.account.service.PasswordService;
+import org.moose.provider.account.service.RoleService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -34,6 +38,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Reference(version = "1.0.0")
   private PasswordService passwordService;
 
+  @Reference(version = "1.0.0")
+  private RoleService roleService;
+
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -49,14 +56,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
           ResultCode.ACCOUNT_PASSWORD_ERROR.getCode());
     }
 
+    RoleDTO roleDTO = new RoleDTO();
+    roleDTO.setAccountId(accountDTO.getAccountId());
+    RoleDTO role = roleService.get(roleDTO);
+
     List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
-    GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("USER");
-    grantedAuthorities.add(grantedAuthority);
-
-    String accountName = accountDTO.getAccountName();
-
-    String password = passwordDTO.getPassword();
-
-    return new User(accountName, password, grantedAuthorities);
+    grantedAuthorities.add(new SimpleGrantedAuthority(String.format("ROLE_%s", role.getRole())));
+    return new OAuth2UserDetails(accountDTO, passwordDTO, grantedAuthorities);
   }
 }

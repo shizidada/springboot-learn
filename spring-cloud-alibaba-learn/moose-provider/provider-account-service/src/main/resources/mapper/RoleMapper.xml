@@ -16,11 +16,19 @@
   </sql>
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="roleId"
-      parameterType="org.moose.provider.account.model.domain.AccountDO">
+      parameterType="org.moose.provider.account.model.domain.RoleDO">
     INSERT INTO
     t_role(id, role, account_id, create_time, update_time)
     VALUES (#{roleId}, #{role}, #{accountId}, #{createTime}, #{updateTime})
   </insert>
+
+  <select id="findRoleByAccountId" resultMap="BaseResultMap"
+      parameterType="org.moose.provider.account.model.domain.RoleDO">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM t_role
+    WHERE account_id=#{accountId}
+  </select>
 
 
 </mapper>

@@ -22,6 +22,26 @@ public enum ResultCode {
   ACCOUNT_PASSWORD_ERROR(100001, "用户名或密码错误"),
 
   /**
+   * 手机号不存在
+   */
+  PHONE_NOT_FOUND(100010, "手机号不存在"),
+
+  /**
+   * 短信验证码不存在
+   */
+  SMS_CODE_NOT_FOUNT(100020, "短信验证码不存在"),
+
+  /**
+   * 短信验证码不能为空
+   */
+  SMS_CODE_NOT_BE_NULL(100021, "短信验证码不能为空"),
+
+  /**
+   * 短信验证码错误
+   */
+  SMS_CODE_ERROR(100021, "短信验证码错误"),
+
+  /**
    * OAuth2 授权异常
    */
   OAUTH_ERROR(200001, "授权异常"),

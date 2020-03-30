@@ -28,7 +28,7 @@ public class CustomOAuth2ResponseExceptionTranslator
 
   @Override
   public ResponseEntity<CustomOAuth2Exception> translate(Exception e) throws Exception {
-    log.warn("授权异常 ExceptionTranslator【{}】【{}】", e.getClass().getName(), e.getMessage());
+    log.error("授权异常 ExceptionTranslator", e);
 
     if (e instanceof InternalAuthenticationServiceException ||
         e instanceof InvalidGrantException ||

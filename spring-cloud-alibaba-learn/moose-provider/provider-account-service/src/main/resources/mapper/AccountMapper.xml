@@ -22,7 +22,8 @@
     update_time
   </sql>
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="accountId" parameterType="org.moose.provider.account.model.domain.AccountDO">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="accountId"
+      parameterType="org.moose.provider.account.model.domain.AccountDO">
     INSERT INTO
     t_account(id, account_name, nick_name, phone, status, icon, gender, birthday, source_type,
     create_time, update_time)
@@ -30,17 +31,26 @@
     #{birthday}, #{sourceType}, #{createTime}, #{updateTime})
   </insert>
 
-  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="findAccountById" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT
     <include refid="Base_Column"/>
     FROM
     t_account WHERE id=#{accountId}
   </select>
 
-  <select id="findByAccountName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="findAccountByName" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT
     <include refid="Base_Column"/>
     FROM
     t_account WHERE account_name=#{accountName}
+  </select>
+
+  <select id="findAccountByPhone" resultMap="BaseResultMap"
+      parameterType="org.moose.provider.account.model.domain.AccountDO">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM
+    t_account WHERE phone=#{phone}
+
   </select>
 </mapper>

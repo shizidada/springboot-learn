@@ -22,4 +22,12 @@ public interface RoleService {
    * @return 是否添加成功
    */
   int add(RoleDTO roleDTO);
+
+  /**
+   * 查询账号角色
+   *
+   * @param roleDTO 角色
+   * @return 角色
+   */
+  RoleDTO get(RoleDTO roleDTO);
 }

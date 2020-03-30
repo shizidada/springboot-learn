@@ -47,11 +47,27 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public AccountDTO get(String accountName) {
-    AccountDO accountDO = accountMapper.findByAccountName(accountName);
+    AccountDO accountDO = accountMapper.findAccountByName(accountName);
     if (accountDO == null) {
       return null;
     }
     AccountDTO accountDTO = new AccountDTO();
+    BeanUtils.copyProperties(accountDO, accountDTO);
+    return accountDTO;
+  }
+
+  @Override public AccountDTO get(AccountDTO accountDTO) {
+    if (accountDTO == null) {
+      return null;
+    }
+
+    AccountDO accountDO = new AccountDO();
+    BeanUtils.copyProperties(accountDTO, accountDO);
+    accountDO = accountMapper.findAccountByPhone(accountDO);
+    if (accountDO == null) {
+      return null;
+    }
+
     BeanUtils.copyProperties(accountDO, accountDTO);
     return accountDTO;
   }

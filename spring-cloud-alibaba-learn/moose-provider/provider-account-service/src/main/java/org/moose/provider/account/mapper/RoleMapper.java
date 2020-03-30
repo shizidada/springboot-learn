@@ -24,4 +24,12 @@ public interface RoleMapper {
    * @return 是否添加成功
    */
   int insert(RoleDO roleDO);
+
+  /**
+   * 根据账号 id 查询角色
+   *
+   * @param roleDO 角色信息
+   * @return 角色
+   */
+  RoleDO findRoleByAccountId(RoleDO roleDO);
 }

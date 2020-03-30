@@ -3,10 +3,12 @@ package org.moose.business.oauth.configure;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import org.moose.business.oauth.configure.granter.SmsCodeTokenGranter;
+import org.moose.business.oauth.service.OAuth2Service;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,9 +44,6 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-  @Resource
-  private BCryptPasswordEncoder passwordEncoder;
-
   /**
    * 注入用于支持 password 模式
    */
@@ -52,7 +51,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   private AuthenticationManager authenticationManager;
 
   @Resource
-  private UserDetailsService userDetailsService;
+  private OAuth2Service oAuth2Service;
 
   @Resource
   private WebResponseExceptionTranslator customOAuth2ResponseExceptionTranslator;
@@ -102,8 +101,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
    * @return List<TokenGranter>
    */
   private TokenGranter tokenGranter(final AuthorizationServerEndpointsConfigurer endpoints) {
-    List<TokenGranter> granters = new ArrayList<TokenGranter>(Arrays.asList(endpoints.getTokenGranter()));
-    granters.add( new SmsCodeTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory()));
+    List<TokenGranter> granters =
+        new ArrayList<TokenGranter>(Collections.singletonList(endpoints.getTokenGranter()));
+
+    SmsCodeTokenGranter smsCodeTokenGranter =
+        new SmsCodeTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(),
+            endpoints.getOAuth2RequestFactory());
+    smsCodeTokenGranter.setoAuth2Service(oAuth2Service);
+    granters.add(smsCodeTokenGranter);
     return new CompositeTokenGranter(granters);
   }
 
@@ -146,25 +151,4 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     // 客户端配置
     clients.withClientDetails(jdbcClientDetailsService());
   }
-
-  //@Override
-  //public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-  //  clients
-  //      // 使用内存设置
-  //      .inMemory()
-  //      // client_id
-  //      .withClient("client")
-  //      // client_secret
-  //      .secret(passwordEncoder.encode("secret"))
-  //      // 授权类型，密码模式和刷新令牌
-  //      .authorizedGrantTypes("password", "refresh_token")
-  //      // 授权范围
-  //      .scopes("app")
-  //      // 可以设置对哪些资源有访问权限，不设置则全部资源都可以访问
-  //      .resourceIds("app-resources")
-  //      // 设置访问令牌的有效期，这里是 1 天
-  //      .accessTokenValiditySeconds(60 * 60 * 24)
-  //      // 设置刷新令牌的有效期，这里是 30 天
-  //      .refreshTokenValiditySeconds(60 * 60 * 24 * 30);
-  //}
 }

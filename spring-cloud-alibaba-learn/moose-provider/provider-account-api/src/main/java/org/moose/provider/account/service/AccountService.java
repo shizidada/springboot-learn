@@ -41,4 +41,12 @@ public interface AccountService {
    * @return 用户信息
    */
   AccountDTO get(String accountName);
+
+  /**
+   * 根据 AccountDTO 查询
+   *
+   * @param accountDTO 根据 accountDTO 查找
+   * @return 是否存在
+   */
+  AccountDTO get(AccountDTO accountDTO);
 }
