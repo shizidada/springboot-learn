@@ -1,6 +1,7 @@
 package org.moose;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -64,10 +65,10 @@ public class AccountServiceTests {
     accountDO.setStatus(1);
     accountDO.setIcon("https://icon.com");
     accountDO.setGender(1);
-    accountDO.setBirthday(new Date());
+    accountDO.setBirthday(LocalDate.now());
     accountDO.setSourceType(1);
-    accountDO.setCreateTime(new Date());
-    accountDO.setUpdateTime(new Date());
+    accountDO.setCreateTime(LocalDateTime.now());
+    accountDO.setUpdateTime(LocalDateTime.now());
 
     Long passwordId = idWorker.nextId();
 
@@ -97,17 +98,17 @@ public class AccountServiceTests {
     accountDTO.setStatus(1);
     accountDTO.setIcon("https://icon.com");
     accountDTO.setGender(1);
-    accountDTO.setBirthday(new Date());
+    accountDTO.setBirthday(LocalDate.now());
     accountDTO.setSourceType(2);
-    accountDTO.setCreateTime(new Date());
-    accountDTO.setUpdateTime(new Date());
+    accountDTO.setCreateTime(LocalDateTime.now());
+    accountDTO.setUpdateTime(LocalDateTime.now());
 
     Long passwordId = idWorker.nextId();
     PasswordDTO passwordDTO = new PasswordDTO();
     passwordDTO.setAccountId(accountId);
     passwordDTO.setPasswordId(passwordId);
-    passwordDTO.setCreateTime(new Date());
-    passwordDTO.setUpdateTime(new Date());
+    passwordDTO.setCreateTime(LocalDateTime.now());
+    passwordDTO.setUpdateTime(LocalDateTime.now());
     passwordDTO.setPassword(passwordEncoder.encode("123456"));
 
     Long roleId = idWorker.nextId();
@@ -115,8 +116,8 @@ public class AccountServiceTests {
     roleDTO.setRoleId(roleId);
     roleDTO.setRole("ADMIN");
     roleDTO.setAccountId(accountId);
-    roleDTO.setCreateTime(new Date());
-    roleDTO.setUpdateTime(new Date());
+    roleDTO.setCreateTime(LocalDateTime.now());
+    roleDTO.setUpdateTime(LocalDateTime.now());
 
     boolean result = accountService.add(accountDTO, passwordDTO, roleDTO);
     log.info("是否添加成功 [{}]", result);

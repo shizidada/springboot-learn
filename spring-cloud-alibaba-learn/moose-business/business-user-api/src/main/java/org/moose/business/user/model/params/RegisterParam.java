@@ -15,9 +15,16 @@ import lombok.EqualsAndHashCode;
  * @date 2020 2020/3/21 22:38
  * @see org.moose.business.user.model.params
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class RegisterParam extends LoginParam implements Serializable {
+public class RegisterParam implements Serializable {
+
+  private static final long serialVersionUID = 8200860755139836411L;
+
+  @NotBlank(message = "账号不能为空")
+  private String accountName;
+
+  @NotBlank(message = "密码不能为空")
+  private String password;
 
   @NotBlank(message = "二次密码不能为空")
   private String rePassword;

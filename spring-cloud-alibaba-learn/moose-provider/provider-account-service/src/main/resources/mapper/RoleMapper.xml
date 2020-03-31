@@ -4,7 +4,7 @@
 <mapper namespace="org.moose.provider.account.mapper.RoleMapper">
 
   <resultMap id="BaseResultMap" type="org.moose.provider.account.model.domain.RoleDO">
-    <id column="id" property="roleId" jdbcType="VARCHAR"/>
+    <id column="id" property="roleId" jdbcType="BIGINT"/>
     <result column="account_id" property="accountId" jdbcType="VARCHAR"/>
     <result column="role" property="role" jdbcType="VARCHAR"/>
     <result column="create_time" property="createTime" jdbcType="DATE"/>

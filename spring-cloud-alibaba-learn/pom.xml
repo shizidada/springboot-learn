@@ -40,6 +40,7 @@
     <feign-okhttp.version>10.7.4</feign-okhttp.version>
     <fastjson.version>1.2.62</fastjson.version>
     <commons-lang3.version>3.9</commons-lang3.version>
+    <jackson.version>2.10.2</jackson.version>
   </properties>
 
   <dependencyManagement>
@@ -152,6 +153,12 @@
         <groupId>com.alibaba</groupId>
         <artifactId>fastjson</artifactId>
         <version>${fastjson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
       </dependency>
 
     </dependencies>

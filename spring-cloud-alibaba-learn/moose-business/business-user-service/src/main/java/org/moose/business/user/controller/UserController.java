@@ -39,7 +39,7 @@ public class UserController {
 
   @PostMapping("/register")
   public ResponseResult<?> register(
-      @RequestBody RegisterParam registerParam, BindingResult bindingResult) {
+      @RequestBody @Valid RegisterParam registerParam, BindingResult bindingResult) {
     return userService.register(registerParam);
   }
 

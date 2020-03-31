@@ -14,7 +14,9 @@ public interface OAuth2Constants {
 
   String OAUTH2_TOKEN_URL = "http://localhost:9000/oauth/token";
 
-  String OAUTH2_GRANT_TYPE = "password";
+  String OAUTH2_PASSWORD_GRANT_TYPE = "password";
+
+  String OAUTH2_SMS_GRANT_TYPE = "sms_code";
 
   String OAUTH2_CLIENT_ID = "client";
 

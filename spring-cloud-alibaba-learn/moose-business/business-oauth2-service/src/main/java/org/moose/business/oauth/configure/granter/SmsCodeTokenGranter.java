@@ -63,28 +63,31 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
     // 客户端提交的验证码
     String smsCode = parameters.get("smsCode");
     if (StringUtils.isBlank(smsCode)) {
-      throw new BusinessException(ResultCode.SMS_CODE_NOT_BE_NULL.getMessage(),
-          ResultCode.SMS_CODE_NOT_BE_NULL.getCode());
+      throw new BusinessException(ResultCode.SMS_CODE_MUST_NOT_BE_NULL.getCode(),
+          ResultCode.SMS_CODE_MUST_NOT_BE_NULL.getMessage());
     }
 
     // 获取服务中保存的用户验证码, 在生成好后放到缓存中
     String smsCodeCached = "123456";
     if (StringUtils.isBlank(smsCodeCached)) {
-      throw new BusinessException(ResultCode.SMS_CODE_NOT_FOUNT.getMessage(),
-          ResultCode.SMS_CODE_NOT_FOUNT.getCode());
+      throw new BusinessException(
+          ResultCode.SMS_CODE_NOT_FOUNT.getCode(), ResultCode.SMS_CODE_NOT_FOUNT.getMessage());
     }
     if (!smsCode.equals(smsCodeCached)) {
-      throw new BusinessException(ResultCode.SMS_CODE_ERROR.getMessage(),
-          ResultCode.SMS_CODE_ERROR.getCode());
+      throw new BusinessException(
+          ResultCode.SMS_CODE_ERROR.getCode(), ResultCode.SMS_CODE_ERROR.getMessage());
     }
+
     // 验证通过后从缓存中移除验证码 etc...
 
-    // 客户端提交的用户名
+    // 客户端提交的手机号码
     String phone = parameters.get("phone");
     AccountDTO accountDTO = oAuth2Service.getAccountByPhone(phone);
+
+    // TODO if account not exist , create a new account ??
     if (accountDTO == null) {
-      throw new BusinessException(ResultCode.PHONE_NOT_FOUND.getMessage(),
-          ResultCode.PHONE_NOT_FOUND.getCode());
+      throw new BusinessException(
+          ResultCode.PHONE_NOT_FOUND.getCode(), ResultCode.PHONE_NOT_FOUND.getMessage());
     }
 
     RoleDTO role = oAuth2Service.getAccountRole(accountDTO.getAccountId());
@@ -94,7 +97,7 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
     grantedAuthorities.add(new SimpleGrantedAuthority(String.format("ROLE_%s", role.getRole())));
     UserDetails user = new OAuth2UserDetails(accountDTO, null, grantedAuthorities);
 
-    //验证用户状态(是否禁用 etc...)
+    // 验证用户状态(是否禁用 etc...)
 
     Authentication userAuth =
         new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

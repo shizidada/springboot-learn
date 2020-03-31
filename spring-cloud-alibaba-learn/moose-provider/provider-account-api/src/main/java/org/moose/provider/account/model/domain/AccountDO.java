@@ -1,6 +1,9 @@
 package org.moose.provider.account.model.domain;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.time.LocalDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -58,7 +61,9 @@ public class AccountDO extends BaseDO {
   /**
    * 生日
    */
-  private Date birthday;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
+  private LocalDate birthday;
 
   /**
    * 注册来源

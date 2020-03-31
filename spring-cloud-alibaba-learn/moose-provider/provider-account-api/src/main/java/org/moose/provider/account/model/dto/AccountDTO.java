@@ -1,6 +1,10 @@
 package org.moose.provider.account.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -65,7 +69,9 @@ public class AccountDTO extends BaseDTO implements Serializable {
   /**
    * 生日
    */
-  private Date birthday;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
+  private LocalDate birthday;
 
   /**
    * 注册来源

@@ -1,7 +1,9 @@
 package org.moose.commons.base.dto;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
@@ -19,10 +21,14 @@ public class BaseDTO {
   /**
    * 创建时间
    */
-  private Date createTime;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
+  private LocalDateTime createTime;
 
   /**
    * 更新时间
    */
-  private Date updateTime;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
+  private LocalDateTime updateTime;
 }

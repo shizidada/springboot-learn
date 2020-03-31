@@ -22,9 +22,26 @@ public class LoginParam extends BaseDTO implements Serializable {
 
   private static final long serialVersionUID = 8989667558166315317L;
 
-  @NotBlank(message = "账号不能为空")
+  /**
+   * 账号
+   */
   private String accountName;
 
-  @NotBlank(message = "密码不能为空")
+  /**
+   * 密码
+   */
   private String password;
+
+  /**
+   * 手机号码
+   */
+  private String phone;
+
+  /**
+   * 短信验证码
+   */
+  private String smsCode;
+
+  @NotBlank(message = "登录方式不能为空")
+  private String loginType;
 }
