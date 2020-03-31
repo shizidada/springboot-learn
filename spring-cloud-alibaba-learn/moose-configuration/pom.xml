@@ -17,6 +17,7 @@
     <module>configuration-security</module>
     <module>configuration-feign</module>
     <module>configuration-aop</module>
+    <module>configuration-redis</module>
   </modules>
 
 </project>
