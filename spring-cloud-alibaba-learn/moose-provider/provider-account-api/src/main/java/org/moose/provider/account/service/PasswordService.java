@@ -28,5 +28,5 @@ public interface PasswordService {
    * @param accountId 账号
    * @return 用户信息
    */
-  PasswordDTO get(String accountId);
+  PasswordDTO get(Long accountId);
 }

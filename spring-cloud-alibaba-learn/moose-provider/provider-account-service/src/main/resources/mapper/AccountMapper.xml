@@ -31,7 +31,7 @@
     #{birthday}, #{sourceType}, #{createTime}, #{updateTime})
   </insert>
 
-  <select id="findAccountById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="findAccountById" resultMap="BaseResultMap" parameterType="java.lang.Long">
     SELECT
     <include refid="Base_Column"/>
     FROM

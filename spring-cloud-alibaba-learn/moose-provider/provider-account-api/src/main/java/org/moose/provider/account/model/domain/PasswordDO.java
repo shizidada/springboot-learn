@@ -21,12 +21,12 @@ public class PasswordDO extends BaseDO {
   /**
    * 密码 id
    */
-  private String passwordId;
+  private Long passwordId;
 
   /**
    * 关联账号 id
    */
-  private String accountId;
+  private Long accountId;
 
   /**
    * 密码

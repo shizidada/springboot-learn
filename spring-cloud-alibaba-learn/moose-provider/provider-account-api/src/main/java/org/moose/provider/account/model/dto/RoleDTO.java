@@ -22,7 +22,7 @@ public class RoleDTO extends BaseDTO implements Serializable {
   /**
    * 角色 id
    */
-  private String roleId;
+  private Long roleId;
 
   /**
    * 角色
@@ -32,5 +32,5 @@ public class RoleDTO extends BaseDTO implements Serializable {
   /**
    * 账号 id
    */
-  private String accountId;
+  private Long accountId;
 }

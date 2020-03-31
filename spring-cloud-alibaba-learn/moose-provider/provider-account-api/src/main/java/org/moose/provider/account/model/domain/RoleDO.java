@@ -21,7 +21,7 @@ public class RoleDO extends BaseDO {
   /**
    * 角色 id
    */
-  private String roleId;
+  private Long roleId;
 
   /**
    * 角色
@@ -31,5 +31,5 @@ public class RoleDO extends BaseDO {
   /**
    * 账号 id
    */
-  private String accountId;
+  private Long accountId;
 }

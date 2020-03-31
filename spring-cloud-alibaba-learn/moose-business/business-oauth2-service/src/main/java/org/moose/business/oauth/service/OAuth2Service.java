@@ -29,5 +29,5 @@ public interface OAuth2Service {
    * @param accountId 账号 id
    * @return RoleDTO
    */
-  RoleDTO getAccountRole(String accountId);
+  RoleDTO getAccountRole(Long accountId);
 }

@@ -1,12 +1,11 @@
 package org.moose;
 
 import java.util.Date;
-
-import java.util.UUID;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moose.commons.base.snowflake.SnowflakeIdWorker;
 import org.moose.provider.account.mapper.AccountMapper;
 import org.moose.provider.account.mapper.PasswordMapper;
 import org.moose.provider.account.model.domain.AccountDO;
@@ -50,10 +49,12 @@ public class AccountServiceTests {
   @Resource
   private AccountService accountService;
 
+  SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
+
   @Test
   public void createAccountTest() {
 
-    String accountId = UUID.randomUUID().toString().replace("-", "");
+    Long accountId = idWorker.nextId();
 
     AccountDO accountDO = new AccountDO();
     accountDO.setAccountId(accountId);
@@ -68,7 +69,7 @@ public class AccountServiceTests {
     accountDO.setCreateTime(new Date());
     accountDO.setUpdateTime(new Date());
 
-    String passwordId = UUID.randomUUID().toString().replace("-", "");
+    Long passwordId = idWorker.nextId();
 
     PasswordDO passwordDO = new PasswordDO();
     passwordDO.setAccountId(accountId);
@@ -87,7 +88,7 @@ public class AccountServiceTests {
   @Test
   public void addAccountAndPassword() {
 
-    String accountId = UUID.randomUUID().toString().replace("-", "");
+    Long accountId = idWorker.nextId();
     AccountDTO accountDTO = new AccountDTO();
     accountDTO.setAccountId(accountId);
     accountDTO.setAccountName("tom");
@@ -101,7 +102,7 @@ public class AccountServiceTests {
     accountDTO.setCreateTime(new Date());
     accountDTO.setUpdateTime(new Date());
 
-    String passwordId = UUID.randomUUID().toString().replace("-", "");
+    Long passwordId = idWorker.nextId();
     PasswordDTO passwordDTO = new PasswordDTO();
     passwordDTO.setAccountId(accountId);
     passwordDTO.setPasswordId(passwordId);
@@ -109,7 +110,7 @@ public class AccountServiceTests {
     passwordDTO.setUpdateTime(new Date());
     passwordDTO.setPassword(passwordEncoder.encode("123456"));
 
-    String roleId = UUID.randomUUID().toString().replace("-", "");
+    Long roleId = idWorker.nextId();
     RoleDTO roleDTO = new RoleDTO();
     roleDTO.setRoleId(roleId);
     roleDTO.setRole("ADMIN");

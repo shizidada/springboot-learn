@@ -34,7 +34,7 @@ public class PasswordServiceImpl implements PasswordService {
   }
 
   @Override
-  public PasswordDTO get(String accountId) {
+  public PasswordDTO get(Long accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
     PasswordDTO passwordDTO = new PasswordDTO();
     BeanUtils.copyProperties(passwordDO, passwordDTO);

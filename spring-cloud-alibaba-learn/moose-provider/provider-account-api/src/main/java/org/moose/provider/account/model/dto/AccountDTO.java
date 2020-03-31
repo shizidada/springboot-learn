@@ -25,7 +25,7 @@ public class AccountDTO extends BaseDTO implements Serializable {
   /**
    * 账号 ID
    */
-  private String accountId;
+  private Long accountId;
 
   /**
    * 账号名称

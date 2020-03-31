@@ -3,20 +3,20 @@ package org.moose.business.user.service.impl;
 import com.google.common.collect.Maps;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.Reference;
-import org.moose.provider.account.model.dto.AccountDTO;
-import org.moose.provider.account.model.dto.PasswordDTO;
-import org.moose.provider.account.model.dto.RoleDTO;
-import org.moose.provider.account.service.AccountService;
-import org.moose.commons.base.dto.ResponseResult;
-import org.moose.commons.base.dto.ResultCode;
 import org.moose.business.oauth.feign.OAuth2RequestTokenApi;
 import org.moose.business.user.constants.OAuth2Constants;
 import org.moose.business.user.model.params.LoginParam;
 import org.moose.business.user.model.params.RegisterParam;
 import org.moose.business.user.service.UserService;
+import org.moose.commons.base.dto.ResponseResult;
+import org.moose.commons.base.dto.ResultCode;
+import org.moose.commons.base.snowflake.SnowflakeIdWorker;
+import org.moose.provider.account.model.dto.AccountDTO;
+import org.moose.provider.account.model.dto.PasswordDTO;
+import org.moose.provider.account.model.dto.RoleDTO;
+import org.moose.provider.account.service.AccountService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
   @Resource
   private BCryptPasswordEncoder passwordEncoder;
+
+  @Resource
+  private SnowflakeIdWorker snowflakeIdWorker;
 
   @Reference(version = "1.0.0")
   private AccountService accountService;
@@ -72,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
   @Override public ResponseResult<?> register(RegisterParam registerParam) {
 
-    String accountId = UUID.randomUUID().toString().replace("-", "");
+    Long accountId = snowflakeIdWorker.nextId();
     AccountDTO accountDTO = new AccountDTO();
     accountDTO.setAccountId(accountId);
     accountDTO.setAccountName(registerParam.getAccountName());
@@ -80,7 +83,7 @@ public class UserServiceImpl implements UserService {
     accountDTO.setCreateTime(new Date());
     accountDTO.setUpdateTime(new Date());
 
-    String passwordId = UUID.randomUUID().toString().replace("-", "");
+    Long passwordId = snowflakeIdWorker.nextId();
     PasswordDTO passwordDTO = new PasswordDTO();
     passwordDTO.setAccountId(accountId);
     passwordDTO.setPassword(passwordEncoder.encode(registerParam.getPassword()));
@@ -88,7 +91,7 @@ public class UserServiceImpl implements UserService {
     passwordDTO.setCreateTime(new Date());
     passwordDTO.setUpdateTime(new Date());
 
-    String roleId = UUID.randomUUID().toString().replace("-", "");
+    Long roleId = snowflakeIdWorker.nextId();
     RoleDTO roleDTO = new RoleDTO();
     roleDTO.setRoleId(roleId);
     roleDTO.setRole("USER");

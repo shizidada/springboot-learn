@@ -30,5 +30,5 @@ public interface PasswordMapper {
    * @param accountId 账号 id
    * @return 密码
    */
-  PasswordDO findByAccountId(String accountId);
+  PasswordDO findByAccountId(Long accountId);
 }

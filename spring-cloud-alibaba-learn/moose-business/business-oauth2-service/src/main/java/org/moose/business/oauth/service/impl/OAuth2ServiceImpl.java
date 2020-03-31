@@ -33,7 +33,7 @@ public class OAuth2ServiceImpl implements OAuth2Service {
     return accountService.get(accountDTO);
   }
 
-  @Override public RoleDTO getAccountRole(String accountId) {
+  @Override public RoleDTO getAccountRole(Long accountId) {
     RoleDTO roleDTO = new RoleDTO();
     roleDTO.setAccountId(accountId);
     roleDTO = roleService.get(roleDTO);
