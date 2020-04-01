@@ -28,15 +28,10 @@ public class OAuth2ServiceImpl implements OAuth2Service {
   private RoleService roleService;
 
   @Override public AccountDTO getAccountByPhone(String phone) {
-    AccountDTO accountDTO = new AccountDTO();
-    accountDTO.setPhone(phone);
-    return accountService.get(accountDTO);
+    return accountService.getAccountByPhone(phone);
   }
 
   @Override public RoleDTO getAccountRole(Long accountId) {
-    RoleDTO roleDTO = new RoleDTO();
-    roleDTO.setAccountId(accountId);
-    roleDTO = roleService.get(roleDTO);
-    return roleDTO;
+    return roleService.getRoleByAccountId(accountId);
   }
 }

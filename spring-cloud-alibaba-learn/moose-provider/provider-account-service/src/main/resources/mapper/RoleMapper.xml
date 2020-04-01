@@ -22,8 +22,7 @@
     VALUES (#{roleId}, #{role}, #{accountId}, #{createTime}, #{updateTime})
   </insert>
 
-  <select id="findRoleByAccountId" resultMap="BaseResultMap"
-      parameterType="org.moose.provider.account.model.domain.RoleDO">
+  <select id="findRoleByAccountId" resultMap="BaseResultMap" parameterType="java.lang.Long">
     SELECT
     <include refid="Base_Column"/>
     FROM t_role

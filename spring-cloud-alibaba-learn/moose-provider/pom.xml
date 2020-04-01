@@ -14,10 +14,12 @@
   <artifactId>moose-provider</artifactId>
 
   <modules>
-    <module>provider-account-service</module>
     <module>provider-account-api</module>
-    <module>provider-user-service</module>
+    <module>provider-account-service</module>
     <module>provider-user-api</module>
+    <module>provider-user-service</module>
+    <module>provider-sms-api</module>
+    <module>provider-sms-service</module>
   </modules>
 
 </project>

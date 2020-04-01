@@ -43,10 +43,10 @@ public interface AccountService {
   AccountDTO get(String accountName);
 
   /**
-   * 根据 AccountDTO 查询
+   * 根据 phone 查询
    *
-   * @param accountDTO 根据 accountDTO 查找
+   * @param phone 根据 phone 查找
    * @return 是否存在
    */
-  AccountDTO get(AccountDTO accountDTO);
+  AccountDTO getAccountByPhone(String phone);
 }

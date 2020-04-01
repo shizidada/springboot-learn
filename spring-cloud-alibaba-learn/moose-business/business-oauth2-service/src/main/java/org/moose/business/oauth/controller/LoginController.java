@@ -57,7 +57,9 @@ public class LoginController {
       String accessToken = (String) map.get("access_token");
       if (accessToken != null) {
         Map<String, Object> result = Maps.newHashMap();
-        result.put("accessToken", accessToken);
+        String refreshToken = (String) map.get("refresh_token");
+        result.put("access_token", accessToken);
+        result.put("refresh_token", refreshToken);
         return new ResponseResult<Map<String, Object>>(result);
       } else {
         Integer code = (Integer) map.get("code");

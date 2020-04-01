@@ -1,18 +1,17 @@
 package org.moose.business.user.service.impl;
 
 import com.google.common.collect.Maps;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
 import javax.annotation.Resource;
-import javax.validation.constraints.NotBlank;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.moose.business.oauth.feign.OAuth2RequestTokenApi;
 import org.moose.business.user.constants.OAuth2Constants;
 import org.moose.business.user.model.params.LoginParam;
 import org.moose.business.user.model.params.RegisterParam;
+import org.moose.business.user.model.params.SmsCodeParam;
 import org.moose.business.user.service.UserService;
 import org.moose.commons.base.dto.ResponseResult;
 import org.moose.commons.base.dto.ResultCode;
@@ -22,6 +21,7 @@ import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
 import org.moose.provider.account.model.dto.RoleDTO;
 import org.moose.provider.account.service.AccountService;
+import org.moose.provider.sms.model.dto.SmsCodeDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +35,7 @@ import org.springframework.stereotype.Component;
  * @date 2020-03-24 13:31:13:31
  * @see org.moose.business.user.service.impl
  */
+@Slf4j
 @Component
 public class UserServiceImpl implements UserService {
 
@@ -135,7 +136,7 @@ public class UserServiceImpl implements UserService {
   @Override public ResponseResult<?> register(RegisterParam registerParam) {
     String password = registerParam.getPassword();
     String rePassword = registerParam.getRePassword();
-    if (password.equals(rePassword)) {
+    if (!password.equals(rePassword)) {
       throw new BusinessException(ResultCode.PASSWORD_NOT_RIGHT.getCode(),
           ResultCode.PASSWORD_NOT_RIGHT.getMessage());
     }
@@ -159,6 +160,7 @@ public class UserServiceImpl implements UserService {
     Long roleId = snowflakeIdWorker.nextId();
     RoleDTO roleDTO = new RoleDTO();
     roleDTO.setRoleId(roleId);
+    // Default USER
     roleDTO.setRole("USER");
     roleDTO.setAccountId(accountId);
     roleDTO.setCreateTime(LocalDateTime.now());
@@ -171,5 +173,29 @@ public class UserServiceImpl implements UserService {
   @Override public ResponseResult<?> logout(String accessToken) {
     boolean result = oAuth2RequestTokenApi.deleteToken(accessToken);
     return new ResponseResult<>(result);
+  }
+
+  @Override public boolean findByPhone(String phone) {
+    if (phone == null || StringUtils.isBlank(phone)) {
+      throw new BusinessException(ResultCode.PHONE_MUST_NOT_BE_NULL.getCode(),
+          ResultCode.PHONE_MUST_NOT_BE_NULL.getMessage());
+    }
+    AccountDTO accountDTO = accountService.get(phone);
+    return accountDTO != null;
+  }
+
+  @Override public ResponseResult<?> sendSmsCode(SmsCodeParam smsCodeParam) {
+    boolean result = this.findByPhone(smsCodeParam.getPhone());
+    if (!result) {
+      throw new BusinessException(ResultCode.PHONE_NOT_FOUND.getCode(),
+          ResultCode.PHONE_NOT_FOUND.getMessage());
+    }
+    // 检查是否上限
+
+    // 查询是否存在手机号码
+    SmsCodeDTO smsCodeDTO = new SmsCodeDTO();
+    smsCodeDTO.setType(smsCodeParam.getType());
+    smsCodeDTO.setPhone(smsCodeParam.getPhone());
+    return new ResponseResult<Boolean>(true);
   }
 }

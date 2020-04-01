@@ -151,6 +151,12 @@
       <version>${project.parent.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
+      <artifactId>provider-sms-api</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>

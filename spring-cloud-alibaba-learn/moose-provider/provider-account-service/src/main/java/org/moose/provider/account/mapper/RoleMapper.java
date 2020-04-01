@@ -28,8 +28,8 @@ public interface RoleMapper {
   /**
    * 根据账号 id 查询角色
    *
-   * @param roleDO 角色信息
+   * @param accountId 账号 Id
    * @return 角色
    */
-  RoleDO findRoleByAccountId(RoleDO roleDO);
+  RoleDO findRoleByAccountId(Long accountId);
 }

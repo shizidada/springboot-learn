@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.moose.provider.sms.mapper.SmsCodeMapper">
+  <insert id="insert" parameterType="org.moose.provider.sms.model.domain.SmsCodeDO">
+    INSERT INTO
+    t_sms_code(id, phone, verify_code, type, create_time, update_time)
+    VALUES (#{smsId}, #{phone}, #{verifyCode}, #{type}, #{createTime}, #{updateTime})
+  </insert>
+</mapper>

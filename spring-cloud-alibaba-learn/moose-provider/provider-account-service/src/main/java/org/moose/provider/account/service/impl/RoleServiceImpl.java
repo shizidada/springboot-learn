@@ -33,11 +33,11 @@ public class RoleServiceImpl implements RoleService {
     return roleMapper.insert(roleDO);
   }
 
-  @Override public RoleDTO get(RoleDTO roleDTO) {
-    RoleDO roleDO = new RoleDO();
-    BeanUtils.copyProperties(roleDTO, roleDO);
-    roleDO = roleMapper.findRoleByAccountId(roleDO);
+  @Override public RoleDTO getRoleByAccountId(Long accountId) {
 
+    RoleDO roleDO = roleMapper.findRoleByAccountId(accountId);
+
+    RoleDTO roleDTO = new RoleDTO();
     BeanUtils.copyProperties(roleDO, roleDTO);
     return roleDTO;
   }

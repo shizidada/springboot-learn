@@ -1,7 +1,5 @@
 package org.moose.business.user;
 
-import java.time.LocalDateTime;
-
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.moose.business.user.model.params.LoginParam;
@@ -26,7 +24,5 @@ public class UserServiceTests {
     param.setPassword("123456");
     param.setPhone("13777777777");
     param.setLoginType("password");
-    param.setCreateTime(LocalDateTime.now());
-    param.setUpdateTime(LocalDateTime.now());
   }
 }

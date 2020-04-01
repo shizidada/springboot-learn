@@ -2,13 +2,13 @@ package org.moose.provider.account.service.impl;
 
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
 import org.moose.provider.account.mapper.AccountMapper;
 import org.moose.provider.account.model.domain.AccountDO;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
 import org.moose.provider.account.model.dto.RoleDTO;
 import org.moose.provider.account.service.AccountService;
-import org.apache.dubbo.config.annotation.Service;
 import org.moose.provider.account.service.PasswordService;
 import org.moose.provider.account.service.RoleService;
 import org.springframework.beans.BeanUtils;
@@ -56,18 +56,12 @@ public class AccountServiceImpl implements AccountService {
     return accountDTO;
   }
 
-  @Override public AccountDTO get(AccountDTO accountDTO) {
-    if (accountDTO == null) {
-      return null;
-    }
-
-    AccountDO accountDO = new AccountDO();
-    BeanUtils.copyProperties(accountDTO, accountDO);
-    accountDO = accountMapper.findAccountByPhone(accountDO);
+  @Override public AccountDTO getAccountByPhone(String phone) {
+    AccountDO accountDO = accountMapper.findAccountByPhone(phone);
     if (accountDO == null) {
       return null;
     }
-
+    AccountDTO accountDTO = new AccountDTO();
     BeanUtils.copyProperties(accountDO, accountDTO);
     return accountDTO;
   }

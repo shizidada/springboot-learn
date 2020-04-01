@@ -43,8 +43,8 @@ public interface AccountMapper {
   /**
    * 更具账号信息查询
    *
-   * @param accountDO 账号
+   * @param phone 账号
    * @return 账号
    */
-  AccountDO findAccountByPhone(AccountDO accountDO);
+  AccountDO findAccountByPhone(String phone);
 }

@@ -1,0 +1,30 @@
+server:
+  port: 8006
+
+spring:
+  application:
+    name: provider-sms-service
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  profiles:
+    active: dev
+
+dubbo:
+  application:
+    name: provider-sms-service-dubbo
+  scan:
+    base-packages: org.moose.provider.sms.service
+  protocol:
+    name: dubbo
+    port: -1
+    serialization: kryo
+  registry:
+    address: nacos://127.0.0.1
+    port: 8848

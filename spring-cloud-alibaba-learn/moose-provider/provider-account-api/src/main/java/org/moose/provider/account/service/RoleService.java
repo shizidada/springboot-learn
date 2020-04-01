@@ -26,8 +26,8 @@ public interface RoleService {
   /**
    * 查询账号角色
    *
-   * @param roleDTO 角色
+   * @param accountId 账号 id
    * @return 角色
    */
-  RoleDTO get(RoleDTO roleDTO);
+  RoleDTO getRoleByAccountId(Long accountId);
 }
