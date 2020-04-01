@@ -72,6 +72,16 @@ public enum ResultCode {
   SMS_CODE_ERROR(400003, "短信验证码错误"),
 
   /**
+   * 短信体不能为空
+   */
+  SMS_CODE_BODY_MUST_NOT_BE_NULL(400004, "解析短信体为空"),
+
+  /**
+   * 短信验证解析错误
+   */
+  SMS_CODE_BODY_PARSE_ERROR(400005, "短信验证解析错误"),
+
+  /**
    * OAuth2 授权异常
    */
   OAUTH_ERROR(500001, "授权异常"),

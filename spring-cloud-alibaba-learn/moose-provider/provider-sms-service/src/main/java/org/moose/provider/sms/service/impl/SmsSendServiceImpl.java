@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.moose.commons.base.dto.ResultCode;
+import org.moose.commons.base.exception.BusinessException;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
 import org.moose.provider.sms.mapper.SmsCodeMapper;
 import org.moose.provider.sms.model.domain.SmsCodeDO;
@@ -14,7 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * <p>
  * Description:
  * </p>
@@ -35,14 +36,16 @@ public class SmsSendServiceImpl implements SmsSendService {
   private SmsCodeMapper smsCodeMapper;
 
   @Override
-  public int add(String jsonStr) {
+  public void add(String jsonStr) {
     if (jsonStr == null || StringUtils.isBlank(jsonStr)) {
-      return 0;
+      throw new BusinessException(ResultCode.SMS_CODE_BODY_MUST_NOT_BE_NULL.getCode(),
+          ResultCode.SMS_CODE_BODY_MUST_NOT_BE_NULL.getMessage());
     }
 
     SmsCodeDTO smsCodeDTO = JSON.parseObject(jsonStr, SmsCodeDTO.class);
     if (smsCodeDTO == null) {
-      return 0;
+      throw new BusinessException(ResultCode.SMS_CODE_BODY_PARSE_ERROR.getCode(),
+          ResultCode.SMS_CODE_BODY_PARSE_ERROR.getMessage());
     }
 
     SmsCodeDO smsCodeDO = new SmsCodeDO();
@@ -60,11 +63,9 @@ public class SmsSendServiceImpl implements SmsSendService {
     smsCodeDO.setUpdateTime(LocalDateTime.now());
     int result = smsCodeMapper.insert(smsCodeDO);
     if (result < 0) {
-      log.info("保存手机验证码失败");
-      return 0;
+      log.info("保存手机验证码失败 :: {}", smsCode);
     }
     // 发送短信验证码
     log.info("发送短信验证码 :: {}", smsCode);
-    return result;
   }
 }

@@ -19,5 +19,5 @@ public interface SmsSendService {
    * @param jsonStr 短信消息
    * @return 是否发送成功
    */
-  public int add(String jsonStr);
+  public void add(String jsonStr);
 }
