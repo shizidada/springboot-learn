@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
-import org.moose.provider.sms.mapper.SmsCodeMapper;
 import org.moose.provider.sms.model.domain.SmsCodeDO;
 import org.moose.provider.sms.model.dto.SmsCodeDTO;
 import org.moose.provider.sms.service.SmsSendService;
@@ -27,13 +26,14 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
+//@Service(version = "1.0.0")
 public class SmsSendServiceImpl implements SmsSendService {
 
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
-  @Resource
-  private SmsCodeMapper smsCodeMapper;
+  //@Resource
+  //private SmsCodeMapper smsCodeMapper;
 
   @Override
   public void add(String jsonStr) {
@@ -61,10 +61,10 @@ public class SmsSendServiceImpl implements SmsSendService {
     smsCodeDO.setExpiredTime(LocalDateTime.now().plusMinutes(15));
     smsCodeDO.setCreateTime(LocalDateTime.now());
     smsCodeDO.setUpdateTime(LocalDateTime.now());
-    int result = smsCodeMapper.insert(smsCodeDO);
-    if (result < 0) {
-      log.info("保存手机验证码失败 :: {}", smsCode);
-    }
+    //int result = smsCodeMapper.insert(smsCodeDO);
+    //if (result < 0) {
+    //  log.info("保存手机验证码失败 :: {}", smsCode);
+    //}
     // 发送短信验证码
     log.info("发送短信验证码 :: {}", smsCode);
   }
