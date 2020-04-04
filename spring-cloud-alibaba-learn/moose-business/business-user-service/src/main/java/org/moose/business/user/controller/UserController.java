@@ -3,13 +3,12 @@ package org.moose.business.user.controller;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.commons.base.dto.ResponseResult;
 import org.moose.business.oauth.feign.OAuth2RequestTokenApi;
 import org.moose.business.user.model.params.LoginParam;
 import org.moose.business.user.model.params.RegisterParam;
 import org.moose.business.user.service.UserService;
+import org.moose.commons.base.dto.ResponseResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,13 +38,13 @@ public class UserController {
 
   @PostMapping("/register")
   public ResponseResult<?> register(
-      @RequestBody @Valid RegisterParam registerParam, BindingResult bindingResult) {
+      @RequestBody @Valid RegisterParam registerParam, BindingResult registerResult) {
     return userService.register(registerParam);
   }
 
   @PostMapping("/login")
   public ResponseResult<?> login(
-      @RequestBody @Valid LoginParam loginParam, BindingResult bindingResult
+      @RequestBody @Valid LoginParam loginParam, BindingResult loginResult
   ) {
     return userService.login(loginParam);
   }

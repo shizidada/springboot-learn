@@ -1,8 +1,11 @@
 package org.moose.provider.account.service.impl;
 
+import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
+import org.moose.commons.base.snowflake.SnowflakeIdWorker;
+import org.moose.provider.account.constants.AccountDefaultConstants;
 import org.moose.provider.account.mapper.AccountMapper;
 import org.moose.provider.account.model.domain.AccountDO;
 import org.moose.provider.account.model.dto.AccountDTO;
@@ -38,10 +41,21 @@ public class AccountServiceImpl implements AccountService {
   @Resource
   private RoleService roleService;
 
+  @Resource
+  private SnowflakeIdWorker snowflakeIdWorker;
+
   @Override
   public int add(AccountDTO accountDTO) {
+    if (accountDTO == null) {
+      return 0;
+    }
     AccountDO accountDO = new AccountDO();
     BeanUtils.copyProperties(accountDTO, accountDO);
+    //TODO: set some default value for register account
+    accountDO.setStatus(AccountDefaultConstants.DEFAULT_STATUS);
+    accountDO.setIcon(AccountDefaultConstants.DEFAULT_ICON);
+    accountDO.setCreateTime(LocalDateTime.now());
+    accountDO.setUpdateTime(LocalDateTime.now());
     return accountMapper.insert(accountDO);
   }
 
@@ -68,16 +82,28 @@ public class AccountServiceImpl implements AccountService {
 
   @Transactional(rollbackFor = {Exception.class})
   @Override
-  public boolean add(AccountDTO accountDTO, PasswordDTO passwordDTO, RoleDTO roleDTO) {
+  public boolean add(AccountDTO accountDTO, PasswordDTO passwordDTO) {
 
     // add account
-    int result = this.add(accountDTO);
+    Long accountId = snowflakeIdWorker.nextId();
+    accountDTO.setAccountId(accountId);
+    int account = this.add(accountDTO);
 
     // add password
-    int result2 = passwordService.add(passwordDTO);
+    Long passwordId = snowflakeIdWorker.nextId();
+    passwordDTO.setAccountId(accountId);
+    passwordDTO.setPasswordId(passwordId);
+    int password = passwordService.add(passwordDTO);
 
     // add role
-    int result3 = roleService.add(roleDTO);
-    return result > 0 && result2 > 0 && result3 > 0;
+    Long roleId = snowflakeIdWorker.nextId();
+    RoleDTO roleDTO = new RoleDTO();
+    roleDTO.setRoleId(roleId);
+    // Default USER
+    roleDTO.setRole("USER");
+    roleDTO.setAccountId(accountId);
+    int role = roleService.add(roleDTO);
+
+    return account > 0 && password > 0 && role > 0;
   }
 }

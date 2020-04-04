@@ -3,7 +3,7 @@
   <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
   <contextName>excel-operator-service</contextName>
-  <springProperty scope="context" name="LOG_HOME" source="logging.path"/>
+  <springProperty scope="context" name="LOG_HOME" source="logging.file.path"/>
   <springProperty scope="context" name="springAppName" source="spring.application.name"/>
 
   <conversionRule conversionWord="clr"

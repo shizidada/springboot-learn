@@ -5,9 +5,8 @@ import javax.validation.Valid;
 import org.moose.business.user.model.params.SmsCodeParam;
 import org.moose.business.user.service.UserService;
 import org.moose.commons.base.dto.ResponseResult;
-import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/sms")
+@RequestMapping("/user")
 public class SmsCodeController {
 
   @Resource
   private UserService userService;
 
-  @GetMapping(value = "/send", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/sms/send")
   public ResponseResult<?> send(
       @RequestBody @Valid SmsCodeParam smsCodeParam, BindingResult bindingResult) {
     return userService.sendSmsCode(smsCodeParam);

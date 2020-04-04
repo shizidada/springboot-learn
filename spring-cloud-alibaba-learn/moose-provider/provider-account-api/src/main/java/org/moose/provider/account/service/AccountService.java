@@ -2,7 +2,6 @@ package org.moose.provider.account.service;
 
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
-import org.moose.provider.account.model.dto.RoleDTO;
 
 /**
  * <p>
@@ -29,10 +28,9 @@ public interface AccountService {
    *
    * @param accountDTO 账号
    * @param passwordDTO 密码
-   * @param roleDTO 角色
    * @return 是否添加成功
    */
-  boolean add(AccountDTO accountDTO, PasswordDTO passwordDTO, RoleDTO roleDTO);
+  boolean add(AccountDTO accountDTO, PasswordDTO passwordDTO);
 
   /**
    * 通过用户名查询用户

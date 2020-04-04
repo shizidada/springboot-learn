@@ -2,8 +2,10 @@ package org.moose.business.user.model.params;
 
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.moose.business.user.model.emun.SmsCodeEnum;
+import org.moose.configuration.annotation.EnumValidator;
 
 /**
  * <p>
@@ -20,6 +22,9 @@ public class RegisterParam implements Serializable {
 
   private static final long serialVersionUID = 8200860755139836411L;
 
+  @NotBlank(message = "手机号不能为空")
+  private String phone;
+
   @NotBlank(message = "账号不能为空")
   private String accountName;
 
@@ -29,14 +34,21 @@ public class RegisterParam implements Serializable {
   @NotBlank(message = "二次密码不能为空")
   private String rePassword;
 
-  /**
-   * 手机号码
-   */
-  @NotBlank(message = "手机号不能为空")
-  private String phone;
+  @NotNull(message = "注册来源不能为空")
+  private Integer sourceType;
+
+  /////////// sms ///////////
+
+  @NotBlank(message = "短信类型不能为空")
+  @EnumValidator(value = SmsCodeEnum.class, message = "短信类型不正确")
+  private String type;
+
+  @NotBlank(message = "短信验证码不能为空")
+  private String verifyCode;
 
   /**
-   * 注册来源
+   * 短信验证码 token 发送时会返回客户端
    */
-  private Integer sourceType;
+  @NotBlank(message = "短信验证令牌")
+  private String smsToken;
 }

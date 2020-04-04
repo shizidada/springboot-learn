@@ -1,7 +1,8 @@
 package org.moose.provider.sms.service;
 
+import org.moose.provider.sms.model.dto.SmsCodeDTO;
+
 /**
- *
  * <p>
  * Description:
  * </p>
@@ -17,7 +18,13 @@ public interface SmsSendService {
    * 发送短信
    *
    * @param jsonStr 短信消息
-   * @return 是否发送成功
    */
-  public void add(String jsonStr);
+  void addSmsCode(String jsonStr);
+
+  /**
+   * 校验短信验证码是否正确
+   *
+   * @param smsCodeDTO 短信校验码
+   */
+  void checkSmsCode(SmsCodeDTO smsCodeDTO);
 }

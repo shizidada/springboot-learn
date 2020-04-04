@@ -14,11 +14,6 @@
 
   <name>provider-sms-service</name>
 
-  <properties>
-    <rocketmq.version>4.6.0</rocketmq.version>
-    <rocketmq.starter.version>2.1.0</rocketmq.starter.version>
-  </properties>
-
   <dependencies>
     <!-- Spring Framework -->
     <dependency>
@@ -48,25 +43,25 @@
     </dependency>
 
     <!-- DataBase -->
-    <!--    <dependency>-->
-    <!--      <groupId>org.springframework.boot</groupId>-->
-    <!--      <artifactId>spring-boot-starter-jdbc</artifactId>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
 
-    <!--    <dependency>-->
-    <!--      <groupId>mysql</groupId>-->
-    <!--      <artifactId>mysql-connector-java</artifactId>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
 
-    <!--    <dependency>-->
-    <!--      <groupId>com.alibaba</groupId>-->
-    <!--      <artifactId>druid-spring-boot-starter</artifactId>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid-spring-boot-starter</artifactId>
+    </dependency>
 
-    <!-- <dependency>-->
-    <!--      <groupId>org.mybatis.spring.boot</groupId>-->
-    <!--      <artifactId>mybatis-spring-boot-starter</artifactId>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+    </dependency>
 
     <!-- Alibaba Nacos -->
     <dependency>
@@ -94,13 +89,11 @@
     <dependency>
       <groupId>org.apache.rocketmq</groupId>
       <artifactId>rocketmq-client</artifactId>
-      <version>${rocketmq.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.rocketmq</groupId>
       <artifactId>rocketmq-spring-boot-starter</artifactId>
-      <version>${rocketmq.starter.version}</version>
     </dependency>
 
     <!-- Commons -->

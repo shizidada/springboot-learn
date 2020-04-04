@@ -1,5 +1,6 @@
 package org.moose.provider.account.service.impl;
 
+import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.Service;
 import org.moose.provider.account.mapper.RoleMapper;
@@ -28,12 +29,20 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   public int add(RoleDTO roleDTO) {
+    if (roleDTO == null) {
+      return 0;
+    }
     RoleDO roleDO = new RoleDO();
     BeanUtils.copyProperties(roleDTO, roleDO);
+    roleDO.setCreateTime(LocalDateTime.now());
+    roleDO.setUpdateTime(LocalDateTime.now());
     return roleMapper.insert(roleDO);
   }
 
   @Override public RoleDTO getRoleByAccountId(Long accountId) {
+    if (accountId == null) {
+      return null;
+    }
 
     RoleDO roleDO = roleMapper.findRoleByAccountId(accountId);
 

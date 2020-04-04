@@ -6,6 +6,9 @@ moose:
     oauth:
       hostname: 127.0.0.1
       port: 9000
+    rocketmq:
+      host: 127.0.0.1
+      port: 9876
     nacos:
       hostname: 127.0.0.1
       port: 8848
@@ -22,6 +25,20 @@ spring:
     nacos:
       discovery:
         server-addr: ${moose.config.nacos.hostname}:${moose.config.nacos.port}
+
+rocketmq:
+  name-server: ${moose.config.rocketmq.host}:${moose.config.rocketmq.port}
+  producer:
+    group: SEND_SMS_PRODUCER_GROUP
+    send-message-timeout: 50000
+
+## rocketmq consumer settings
+mq:
+  sms:
+    consumer:
+      group: SEND_SMS_CONSUMER_GROUP
+    topic: SEND_SMS_CONSUMER_TOPIC
+    tag: SEND_SMS_TAG
 
 # feign client 配置
 feign:

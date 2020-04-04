@@ -35,7 +35,24 @@ public class BusinessExceptionHandler {
       code = bse.getCode();
       message = bse.getMessage();
     }
-    log.warn("[全局业务异常] BusinessExceptionHandler ", ex);
+    log.warn("[全局业务异常] handlerException ", ex);
+    return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
+  }
+
+  /**
+   * 系统异常捕获
+   */
+  @ExceptionHandler({Exception.class})
+  public ResponseEntity<?> handleOtherException(Exception ex) {
+    log.warn("[全局业务异常] handleOtherException ", ex);
+    Integer code = ResultCode.UNKNOWN.getCode();
+    String message = ResultCode.UNKNOWN.getMessage();
+    // 业务异常
+    if (ex instanceof BusinessException) {
+      BusinessException bse = (BusinessException) ex;
+      code = bse.getCode();
+      message = bse.getMessage();
+    }
     return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
   }
 }

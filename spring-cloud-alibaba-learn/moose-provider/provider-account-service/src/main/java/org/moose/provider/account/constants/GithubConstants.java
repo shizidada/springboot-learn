@@ -10,7 +10,7 @@ package org.moose.provider.account.constants;
  * @date 2020 2020/3/7 22:08
  * @see org.moose.provider.account.constants
  */
-public interface URLConstants {
+public interface GithubConstants {
 
   String GITHUB_ACCESS_TOKEN_UTL = "https://github.com/login/oauth/access_token";
 

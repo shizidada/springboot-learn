@@ -52,7 +52,7 @@ public enum ResultCode {
   LOGIN_TYPE_MUST_NOT_BE_NULL(300001, "登录方式不能为空"),
 
   /**
-   * 登录方式不能为空
+   * 登录方式不正确
    */
   LOGIN_TYPE_ERROR(300002, "登录方式不正确"),
 
@@ -80,6 +80,16 @@ public enum ResultCode {
    * 短信验证解析错误
    */
   SMS_CODE_BODY_PARSE_ERROR(400005, "短信验证解析错误"),
+
+  /**
+   * 短信发送失败
+   */
+  SMS_CODE_SEND_FAIL(400006, "短信发送失败"),
+
+  /**
+   * 短信校验码过期
+   */
+  SMS_CODE_EXPIRED(400008, "短信校验码过期"),
 
   /**
    * OAuth2 授权异常

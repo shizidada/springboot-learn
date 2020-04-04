@@ -4,14 +4,14 @@ moose:
       host: 127.0.0.1
       port: 9876
 
-#spring:
-#  datasource:
-#    name: sms_service
-#    url: jdbc:mysql://127.0.0.1:3306/sms_service?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-#    driver-class-name: com.mysql.jdbc.Driver
-#    username: root
-#    password: 123456
-#    type: com.alibaba.druid.pool.DruidDataSource
+spring:
+  datasource:
+    name: sms_service
+    url: jdbc:mysql://127.0.0.1:3306/sms_service?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
 
 rocketmq:
   name-server: ${moose.config.rocketmq.host}:${moose.config.rocketmq.port}
@@ -30,7 +30,7 @@ mq:
 ## logging settings
 logging:
   file:
-    path: E:\Code\java\logs
+    path: /Users/taohua/logs
 
 ## mybatis settings
 mybatis:

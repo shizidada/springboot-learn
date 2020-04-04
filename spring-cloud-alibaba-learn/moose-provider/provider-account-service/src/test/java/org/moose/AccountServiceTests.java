@@ -15,6 +15,7 @@ import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
 import org.moose.provider.account.model.dto.RoleDTO;
 import org.moose.provider.account.service.AccountService;
+import org.moose.provider.account.service.RoleService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -49,6 +50,9 @@ public class AccountServiceTests {
 
   @Resource
   private AccountService accountService;
+
+  @Resource
+  private RoleService roleService;
 
   SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
 
@@ -119,7 +123,8 @@ public class AccountServiceTests {
     roleDTO.setCreateTime(LocalDateTime.now());
     roleDTO.setUpdateTime(LocalDateTime.now());
 
-    boolean result = accountService.add(accountDTO, passwordDTO, roleDTO);
-    log.info("是否添加成功 [{}]", result);
+    boolean accountResult = accountService.add(accountDTO, passwordDTO);
+    int roleResult = roleService.add(roleDTO);
+    log.info("是否添加成功 [{}]", accountResult, roleResult);
   }
 }

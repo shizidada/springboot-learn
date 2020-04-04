@@ -40,7 +40,7 @@ public class UserResourceServerConfiguration extends ResourceServerConfigurerAda
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers("/user/register", "/user/login").permitAll()
+        .antMatchers("/user/register", "/user/login", "/user/sms/send").permitAll()
         .and()
         .authorizeRequests()
         .antMatchers("/**").hasAuthority("USER");

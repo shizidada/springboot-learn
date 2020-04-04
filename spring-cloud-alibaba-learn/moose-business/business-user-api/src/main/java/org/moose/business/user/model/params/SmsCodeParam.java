@@ -3,9 +3,10 @@ package org.moose.business.user.model.params;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import org.moose.business.user.model.emun.SmsCodeEnum;
+import org.moose.configuration.annotation.EnumValidator;
 
 /**
- *
  * <p>
  * Description:
  * </p>
@@ -23,5 +24,6 @@ public class SmsCodeParam implements Serializable {
   private String phone;
 
   @NotBlank(message = "短信类型不能为空")
+  @EnumValidator(value = SmsCodeEnum.class, message = "短信类型不正确")
   private String type;
 }

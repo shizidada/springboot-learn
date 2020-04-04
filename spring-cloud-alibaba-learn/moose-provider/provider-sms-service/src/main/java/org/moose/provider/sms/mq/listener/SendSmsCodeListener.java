@@ -32,7 +32,7 @@ public class SendSmsCodeListener implements RocketMQListener<MessageExt> {
   @Override
   public void onMessage(MessageExt messageExt) {
     String body = new String(messageExt.getBody(), StandardCharsets.UTF_8);
-    smsSendService.add(body);
+    smsSendService.addSmsCode(body);
     log.info("短信服务接受到消息 :: {} ", body);
   }
 }

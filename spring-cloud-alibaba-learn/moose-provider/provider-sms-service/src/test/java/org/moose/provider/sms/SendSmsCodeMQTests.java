@@ -8,7 +8,7 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moose.provider.sms.model.dto.SmsCodeDTO;
+import org.moose.provider.sms.model.domain.SmsCodeDO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -39,15 +39,15 @@ public class SendSmsCodeMQTests {
 
   @Test
   public void testSendSmsCode() {
-    SmsCodeDTO smsCodeDTO = new SmsCodeDTO();
-    smsCodeDTO.setPhone("13598989888");
-    smsCodeDTO.setVerifyCode("924233");
-    smsCodeDTO.setType("0");
-    smsCodeDTO.setExpiredTime(LocalDateTime.now());
-    smsCodeDTO.setCreateTime(LocalDateTime.now());
-    smsCodeDTO.setUpdateTime(LocalDateTime.now());
+    SmsCodeDO smsCodeDO = new SmsCodeDO();
+    smsCodeDO.setPhone("13598989888");
+    smsCodeDO.setVerifyCode("924233");
+    smsCodeDO.setType("0");
+    smsCodeDO.setExpiredTime(LocalDateTime.now());
+    smsCodeDO.setCreateTime(LocalDateTime.now());
+    smsCodeDO.setUpdateTime(LocalDateTime.now());
     try {
-      Message msg = new Message(topic, tag, "sms-code", JSON.toJSONString(smsCodeDTO).getBytes());
+      Message msg = new Message(topic, tag, "sms-code", JSON.toJSONString(smsCodeDO).getBytes());
       rocketMQTemplate.getProducer().send(msg);
       System.in.read();
     } catch (Exception e) {

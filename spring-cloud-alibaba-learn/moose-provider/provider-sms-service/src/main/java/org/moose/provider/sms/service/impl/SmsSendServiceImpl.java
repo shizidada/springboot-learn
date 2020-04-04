@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Service;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
+import org.moose.provider.sms.mapper.SmsCodeMapper;
 import org.moose.provider.sms.model.domain.SmsCodeDO;
 import org.moose.provider.sms.model.dto.SmsCodeDTO;
 import org.moose.provider.sms.service.SmsSendService;
@@ -26,17 +28,17 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-//@Service(version = "1.0.0")
+@Service(version = "1.0.0")
 public class SmsSendServiceImpl implements SmsSendService {
 
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
-  //@Resource
-  //private SmsCodeMapper smsCodeMapper;
+  @Resource
+  private SmsCodeMapper smsCodeMapper;
 
   @Override
-  public void add(String jsonStr) {
+  public void addSmsCode(String jsonStr) {
     if (jsonStr == null || StringUtils.isBlank(jsonStr)) {
       throw new BusinessException(ResultCode.SMS_CODE_BODY_MUST_NOT_BE_NULL.getCode(),
           ResultCode.SMS_CODE_BODY_MUST_NOT_BE_NULL.getMessage());
@@ -61,11 +63,30 @@ public class SmsSendServiceImpl implements SmsSendService {
     smsCodeDO.setExpiredTime(LocalDateTime.now().plusMinutes(15));
     smsCodeDO.setCreateTime(LocalDateTime.now());
     smsCodeDO.setUpdateTime(LocalDateTime.now());
-    //int result = smsCodeMapper.insert(smsCodeDO);
-    //if (result < 0) {
-    //  log.info("保存手机验证码失败 :: {}", smsCode);
-    //}
+    int result = smsCodeMapper.insert(smsCodeDO);
+    if (result < 0) {
+      log.info("保存手机验证码失败 :: {}", smsCode);
+    }
     // 发送短信验证码
     log.info("发送短信验证码 :: {}", smsCode);
+  }
+
+  @Override
+  public void checkSmsCode(SmsCodeDTO smsCodeDTO) {
+    SmsCodeDO smsCodeDO = new SmsCodeDO();
+    smsCodeDO.setPhone(smsCodeDTO.getPhone());
+    smsCodeDO.setType(smsCodeDTO.getType());
+    smsCodeDO.setSmsToken(smsCodeDTO.getSmsToken());
+    smsCodeDO.setVerifyCode(smsCodeDTO.getVerifyCode());
+    SmsCodeDO smsCode = smsCodeMapper.findSmsCodePhoneVerifyCodeSmsTokenNotExpired(smsCodeDO);
+    if (smsCode == null) {
+      throw new BusinessException(ResultCode.SMS_CODE_NOT_FOUNT.getCode(),
+          ResultCode.SMS_CODE_NOT_FOUNT.getMessage());
+    }
+    LocalDateTime expiredTime = smsCode.getExpiredTime();
+    if (expiredTime != null && !expiredTime.isAfter(LocalDateTime.now())) {
+      throw new BusinessException(ResultCode.SMS_CODE_EXPIRED.getCode(),
+          ResultCode.SMS_CODE_EXPIRED.getMessage());
+    }
   }
 }

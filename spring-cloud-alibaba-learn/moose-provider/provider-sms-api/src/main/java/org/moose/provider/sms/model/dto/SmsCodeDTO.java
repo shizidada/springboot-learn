@@ -1,7 +1,6 @@
 package org.moose.provider.sms.model.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.moose.commons.base.dto.BaseDTO;
@@ -32,12 +31,12 @@ public class SmsCodeDTO extends BaseDTO implements Serializable {
   private String verifyCode;
 
   /**
+   * 短信令牌
+   */
+  private String smsToken;
+
+  /**
    * 发送短信类型
    */
   private String type;
-
-  /**
-   * 过期时间
-   */
-  private LocalDateTime expiredTime;
 }

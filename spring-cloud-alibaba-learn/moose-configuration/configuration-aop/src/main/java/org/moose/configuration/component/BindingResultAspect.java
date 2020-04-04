@@ -25,7 +25,14 @@ import org.springframework.validation.FieldError;
 @Component
 @Order(2)
 public class BindingResultAspect {
-  @Pointcut("execution(public * org.moose.*.*.controller.*.*(..))")
+
+  //@Pointcut("execution(public * org.moose.*.*.controller.*.*(..))")
+  @Pointcut(
+      "@annotation(org.springframework.web.bind.annotation.RequestMapping)" +
+          "||@annotation(org.springframework.web.bind.annotation.GetMapping)" +
+          "||@annotation(org.springframework.web.bind.annotation.PostMapping)" +
+          "||@annotation(org.springframework.web.bind.annotation.PutMapping)"
+  )
   public void validateAnnotation() {
   }
 

@@ -53,7 +53,7 @@ public interface UserService {
    * 发送短信验证码
    *
    * @param smsCodeParam 发送短信
-   * @return 查询结果
+   * @return 发送结果
    */
   ResponseResult<?> sendSmsCode(SmsCodeParam smsCodeParam);
 }

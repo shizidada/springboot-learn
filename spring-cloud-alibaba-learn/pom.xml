@@ -37,6 +37,9 @@
     <logstash.version>5.2</logstash.version>
     <okhttp3.version>4.4.0</okhttp3.version>
 
+    <rocketmq.version>4.6.0</rocketmq.version>
+    <rocketmq.starter.version>2.1.0</rocketmq.starter.version>
+
     <feign-okhttp.version>10.7.4</feign-okhttp.version>
     <fastjson.version>1.2.62</fastjson.version>
     <commons-lang3.version>3.9</commons-lang3.version>
@@ -133,6 +136,19 @@
         <version>${mybatis.version}</version>
       </dependency>
       <!--  data source end     -->
+
+      <!--  rocketmq  -->
+      <dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-client</artifactId>
+        <version>${rocketmq.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-spring-boot-starter</artifactId>
+        <version>${rocketmq.starter.version}</version>
+      </dependency>
 
       <!-- log start -->
       <dependency>

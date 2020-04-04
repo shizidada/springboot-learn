@@ -36,6 +36,11 @@ public class SmsCodeDO extends BaseDO {
   private String verifyCode;
 
   /**
+   * 短信令牌
+   */
+  private String smsToken;
+
+  /**
    * 发送短信类型
    *
    * 0 -> 注册
