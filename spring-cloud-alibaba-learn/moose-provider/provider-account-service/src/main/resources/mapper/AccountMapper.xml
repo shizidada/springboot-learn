@@ -6,7 +6,6 @@
   <resultMap id="BaseResultMap" type="org.moose.provider.account.model.domain.AccountDO">
     <id column="id" property="accountId" jdbcType="BIGINT"/>
     <result column="account_name" property="accountName" jdbcType="VARCHAR"/>
-    <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
     <result column="phone" property="phone" jdbcType="VARCHAR"/>
     <result column="status" property="status" jdbcType="INTEGER"/>
     <result column="icon" property="icon" jdbcType="VARCHAR"/>
@@ -18,16 +17,16 @@
   </resultMap>
 
   <sql id="Base_Column">
-    id, account_name, nick_name, phone, status, icon, gender, birthday, source_type, create_time,
+    id, account_name, phone, status, icon, gender, birthday, source_type, create_time,
     update_time
   </sql>
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="accountId"
       parameterType="org.moose.provider.account.model.domain.AccountDO">
     INSERT INTO
-    t_account(id, account_name, nick_name, phone, status, icon, gender, birthday, source_type,
+    t_account(id, account_name, phone, status, icon, gender, birthday, source_type,
     create_time, update_time)
-    VALUES (#{accountId}, #{accountName}, #{nickName}, #{phone}, #{status}, #{icon}, #{gender},
+    VALUES (#{accountId}, #{accountName}, #{phone}, #{status}, #{icon}, #{gender},
     #{birthday}, #{sourceType}, #{createTime}, #{updateTime})
   </insert>
 

@@ -1,5 +1,9 @@
 package org.moose.business.user.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import java.time.LocalDate;
 import lombok.Data;
 
 /**
@@ -14,7 +18,31 @@ import lombok.Data;
  */
 @Data
 public class ProfileInfoVo {
+
+  /**
+   * 账号名称
+   */
   private String accountName;
-  private String avatar;
+
+  /**
+   * 手机号码
+   */
   private String phone;
+
+  /**
+   * 头像
+   */
+  private String icon;
+
+  /**
+   * 性别
+   */
+  private Integer gender;
+
+  /**
+   * 生日
+   */
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+  @JsonSerialize(using = LocalDateSerializer.class)
+  private LocalDate birthday;
 }

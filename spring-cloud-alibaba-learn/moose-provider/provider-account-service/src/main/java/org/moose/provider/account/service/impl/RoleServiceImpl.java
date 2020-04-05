@@ -3,6 +3,9 @@ package org.moose.provider.account.service.impl;
 import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.rpc.RpcException;
+import org.moose.commons.base.code.AccountCode;
+import org.moose.commons.base.code.RoleCode;
 import org.moose.provider.account.mapper.RoleMapper;
 import org.moose.provider.account.model.domain.RoleDO;
 import org.moose.provider.account.model.dto.RoleDTO;
@@ -30,7 +33,8 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public int add(RoleDTO roleDTO) {
     if (roleDTO == null) {
-      return 0;
+      throw new RpcException(RoleCode.ROLE_MUST_NOT_BE_NULL.getCode(),
+          RoleCode.ROLE_MUST_NOT_BE_NULL.getMessage());
     }
     RoleDO roleDO = new RoleDO();
     BeanUtils.copyProperties(roleDTO, roleDO);
@@ -41,7 +45,8 @@ public class RoleServiceImpl implements RoleService {
 
   @Override public RoleDTO getRoleByAccountId(Long accountId) {
     if (accountId == null) {
-      return null;
+      throw new RpcException(AccountCode.ACCOUNT_ID_MUST_NOT_BE_NULL.getCode(),
+          AccountCode.ACCOUNT_ID_MUST_NOT_BE_NULL.getMessage());
     }
 
     RoleDO roleDO = roleMapper.findRoleByAccountId(accountId);

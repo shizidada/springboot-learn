@@ -13,7 +13,6 @@ import org.moose.provider.account.model.domain.AccountDO;
 import org.moose.provider.account.model.domain.PasswordDO;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
-import org.moose.provider.account.model.dto.RoleDTO;
 import org.moose.provider.account.service.AccountService;
 import org.moose.provider.account.service.RoleService;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,7 +63,6 @@ public class AccountServiceTests {
     AccountDO accountDO = new AccountDO();
     accountDO.setAccountId(accountId);
     accountDO.setAccountName("张世豪");
-    accountDO.setNickName("阿豪");
     accountDO.setPhone("13612341234");
     accountDO.setStatus(1);
     accountDO.setIcon("https://icon.com");
@@ -92,12 +90,10 @@ public class AccountServiceTests {
 
   @Test
   public void addAccountAndPassword() {
-
     Long accountId = idWorker.nextId();
     AccountDTO accountDTO = new AccountDTO();
     accountDTO.setAccountId(accountId);
     accountDTO.setAccountName("tom");
-    accountDTO.setNickName("净空法师");
     accountDTO.setPhone("13777777777");
     accountDTO.setStatus(1);
     accountDTO.setIcon("https://icon.com");
@@ -115,16 +111,7 @@ public class AccountServiceTests {
     passwordDTO.setUpdateTime(LocalDateTime.now());
     passwordDTO.setPassword(passwordEncoder.encode("123456"));
 
-    Long roleId = idWorker.nextId();
-    RoleDTO roleDTO = new RoleDTO();
-    roleDTO.setRoleId(roleId);
-    roleDTO.setRole("ADMIN");
-    roleDTO.setAccountId(accountId);
-    roleDTO.setCreateTime(LocalDateTime.now());
-    roleDTO.setUpdateTime(LocalDateTime.now());
-
     boolean accountResult = accountService.add(accountDTO, passwordDTO);
-    int roleResult = roleService.add(roleDTO);
-    log.info("是否添加成功 [{}]", accountResult, roleResult);
+    log.info("是否添加成功 [{}]", accountResult);
   }
 }

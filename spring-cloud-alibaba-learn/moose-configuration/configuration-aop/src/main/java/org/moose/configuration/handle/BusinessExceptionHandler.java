@@ -2,6 +2,7 @@ package org.moose.configuration.handle;
 
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.rpc.RpcException;
 import org.moose.commons.base.dto.ResponseResult;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
@@ -40,19 +41,30 @@ public class BusinessExceptionHandler {
   }
 
   /**
+   * RpcException 异常捕获
+   */
+  @ExceptionHandler({RpcException.class})
+  public ResponseEntity<?> handleRpcException(Exception ex) {
+    Integer code = ResultCode.UNKNOWN.getCode();
+    String message = ResultCode.UNKNOWN.getMessage();
+    // 业务异常
+    if (ex instanceof RpcException) {
+      RpcException rpc = (RpcException) ex;
+      code = rpc.getCode();
+      message = rpc.getMessage();
+    }
+    log.warn("[全局业务异常] handleRpcException ", ex);
+    return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
+  }
+
+  /**
    * 系统异常捕获
    */
   @ExceptionHandler({Exception.class})
   public ResponseEntity<?> handleOtherException(Exception ex) {
-    log.warn("[全局业务异常] handleOtherException ", ex);
     Integer code = ResultCode.UNKNOWN.getCode();
-    String message = ResultCode.UNKNOWN.getMessage();
-    // 业务异常
-    if (ex instanceof BusinessException) {
-      BusinessException bse = (BusinessException) ex;
-      code = bse.getCode();
-      message = bse.getMessage();
-    }
+    String message = ex.getMessage();
+    log.warn("[全局业务异常] handleOtherException ", ex);
     return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
   }
 }

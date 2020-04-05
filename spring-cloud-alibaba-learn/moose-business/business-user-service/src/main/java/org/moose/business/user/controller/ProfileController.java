@@ -1,7 +1,8 @@
 package org.moose.business.user.controller;
 
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.business.user.model.vo.ProfileInfoVo;
+import org.moose.business.user.service.ProfileService;
 import org.moose.commons.base.dto.ResponseResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ProfileController {
 
+  @Resource
+  private ProfileService profileService;
+
   @GetMapping("/profile/info")
   public ResponseResult<?> info() {
-    ProfileInfoVo infoVo = new ProfileInfoVo();
-    infoVo.setAccountName("原来你什么都不要");
-    infoVo.setAvatar("http://icon.org");
-    infoVo.setPhone("17329839132");
-    return new ResponseResult<>(infoVo);
+    return profileService.getProfileInfo();
   }
 }

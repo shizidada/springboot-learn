@@ -70,22 +70,6 @@
       <artifactId>nacos-client</artifactId>
     </dependency>
 
-    <!-- Apache Dubbo -->
-    <dependency>
-      <groupId>org.apache.dubbo</groupId>
-      <artifactId>dubbo-registry-nacos</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.dubbo</groupId>
-      <artifactId>dubbo</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.dubbo</groupId>
-      <artifactId>dubbo-serialization-kryo</artifactId>
-    </dependency>
-
     <!-- Commons -->
     <dependency>
       <groupId>com.alibaba</groupId>

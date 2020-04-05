@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.rpc.RpcException;
+import org.moose.commons.base.code.AccountCode;
+import org.moose.commons.base.code.PhoneCode;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
 import org.moose.provider.account.constants.AccountDefaultConstants;
 import org.moose.provider.account.mapper.AccountMapper;
@@ -47,8 +50,27 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public int add(AccountDTO accountDTO) {
     if (accountDTO == null) {
-      return 0;
+      throw new RpcException(AccountCode.ACCOUNT_MUST_NOT_BE_NULL.getCode(),
+          AccountCode.ACCOUNT_MUST_NOT_BE_NULL.getMessage());
     }
+
+    // 检查 accountName、phone
+    // 用户名称是否存在
+    String accountName = accountDTO.getAccountName();
+    AccountDTO uniqueAccount = this.getAccountByAccountName(accountName);
+    if (uniqueAccount != null) {
+      throw new RpcException(AccountCode.ACCOUNT_NAME_IS_EXIST.getCode(),
+          AccountCode.ACCOUNT_NAME_IS_EXIST.getMessage());
+    }
+
+    // 手机是否存在
+    String phone = accountDTO.getPhone();
+    uniqueAccount = this.getAccountByPhone(phone);
+    if (uniqueAccount != null) {
+      throw new RpcException(PhoneCode.PHONE_IS_EXIST.getCode(),
+          PhoneCode.PHONE_IS_EXIST.getMessage());
+    }
+
     AccountDO accountDO = new AccountDO();
     BeanUtils.copyProperties(accountDTO, accountDO);
     //TODO: set some default value for register account
@@ -59,28 +81,6 @@ public class AccountServiceImpl implements AccountService {
     return accountMapper.insert(accountDO);
   }
 
-  @Override
-  public AccountDTO get(String accountName) {
-    AccountDO accountDO = accountMapper.findAccountByName(accountName);
-    if (accountDO == null) {
-      return null;
-    }
-    AccountDTO accountDTO = new AccountDTO();
-    BeanUtils.copyProperties(accountDO, accountDTO);
-    return accountDTO;
-  }
-
-  @Override public AccountDTO getAccountByPhone(String phone) {
-    AccountDO accountDO = accountMapper.findAccountByPhone(phone);
-    if (accountDO == null) {
-      return null;
-    }
-    AccountDTO accountDTO = new AccountDTO();
-    BeanUtils.copyProperties(accountDO, accountDTO);
-    return accountDTO;
-  }
-
-  @Transactional(rollbackFor = {Exception.class})
   @Override
   public boolean add(AccountDTO accountDTO, PasswordDTO passwordDTO) {
 
@@ -105,5 +105,26 @@ public class AccountServiceImpl implements AccountService {
     int role = roleService.add(roleDTO);
 
     return account > 0 && password > 0 && role > 0;
+  }
+
+  @Override
+  public AccountDTO getAccountByAccountName(String accountName) {
+    AccountDO accountDO = accountMapper.findAccountByName(accountName);
+    if (accountDO == null) {
+      return null;
+    }
+    AccountDTO accountDTO = new AccountDTO();
+    BeanUtils.copyProperties(accountDO, accountDTO);
+    return accountDTO;
+  }
+
+  @Override public AccountDTO getAccountByPhone(String phone) {
+    AccountDO accountDO = accountMapper.findAccountByPhone(phone);
+    if (accountDO == null) {
+      return null;
+    }
+    AccountDTO accountDTO = new AccountDTO();
+    BeanUtils.copyProperties(accountDO, accountDTO);
+    return accountDTO;
   }
 }

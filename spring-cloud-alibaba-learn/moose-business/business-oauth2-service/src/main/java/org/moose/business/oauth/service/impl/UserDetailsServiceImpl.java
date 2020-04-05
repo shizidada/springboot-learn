@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.dubbo.config.annotation.Reference;
 import org.moose.business.oauth.configure.CustomOAuth2Exception;
 import org.moose.business.oauth.model.dto.OAuth2UserDetails;
-import org.moose.commons.base.dto.ResultCode;
+import org.moose.commons.base.code.AccountCode;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
 import org.moose.provider.account.model.dto.RoleDTO;
@@ -42,22 +42,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    AccountDTO accountDTO = accountService.get(username);
+    AccountDTO accountDTO = accountService.getAccountByAccountName(username);
     if (accountDTO == null) {
-      throw new CustomOAuth2Exception(ResultCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_PASSWORD_ERROR.getCode());
+      throw new CustomOAuth2Exception(AccountCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
+          AccountCode.ACCOUNT_PASSWORD_ERROR.getCode());
     }
 
     PasswordDTO passwordDTO = passwordService.get(accountDTO.getAccountId());
     if (passwordDTO == null) {
-      throw new CustomOAuth2Exception(ResultCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_PASSWORD_ERROR.getCode());
+      throw new CustomOAuth2Exception(AccountCode.ACCOUNT_PASSWORD_ERROR.getMessage(),
+          AccountCode.ACCOUNT_PASSWORD_ERROR.getCode());
     }
 
     RoleDTO role = roleService.getRoleByAccountId(accountDTO.getAccountId());
 
     List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
-    grantedAuthorities.add(new SimpleGrantedAuthority(String.format("ROLE_%s", role.getRole())));
+    grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
     return new OAuth2UserDetails(accountDTO, passwordDTO, grantedAuthorities);
   }
 }

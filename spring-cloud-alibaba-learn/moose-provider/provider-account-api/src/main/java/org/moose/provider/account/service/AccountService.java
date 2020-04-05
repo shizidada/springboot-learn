@@ -38,7 +38,7 @@ public interface AccountService {
    * @param accountName 账号
    * @return 用户信息
    */
-  AccountDTO get(String accountName);
+  AccountDTO getAccountByAccountName(String accountName);
 
   /**
    * 根据 phone 查询

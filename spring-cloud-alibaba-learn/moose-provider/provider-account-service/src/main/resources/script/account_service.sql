@@ -8,7 +8,6 @@ DROP TABLE IF EXISTS `t_account`;
 CREATE TABLE `t_account` (
   `id` bigint(64) NOT NULL COMMENT '账号主键',
   `account_name` varchar(64) DEFAULT NULL COMMENT '账号名',
-  `nick_name` varchar(64) DEFAULT NULL COMMENT '昵称',
   `phone` varchar(11) DEFAULT NULL COMMENT '手机号码',
   `status` int(1) DEFAULT NULL COMMENT '帐号启用状态: 0->禁用; 1->启用',
   `icon` varchar(500) DEFAULT NULL COMMENT '头像',

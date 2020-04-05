@@ -19,6 +19,10 @@ import org.moose.business.user.model.params.LoginParam;
 import org.moose.business.user.model.params.RegisterParam;
 import org.moose.business.user.model.params.SmsCodeParam;
 import org.moose.business.user.service.UserService;
+import org.moose.commons.base.code.AccountCode;
+import org.moose.commons.base.code.PasswordCode;
+import org.moose.commons.base.code.PhoneCode;
+import org.moose.commons.base.code.SmsCode;
 import org.moose.commons.base.dto.ResponseResult;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
@@ -84,14 +88,14 @@ public class UserServiceImpl implements UserService {
     if (loginType.equals(OAuth2Constants.OAUTH2_PASSWORD_GRANT_TYPE)) {
       String accountName = loginParam.getAccountName();
       if (StringUtils.isBlank(accountName)) {
-        throw new BusinessException(ResultCode.ACCOUNT_MUST_NOT_BE_NULL.getCode(),
-            ResultCode.ACCOUNT_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(AccountCode.ACCOUNT_MUST_NOT_BE_NULL.getCode(),
+            AccountCode.ACCOUNT_MUST_NOT_BE_NULL.getMessage());
       }
 
       String password = loginParam.getPassword();
       if (StringUtils.isBlank(password)) {
-        throw new BusinessException(ResultCode.PASSWORD_MUST_NOT_BE_NULL.getCode(),
-            ResultCode.PASSWORD_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(PasswordCode.PASSWORD_MUST_NOT_BE_NULL.getCode(),
+            PasswordCode.PASSWORD_MUST_NOT_BE_NULL.getMessage());
       }
       param.put("username", accountName);
       param.put("password", password);
@@ -104,15 +108,15 @@ public class UserServiceImpl implements UserService {
 
       // 手机号码
       if (StringUtils.isBlank(phone)) {
-        throw new BusinessException(ResultCode.PHONE_MUST_NOT_BE_NULL.getCode(),
-            ResultCode.PHONE_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(PhoneCode.PHONE_MUST_NOT_BE_NULL.getCode(),
+            PhoneCode.PHONE_MUST_NOT_BE_NULL.getMessage());
       }
 
       // 校验短信验证码
       String smsCode = loginParam.getSmsCode();
       if (StringUtils.isBlank(smsCode)) {
-        throw new BusinessException(ResultCode.SMS_CODE_MUST_NOT_BE_NULL.getCode(),
-            ResultCode.SMS_CODE_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(SmsCode.SMS_CODE_MUST_NOT_BE_NULL.getCode(),
+            SmsCode.SMS_CODE_MUST_NOT_BE_NULL.getMessage());
       }
 
       param.put("phone", phone);
@@ -125,8 +129,8 @@ public class UserServiceImpl implements UserService {
 
     Map<String, Object> authToken = oAuth2RequestTokenApi.getOAuthToken(param);
     if (authToken == null) {
-      return new ResponseResult<Map<String, Object>>(ResultCode.NET_WORK_UNKNOWN.getCode(),
-          ResultCode.NET_WORK_UNKNOWN.getMessage());
+      return new ResponseResult<Map<String, Object>>(ResultCode.NETWORK_UNKNOWN.getCode(),
+          ResultCode.NETWORK_UNKNOWN.getMessage());
     }
 
     String accessToken = (String) authToken.get("access_token");
@@ -161,8 +165,8 @@ public class UserServiceImpl implements UserService {
     String password = registerParam.getPassword();
     String rePassword = registerParam.getRePassword();
     if (!password.equals(rePassword)) {
-      throw new BusinessException(ResultCode.PASSWORD_NOT_RIGHT.getCode(),
-          ResultCode.PASSWORD_NOT_RIGHT.getMessage());
+      throw new BusinessException(PasswordCode.PASSWORD_NOT_RIGHT.getCode(),
+          PasswordCode.PASSWORD_NOT_RIGHT.getMessage());
     }
 
     // 检查短信校验码是否正确
@@ -198,8 +202,8 @@ public class UserServiceImpl implements UserService {
 
   @Override public boolean findByPhone(String phone) {
     if (phone == null || StringUtils.isBlank(phone)) {
-      throw new BusinessException(ResultCode.PHONE_MUST_NOT_BE_NULL.getCode(),
-          ResultCode.PHONE_MUST_NOT_BE_NULL.getMessage());
+      throw new BusinessException(PhoneCode.PHONE_MUST_NOT_BE_NULL.getCode(),
+          PhoneCode.PHONE_MUST_NOT_BE_NULL.getMessage());
     }
     AccountDTO accountDTO = accountService.getAccountByPhone(phone);
     return accountDTO != null;
@@ -208,8 +212,8 @@ public class UserServiceImpl implements UserService {
   @Override public ResponseResult<?> sendSmsCode(SmsCodeParam smsCodeParam) {
     boolean result = this.findByPhone(smsCodeParam.getPhone());
     if (!result) {
-      throw new BusinessException(ResultCode.PHONE_NOT_FOUND.getCode(),
-          ResultCode.PHONE_NOT_FOUND.getMessage());
+      throw new BusinessException(PhoneCode.PHONE_NOT_FOUND.getCode(),
+          PhoneCode.PHONE_NOT_FOUND.getMessage());
     }
     // 检查是否上限
     checkSmsCodeSuperiorLimit();
@@ -227,15 +231,15 @@ public class UserServiceImpl implements UserService {
       SendStatus sendStatus = sendResult.getSendStatus();
 
       if (sendStatus != SendStatus.SEND_OK) {
-        throw new BusinessException(ResultCode.SMS_CODE_SEND_FAIL.getCode(),
-            ResultCode.SMS_CODE_SEND_FAIL.getMessage());
+        throw new BusinessException(SmsCode.SMS_CODE_SEND_FAIL.getCode(),
+            SmsCode.SMS_CODE_SEND_FAIL.getMessage());
       }
       Map<String, Object> map = Maps.newHashMap();
       map.put("sms_token", smsToken);
       return new ResponseResult<Map<String, Object>>(map);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseResult<Map<String, Object>>(ResultCode.NET_WORK_UNKNOWN.getCode(),
+      return new ResponseResult<Map<String, Object>>(ResultCode.NETWORK_UNKNOWN.getCode(),
           e.getMessage());
     }
   }

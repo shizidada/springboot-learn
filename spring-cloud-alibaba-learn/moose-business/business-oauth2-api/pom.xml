@@ -57,6 +57,12 @@
       <version>${project.parent.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
+      <artifactId>provider-account-api</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
   </dependencies>
 
 </project>

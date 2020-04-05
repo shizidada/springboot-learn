@@ -34,11 +34,6 @@ public class AccountDO extends BaseDO {
   private String accountName;
 
   /**
-   * 昵称
-   */
-  private String nickName;
-
-  /**
    * 手机号码
    */
   private String phone;
@@ -74,7 +69,6 @@ public class AccountDO extends BaseDO {
     return "AccountDO{" +
         "accountId=" + accountId +
         ", accountName='" + accountName + '\'' +
-        ", nickName='" + nickName + '\'' +
         ", phone='" + phone + '\'' +
         ", status=" + status +
         ", icon='" + icon + '\'' +

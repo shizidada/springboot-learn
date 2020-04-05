@@ -34,6 +34,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
       <scope>provided</scope>
@@ -68,10 +74,25 @@
 
     <dependency>
       <groupId>shizidada.github.io</groupId>
+      <artifactId>business-oauth2-api</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
       <artifactId>provider-account-api</artifactId>
       <version>${project.parent.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
+      <artifactId>provider-sms-api</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
 </project>

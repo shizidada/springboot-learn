@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.commons.base.dto.ResultCode;
+import org.moose.commons.base.code.OAuth2Code;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -33,10 +33,10 @@ public class CustomOAuth2AuthenticationEntryPoint implements AuthenticationEntry
     Map<String, Object> map = new HashMap<String, Object>(16);
     Throwable cause = authException.getCause();
     if (cause instanceof InvalidTokenException) {
-      map.put("code", ResultCode.INVALID_TOKEN.getCode());
-      map.put("message", ResultCode.INVALID_TOKEN.getMessage());
+      map.put("code", OAuth2Code.OAUTH_INVALID_TOKEN.getCode());
+      map.put("message", OAuth2Code.OAUTH_INVALID_TOKEN.getMessage());
     } else {
-      map.put("code", ResultCode.OAUTH_ERROR.getCode());
+      map.put("code", OAuth2Code.OAUTH_ERROR.getCode());
       map.put("message", authException.getMessage());
     }
     response.setContentType("application/json");

@@ -68,7 +68,7 @@ public class LoginController {
       }
     } catch (Exception e) {
       log.error("登录异常", e);
-      Integer code = ResultCode.NET_WORK_UNKNOWN.getCode();
+      Integer code = ResultCode.NETWORK_UNKNOWN.getCode();
       String message = e.getMessage();
       return new ResponseResult<Map<String, Object>>(code, message);
     }

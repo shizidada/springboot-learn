@@ -19,6 +19,13 @@
       <scope>provided</scope>
     </dependency>
 
+    <!--for handle rpc exception-->
+    <dependency>
+      <groupId>org.apache.dubbo</groupId>
+      <artifactId>dubbo</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

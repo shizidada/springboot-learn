@@ -74,28 +74,6 @@
       <artifactId>fastjson</artifactId>
     </dependency>
 
-    <!-- Apache Dubbo -->
-    <dependency>
-      <groupId>org.apache.dubbo</groupId>
-      <artifactId>dubbo-registry-nacos</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>log4j</artifactId>
-          <groupId>log4j</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.dubbo</groupId>
-      <artifactId>dubbo</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.dubbo</groupId>
-      <artifactId>dubbo-serialization-kryo</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -133,6 +111,7 @@
       <artifactId>configuration-aop</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+
     <dependency>
       <groupId>shizidada.github.io</groupId>
       <artifactId>commons-base</artifactId>
@@ -148,12 +127,6 @@
     <dependency>
       <groupId>shizidada.github.io</groupId>
       <artifactId>business-oauth2-api</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>shizidada.github.io</groupId>
-      <artifactId>provider-account-api</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
 

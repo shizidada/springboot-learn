@@ -3,6 +3,8 @@ package org.moose.provider.account.service.impl;
 import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.rpc.RpcException;
+import org.moose.commons.base.code.PasswordCode;
 import org.moose.provider.account.mapper.PasswordMapper;
 import org.moose.provider.account.model.domain.PasswordDO;
 import org.moose.provider.account.model.dto.PasswordDTO;
@@ -34,7 +36,8 @@ public class PasswordServiceImpl implements PasswordService {
   @Override
   public int add(PasswordDTO passwordDTO) {
     if (passwordDTO == null) {
-      return 0;
+      throw new RpcException(PasswordCode.PASSWORD_MUST_NOT_BE_NULL.getCode(),
+          PasswordCode.PASSWORD_MUST_NOT_BE_NULL.getMessage());
     }
     PasswordDO passwordDO = new PasswordDO();
     BeanUtils.copyProperties(passwordDTO, passwordDO);
@@ -46,6 +49,9 @@ public class PasswordServiceImpl implements PasswordService {
 
   @Override
   public PasswordDTO get(Long accountId) {
+    if (accountId == null) {
+      return null;
+    }
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
     PasswordDTO passwordDTO = new PasswordDTO();
     BeanUtils.copyProperties(passwordDO, passwordDTO);
