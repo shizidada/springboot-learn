@@ -13,19 +13,19 @@ spring:
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
 
-rocketmq:
-  name-server: ${moose.config.rocketmq.host}:${moose.config.rocketmq.port}
-  producer:
-    group: SEND_SMS_PRODUCER_GROUP
-    send-message-timeout: 50000
+## rocketmq settings
+#rocketmq:
+#  name-server: ${moose.config.rocketmq.host}:${moose.config.rocketmq.port}
+#  producer:
+#    group: SEND_SMS_PRODUCER_GROUP
+#    send-message-timeout: 50000
 
-## rocketmq consumer settings
-mq:
-  sms:
-    consumer:
-      group: SEND_SMS_CONSUMER_GROUP
-    topic: SEND_SMS_CONSUMER_TOPIC
-    tag: SEND_SMS_TAG
+#mq:
+#  sms:
+#    consumer:
+#      group: SEND_SMS_CONSUMER_GROUP
+#    topic: SEND_SMS_CONSUMER_TOPIC
+#    tag: SEND_SMS_TAG
 
 ## logging settings
 logging:

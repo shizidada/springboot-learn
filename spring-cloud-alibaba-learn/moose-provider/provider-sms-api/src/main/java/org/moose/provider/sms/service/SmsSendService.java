@@ -15,11 +15,19 @@ import org.moose.provider.sms.model.dto.SmsCodeDTO;
 public interface SmsSendService {
 
   /**
-   * 发送短信
+   * 发送短信 by rocketMQ
    *
    * @param jsonStr 短信消息
    */
   void addSmsCode(String jsonStr);
+
+  /**
+   * 发送短信
+   *
+   * @param smsCodeDTO SmsCodeDTO
+   * @return 是否发送成功
+   */
+  int addSmsCode(SmsCodeDTO smsCodeDTO);
 
   /**
    * 校验短信验证码是否正确

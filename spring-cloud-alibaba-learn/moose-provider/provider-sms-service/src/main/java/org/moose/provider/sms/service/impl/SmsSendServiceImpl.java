@@ -72,6 +72,30 @@ public class SmsSendServiceImpl implements SmsSendService {
   }
 
   @Override
+  public int addSmsCode(SmsCodeDTO smsCodeDTO) {
+    SmsCodeDO smsCodeDO = new SmsCodeDO();
+    BeanUtils.copyProperties(smsCodeDTO, smsCodeDO);
+
+    Long smsId = snowflakeIdWorker.nextId();
+    smsCodeDO.setSmsId(smsId);
+
+    String smsCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
+    smsCodeDO.setVerifyCode(smsCode);
+
+    // 15 分钟后过期
+    smsCodeDO.setExpiredTime(LocalDateTime.now().plusMinutes(15));
+    smsCodeDO.setCreateTime(LocalDateTime.now());
+    smsCodeDO.setUpdateTime(LocalDateTime.now());
+    int result = smsCodeMapper.insert(smsCodeDO);
+    if (result < 0) {
+      log.info("保存手机验证码失败 :: {}", smsCode);
+    }
+    // 发送短信验证码
+    log.info("发送短信验证码 :: {}", smsCode);
+    return result;
+  }
+
+  @Override
   public void checkSmsCode(SmsCodeDTO smsCodeDTO) {
     SmsCodeDO smsCodeDO = new SmsCodeDO();
     smsCodeDO.setPhone(smsCodeDTO.getPhone());

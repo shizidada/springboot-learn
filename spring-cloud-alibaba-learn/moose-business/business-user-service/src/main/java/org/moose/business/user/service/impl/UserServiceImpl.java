@@ -1,6 +1,5 @@
 package org.moose.business.user.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import java.util.Map;
 import java.util.UUID;
@@ -9,12 +8,9 @@ import javax.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
-import org.apache.rocketmq.client.producer.SendResult;
-import org.apache.rocketmq.client.producer.SendStatus;
-import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.moose.business.oauth.feign.OAuth2RequestTokenApi;
 import org.moose.business.user.constants.OAuth2Constants;
+import org.moose.business.user.model.emun.SmsCodeEnum;
 import org.moose.business.user.model.params.LoginParam;
 import org.moose.business.user.model.params.RegisterParam;
 import org.moose.business.user.model.params.SmsCodeParam;
@@ -33,7 +29,6 @@ import org.moose.provider.account.model.dto.PasswordDTO;
 import org.moose.provider.account.service.AccountService;
 import org.moose.provider.sms.model.dto.SmsCodeDTO;
 import org.moose.provider.sms.service.SmsSendService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -60,14 +55,12 @@ public class UserServiceImpl implements UserService {
   @Reference(version = "1.0.0")
   private SmsSendService smsSendService;
 
-  @Resource
-  private RocketMQTemplate rocketMQTemplate;
-
-  @Value("${mq.sms.topic}")
-  private String topic;
-
-  @Value("${mq.sms.tag}")
-  private String tag;
+  //@Resource
+  //private RocketMQTemplate rocketMQTemplate;
+  //@Value("${mq.sms.topic}")
+  //private String topic;
+  //@Value("${mq.sms.tag}")
+  //private String tag;
 
   @Resource
   private OAuth2RequestTokenApi oAuth2RequestTokenApi;
@@ -211,11 +204,25 @@ public class UserServiceImpl implements UserService {
 
   @Override public ResponseResult<?> sendSmsCode(SmsCodeParam smsCodeParam) {
     boolean result = this.findByPhone(smsCodeParam.getPhone());
-    if (!result) {
-      throw new BusinessException(PhoneCode.PHONE_NOT_FOUND.getCode(),
-          PhoneCode.PHONE_NOT_FOUND.getMessage());
+
+    String type = smsCodeParam.getType();
+    // 发送短信 判断 type : register，手机号码不能存在
+    if (SmsCodeEnum.REGISTER.getValue().equals(type)) {
+      if (result) {
+        throw new BusinessException(PhoneCode.PHONE_IS_EXIST.getCode(),
+            PhoneCode.PHONE_IS_EXIST.getMessage());
+      }
     }
-    // 检查是否上限
+
+    // 重置密码，手机号码必须存在
+    if (SmsCodeEnum.REST_PASSWORD.getValue().equals(type)) {
+      if (!result) {
+        throw new BusinessException(PhoneCode.PHONE_NOT_FOUND.getCode(),
+            PhoneCode.PHONE_NOT_FOUND.getMessage());
+      }
+    }
+
+    // TODO: 检查一天发送的短信是否上限
     checkSmsCodeSuperiorLimit();
 
     // 查询是否存在手机号码
@@ -224,13 +231,20 @@ public class UserServiceImpl implements UserService {
     smsCodeDTO.setPhone(smsCodeParam.getPhone());
     String smsToken = UUID.randomUUID().toString().replace("-", "");
     smsCodeDTO.setSmsToken(smsToken);
-    // TODO: MQ 发送短信信息
-    try {
-      Message msg = new Message(topic, tag, "sms-code", JSON.toJSONString(smsCodeDTO).getBytes());
-      SendResult sendResult = rocketMQTemplate.getProducer().send(msg);
-      SendStatus sendStatus = sendResult.getSendStatus();
 
-      if (sendStatus != SendStatus.SEND_OK) {
+    try {
+      // TODO: MQ 发送短信信息
+      //Message msg = new Message(topic, tag, "sms-code", JSON.toJSONString(smsCodeDTO).getBytes());
+      //SendResult sendResult = rocketMQTemplate.getProducer().send(msg);
+      //SendStatus sendStatus = sendResult.getSendStatus();
+      //if (sendStatus != SendStatus.SEND_OK) {
+      //  throw new BusinessException(SmsCode.SMS_CODE_SEND_FAIL.getCode(),
+      //      SmsCode.SMS_CODE_SEND_FAIL.getMessage());
+      //}
+
+
+      int smsResult = smsSendService.addSmsCode(smsCodeDTO);
+      if (smsResult < 0) {
         throw new BusinessException(SmsCode.SMS_CODE_SEND_FAIL.getCode(),
             SmsCode.SMS_CODE_SEND_FAIL.getMessage());
       }
