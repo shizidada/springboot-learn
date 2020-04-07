@@ -3,7 +3,7 @@ package org.moose.provider.sms.model.domain;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.moose.commons.base.entity.BaseDO;
+import org.moose.commons.base.domain.BaseDO;
 
 /**
  *

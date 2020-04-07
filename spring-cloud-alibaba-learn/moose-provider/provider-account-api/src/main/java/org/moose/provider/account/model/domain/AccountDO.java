@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.moose.commons.base.entity.BaseDO;
+import org.moose.commons.base.domain.BaseDO;
 
 /**
  * <p>

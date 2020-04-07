@@ -1,4 +1,4 @@
-package org.moose.commons.base.entity;
+package org.moose.commons.base.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -14,7 +14,7 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/15 18:02
- * @see org.moose.commons.base.entity
+ * @see org.moose.commons.base.domain
  */
 @Data
 public class BaseDO {

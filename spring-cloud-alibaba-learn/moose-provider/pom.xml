@@ -38,6 +38,10 @@
     <module>provider-user-service</module>
     <module>provider-sms-api</module>
     <module>provider-sms-service</module>
+    <module>provider-order-config-api</module>
+    <module>provider-order-config-service</module>
+    <module>provider-order-api</module>
+    <module>provider-order-service</module>
   </modules>
 
 </project>
