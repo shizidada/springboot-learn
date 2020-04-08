@@ -127,4 +127,14 @@ public class AccountServiceImpl implements AccountService {
     BeanUtils.copyProperties(accountDO, accountDTO);
     return accountDTO;
   }
+
+  @Override public AccountDTO getAccountByAccountId(Long accountId) {
+    AccountDO accountDO = accountMapper.findAccountById(accountId);
+    if (accountDO == null) {
+      return null;
+    }
+    AccountDTO accountDTO = new AccountDTO();
+    BeanUtils.copyProperties(accountDO, accountDTO);
+    return accountDTO;
+  }
 }

@@ -48,6 +48,8 @@ feign:
     enabled: false
   hystrix:
     enabled: true
+  sentinel:
+    enabled: true
   client:
     config:
       default:

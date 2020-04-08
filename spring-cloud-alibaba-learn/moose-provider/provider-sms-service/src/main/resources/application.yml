@@ -1,6 +1,12 @@
 server:
   port: 8006
 
+moose:
+  config:
+    nacos:
+      hostname: 127.0.0.1
+      port: 8848
+
 spring:
   application:
     name: provider-sms-service
@@ -26,7 +32,7 @@ dubbo:
     port: -1
     serialization: kryo
   registry:
-    address: nacos://127.0.0.1
-    port: 8848
+    address: nacos://${moose.config.nacos.hostname}
+    port: ${moose.config.nacos.port}
 
 #debug: true

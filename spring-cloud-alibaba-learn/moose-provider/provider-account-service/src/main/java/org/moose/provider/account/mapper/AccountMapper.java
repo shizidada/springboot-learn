@@ -30,7 +30,7 @@ public interface AccountMapper {
    * @param accountId 账号 id
    * @return AccountDO
    */
-  AccountDO findAccountById(String accountId);
+  AccountDO findAccountById(Long accountId);
 
   /**
    * 根据账号名称查询
@@ -41,10 +41,10 @@ public interface AccountMapper {
   AccountDO findAccountByName(String accountName);
 
   /**
-   * 更具账号信息查询
+   * 根据手机号码查询
    *
    * @param phone 账号
-   * @return 账号
+   * @return AccountDO
    */
   AccountDO findAccountByPhone(String phone);
 }

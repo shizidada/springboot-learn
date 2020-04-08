@@ -1,0 +1,88 @@
+server:
+  port: 9069
+
+moose:
+  config:
+    oauth:
+      hostname: 127.0.0.1
+      port: 9000
+    rocketmq:
+      host: 127.0.0.1
+      port: 9876
+    nacos:
+      hostname: 127.0.0.1
+      port: 8848
+
+spring:
+  application:
+    name: business-im-service
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${moose.config.nacos.hostname}:${moose.config.nacos.port}
+
+## rocketmq settings
+#rocketmq:
+#  name-server: ${moose.config.rocketmq.host}:${moose.config.rocketmq.port}
+#  producer:
+#    group: SEND_SMS_PRODUCER_GROUP
+#    send-message-timeout: 50000
+
+#mq:
+#  sms:
+#    consumer:
+#      group: SEND_SMS_CONSUMER_GROUP
+#    topic: SEND_SMS_CONSUMER_TOPIC
+#    tag: SEND_SMS_TAG
+
+# feign client 配置
+#feign:
+#  okhttp:
+#    enabled: true
+#  httpclient:
+#    enabled: false
+#  hystrix:
+#    enabled: true
+#  sentinel:
+#    enabled: true
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 10000
+#        readTimeout: 600000
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: client
+#      client-secret: secret
+#      grant-type: password
+#      access-token-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/token
+#      user-authorization-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/authorize
+#    resource:
+#      token-info-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/check_token
+
+#dubbo:
+#  application:
+#    name: business-im-service-dubbo
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  registry:
+#    address: nacos://${moose.config.nacos.hostname}
+#    port: ${moose.config.nacos.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    org.moose.im.*: info

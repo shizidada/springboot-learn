@@ -10,7 +10,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>business-oauth2-api</artifactId>
+  <artifactId>business-im-api</artifactId>
 
   <dependencies>
     <dependency>

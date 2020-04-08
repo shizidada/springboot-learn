@@ -18,6 +18,7 @@
     <module>configuration-feign</module>
     <module>configuration-aop</module>
     <module>configuration-redis</module>
+    <module>configuration-sentinel</module>
   </modules>
 
 </project>

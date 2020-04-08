@@ -47,4 +47,13 @@ public interface AccountService {
    * @return 是否存在
    */
   AccountDTO getAccountByPhone(String phone);
+
+  /**
+   * 通过用户名称查询账号
+   *
+   * @param accountId 账号 id
+   *
+   * @return AccountDTO
+   */
+  AccountDTO getAccountByAccountId(Long accountId);
 }
