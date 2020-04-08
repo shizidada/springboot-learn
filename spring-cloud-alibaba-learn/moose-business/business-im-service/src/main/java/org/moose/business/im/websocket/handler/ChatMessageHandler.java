@@ -12,8 +12,8 @@
 //import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 //import org.apache.rocketmq.spring.core.RocketMQListener;
 //import org.apache.rocketmq.spring.core.RocketMQTemplate;
-//import org.moose.business.api.model.dto.MessageDTO;
-//import org.moose.business.api.service.MessageService;
+//import org.moose.business.api.model.dto.ChatMessageDTO;
+//import org.moose.business.api.service.ChatService;
 //import org.moose.commons.base.snowflake.SnowflakeIdWorker;
 //import org.moose.provider.account.model.dto.AccountDTO;
 //import org.moose.provider.account.service.AccountService;
@@ -37,13 +37,13 @@
 //@Component
 //@Slf4j
 //@RocketMQMessageListener(topic = "${mq.im.topic}", consumerGroup = "${mq.im.consumer.group}", messageModel = MessageModel.BROADCASTING)
-//public class NormalMessageHandler extends TextWebSocketHandler implements RocketMQListener<String> {
+//public class ChatMessageHandler extends TextWebSocketHandler implements RocketMQListener<String> {
 //
 //  @Resource
 //  private SnowflakeIdWorker snowflakeIdWorker;
 //
 //  @Resource
-//  private MessageService messageService;
+//  private ChatService messageService;
 //
 //  @Resource
 //  private AccountService accountService;
@@ -96,7 +96,7 @@
 //
 //    // 构造消息对象
 //    long messageId = snowflakeIdWorker.nextId();
-//    MessageDTO messageDTO = new MessageDTO();
+//    ChatMessageDTO messageDTO = new ChatMessageDTO();
 //    messageDTO.setMessageId(messageId);
 //    messageDTO.setFrom(fromUser);
 //    messageDTO.setTo(toUser);
@@ -160,7 +160,7 @@
 //        //TODO 具体格式需要和前端对接
 //        toSession.sendMessage(new TextMessage(message));
 //        //更新消息状态为已读
-//        MessageDTO messageDTO = new MessageDTO();
+//        ChatMessageDTO messageDTO = new ChatMessageDTO();
 //        long messageId = jsonNode.get("id").asLong();
 //        messageDTO.setMessageId(messageId);
 //        messageDTO.setMessageStatus(2);

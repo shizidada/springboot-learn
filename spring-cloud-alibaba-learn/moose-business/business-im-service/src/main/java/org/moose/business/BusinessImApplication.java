@@ -15,8 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @see org.moose.business.im
  */
 @SpringBootApplication
-public class BusinessIMApplication {
+public class BusinessImApplication {
   public static void main(String[] args) {
-    SpringApplication.run(BusinessIMApplication.class, args);
+    SpringApplication.run(BusinessImApplication.class, args);
   }
 }

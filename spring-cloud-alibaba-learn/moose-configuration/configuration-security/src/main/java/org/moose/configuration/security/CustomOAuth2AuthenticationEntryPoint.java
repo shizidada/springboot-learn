@@ -1,4 +1,4 @@
-package org.moose.business.user.configure;
+package org.moose.configuration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -28,7 +28,8 @@ public class CustomOAuth2AuthenticationEntryPoint implements AuthenticationEntry
   @Override public void commence(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException authException) throws IOException, ServletException {
 
-    log.info("AuthenticationEntryPoint 授权异常 [{}] [{}]", authException.getClass().getName(), authException.getMessage());
+    log.info("AuthenticationEntryPoint 授权异常 [{}] [{}]", authException.getClass().getName(),
+        authException.getMessage());
 
     Map<String, Object> map = new HashMap<String, Object>(16);
     Throwable cause = authException.getCause();

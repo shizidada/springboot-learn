@@ -17,11 +17,24 @@
       <artifactId>spring-cloud-starter-oauth2</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>javax.servlet</groupId>-->
-    <!--      <artifactId>javax.servlet-api</artifactId>-->
-    <!--      <scope>provided</scope>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Projects -->
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
+      <artifactId>commons-base</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
   </dependencies>
 
 </project>

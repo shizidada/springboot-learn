@@ -1,30 +1,27 @@
-package org.moose.business.api.model.dto;
+package org.moose.business.api.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.moose.commons.base.dto.BaseDTO;
-import org.moose.provider.account.model.dto.AccountDTO;
+import org.moose.commons.base.domain.BaseDO;
+import org.moose.provider.account.model.domain.AccountDO;
 
 /**
- *
  * <p>
  * Description:
  * </p>
  *
  * @author taohua
  * @version v1.0.0
- * @date 2020-04-08 14:41:14:41
- * @see org.moose.business.api.model.dto
+ * @date 2020-04-08 14:39:14:39
+ * @see org.moose.business.api.model.domain
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MessageDTO extends BaseDTO implements Serializable {
-  private static final long serialVersionUID = -1898191813800954409L;
+public class ChatMessageDO extends BaseDO {
 
   /**
    * 消息 id
@@ -38,6 +35,8 @@ public class MessageDTO extends BaseDTO implements Serializable {
 
   /**
    * 消息状态
+   *
+   * 1 未读 2 已读
    */
   private Integer messageStatus;
 
@@ -58,10 +57,10 @@ public class MessageDTO extends BaseDTO implements Serializable {
   /**
    * 接受者
    */
-  private AccountDTO to;
+  private AccountDO to;
 
   /**
    * 发送者
    */
-  private AccountDTO from;
+  private AccountDO from;
 }

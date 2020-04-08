@@ -1,9 +1,8 @@
 package org.moose.business.api.service;
 
-import org.moose.business.api.model.dto.MessageDTO;
+import org.moose.business.api.model.dto.ChatMessageDTO;
 
 /**
- *
  * <p>
  * Description:
  * </p>
@@ -13,23 +12,21 @@ import org.moose.business.api.model.dto.MessageDTO;
  * @date 2020-04-08 14:37:14:37
  * @see org.moose.business.api.service
  */
-public interface MessageService {
+public interface ChatService {
 
   /**
    * 保存消息
    *
    * @param message 消息
-   *
-   * @return MessageDO
+   * @return ChatMessageDO
    */
-  MessageDTO saveMessage(MessageDTO message);
+  ChatMessageDTO saveMessage(ChatMessageDTO message);
 
   /**
    * 更新消息状态
    *
    * @param message 消息
-   *
    * @return 是否更新成功
    */
-  int updateMessageStatus(MessageDTO message);
+  int updateMessageStatus(ChatMessageDTO message);
 }

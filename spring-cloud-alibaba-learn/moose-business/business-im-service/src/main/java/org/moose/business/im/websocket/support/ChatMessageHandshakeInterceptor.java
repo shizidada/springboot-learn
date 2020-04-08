@@ -1,4 +1,4 @@
-package org.moose.business.im.websocket.interceptor;
+package org.moose.business.im.websocket.support;
 
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +18,11 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
  * @author taohua
  * @version v1.0.0
  * @date 2020-04-08 14:31:14:31
- * @see org.moose.business.im.websocket.interceptor
+ * @see org.moose.business.im.websocket.support
  */
 @Component
 @Slf4j
-public class MessageHandshakeInterceptor implements HandshakeInterceptor {
+public class ChatMessageHandshakeInterceptor implements HandshakeInterceptor {
 
   /**
    * beforeHandshake
@@ -40,7 +40,7 @@ public class MessageHandshakeInterceptor implements HandshakeInterceptor {
       WebSocketHandler webSocketHandler, Map<String, Object> map
   ) throws Exception {
     // TODO: 通过 oauth2 是否还需要手动去校验 token 有效
-    log.info("MessageHandshakeInterceptor #开始握手！ ");
+    log.info("ChatMessageHandshakeInterceptor #开始握手！ ");
     // 处理请求路径为 ---> /ws/{uid}
 
     // TODO: 是否可以通过 Authentication 去拿 用户信息
@@ -71,6 +71,6 @@ public class MessageHandshakeInterceptor implements HandshakeInterceptor {
   @Override
   public void afterHandshake(ServerHttpRequest serverHttpRequest,
       ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
-    log.info("MessageHandshakeInterceptor #握手完成！ ");
+    log.info("ChatMessageHandshakeInterceptor #握手完成！ ");
   }
 }

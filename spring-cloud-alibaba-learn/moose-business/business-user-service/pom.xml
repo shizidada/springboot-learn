@@ -78,6 +78,12 @@
 
     <dependency>
       <groupId>shizidada.github.io</groupId>
+      <artifactId>configuration-security</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
       <artifactId>business-oauth2-api</artifactId>
       <version>${project.parent.version}</version>
     </dependency>

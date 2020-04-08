@@ -41,41 +41,41 @@ spring:
 #    tag: SEND_SMS_TAG
 
 # feign client 配置
-#feign:
-#  okhttp:
-#    enabled: true
-#  httpclient:
-#    enabled: false
-#  hystrix:
-#    enabled: true
-#  sentinel:
-#    enabled: true
-#  client:
-#    config:
-#      default:
-#        connectTimeout: 10000
-#        readTimeout: 600000
+feign:
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  hystrix:
+    enabled: true
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 600000
 
-#security:
-#  oauth2:
-#    client:
-#      client-id: client
-#      client-secret: secret
-#      grant-type: password
-#      access-token-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/token
-#      user-authorization-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/authorize
-#    resource:
-#      token-info-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/check_token
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: secret
+      grant-type: password
+      access-token-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/token
+      user-authorization-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/authorize
+    resource:
+      token-info-uri: http://${moose.config.oauth.hostname}:${moose.config.oauth.port}/oauth/check_token
 
-#dubbo:
-#  application:
-#    name: business-im-service-dubbo
-#  protocol:
-#    name: dubbo
-#    port: -1
-#  registry:
-#    address: nacos://${moose.config.nacos.hostname}
-#    port: ${moose.config.nacos.port}
+dubbo:
+  application:
+    name: business-im-service-dubbo
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://${moose.config.nacos.hostname}
+    port: ${moose.config.nacos.port}
 
 management:
   endpoints:

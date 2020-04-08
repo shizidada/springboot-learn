@@ -1,11 +1,9 @@
 package org.moose.business.im.controller;
 
 import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
-import org.moose.business.im.websocket.handler.PushMessageHandler;
+import org.moose.business.api.service.PushMessageService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.socket.TextMessage;
 
 /**
  *
@@ -18,16 +16,14 @@ import org.springframework.web.socket.TextMessage;
  * @date 2020-04-08 16:25:16:25
  * @see org.moose.business.im.controller
  */
-@Slf4j
 @RestController
 public class PushMessageController {
 
   @Resource
-  private PushMessageHandler pushMessageHandler;
+  private PushMessageService pushMessageService;
 
   @GetMapping(value = "/push/message")
   public void pushMessage() {
-    boolean pushSuccess = pushMessageHandler.sendMessageToAllUser(new TextMessage("push test message"));
-    log.info("pushSuccess {} ", pushSuccess);
+    pushMessageService.pushMessage();
   }
 }

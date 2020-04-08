@@ -16,7 +16,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 /**
- *
  * <p>
  * Description:
  * </p>
@@ -30,20 +29,20 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @Component
 public class PushMessageHandler extends TextWebSocketHandler {
 
-  private static final Map<Long, WebSocketSession> SESSION_MAP;
+  private static final Map<Long, WebSocketSession> SAVE_SESSION_MAP;
 
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
   static {
-    SESSION_MAP = new ConcurrentHashMap<>();
+    SAVE_SESSION_MAP = new ConcurrentHashMap<>();
   }
 
   @Override public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     super.afterConnectionEstablished(session);
     // 将当前用户的 session 放置到 map 中，后面会使用相应的 session 通信
     long id = snowflakeIdWorker.nextId();
-    SESSION_MAP.put(id, session);
+    SAVE_SESSION_MAP.put(id, session);
     log.info("PushMessageHandler #afterConnectionEstablished {}", session);
   }
 
@@ -84,12 +83,12 @@ public class PushMessageHandler extends TextWebSocketHandler {
 
   public boolean sendMessageToAllUser(TextMessage message) {
     boolean isSendSuccess = true;
-    Set<Long> dunIds = SESSION_MAP.keySet();
+    Set<Long> ids = SAVE_SESSION_MAP.keySet();
     WebSocketSession session = null;
-    for (Long dunId : dunIds) {
+    for (Long id : ids) {
       try {
-        session = SESSION_MAP.get(dunId);
-        if (session.isOpen()) {
+        session = SAVE_SESSION_MAP.get(id);
+        if (session != null && session.isOpen()) {
           session.sendMessage(message);
         }
       } catch (IOException e) {

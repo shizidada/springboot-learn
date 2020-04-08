@@ -1,8 +1,8 @@
-package org.moose.business.im.configuration;
+package org.moose.business.im.configure;
 
 import javax.annotation.Resource;
 import org.moose.business.im.websocket.handler.PushMessageHandler;
-import org.moose.business.im.websocket.interceptor.MessageHandshakeInterceptor;
+import org.moose.business.im.websocket.support.PushMessageHandshakeInterceptor;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,28 +19,25 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
  * @author taohua
  * @version v1.0.0
  * @date 2020-04-08 14:31:14:31
- * @see org.moose.business.im.configuration
+ * @see org.moose.business.im.configure
  */
 @Configuration
 @EnableWebSocket
-public class WebsocketConfiguration implements WebSocketConfigurer {
+public class BusinessImConfiguration implements WebSocketConfigurer {
 
   @Resource
   private PushMessageHandler pushMessageHandler;
 
-  //@Resource
-  //private NormalMessageHandler messageHandler;
-
   @Resource
-  private MessageHandshakeInterceptor messageHandshakeInterceptor;
+  private PushMessageHandshakeInterceptor pushMessageHandshakeInterceptor;
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
     registry
-        //.addHandler(this.messageHandler, "/ws/{accountId}")
-        .addHandler(this.pushMessageHandler, "/ws/{accountId}")
+        //.addHandler(this.messageHandler, "/socket.io/chat/{accountId}")
+        .addHandler(this.pushMessageHandler, "/socket.io")
         .setAllowedOrigins("*")
-        .addInterceptors(this.messageHandshakeInterceptor);
+        .addInterceptors(this.pushMessageHandshakeInterceptor);
   }
 
   @Bean

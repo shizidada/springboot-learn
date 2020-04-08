@@ -1,4 +1,4 @@
-package org.moose.business.user.configure;
+package org.moose.configuration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
  * @author taohua
  * @version v1.0.0
  * @date 2020-03-25 13:34:13:34
- * @see org.moose.business.oauth.configure
+ * @see org.moose.configuration
  */
 @Slf4j
 public class CustomOAuth2AccessDeniedHandler implements AccessDeniedHandler {

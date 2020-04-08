@@ -1,5 +1,7 @@
 package org.moose.business.user.configure;
 
+import org.moose.configuration.security.CustomOAuth2AccessDeniedHandler;
+import org.moose.configuration.security.CustomOAuth2AuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,7 +27,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @Order(1)
-public class UserResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+public class BusinessUserResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
