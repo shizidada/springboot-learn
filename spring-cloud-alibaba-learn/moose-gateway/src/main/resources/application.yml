@@ -47,3 +47,10 @@ spring:
             - Path=/api/user/**
           filters:
             - StripPrefix=1
+        # 配置 websocket 网关
+        - id: BUSINESS-IM-SERVICE
+          uri: lb:ws://business-im-service
+          predicates:
+            - Path=/im/socket.io/**
+          filters:
+            - StripPrefix=1
