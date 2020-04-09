@@ -42,6 +42,7 @@
     <module>provider-order-config-service</module>
     <module>provider-order-api</module>
     <module>provider-order-service</module>
+    <module>provider-search-service</module>
   </modules>
 
 </project>
