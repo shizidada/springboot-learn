@@ -19,8 +19,6 @@ import org.moose.commons.base.domain.BaseDO;
 @Data
 public class OrderDO extends BaseDO {
 
-  private static final long serialVersionUID = 6878453514413131235L;
-
   /**
    * 订单 id
    */

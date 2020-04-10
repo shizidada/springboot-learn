@@ -1,5 +1,7 @@
 package org.moose.search.configure;
 
+import org.moose.commons.base.snowflake.SnowflakeIdWorker;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -16,5 +18,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SearchConfiguration {
 
-
+  @Bean
+  public SnowflakeIdWorker snowflakeIdWorker() {
+    return new SnowflakeIdWorker(12, 18);
+  }
 }
