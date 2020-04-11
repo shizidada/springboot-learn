@@ -34,15 +34,23 @@
   <modules>
     <module>provider-account-api</module>
     <module>provider-account-service</module>
+
     <module>provider-user-api</module>
     <module>provider-user-service</module>
+
     <module>provider-sms-api</module>
     <module>provider-sms-service</module>
-    <module>provider-order-config-api</module>
-    <module>provider-order-config-service</module>
+
+    <module>provider-config-api</module>
+    <module>provider-config-service</module>
+
     <module>provider-order-api</module>
     <module>provider-order-service</module>
+
     <module>provider-search-service</module>
+
+    <module>provider-payment-api</module>
+    <module>provider-payment-service</module>
   </modules>
 
 </project>

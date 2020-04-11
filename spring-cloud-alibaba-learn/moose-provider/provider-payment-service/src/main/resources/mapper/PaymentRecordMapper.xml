@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.moose.provider.payment.mapper.PaymentRecordMapper">
+
+  <resultMap id="BaseResultMap" type="org.moose.provider.payment.model.domain.PaymentRecordDO">
+    <id column="id" property="paymentId" jdbcType="BIGINT"/>
+    <result column="account_id" property="accountId" jdbcType="BIGINT"/>
+    <result column="payment_amount" property="paymentAmount" jdbcType="DOUBLE"/>
+    <result column="payment_status" property="paymentAmount" jdbcType="INTEGER"/>
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR"/>
+    <result column="payment_category" property="paymentCategory" jdbcType="VARCHAR"/>
+    <result column="payment_num" property="paymentNum" jdbcType="VARCHAR"/>
+    <result column="payment_tag" property="paymentTag" jdbcType="VARCHAR"/>
+    <result column="create_time" property="createTime" jdbcType="DATE"/>
+    <result column="update_time" property="updateTime" jdbcType="DATE"/>
+  </resultMap>
+
+  <sql id="Base_Column">
+    id, account_id, payment_amount, payment_status, payment_method, payment_category, payment_num, payment_tag, create_time,
+    update_time
+  </sql>
+
+  <insert id="insertPaymentRecord">
+    INSERT INTO t_payment_record (id,
+                           account_id,
+                           payment_amount,
+                           payment_status,
+                           payment_method,
+                           payment_category,
+                           payment_num,
+                           payment_tag,
+                           create_time,
+                           update_time)
+    VALUES (#{paymentId},
+            #{accountId},
+            #{paymentAmount},
+            #{paymentAmount},
+            #{paymentMethod},
+            #{paymentCategory},
+            #{paymentNum},
+            #{paymentTag},
+            #{createTime},
+            #{updateTime})
+  </insert>
+
+
+</mapper>

@@ -11,3 +11,5 @@ PhoneCode: 500001
 SmsCode: 600001
 
 LoginCode: 700001
+
+PaymentCode: 800001

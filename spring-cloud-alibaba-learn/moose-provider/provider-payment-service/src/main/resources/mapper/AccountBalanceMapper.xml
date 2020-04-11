@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.moose.provider.payment.mapper.AccountBalanceMapper">
+  <resultMap id="BaseResultMap" type="org.moose.provider.payment.model.domain.AccountBalanceDO">
+    <id column="id" property="id" jdbcType="BIGINT"/>
+    <result column="account_id" property="accountId" jdbcType="BIGINT"/>
+    <result column="balance" property="balance" jdbcType="DOUBLE"/>
+    <result column="create_time" property="createTime" jdbcType="DATE"/>
+    <result column="update_time" property="updateTime" jdbcType="DATE"/>
+  </resultMap>
+
+  <sql id="Base_Column">
+    id, account_id, balance, create_time, update_time
+  </sql>
+
+  <insert id="operatorAccountBalance">
+    INSERT INTO t_account_balance (id, account_id, balance, create_time, update_time)
+    VALUES (#{id}, #{accountId}, #{balance}, #{createTime}, #{updateTime})
+  </insert>
+
+  <select id="findByAccountId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM t_account_balance WHERE account_id=#{accountId}
+  </select>
+
+  <update id="updateBalanceByAccountId" parameterType="org.moose.provider.payment.model.domain.AccountBalanceDO">
+    UPDATE t_account_balance
+    SET balance = balance + #{balance}
+    WHERE account_id = #{accountId};
+  </update>
+
+
+</mapper>

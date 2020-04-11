@@ -1,5 +1,5 @@
 server:
-  port: 9069
+  port: 9020
 
 moose:
   config:

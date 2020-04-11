@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 9010
 
 moose:
   config:
@@ -25,7 +25,9 @@ spring:
     nacos:
       discovery:
         server-addr: ${moose.config.nacos.hostname}:${moose.config.nacos.port}
-
+    alibaba:
+      seata:
+        tx-service-group:
 ## rocketmq settings
 #rocketmq:
 #  name-server: ${moose.config.rocketmq.host}:${moose.config.rocketmq.port}

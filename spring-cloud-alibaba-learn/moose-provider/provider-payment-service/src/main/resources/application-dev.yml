@@ -1,0 +1,51 @@
+moose:
+  config:
+    mysql:
+      hostname: 127.0.0.1
+      port: 3306
+    nacos:
+      hostname: 127.0.0.1
+      port: 8848
+
+## spring settings
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${moose.config.nacos.hostname}:${moose.config.nacos.port}
+  datasource:
+    name: account_service
+    url: jdbc:mysql://${moose.config.mysql.hostname}:${moose.config.mysql.port}/payment_service?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+
+## apache dubbo settings
+dubbo:
+  application:
+    name: provider-payment-service-dubbo
+  scan:
+    base-packages: org.moose.provider.payment.service
+  protocol:
+    name: dubbo
+    port: -1
+    serialization: kryo
+  registry:
+    address: nacos://${moose.config.nacos.hostname}
+    port: ${moose.config.nacos.port}
+
+## logging settings
+logging:
+  file:
+    path: /Users/taohua/logs
+
+## mybatis settings
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: org.moose.provider.payment.model.domain

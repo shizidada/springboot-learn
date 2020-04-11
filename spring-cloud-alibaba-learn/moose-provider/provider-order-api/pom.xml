@@ -49,7 +49,7 @@
 
     <dependency>
       <groupId>shizidada.github.io</groupId>
-      <artifactId>provider-order-config-api</artifactId>
+      <artifactId>provider-config-api</artifactId>
       <version>${project.parent.version}</version>
       <scope>provided</scope>
     </dependency>
