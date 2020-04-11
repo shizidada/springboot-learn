@@ -2,8 +2,9 @@ package org.moose.business.user.controller;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import org.moose.business.user.model.params.SmsCodeParam;
-import org.moose.business.user.service.SmsCodeService;
+import lombok.extern.slf4j.Slf4j;
+import org.moose.business.user.model.params.LoginParam;
+import org.moose.business.user.service.LoginService;
 import org.moose.commons.base.dto.ResponseResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,26 +13,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ *
  * <p>
- * Description:
+ * Description
  * </p>
  *
  * @author taohua
  * @version v1.0.0
- * @date 2020-03-30 16:04:16:04
- * @see org.moose.business.oauth.controller
+ * @date 2020 2020/4/11 22:10
+ * @see org.moose.business.user.controller
  */
-
 @RestController
 @RequestMapping("/user")
-public class SmsCodeController {
+@Slf4j
+public class LoginController {
 
   @Resource
-  private SmsCodeService smsCodeService;
+  private LoginService loginService;
 
-  @PostMapping(value = "/sms/send")
-  public ResponseResult<?> send(
-      @RequestBody @Valid SmsCodeParam smsCodeParam, BindingResult bindingResult) {
-    return smsCodeService.sendSmsCode(smsCodeParam);
+  @PostMapping("/login")
+  public ResponseResult<?> login(
+      @RequestBody @Valid LoginParam loginParam, BindingResult loginResult
+  ) {
+    return loginService.login(loginParam);
   }
 }

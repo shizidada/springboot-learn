@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
 
   @Resource
-  private ProfileService profileService;
+  private ProfileService userProfileService;
 
   @GetMapping("/profile/info")
   public ResponseResult<?> info() {
-    return profileService.getProfileInfo();
+    return userProfileService.getProfileInfo();
   }
 }

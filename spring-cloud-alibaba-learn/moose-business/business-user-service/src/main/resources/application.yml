@@ -27,7 +27,8 @@ spring:
         server-addr: ${moose.config.nacos.hostname}:${moose.config.nacos.port}
     alibaba:
       seata:
-        tx-service-group:
+        tx-service-group: business_user_service_tx_group
+
 ## rocketmq settings
 #rocketmq:
 #  name-server: ${moose.config.rocketmq.host}:${moose.config.rocketmq.port}

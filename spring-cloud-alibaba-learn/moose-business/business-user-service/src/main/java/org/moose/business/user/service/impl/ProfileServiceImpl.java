@@ -1,6 +1,7 @@
 package org.moose.business.user.service.impl;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.moose.business.user.model.vo.ProfileInfoVo;
 import org.moose.business.user.service.ProfileService;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
  * @see org.moose.business.user.service.impl
  */
 @Service
+@Slf4j
 public class ProfileServiceImpl implements ProfileService {
 
   @Reference(version = "1.0.0")
