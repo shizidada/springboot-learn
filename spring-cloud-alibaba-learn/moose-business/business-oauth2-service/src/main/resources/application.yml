@@ -44,7 +44,10 @@ dubbo:
     address: nacos://${moose.config.nacos.hostname}
     port: ${moose.config.nacos.port}
 
+# feign client 配置
 feign:
+  hystrix:
+    enabled: true
   okhttp:
     enabled: true
   httpclient:
@@ -55,3 +58,7 @@ management:
     web:
       exposure:
         include: "*"
+
+logging:
+  level:
+    org.moose.business.oauth.*: debug

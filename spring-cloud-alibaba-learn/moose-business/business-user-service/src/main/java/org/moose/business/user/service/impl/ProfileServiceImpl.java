@@ -1,11 +1,9 @@
 package org.moose.business.user.service.impl;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.moose.business.user.model.vo.ProfileInfoVo;
 import org.moose.business.user.service.ProfileService;
-import org.moose.business.user.service.fallback.ProfileServiceFallback;
 import org.moose.commons.base.dto.ResponseResult;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.service.AccountService;
@@ -31,7 +29,6 @@ public class ProfileServiceImpl implements ProfileService {
   @Reference(version = "1.0.0")
   private AccountService accountService;
 
-  @SentinelResource(value = "profileInfo", fallback = "getProfileInfo", fallbackClass = ProfileServiceFallback.class)
   @Override public ResponseResult<?> getProfileInfo() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String accountName = authentication.getName();

@@ -44,11 +44,11 @@ public class BindingResultAspect {
         BindingResult result = (BindingResult) arg;
         if (result.hasErrors()) {
           FieldError fieldError = result.getFieldError();
-          String message = ResultCode.VALIDATE_FAIL.getMessage();
+          String message = ResultCode.VALIDATE_PARAM_FAIL.getMessage();
           if (fieldError != null) {
             message = fieldError.getDefaultMessage();
           }
-          throw new BusinessException(ResultCode.VALIDATE_FAIL);
+          throw new BusinessException(ResultCode.VALIDATE_PARAM_FAIL, message);
         }
       }
     }

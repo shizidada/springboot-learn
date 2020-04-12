@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
-import org.apache.dubbo.rpc.RpcException;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
 import org.moose.commons.provider.exception.ProviderRpcException;

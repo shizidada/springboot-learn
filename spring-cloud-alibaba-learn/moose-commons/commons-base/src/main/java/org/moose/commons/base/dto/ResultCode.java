@@ -156,17 +156,17 @@ public enum ResultCode {
   /**
    * 网络错误，请检查网络。
    */
-  NETWORK_UNKNOWN(-460, "网络错误，请检查网络。"),
+  NETWORK_UNKNOWN(460, "网络错误，请检查网络。"),
 
   /**
    * 参数校验异常
    */
-  VALIDATE_FAIL(-10000, "参数校验异常"),
+  VALIDATE_PARAM_FAIL(-2, "参数校验异常 %s"),
 
   /**
    * 未知错误
    */
-  UNKNOWN(-99999, "未知错误");
+  UNKNOWN(-1, "未知错误");
 
   private final Integer code;
 

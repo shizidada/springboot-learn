@@ -85,7 +85,7 @@ public class LoginServiceImpl implements LoginService {
 
     Map<String, Object> authToken = oAuth2RequestTokenApi.getOAuthToken(param);
     if (authToken == null) {
-      throw new BusinessException(ResultCode.NETWORK_UNKNOWN);
+      throw new BusinessException(ResultCode.OAUTH_ERROR);
     }
 
     String accessToken = (String) authToken.get("access_token");

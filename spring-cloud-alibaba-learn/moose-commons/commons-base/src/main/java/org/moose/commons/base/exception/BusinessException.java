@@ -36,16 +36,6 @@ public class BusinessException extends RuntimeException {
     this.code = resultCode.getCode();
   }
 
-  //public BusinessException(Integer code, String message) {
-  //  super(message);
-  //  this.code = code;
-  //}
-
-  //public BusinessException(Integer code, String msgFormat, Object... args) {
-  //  super(String.format(msgFormat, args));
-  //  this.code = code;
-  //}
-
   public Integer getCode() {
     return code;
   }
