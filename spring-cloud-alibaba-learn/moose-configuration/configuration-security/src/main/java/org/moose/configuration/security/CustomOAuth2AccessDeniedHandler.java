@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.commons.base.code.OAuth2Code;
+import org.moose.commons.base.dto.ResultCode;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -33,7 +33,7 @@ public class CustomOAuth2AccessDeniedHandler implements AccessDeniedHandler {
 
     response.setContentType("application/json;charset=UTF-8");
     Map<String, Object> map = new HashMap<String, Object>(16);
-    map.put("code", OAuth2Code.OAUTH_UNAUTHORIZED.getCode());
+    map.put("code", ResultCode.OAUTH_UNAUTHORIZED.getCode());
     map.put("message", accessDeniedException.getMessage());
     ObjectMapper mapper = new ObjectMapper();
     response.setContentType("application/json");

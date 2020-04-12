@@ -9,10 +9,6 @@ import org.moose.business.oauth.feign.OAuth2RequestTokenApi;
 import org.moose.business.user.constants.OAuth2Constants;
 import org.moose.business.user.model.params.LoginParam;
 import org.moose.business.user.service.LoginService;
-import org.moose.commons.base.code.AccountCode;
-import org.moose.commons.base.code.PasswordCode;
-import org.moose.commons.base.code.PhoneCode;
-import org.moose.commons.base.code.SmsCode;
 import org.moose.commons.base.dto.ResponseResult;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
@@ -52,14 +48,12 @@ public class LoginServiceImpl implements LoginService {
     if (loginType.equals(OAuth2Constants.OAUTH2_PASSWORD_GRANT_TYPE)) {
       String accountName = loginParam.getAccountName();
       if (StringUtils.isBlank(accountName)) {
-        throw new BusinessException(AccountCode.ACCOUNT_MUST_NOT_BE_NULL.getCode(),
-            AccountCode.ACCOUNT_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(ResultCode.ACCOUNT_MUST_NOT_BE_NULL);
       }
 
       String password = loginParam.getPassword();
       if (StringUtils.isBlank(password)) {
-        throw new BusinessException(PasswordCode.PASSWORD_MUST_NOT_BE_NULL.getCode(),
-            PasswordCode.PASSWORD_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(ResultCode.PASSWORD_MUST_NOT_BE_NULL);
       }
       param.put("username", accountName);
       param.put("password", password);
@@ -72,15 +66,13 @@ public class LoginServiceImpl implements LoginService {
 
       // 手机号码
       if (StringUtils.isBlank(phone)) {
-        throw new BusinessException(PhoneCode.PHONE_MUST_NOT_BE_NULL.getCode(),
-            PhoneCode.PHONE_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(ResultCode.PHONE_MUST_NOT_BE_NULL);
       }
 
       // 校验短信验证码
       String smsCode = loginParam.getSmsCode();
       if (StringUtils.isBlank(smsCode)) {
-        throw new BusinessException(SmsCode.SMS_CODE_MUST_NOT_BE_NULL.getCode(),
-            SmsCode.SMS_CODE_MUST_NOT_BE_NULL.getMessage());
+        throw new BusinessException(ResultCode.SMS_CODE_MUST_NOT_BE_NULL);
       }
 
       param.put("phone", phone);
@@ -93,8 +85,7 @@ public class LoginServiceImpl implements LoginService {
 
     Map<String, Object> authToken = oAuth2RequestTokenApi.getOAuthToken(param);
     if (authToken == null) {
-      return new ResponseResult<Map<String, Object>>(ResultCode.NETWORK_UNKNOWN.getCode(),
-          ResultCode.NETWORK_UNKNOWN.getMessage());
+      throw new BusinessException(ResultCode.NETWORK_UNKNOWN);
     }
 
     String accessToken = (String) authToken.get("access_token");

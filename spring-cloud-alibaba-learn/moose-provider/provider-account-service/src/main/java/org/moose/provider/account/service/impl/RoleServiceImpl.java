@@ -3,15 +3,15 @@ package org.moose.provider.account.service.impl;
 import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.Service;
-import org.apache.dubbo.rpc.RpcException;
-import org.moose.commons.base.code.AccountCode;
-import org.moose.commons.base.code.RoleCode;
+import org.moose.commons.base.dto.ResultCode;
+import org.moose.commons.provider.exception.ProviderRpcException;
 import org.moose.provider.account.mapper.RoleMapper;
 import org.moose.provider.account.model.domain.RoleDO;
 import org.moose.provider.account.model.dto.RoleDTO;
 import org.moose.provider.account.service.RoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -30,11 +30,11 @@ public class RoleServiceImpl implements RoleService {
   @Resource
   private RoleMapper roleMapper;
 
+  @Transactional(rollbackFor = {Exception.class})
   @Override
   public int add(RoleDTO roleDTO) {
     if (roleDTO == null) {
-      throw new RpcException(RoleCode.ROLE_MUST_NOT_BE_NULL.getCode(),
-          RoleCode.ROLE_MUST_NOT_BE_NULL.getMessage());
+      throw new ProviderRpcException(ResultCode.ROLE_MUST_NOT_BE_NULL);
     }
     RoleDO roleDO = new RoleDO();
     BeanUtils.copyProperties(roleDTO, roleDO);
@@ -45,8 +45,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override public RoleDTO getRoleByAccountId(Long accountId) {
     if (accountId == null) {
-      throw new RpcException(AccountCode.ACCOUNT_ID_MUST_NOT_BE_NULL.getCode(),
-          AccountCode.ACCOUNT_ID_MUST_NOT_BE_NULL.getMessage());
+      throw new ProviderRpcException(ResultCode.ACCOUNT_ID_MUST_NOT_BE_NULL);
     }
 
     RoleDO roleDO = roleMapper.findRoleByAccountId(accountId);

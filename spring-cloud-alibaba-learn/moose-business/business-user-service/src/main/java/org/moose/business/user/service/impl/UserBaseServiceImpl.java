@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.moose.business.user.service.UserBaseService;
-import org.moose.commons.base.code.PhoneCode;
+import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.service.AccountService;
@@ -29,8 +29,7 @@ public class UserBaseServiceImpl implements UserBaseService {
 
   @Override public AccountDTO findByPhone(String phone) {
     if (phone == null || StringUtils.isBlank(phone)) {
-      throw new BusinessException(PhoneCode.PHONE_MUST_NOT_BE_NULL.getCode(),
-          PhoneCode.PHONE_MUST_NOT_BE_NULL.getMessage());
+      throw new BusinessException(ResultCode.PHONE_MUST_NOT_BE_NULL);
     }
     AccountDTO accountDTO = accountService.getAccountByPhone(phone);
     return accountDTO;

@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.moose.business.user.model.params.RegisterParam;
 import org.moose.business.user.service.RegisterService;
-import org.moose.commons.base.code.PasswordCode;
 import org.moose.commons.base.dto.ResponseResult;
+import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
 import org.moose.provider.account.model.dto.AccountDTO;
 import org.moose.provider.account.model.dto.PasswordDTO;
@@ -58,8 +58,7 @@ public class RegisterServiceImpl implements RegisterService {
     String password = registerParam.getPassword();
     String rePassword = registerParam.getRePassword();
     if (!password.equals(rePassword)) {
-      throw new BusinessException(PasswordCode.PASSWORD_NOT_RIGHT.getCode(),
-          PasswordCode.PASSWORD_NOT_RIGHT.getMessage());
+      throw new BusinessException(ResultCode.PASSWORD_NOT_RIGHT);
     }
 
     // 检查短信校验码是否正确

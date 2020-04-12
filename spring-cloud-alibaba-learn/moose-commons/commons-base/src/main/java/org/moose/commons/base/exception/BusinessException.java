@@ -1,5 +1,7 @@
 package org.moose.commons.base.exception;
 
+import org.moose.commons.base.dto.ResultCode;
+
 /**
  * <p>
  * Description
@@ -12,23 +14,37 @@ package org.moose.commons.base.exception;
  */
 public class BusinessException extends RuntimeException {
 
-  private String message;
-
   private Integer code;
 
-  public BusinessException(Integer code, String message) {
+  public BusinessException() {
+  }
+
+  public BusinessException(Throwable cause) {
+    super(cause);
+  }
+
+  public BusinessException(String message) {
     super(message);
-    this.message = message;
-    this.code = code;
   }
 
-  @Override public String getMessage() {
-    return message;
+  public BusinessException(String message, Throwable cause) {
+    super(message, cause);
   }
 
-  public void setMessage(String message) {
-    this.message = message;
+  public BusinessException(ResultCode resultCode, Object... args) {
+    super(String.format(resultCode.getMessage(), args));
+    this.code = resultCode.getCode();
   }
+
+  //public BusinessException(Integer code, String message) {
+  //  super(message);
+  //  this.code = code;
+  //}
+
+  //public BusinessException(Integer code, String msgFormat, Object... args) {
+  //  super(String.format(msgFormat, args));
+  //  this.code = code;
+  //}
 
   public Integer getCode() {
     return code;

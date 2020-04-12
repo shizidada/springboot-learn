@@ -48,7 +48,7 @@ public class BindingResultAspect {
           if (fieldError != null) {
             message = fieldError.getDefaultMessage();
           }
-          throw new BusinessException(ResultCode.VALIDATE_FAIL.getCode(), message);
+          throw new BusinessException(ResultCode.VALIDATE_FAIL);
         }
       }
     }

@@ -16,6 +16,7 @@
   <modules>
     <module>commons-base</module>
     <module>commons-utils</module>
+    <module>commons-provider</module>
   </modules>
 
 </project>

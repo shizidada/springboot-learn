@@ -1,7 +1,6 @@
 package org.moose.business.oauth.configure;
 
 import lombok.extern.slf4j.Slf4j;
-import org.moose.commons.base.code.OAuth2Code;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,7 @@ public class CustomOAuth2ResponseExceptionTranslator
         e instanceof InvalidRequestException) {
       return ResponseEntity
           .status(HttpStatus.OK)
-          .body(new CustomOAuth2Exception(e.getMessage(), OAuth2Code.OAUTH_ERROR.getCode()));
+          .body(new CustomOAuth2Exception(e.getMessage(), ResultCode.OAUTH_ERROR.getCode()));
     }
 
     if (e instanceof BusinessException) {

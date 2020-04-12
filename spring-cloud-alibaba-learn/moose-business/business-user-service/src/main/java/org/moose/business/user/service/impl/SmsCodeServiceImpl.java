@@ -10,8 +10,6 @@ import org.moose.business.user.model.emun.SmsCodeEnum;
 import org.moose.business.user.model.params.SmsCodeParam;
 import org.moose.business.user.service.SmsCodeService;
 import org.moose.business.user.service.UserBaseService;
-import org.moose.commons.base.code.PhoneCode;
-import org.moose.commons.base.code.SmsCode;
 import org.moose.commons.base.dto.ResponseResult;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
@@ -48,16 +46,14 @@ public class SmsCodeServiceImpl implements SmsCodeService {
     // 发送短信 判断 type : register，手机号码不能存在
     if (SmsCodeEnum.REGISTER.getValue().equals(type)) {
       if (accountDTO != null) {
-        throw new BusinessException(PhoneCode.PHONE_IS_EXIST.getCode(),
-            PhoneCode.PHONE_IS_EXIST.getMessage());
+        throw new BusinessException(ResultCode.PHONE_IS_EXIST);
       }
     }
 
     // 重置密码，手机号码必须存在
     if (SmsCodeEnum.REST_PASSWORD.getValue().equals(type)) {
       if (accountDTO == null) {
-        throw new BusinessException(PhoneCode.PHONE_NOT_FOUND.getCode(),
-            PhoneCode.PHONE_NOT_FOUND.getMessage());
+        throw new BusinessException(ResultCode.PHONE_NOT_FOUND);
       }
     }
 
@@ -83,8 +79,7 @@ public class SmsCodeServiceImpl implements SmsCodeService {
 
       int smsResult = smsSendService.addSmsCode(smsCodeDTO);
       if (smsResult < 0) {
-        throw new BusinessException(SmsCode.SMS_CODE_SEND_FAIL.getCode(),
-            SmsCode.SMS_CODE_SEND_FAIL.getMessage());
+        throw new BusinessException(ResultCode.SMS_CODE_SEND_FAIL);
       }
       Map<String, Object> map = Maps.newHashMap();
       map.put("sms_token", smsToken);

@@ -19,5 +19,5 @@ public interface PaymentRecordService {
    * @param paymentRecordDTO
    * @return
    */
-  public boolean addPaymentRecord(PaymentRecordDTO paymentRecordDTO);
+  public void addPaymentRecord(PaymentRecordDTO paymentRecordDTO);
 }

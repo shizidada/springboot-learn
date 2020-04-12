@@ -7,8 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.apache.dubbo.rpc.RpcException;
-import org.moose.commons.base.code.SmsCode;
+import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
+import org.moose.commons.provider.exception.ProviderRpcException;
 import org.moose.provider.sms.mapper.SmsCodeMapper;
 import org.moose.provider.sms.model.domain.SmsCodeDO;
 import org.moose.provider.sms.model.dto.SmsCodeDTO;
@@ -40,14 +41,12 @@ public class SmsSendServiceImpl implements SmsSendService {
   @Override
   public void addSmsCode(String jsonStr) {
     if (jsonStr == null || StringUtils.isBlank(jsonStr)) {
-      throw new RpcException(SmsCode.SMS_CODE_BODY_MUST_NOT_BE_NULL.getCode(),
-          SmsCode.SMS_CODE_BODY_MUST_NOT_BE_NULL.getMessage());
+      throw new ProviderRpcException(ResultCode.SMS_CODE_BODY_MUST_NOT_BE_NULL);
     }
 
     SmsCodeDTO smsCodeDTO = JSON.parseObject(jsonStr, SmsCodeDTO.class);
     if (smsCodeDTO == null) {
-      throw new RpcException(SmsCode.SMS_CODE_BODY_PARSE_ERROR.getCode(),
-          SmsCode.SMS_CODE_BODY_PARSE_ERROR.getMessage());
+      throw new ProviderRpcException(ResultCode.SMS_CODE_BODY_PARSE_ERROR);
     }
 
     SmsCodeDO smsCodeDO = new SmsCodeDO();
@@ -104,13 +103,11 @@ public class SmsSendServiceImpl implements SmsSendService {
     smsCodeDO.setVerifyCode(smsCodeDTO.getVerifyCode());
     SmsCodeDO smsCode = smsCodeMapper.findSmsCodePhoneVerifyCodeSmsTokenNotExpired(smsCodeDO);
     if (smsCode == null) {
-      throw new RpcException(SmsCode.SMS_CODE_NOT_FOUNT.getCode(),
-          SmsCode.SMS_CODE_NOT_FOUNT.getMessage());
+      throw new ProviderRpcException(ResultCode.SMS_CODE_NOT_FOUNT);
     }
     LocalDateTime expiredTime = smsCode.getExpiredTime();
     if (expiredTime != null && !expiredTime.isAfter(LocalDateTime.now())) {
-      throw new RpcException(SmsCode.SMS_CODE_EXPIRED.getCode(),
-          SmsCode.SMS_CODE_EXPIRED.getMessage());
+      throw new ProviderRpcException(ResultCode.SMS_CODE_EXPIRED);
     }
   }
 }
