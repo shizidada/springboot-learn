@@ -15,8 +15,7 @@
     id, account_id, role, create_time, update_time
   </sql>
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="roleId"
-      parameterType="org.moose.provider.account.model.domain.RoleDO">
+  <insert id="insert" parameterType="org.moose.provider.account.model.domain.RoleDO">
     INSERT INTO
     t_role(id, role, account_id, create_time, update_time)
     VALUES (#{roleId}, #{role}, #{accountId}, #{createTime}, #{updateTime})

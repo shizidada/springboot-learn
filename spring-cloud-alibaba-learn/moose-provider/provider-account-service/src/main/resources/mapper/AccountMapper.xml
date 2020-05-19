@@ -21,8 +21,7 @@
     update_time
   </sql>
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="accountId"
-      parameterType="org.moose.provider.account.model.domain.AccountDO">
+  <insert id="insert" parameterType="org.moose.provider.account.model.domain.AccountDO">
     INSERT INTO
     t_account(id, account_name, phone, status, icon, gender, birthday, source_type,
     create_time, update_time)
