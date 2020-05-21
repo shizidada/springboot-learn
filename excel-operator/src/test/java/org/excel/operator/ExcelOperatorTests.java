@@ -1,10 +1,5 @@
 package org.excel.operator;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.excel.operator.mongo.entity.Product;
@@ -19,10 +14,16 @@ import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ExcelOperatorApplicationTests {
+public class ExcelOperatorTests {
 
   @Autowired
   private MongoTemplate mongoTemplate;
