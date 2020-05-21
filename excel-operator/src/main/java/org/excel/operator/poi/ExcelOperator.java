@@ -6,17 +6,15 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.excel.operator.service.model.ImportExcelModel;
 import org.excel.operator.component.SnowflakeIdWorker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.excel.operator.web.service.model.ImportExcelModel;
 
 /**
  * <p>
@@ -28,10 +26,8 @@ import org.slf4j.LoggerFactory;
  * @date 2019 2019/10/27 12:33
  * @see org.excel.operator.poi
  */
+@Slf4j
 public class ExcelOperator {
-
-  private static final Logger logger = LoggerFactory.getLogger(ExcelOperator.class);
-
   //  private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   private SnowflakeIdWorker snowflakeIdWorker;
@@ -77,7 +73,7 @@ public class ExcelOperator {
             && receiverCell == null
             && phoneCell == null
             && addressCell == null) {
-          logger.info("read excel cell null row num {} ", row.getRowNum());
+          log.info("read excel cell null row num {} ", row.getRowNum());
           continue;
         }
 
@@ -135,7 +131,7 @@ public class ExcelOperator {
       return importExcelInfoList;
     } catch (Exception e) {
       e.printStackTrace();
-      logger.error(e.getMessage());
+      log.error(e.getMessage());
     } finally {
       this.closeWorkbook(workbook);
     }
@@ -177,7 +173,7 @@ public class ExcelOperator {
       workbook.write(outputStream);
     } catch (IOException e) {
       e.printStackTrace();
-      logger.error("workbook 写出失败。");
+      log.error("workbook 写出失败。");
     } finally {
       this.closeWorkbook(workbook);
     }
@@ -194,7 +190,7 @@ public class ExcelOperator {
         workbook.close();
       } catch (IOException e) {
         e.printStackTrace();
-        logger.error("workbook 写出失败。");
+        log.error("workbook 写出失败。");
       }
     }
   }

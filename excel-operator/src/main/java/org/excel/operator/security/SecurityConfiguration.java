@@ -1,9 +1,8 @@
 package org.excel.operator.security;
 
-import java.util.Arrays;
-import java.util.Collections;
 import javax.annotation.Resource;
-import org.excel.operator.common.SecurityConstants;
+import org.excel.operator.constants.SecurityConstants;
+import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,12 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * <p>
@@ -33,7 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/11/20 21:20
- * @see org.excel.operator.config
+ * @see org.excel.operator.configure
  */
 @Configuration
 @EnableWebSecurity
@@ -104,8 +97,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .formLogin()
         .loginProcessingUrl(SecurityConstants.LOGIN_IN_URL)
-        .usernameParameter("accountName")
-        .passwordParameter("password")
+        //.usernameParameter("accountName")
+        //.passwordParameter("password")
         // 登录成功
         .successHandler(customAuthenticationSuccessHandler)
         // 登录失败
@@ -128,37 +121,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         .and().cors()
 
-        .and()
-        .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        .and();
+    //.addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     //.exceptionHandling().addObjectPostProcessor()
-
     http.csrf().disable();
   }
 
-  @Bean
-  RedisTokenFilter redisTokenFilter() {
-    return new RedisTokenFilter(customAuthenticationFailureHandler, redisTemplate);
-  }
+  //@Bean
+  //RedisTokenFilter redisTokenFilter() {
+  //  return new RedisTokenFilter(customAuthenticationFailureHandler, redisTemplate);
+  //}
 
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(customUserDetailsService())
         .passwordEncoder(passwordEncoder());
-  }
-
-  /**
-   * 设置跨域
-   *
-   * @return CorsConfigurationSource
-   */
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Collections.singletonList("*"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
-    configuration.setAllowCredentials(Boolean.TRUE);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
   }
 
   /**

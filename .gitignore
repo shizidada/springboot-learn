@@ -1,4 +1,4 @@
-/target/
+*/**/target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -32,4 +32,4 @@ springboot-learn/target/
 
 *.xls
 *.xlsx
-excel-operator/target/
+/excel-operator/target/

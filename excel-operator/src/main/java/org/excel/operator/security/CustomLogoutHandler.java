@@ -2,8 +2,7 @@ package org.excel.operator.security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
@@ -19,13 +18,11 @@ import org.springframework.stereotype.Component;
  * @see org.excel.operator.component
  */
 @Component
+@Slf4j
 public class CustomLogoutHandler implements LogoutHandler {
-
-  private Logger logger = LoggerFactory.getLogger(CustomLogoutHandler.class);
-
   @Override
   public void logout(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) {
-    logger.info(" >>>> CustomLogoutHandler >>>> 用户 [{}] 登出失败。", authentication.getDetails());
+    log.info(" >>>> CustomLogoutHandler >>>> 用户 [{}] 登出失败。", authentication.getDetails());
   }
 }

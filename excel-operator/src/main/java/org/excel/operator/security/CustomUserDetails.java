@@ -1,9 +1,9 @@
 package org.excel.operator.security;
 
-import org.excel.operator.service.model.AccountModel;
-import org.excel.operator.service.model.PasswordModel;
 import java.util.Collection;
 import java.util.List;
+import org.excel.operator.web.service.model.AccountModel;
+import org.excel.operator.web.service.model.PasswordModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/11/20 22:04
- * @see org.excel.operator.service.model
+ * @see org.excel.operator.web.service.model
  */
 public class CustomUserDetails implements UserDetails {
 

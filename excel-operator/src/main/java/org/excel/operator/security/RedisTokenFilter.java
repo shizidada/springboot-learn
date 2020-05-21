@@ -6,12 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.exception.RedisTokenException;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**

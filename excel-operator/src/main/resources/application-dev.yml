@@ -53,8 +53,8 @@ spring:
 
 
 # logging settings
-#logging:
-#  path: /Users/taohua/develop/elk/logs
+logging:
+  path: E:/develop/elk/logs
 
 ## mybatis settings
 mybatis:

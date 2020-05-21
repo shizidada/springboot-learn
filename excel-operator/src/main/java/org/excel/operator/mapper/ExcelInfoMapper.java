@@ -1,9 +1,9 @@
 package org.excel.operator.mapper;
 
-import org.excel.operator.entity.ExcelInfoDO;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.excel.operator.domain.ExcelInfoDO;
 
 /**
  * <p>

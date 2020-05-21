@@ -2,15 +2,13 @@ package org.excel.operator.security;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletOutputStream;
-import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.common.api.ResultCode;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.common.api.ResultCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -26,16 +24,15 @@ import org.springframework.stereotype.Component;
  * @see org.excel.operator.component
  */
 @Component
+@Slf4j
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
-
-  private Logger logger = LoggerFactory.getLogger(CustomLogoutSuccessHandler.class);
 
   @Override public void onLogoutSuccess(HttpServletRequest request,
       HttpServletResponse response, Authentication authentication)
       throws IOException, ServletException {
     CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getDetails();
 
-    logger.info(" >>>> CustomLogoutSuccessHandler >>>> 用户 [{}] 登出成功。",
+    log.info(" >>>> CustomLogoutSuccessHandler >>>> 用户 [{}] 登出成功。",
         customUserDetails.getUsername());
 
     response.setContentType("application/json;charset=UTF-8");

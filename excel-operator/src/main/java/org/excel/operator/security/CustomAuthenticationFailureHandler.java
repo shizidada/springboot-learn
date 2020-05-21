@@ -2,16 +2,14 @@ package org.excel.operator.security;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletOutputStream;
-import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.common.api.ResultCode;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -27,13 +25,13 @@ import org.springframework.stereotype.Component;
  * @see org.excel.operator.component
  */
 @Component
+@Slf4j
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
-  private Logger logger = LoggerFactory.getLogger(CustomAuthenticationFailureHandler.class);
 
   @Override public void onAuthenticationFailure(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
-    logger.info(" >>>> CustomAuthenticationFailureHandler >>>> 用户登录失败。");
+    log.info(" >>>> CustomAuthenticationFailureHandler >>>> 用户登录失败。");
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
