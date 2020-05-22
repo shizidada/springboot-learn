@@ -34,6 +34,10 @@ public class ResponseResult<T> {
         ResultCode.SUCCESS.getMessage(), data);
   }
 
+  public static ResponseResult success(Integer code, String message) {
+    return new ResponseResult<>(code, Boolean.TRUE, message, null);
+  }
+
   public static ResponseResult success() {
     return success(null);
   }

@@ -43,9 +43,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
   @Resource
-  private CustomLogoutHandler customLogoutHandler;
-
-  @Resource
   private CustomAccessDeniedHandler customAccessDeniedHandler;
 
   @Resource
@@ -111,8 +108,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .logoutUrl(SecurityConstants.LOGIN_OUT_URL)
         // 自定义登出成功返回
         .logoutSuccessHandler(customLogoutSuccessHandler)
-        // 自定义登出成功
-        .addLogoutHandler(customLogoutHandler)
         // 清理 Session
         .invalidateHttpSession(true)
 

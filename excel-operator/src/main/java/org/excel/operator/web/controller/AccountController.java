@@ -28,17 +28,10 @@ public class AccountController {
    * spring security to login
    *
    * @PostMapping(value = "/login")
+   *
+   * @see SecurityConfiguration
+   *
    */
-  public ResponseResult login(HttpServletRequest request) {
-    String url = request.getRequestURL().toString();
-    String ip = request.getRemoteAddr();
-    String accountName = request.getParameter("accountName");
-    String password = request.getParameter("password");
-    log.info("[accountName {}, ip {}, url {}]", accountName, ip, url);
-    accountService.login(accountName, password);
-    request.getSession().setAttribute("accountName", accountName);
-    return ResponseResult.success(ResultCode.LOGIN_SUCCESS.getMessage());
-  }
 
   /**
    * spring security to register

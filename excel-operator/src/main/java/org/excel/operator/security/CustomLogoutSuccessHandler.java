@@ -30,16 +30,14 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
   @Override public void onLogoutSuccess(HttpServletRequest request,
       HttpServletResponse response, Authentication authentication)
       throws IOException, ServletException {
-    CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getDetails();
-
+    CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
     log.info(" >>>> CustomLogoutSuccessHandler >>>> 用户 [{}] 登出成功。",
         customUserDetails.getUsername());
-
     response.setContentType("application/json;charset=UTF-8");
     Integer code = ResultCode.MEMBER_LOGOUT_SUCCESS.getCode();
     String message = ResultCode.MEMBER_LOGOUT_SUCCESS.getMessage();
     ServletOutputStream writer = response.getOutputStream();
-    writer.write(JSON.toJSONString(ResponseResult.fail(code, message)).getBytes());
+    writer.write(JSON.toJSONString(ResponseResult.success(code, message)).getBytes());
     writer.close();
   }
 }

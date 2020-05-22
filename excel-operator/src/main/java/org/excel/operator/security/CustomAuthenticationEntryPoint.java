@@ -21,6 +21,10 @@ import org.springframework.stereotype.Component;
  * @version v1.0.0
  * @date 2019 2019/11/20 22:54
  * @see org.excel.operator.security
+ * <p>
+ * AuthenticationEntryPoint 用来解决匿名用户访问无权限资源时的异常
+ * <p>
+ * AccessDeineHandler 用来解决认证过的用户访问无权限资源时的异常
  */
 @Component
 @Slf4j
@@ -29,7 +33,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
   @Override public void commence(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
-    log.info("用户未登录");
+    log.info(" >>>> CustomAuthenticationEntryPoint >>>> 用户未登录。");
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
