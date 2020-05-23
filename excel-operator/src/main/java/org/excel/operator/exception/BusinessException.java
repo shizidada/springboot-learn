@@ -1,5 +1,6 @@
 package org.excel.operator.exception;
 
+import org.excel.operator.common.api.ResultCode;
 import org.springframework.security.core.AuthenticationException;
 
 /**
@@ -14,22 +15,19 @@ import org.springframework.security.core.AuthenticationException;
  */
 public class BusinessException extends AuthenticationException {
 
-  private String message;
-
   private Integer code;
 
-  public BusinessException(String message, Integer code) {
+  public BusinessException(String message) {
     super(message);
-    this.message = message;
-    this.code = code;
   }
 
-  @Override public String getMessage() {
-    return message;
+  public BusinessException(String message, Throwable cause) {
+    super(message, cause);
   }
 
-  public void setMessage(String message) {
-    this.message = message;
+  public BusinessException(ResultCode resultCode, Object... args) {
+    super(String.format(resultCode.getMessage(), args));
+    this.code = resultCode.getCode();
   }
 
   public Integer getCode() {

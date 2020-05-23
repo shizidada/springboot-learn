@@ -1,8 +1,14 @@
-package org.excel.operator.security;
+package org.excel.operator.web.security;
 
+import com.alibaba.fastjson.JSON;
+import java.util.List;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
+import org.excel.operator.constants.SystemProperties;
+import org.excel.operator.web.filter.RedisTokenFilter;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,6 +23,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * <p>
@@ -31,6 +38,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
+@Slf4j
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Resource
@@ -51,7 +59,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Resource
   private RedisTemplate redisTemplate;
 
+  @Resource
+  public SystemProperties systemProperties;
+
+  @Value("${moose.security.urls}")
+  private List<String> urls;
+
   @Override protected void configure(HttpSecurity http) throws Exception {
+    log.info("systemProperties {}", JSON.toJSONString(systemProperties));
+    log.info("urls {}", JSON.toJSONString(urls));
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
             "/",
@@ -70,14 +86,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 对登录注册要允许匿名访问
         .and()
         .authorizeRequests().antMatchers(
-        // 注册
-        SecurityConstants.REGISTER_URL,
-
-        // 登录
-        SecurityConstants.LOGIN_IN_URL,
-
-        // 退出
-        SecurityConstants.LOGIN_OUT_URL,
 
         // for test
         "/api/v1/excel/**",
@@ -116,16 +124,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         .and().cors()
 
-        .and();
-    //.addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        .and()
+        .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     //.exceptionHandling().addObjectPostProcessor()
     http.csrf().disable();
   }
 
-  //@Bean
-  //RedisTokenFilter redisTokenFilter() {
-  //  return new RedisTokenFilter(customAuthenticationFailureHandler, redisTemplate);
-  //}
+  @Bean
+  RedisTokenFilter redisTokenFilter() {
+    return new RedisTokenFilter(customAuthenticationFailureHandler);
+  }
 
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(customUserDetailsService())

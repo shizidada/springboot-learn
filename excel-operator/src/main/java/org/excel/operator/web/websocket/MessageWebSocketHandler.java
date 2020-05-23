@@ -1,4 +1,4 @@
-package org.excel.operator.websocket.handler;
+package org.excel.operator.web.websocket;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
  * @author taohua
  */
 @Component
-public class MessageHandler extends TextWebSocketHandler {
+public class MessageWebSocketHandler extends TextWebSocketHandler {
 
   @Autowired
   private MessageService messageService;

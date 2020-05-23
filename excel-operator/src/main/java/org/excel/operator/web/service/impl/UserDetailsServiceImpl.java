@@ -1,14 +1,16 @@
 package org.excel.operator.web.service.impl;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.security.CustomUserDetails;
+import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.web.service.model.AccountModel;
 import org.excel.operator.web.service.model.PasswordModel;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,19 +37,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override public UserDetails loadUserByUsername(String accountName)
       throws UsernameNotFoundException {
+    if (StringUtils.isEmpty(accountName)) {
+      throw new BusinessException(ResultCode.ACCOUNT_NOT_EMPTY);
+    }
+
     AccountModel accountModel = accountService.getAccountByAccountName(accountName);
     if (accountModel == null) {
-      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
     PasswordModel passwordModel = passwordService.findByAccountId(accountModel.getAccountId());
     if (passwordModel == null) {
-      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
-    // 权限集合
-    List<GrantedAuthority> authorities = new ArrayList<>();
-    return new CustomUserDetails(accountModel, passwordModel, authorities);
+    // TODO 角色、权限集合
+    List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
+    grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+    return new CustomUserDetails(accountModel, passwordModel, grantedAuthorities);
   }
 }

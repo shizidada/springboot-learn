@@ -45,46 +45,15 @@ public class AccountServiceImpl implements AccountService {
   @Override public AccountModel getAccountByAccountName(String accountName) {
     accountName = accountName.trim();
     if (StringUtils.isEmpty(accountName)) {
-      throw new BusinessException(ResultCode.ACCOUNT_NOT_NULL.getMessage(),
-          ResultCode.ACCOUNT_NOT_NULL.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
     AccountDO accountDO = accountMapper.findByAccountName(accountName);
     if (accountDO == null) {
-      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
     return this.convertAccountModelFromDataObject(accountDO);
-  }
-
-  @Override public void login(String accountName, String password) {
-    if (StringUtils.isEmpty(accountName)) {
-      throw new BusinessException(ResultCode.ACCOUNT_NOT_NULL.getMessage(),
-          ResultCode.ACCOUNT_NOT_NULL.getCode());
-    }
-
-    if (StringUtils.isEmpty(password)) {
-      throw new BusinessException(ResultCode.PASSWORD_NOT_NULL.getMessage(),
-          ResultCode.PASSWORD_NOT_NULL.getCode());
-    }
-
-    AccountDO accountDO = accountMapper.findByAccountName(accountName);
-    if (accountDO == null) {
-      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
-    }
-
-    PasswordModel passwordModel = passwordService.findByAccountId(accountDO.getAccountId());
-    if (passwordModel == null) {
-      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
-    }
-
-    if (!StringUtils.equals(password, passwordModel.getPassword())) {
-      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage(),
-          ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode());
-    }
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -94,14 +63,12 @@ public class AccountServiceImpl implements AccountService {
     String rePassword = registerInfoModel.getRePassword();
 
     if (!StringUtils.equals(password, rePassword)) {
-      throw new BusinessException(ResultCode.RE_PASSWORD_ERROR.getMessage(),
-          ResultCode.RE_PASSWORD_ERROR.getCode());
+      throw new BusinessException(ResultCode.RE_PASSWORD_ERROR);
     }
 
     AccountDO account = accountMapper.findByAccountName(accountName);
     if (account != null) {
-      throw new BusinessException(ResultCode.ACCOUNT_NAME_EXITS.getMessage(),
-          ResultCode.ACCOUNT_NAME_EXITS.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_NAME_EXITS);
     }
 
     AccountDO accountDO = this.convertAccountDoFromModel(registerInfoModel);

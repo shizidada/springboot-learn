@@ -78,7 +78,8 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     return excelInfoMapper.addImportExcelRecord(excelInfoDO);
   }
 
-  @Override public int addBatchImportExcelRecord(MultipartFile file, UploadInfoModel uploadInfoModel) {
+  @Override
+  public int addBatchImportExcelRecord(MultipartFile file, UploadInfoModel uploadInfoModel) {
     /**
      * 判断上传文件
      */
@@ -89,8 +90,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
       importExcelModels = this.convertReadExcelToModel(file, uploadInfoModel);
     } catch (IOException e) {
       log.error("导入 excel 文件失败", e);
-      throw new BusinessException(ResultCode.EXCEL_IMPORT_FAIL.getMessage(),
-          ResultCode.EXCEL_IMPORT_FAIL.getCode());
+      throw new BusinessException(ResultCode.EXCEL_IMPORT_FAIL);
     }
 
     List<ExcelInfoDO> excelInfoDOList = importExcelModels.stream().map(importExcelModel -> {
@@ -127,7 +127,6 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     }).collect(Collectors.toList());
     return importExcelModels;
   }
- 
 
   /**
    * 将 ImportExcelModel 转为 ExcelInfoDO
@@ -161,17 +160,14 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
    */
   private void estimateUploadFile(MultipartFile file) {
     if (file.isEmpty()) {
-      throw new BusinessException(ResultCode.FILE_NOT_EMPTY.getMessage(),
-          ResultCode.FILE_NOT_EMPTY.getCode());
+      throw new BusinessException(ResultCode.FILE_NOT_EMPTY);
     }
     String fileName = file.getOriginalFilename();
     if (!fileName.endsWith(SUBFIX_FILE_NAME)) {
-      throw new BusinessException(ResultCode.FILE_NOT_SUPPORT.getMessage(),
-          ResultCode.FILE_NOT_SUPPORT.getCode());
+      throw new BusinessException(ResultCode.FILE_NOT_SUPPORT);
     }
     if (file.getSize() > FILE_SIZE) {
-      throw new BusinessException(ResultCode.FILE_MUCH.getMessage(),
-          ResultCode.FILE_MUCH.getCode());
+      throw new BusinessException(ResultCode.FILE_MUCH);
     }
   }
 
@@ -187,7 +183,8 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     ExcelOperator excelOperator = new ExcelOperator();
     excelOperator.setSnowflakeIdWorker(snowflakeIdWorker);
 
-    List<ImportExcelModel> importExcelModels = excelOperator.importExcelFile(file.getInputStream(), uploadInfoModel.getPlatform());
+    List<ImportExcelModel> importExcelModels =
+        excelOperator.importExcelFile(file.getInputStream(), uploadInfoModel.getPlatform());
 
     return importExcelModels;
   }

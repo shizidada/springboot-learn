@@ -30,16 +30,14 @@ public class PasswordServiceImpl implements PasswordService {
   @Override public PasswordModel findByAccountId(Long accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
     if (passwordDO == null) {
-      throw new BusinessException(ResultCode.PASSWORD_NOT_NULL.getMessage(),
-          ResultCode.PASSWORD_NOT_NULL.getCode());
+      throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
     return this.convertPasswordModelFormDataObject(passwordDO);
   }
 
   @Override public PasswordModel insertPassword(PasswordModel passwordModel) {
     if (passwordModel == null) {
-      throw new BusinessException(ResultCode.REGISTER_FAIL.getMessage(),
-          ResultCode.REGISTER_FAIL.getCode());
+      throw new BusinessException(ResultCode.REGISTER_FAIL);
     }
     PasswordDO passwordDO = this.convertPasswordModelToDataObject(passwordModel);
     passwordMapper.insertPassword(passwordDO);
