@@ -1,14 +1,10 @@
 package org.excel.operator.web.security;
 
-import com.alibaba.fastjson.JSON;
-import java.util.List;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
-import org.excel.operator.constants.SystemProperties;
 import org.excel.operator.web.filter.RedisTokenFilter;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -59,15 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Resource
   private RedisTemplate redisTemplate;
 
-  @Resource
-  public SystemProperties systemProperties;
-
-  @Value("${moose.security.urls}")
-  private List<String> urls;
-
   @Override protected void configure(HttpSecurity http) throws Exception {
-    log.info("systemProperties {}", JSON.toJSONString(systemProperties));
-    log.info("urls {}", JSON.toJSONString(urls));
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
             "/",
@@ -86,6 +74,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 对登录注册要允许匿名访问
         .and()
         .authorizeRequests().antMatchers(
+
+        SecurityConstants.LOGIN_IN_URL,
+        SecurityConstants.LOGIN_OUT_URL,
+        SecurityConstants.REGISTER_URL,
+
+        "/api/v1/account/isLogin",
 
         // for test
         "/api/v1/excel/**",

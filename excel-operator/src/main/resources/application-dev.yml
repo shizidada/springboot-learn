@@ -32,9 +32,6 @@ mybatis:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: org.excel.operator.entity
 
-moose:
+system:
   security:
-    urls:
-      -/api/v1/account/login
-      -/api/v1/account/logout
-      -/api/v1/account/register
+    anonymous-urls: /api/v1/account/login,/api/v1/account/logout,/api/v1/account/register,/api/v1/account/isLogin

@@ -2,12 +2,14 @@ package org.excel.operator.web.security;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.vo.TokenVo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -37,8 +39,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
-    writer.write(
-        JSON.toJSONString(ResponseResult.success(authentication.getDetails())).getBytes());
+    TokenVo tokenVo = new TokenVo();
+    String token = UUID.randomUUID().toString().replace("-", "");
+    tokenVo.setToken(token);
+    // TODO: save to redis
+    writer.write(JSON.toJSONString(ResponseResult.success(tokenVo)).getBytes());
     writer.close();
   }
 }

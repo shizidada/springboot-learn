@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.common.api.ResultCode;
+import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.web.service.impl.AccountServiceImpl;
 import org.excel.operator.web.service.model.RegisterInfoModel;
 import org.springframework.security.core.Authentication;
@@ -48,9 +49,21 @@ public class AccountController {
     return ResponseResult.success(ResultCode.REGISTER_SUCCESS.getMessage());
   }
 
+  @PostMapping(value = "/info")
+  public ResponseResult info() {
+    CustomUserDetails principal = (CustomUserDetails) this.getPrincipal();
+    return ResponseResult.success(principal);
+  }
+
   @PostMapping(value = "/isLogin")
-  public ResponseResult isLogin(HttpServletRequest request) {
+  public ResponseResult isLogin() {
+    Object principal = this.getPrincipal();
+    boolean isLogin = principal instanceof CustomUserDetails;
+    return ResponseResult.success(isLogin);
+  }
+
+  private Object getPrincipal() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return ResponseResult.success(authentication != null);
+    return authentication.getPrincipal();
   }
 }
