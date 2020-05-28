@@ -13,8 +13,6 @@ package org.excel.operator.common.api;
 public class ResponseResult<T> {
   private Integer code;
 
-  private Boolean status;
-
   private T data;
 
   private String message;
@@ -22,20 +20,19 @@ public class ResponseResult<T> {
   private ResponseResult() {
   }
 
-  private ResponseResult(Integer code, Boolean status, String message, T data) {
+  private ResponseResult(Integer code, String message, T data) {
     this.code = code;
-    this.status = status;
     this.data = data;
     this.message = message;
   }
 
   public static ResponseResult success(Object data) {
-    return new ResponseResult<>(ResultCode.SUCCESS.getCode(), Boolean.TRUE,
-        ResultCode.SUCCESS.getMessage(), data);
+    return new ResponseResult<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(),
+        data);
   }
 
   public static ResponseResult success(Integer code, String message) {
-    return new ResponseResult<>(code, Boolean.TRUE, message, null);
+    return new ResponseResult<>(code, message, null);
   }
 
   public static ResponseResult success() {
@@ -43,12 +40,11 @@ public class ResponseResult<T> {
   }
 
   public static ResponseResult fail(Object data) {
-    return new ResponseResult<>(ResultCode.FAIL.getCode(), Boolean.FALSE,
-        ResultCode.FAIL.getMessage(), data);
+    return new ResponseResult<>(ResultCode.FAIL.getCode(), ResultCode.FAIL.getMessage(), data);
   }
 
   public static ResponseResult fail(Integer code, String message) {
-    return new ResponseResult<>(code, Boolean.FALSE, message, null);
+    return new ResponseResult<>(code, message, null);
   }
 
   public static ResponseResult fail() {
@@ -61,14 +57,6 @@ public class ResponseResult<T> {
 
   public void setCode(Integer code) {
     this.code = code;
-  }
-
-  public Boolean getStatus() {
-    return status;
-  }
-
-  public void setStatus(Boolean status) {
-    this.status = status;
   }
 
   public T getData() {
@@ -90,7 +78,6 @@ public class ResponseResult<T> {
   @Override public String toString() {
     return "ResponseResult{" +
         "code=" + code +
-        ", status=" + status +
         ", data=" + data +
         ", message='" + message + '\'' +
         '}';

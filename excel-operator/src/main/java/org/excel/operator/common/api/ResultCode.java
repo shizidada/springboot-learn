@@ -24,10 +24,9 @@ public enum ResultCode {
   /**
    * 登录
    */
-  ACCOUNT_NOT_NULL(10001, "账号不能为空"),
-  PASSWORD_NOT_NULL(10002, "密码不能为空"),
-  ACCOUNT_OR_PASSWORD_ERROR(10003, "账号或密码错误"),
-  ACCOUNT_NAME_EXITS(10004, "账号已存在"),
+  ACCOUNT_NOT_EMPTY(10001, "账号不能为空"),
+  ACCOUNT_OR_PASSWORD_ERROR(10002, "账号或密码错误"),
+  ACCOUNT_NAME_EXITS(10003, "账号已存在"),
 
   LOGIN_SUCCESS(20001, "登录成功"),
   LOGIN_FAIL(20002, "登录失败"),
@@ -56,7 +55,8 @@ public enum ResultCode {
    */
   VALIDATE_FAIL(-10000, "参数校验失败"),
 
-  TOKEN_VALIDATE_FAIL(-10001, "Token 校验失败"),
+  TOKEN_VALIDATE_EMPTY(-10001, "Token 不能为空"),
+  TOKEN_VALIDATE_FAIL(-10002, "Token 校验失败"),
 
   /**
    * 未知错误

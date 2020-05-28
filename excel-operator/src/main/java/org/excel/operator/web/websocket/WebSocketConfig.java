@@ -1,7 +1,5 @@
-package org.excel.operator.websocket.config;
+package org.excel.operator.web.websocket;
 
-import org.excel.operator.websocket.handler.MessageHandler;
-import org.excel.operator.websocket.interceptor.MessageHandshakeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -13,17 +11,17 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
  */
 @Configuration
 @EnableWebSocket
-public class WebsocketConfig implements WebSocketConfigurer {
+public class WebSocketConfig implements WebSocketConfigurer {
 
   @Autowired
-  private MessageHandler messageHandler;
+  private MessageWebSocketHandler messageWebSocketHandler;
 
   @Autowired
   private MessageHandshakeInterceptor messageHandshakeInterceptor;
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-    registry.addHandler(this.messageHandler, "/ws/{userId}")
+    registry.addHandler(this.messageWebSocketHandler, "/socket.io/{userId}")
         .setAllowedOrigins("*")
         .addInterceptors(this.messageHandshakeInterceptor);
   }

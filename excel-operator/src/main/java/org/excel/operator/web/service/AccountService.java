@@ -16,25 +16,18 @@ import org.excel.operator.web.service.model.RegisterInfoModel;
 public interface AccountService {
 
   /**
-   * 登录
-   *
-   * @param accountName 账号
-   * @param password 密码
-   */
-  void login(String accountName, String password);
-
-  /**
    * 注册
    *
    * @param registerInfoModel 注册信息
    */
   void register(RegisterInfoModel registerInfoModel);
 
-
   /**
    * 更具账号查找用户
    *
    * @param accountName 账号
+   *
+   * @return AccountModel
    */
   AccountModel getAccountByAccountName(String accountName);
 }

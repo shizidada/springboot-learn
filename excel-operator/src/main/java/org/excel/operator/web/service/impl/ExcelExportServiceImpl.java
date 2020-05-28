@@ -58,8 +58,7 @@ public class ExcelExportServiceImpl implements ExcelExportService {
       excelOperator.exportExcelFile(exportList, outputStream);
     } catch (IOException e) {
       log.error(e.getMessage());
-      throw new BusinessException(ResultCode.EXCEL_EXPORT_FAIL.getMessage(),
-          ResultCode.EXCEL_EXPORT_FAIL.getCode());
+      throw new BusinessException(ResultCode.EXCEL_EXPORT_FAIL);
     }
   }
 }

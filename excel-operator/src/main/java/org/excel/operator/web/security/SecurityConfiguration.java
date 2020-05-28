@@ -1,7 +1,9 @@
-package org.excel.operator.security;
+package org.excel.operator.web.security;
 
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
+import org.excel.operator.web.filter.RedisTokenFilter;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * <p>
@@ -31,6 +34,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
+@Slf4j
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Resource
@@ -70,14 +74,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 对登录注册要允许匿名访问
         .and()
         .authorizeRequests().antMatchers(
-        // 注册
+
+        SecurityConstants.LOGIN_IN_URL,
+        SecurityConstants.LOGIN_OUT_URL,
         SecurityConstants.REGISTER_URL,
 
-        // 登录
-        SecurityConstants.LOGIN_IN_URL,
-
-        // 退出
-        SecurityConstants.LOGIN_OUT_URL,
+        "/api/v1/account/isLogin",
 
         // for test
         "/api/v1/excel/**",
@@ -116,16 +118,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         .and().cors()
 
-        .and();
-    //.addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        .and()
+        .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     //.exceptionHandling().addObjectPostProcessor()
     http.csrf().disable();
   }
 
-  //@Bean
-  //RedisTokenFilter redisTokenFilter() {
-  //  return new RedisTokenFilter(customAuthenticationFailureHandler, redisTemplate);
-  //}
+  @Bean
+  RedisTokenFilter redisTokenFilter() {
+    return new RedisTokenFilter(customAuthenticationFailureHandler);
+  }
 
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(customUserDetailsService())

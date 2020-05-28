@@ -1,4 +1,4 @@
-package org.excel.operator.security;
+package org.excel.operator.web.security;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/11/20 22:54
- * @see org.excel.operator.security
+ * @see org.excel.operator.web.security
  * <p>
  * AuthenticationEntryPoint 用来解决匿名用户访问无权限资源时的异常
  * <p>

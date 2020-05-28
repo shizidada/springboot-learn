@@ -1,6 +1,7 @@
 package org.excel.operator.es.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -14,9 +15,10 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/10/27 15:06
- * @see org.excel.operator.entity
+ * @see org.excel.operator.es.entity
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Document(indexName = "moose", type = "excel_info")
 public class ExcelInfoEntity extends BaseEntity {
 

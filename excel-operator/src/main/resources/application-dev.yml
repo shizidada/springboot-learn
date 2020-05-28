@@ -8,7 +8,7 @@ spring:
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
 
-# elasticsearch settings
+  # elasticsearch settings
   data:
     elasticsearch:
       cluster-name: my-application
@@ -31,3 +31,7 @@ logging:
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: org.excel.operator.entity
+
+system:
+  security:
+    anonymous-urls: /api/v1/account/login,/api/v1/account/logout,/api/v1/account/register,/api/v1/account/isLogin
