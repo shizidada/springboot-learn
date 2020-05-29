@@ -47,6 +47,10 @@ public class ResponseResult<T> {
     return new ResponseResult<>(code, message, null);
   }
 
+  public static ResponseResult fail(Integer code, Throwable t) {
+    return new ResponseResult<>(code, t.getMessage(), null);
+  }
+
   public static ResponseResult fail() {
     return fail(null);
   }

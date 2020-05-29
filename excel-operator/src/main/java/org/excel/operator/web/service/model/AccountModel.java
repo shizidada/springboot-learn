@@ -1,6 +1,5 @@
 package org.excel.operator.web.service.model;
 
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -18,6 +17,9 @@ public class AccountModel extends BaseModel {
 
   private Long accountId;
 
-  @NotBlank(message = "账号不能为空。")
   private String accountName;
+
+  private String status;
+
+  private String avatar;
 }

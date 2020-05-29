@@ -2,6 +2,7 @@ package org.excel.operator.web.security;
 
 import java.util.Collection;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.web.service.model.AccountModel;
 import org.excel.operator.web.service.model.PasswordModel;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @see org.excel.operator.web.service.model
  */
 public class CustomUserDetails implements UserDetails {
+
+  public static final String CAN_USE = "1";
 
   private AccountModel accountModel;
 
@@ -64,6 +67,6 @@ public class CustomUserDetails implements UserDetails {
   }
 
   @Override public boolean isEnabled() {
-    return true;
+    return StringUtils.equals(accountModel.getStatus(), CAN_USE);
   }
 }

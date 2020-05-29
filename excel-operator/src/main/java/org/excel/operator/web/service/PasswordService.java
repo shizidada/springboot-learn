@@ -20,7 +20,7 @@ public interface PasswordService {
    * @param accountId 账号ID
    * @return PasswordModel
    */
-  PasswordModel findByAccountId(Long accountId);
+  PasswordModel getByAccountId(Long accountId);
 
   /**
    * 插入账号密码

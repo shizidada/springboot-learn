@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -35,13 +34,14 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
-    String json = JSON.toJSONString(
-        ResponseResult.fail(ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getCode(),
-            ResultCode.ACCOUNT_OR_PASSWORD_ERROR.getMessage()));
+    Integer code = HttpServletResponse.SC_UNAUTHORIZED;
+    String message = e.getMessage();
     if (e instanceof BusinessException) {
-      BusinessException error = (BusinessException) e;
-      json = JSON.toJSONString(ResponseResult.fail(error.getCode(), error.getMessage()));
+      BusinessException be = (BusinessException) e;
+      code = be.getCode();
+      message = be.getMessage();
     }
+    String json = JSON.toJSONString(ResponseResult.fail(code, message));
     writer.write(json.getBytes());
     writer.close();
   }

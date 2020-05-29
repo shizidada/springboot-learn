@@ -42,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
-  @Override public AccountModel getAccountByAccountName(String accountName) {
+  @Override public AccountModel getByAccountName(String accountName) {
     accountName = accountName.trim();
     if (StringUtils.isEmpty(accountName)) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
@@ -71,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
       throw new BusinessException(ResultCode.ACCOUNT_NAME_EXITS);
     }
 
-    AccountDO accountDO = this.convertAccountDoFromModel(registerInfoModel);
+    AccountDO accountDO = this.convertAccountDOFromModel(registerInfoModel);
     PasswordModel passwordModel = this.convertPasswordModelFromRegisterInfoModel(registerInfoModel);
     accountMapper.insertAccount(accountDO);
 
@@ -94,10 +94,12 @@ public class AccountServiceImpl implements AccountService {
     return passwordModel;
   }
 
-  private AccountDO convertAccountDoFromModel(RegisterInfoModel registerInfoModel) {
+  private AccountDO convertAccountDOFromModel(RegisterInfoModel registerInfo) {
     AccountDO accountDO = new AccountDO();
     accountDO.setAccountId(snowflakeIdWorker.nextId());
-    accountDO.setAccountName(registerInfoModel.getAccountName());
+    accountDO.setAccountName(registerInfo.getAccountName());
+    accountDO.setPhone(registerInfo.getPhone());
+    accountDO.setAvatar(registerInfo.getAvatar());
     return accountDO;
   }
 }

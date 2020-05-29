@@ -30,7 +30,7 @@ logging:
 ## mybatis settings
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
-  type-aliases-package: org.excel.operator.entity
+  type-aliases-package: org.excel.operator.domain
 
 system:
   security:

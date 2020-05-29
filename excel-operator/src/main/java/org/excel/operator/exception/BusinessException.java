@@ -1,5 +1,6 @@
 package org.excel.operator.exception;
 
+import com.alibaba.fastjson.JSON;
 import org.excel.operator.common.api.ResultCode;
 import org.springframework.security.core.AuthenticationException;
 
@@ -26,7 +27,7 @@ public class BusinessException extends AuthenticationException {
   }
 
   public BusinessException(ResultCode resultCode, Object... args) {
-    super(String.format(resultCode.getMessage(), args));
+    super(String.format("%s %s", resultCode.getMessage(), JSON.toJSONString(args)));
     this.code = resultCode.getCode();
   }
 

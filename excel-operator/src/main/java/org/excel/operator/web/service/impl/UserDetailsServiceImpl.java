@@ -35,18 +35,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Resource
   private PasswordServiceImpl passwordService;
 
-  @Override public UserDetails loadUserByUsername(String accountName)
+  /**
+   * Spring Security
+   * @param accountName 账号
+   * @return 是否成功
+   * @throws UsernameNotFoundException 用户名密码异常
+   */
+  @Override
+  public UserDetails loadUserByUsername(String accountName)
       throws UsernameNotFoundException {
     if (StringUtils.isEmpty(accountName)) {
       throw new BusinessException(ResultCode.ACCOUNT_NOT_EMPTY);
     }
 
-    AccountModel accountModel = accountService.getAccountByAccountName(accountName);
+    AccountModel accountModel = accountService.getByAccountName(accountName);
     if (accountModel == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
-    PasswordModel passwordModel = passwordService.findByAccountId(accountModel.getAccountId());
+    PasswordModel passwordModel = passwordService.getByAccountId(accountModel.getAccountId());
     if (passwordModel == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }

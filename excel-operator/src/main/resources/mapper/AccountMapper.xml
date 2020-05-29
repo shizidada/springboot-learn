@@ -6,12 +6,15 @@
   <resultMap id="BaseResultMap" type="org.excel.operator.domain.AccountDO">
     <id column="account_id" jdbcType="BIGINT" property="accountId"/>
     <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
+    <result column="status" jdbcType="VARCHAR" property="status"/>
+    <result column="phone" jdbcType="VARCHAR" property="phone"/>
+    <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
 
   <sql id="Base_Column">
-    account_id, account_name
+    account_id, account_name, avatar, phone, status
   </sql>
 
   <select id="findByAccountName" parameterType="org.excel.operator.domain.AccountDO"
@@ -21,8 +24,17 @@
     FROM t_account WHERE account_name=#{accountName}
   </select>
 
-  <insert id="insertAccount" parameterType="org.excel.operator.domain.AccountDO"
-      useGeneratedKeys="true" keyProperty="accountId">
-  INSERT INTO t_account(account_id, account_name) VALUES (#{accountId}, #{accountName})
+  <select id="findByPhone" parameterType="org.excel.operator.domain.AccountDO"
+      resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM t_account WHERE phone=#{phone}
+  </select>
+
+  <insert id="insertAccount" parameterType="org.excel.operator.domain.AccountDO">
+    INSERT INTO
+    t_account(account_id, account_name, phone, avatar)
+    VALUES
+    (#{accountId}, #{accountName}, #{phone}, #{avatar})
   </insert>
 </mapper>

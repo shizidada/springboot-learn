@@ -17,12 +17,18 @@ import lombok.Data;
 @Data
 public class RegisterInfoModel extends BaseModel {
 
-  @NotBlank(message = "账号不能为空。")
+  @NotBlank(message = "账号不能为空")
   private String accountName;
 
-  @NotBlank(message = "密码不能为空。")
+  @NotBlank(message = "密码不能为空")
   private String password;
 
-  @NotBlank(message = "确认密码不能为空。")
+  @NotBlank(message = "确认密码不能为空")
   private String rePassword;
+
+  @NotBlank(message = "手机号不能为空")
+  private String phone;
+
+  @NotBlank(message = "头像不能为空")
+  private String avatar;
 }

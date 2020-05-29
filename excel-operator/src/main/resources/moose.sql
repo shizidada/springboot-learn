@@ -13,30 +13,16 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 CREATE TABLE `t_account` (
   `account_id` bigint(64) NOT NULL,
-  `account_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
+  `account_name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
   `status` int(1) NOT NULL DEFAULT '1' COMMENT '帐号启用状态:0->禁用；1->启用',
-  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
-  `icon` varchar(250) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '头像',
-  UNIQUE KEY `idx_account_name` (`account_name`),
+  `phone` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
+  `avatar` varchar(250) NOT NULL DEFAULT '' COMMENT '头像',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  UNIQUE KEY `idx_account_id` (`account_id`),
+  UNIQUE KEY `idx_account_name` (`account_name`) USING BTREE,
   KEY `account_id` (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
-
--- ----------------------------
--- Table structure for t_excel_info
--- ----------------------------
-CREATE TABLE `t_excel_info` (
-  `id` bigint(64) DEFAULT NULL,
-  `iccid` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT 'iccid SIM卡卡号',
-  `operators` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '运营商',
-  `receiver` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '收货人',
-  `phone` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '收货手机号',
-  `address` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '收货地址',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `platform` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '不同平台数据: tianpeng : xiaoming',
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='导入excel 信息表';
 
 -- ----------------------------
 -- Table structure for t_password
@@ -44,13 +30,31 @@ CREATE TABLE `t_excel_info` (
 CREATE TABLE `t_password` (
   `password_id` bigint(32) NOT NULL COMMENT '密码ID',
   `account_id` bigint(32) NOT NULL COMMENT '账号ID',
-  `password` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '密码',
-  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
-  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `password` varchar(64) NOT NULL COMMENT '密码',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  UNIQUE KEY `idx_password_id` (`password_id`),
+  UNIQUE KEY `idx_account_id` (`account_id`),
   KEY `t_account_password_ibfk_1` (`account_id`),
   KEY `password_id` (`password_id`),
   CONSTRAINT `t_account_password_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `t_account` (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='密码表';
+
+-- ----------------------------
+-- Table structure for t_excel_info
+-- ----------------------------
+CREATE TABLE `t_excel_info` (
+  `id` bigint(64) DEFAULT NULL,
+  `iccid` varchar(255) DEFAULT NULL COMMENT 'iccid SIM卡卡号',
+  `operators` varchar(50) DEFAULT NULL COMMENT '运营商',
+  `receiver` varchar(50) DEFAULT NULL COMMENT '收货人',
+  `phone` varchar(255) DEFAULT NULL COMMENT '收货手机号',
+  `address` varchar(255) DEFAULT NULL COMMENT '收货地址',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `platform` varchar(10) DEFAULT NULL COMMENT '不同平台数据: tianpeng : xiaoming',
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='导入excel 信息表';
 
 -- ----------------------------
 -- Table structure for tb_permission

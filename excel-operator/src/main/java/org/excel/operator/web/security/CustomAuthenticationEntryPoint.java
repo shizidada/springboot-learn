@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.exception.BusinessException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -37,9 +38,15 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
+    String message = e.getMessage();
+    Integer code = HttpServletResponse.SC_UNAUTHORIZED;
+    if (e instanceof BusinessException) {
+      BusinessException be = (BusinessException) e;
+      message = be.getMessage();
+      code = be.getCode();
+    }
     writer.write(
-        JSON.toJSONString(ResponseResult.fail(HttpServletResponse.SC_FORBIDDEN, e.getMessage()))
-            .getBytes());
+        JSON.toJSONString(ResponseResult.fail(code, message)).getBytes());
     writer.close();
   }
 }

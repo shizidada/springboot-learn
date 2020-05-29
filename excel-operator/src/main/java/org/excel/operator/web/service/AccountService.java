@@ -29,5 +29,5 @@ public interface AccountService {
    *
    * @return AccountModel
    */
-  AccountModel getAccountByAccountName(String accountName);
+  AccountModel getByAccountName(String accountName);
 }

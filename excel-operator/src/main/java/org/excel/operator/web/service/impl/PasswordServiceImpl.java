@@ -27,7 +27,7 @@ public class PasswordServiceImpl implements PasswordService {
   @Resource
   private PasswordMapper passwordMapper;
 
-  @Override public PasswordModel findByAccountId(Long accountId) {
+  @Override public PasswordModel getByAccountId(Long accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
     if (passwordDO == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);

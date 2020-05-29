@@ -26,6 +26,15 @@ public interface AccountMapper {
   AccountDO findByAccountName(String accountName);
 
   /**
+   * 根据手机号码查找
+   *
+   * @param phone
+   *
+   * @return
+   */
+  AccountDO findByPhone(String phone);
+
+  /**
    * 插入 AccountDO 数据
    * @param accountDO 账号信息
    * @return AccountDO
