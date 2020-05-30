@@ -36,12 +36,12 @@ public class ExcelImportController {
    * @param uploadInfoModel 上传文件表单
    */
   @PostMapping(value = "/import")
-  public ResponseResult importFile(
+  public ResponseResult<Integer> importFile(
       @RequestParam(value = "file") MultipartFile file,
       @Valid UploadInfoModel uploadInfoModel, BindingResult result) {
     log.info(file.getOriginalFilename(), JSON.toJSONString(uploadInfoModel));
     // 存入数据库
     int size = importExcelService.addBatchImportExcelRecord(file, uploadInfoModel);
-    return ResponseResult.success(size);
+    return new ResponseResult<>(size);
   }
 }

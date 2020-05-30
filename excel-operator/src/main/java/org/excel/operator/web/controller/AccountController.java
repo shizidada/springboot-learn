@@ -5,12 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.web.service.impl.AccountServiceImpl;
+import org.excel.operator.web.service.model.AccountModel;
 import org.excel.operator.web.service.model.RegisterInfoModel;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,30 +38,20 @@ public class AccountController {
    * spring security to register
    */
   @PostMapping(value = "/register")
-  public ResponseResult register(@Valid RegisterInfoModel registerInfoModel, BindingResult result,
+  public ResponseResult<Boolean> register(@Valid RegisterInfoModel registerInfoModel,
+      BindingResult result,
       HttpServletRequest request) {
     String url = request.getRequestURL().toString();
     String ip = request.getRemoteAddr();
     log.info("register [ip {}], [url {}]", ip, url);
     accountService.register(registerInfoModel);
-    return ResponseResult.success(ResultCode.REGISTER_SUCCESS.getMessage());
+    return new ResponseResult<>(Boolean.TRUE);
   }
 
   @PostMapping(value = "/info")
-  public ResponseResult info() {
-    CustomUserDetails principal = (CustomUserDetails) this.getPrincipal();
-    return ResponseResult.success(principal);
-  }
-
-  @PostMapping(value = "/isLogin")
-  public ResponseResult isLogin() {
-    Object principal = this.getPrincipal();
-    boolean isLogin = principal instanceof CustomUserDetails;
-    return ResponseResult.success(isLogin);
-  }
-
-  private Object getPrincipal() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return authentication.getPrincipal();
+  public ResponseResult<AccountModel> info() {
+    CustomUserDetails userDetails = (CustomUserDetails) accountService.getPrincipal();
+    AccountModel accountModel = userDetails.getAccountModel();
+    return new ResponseResult<>(accountModel);
   }
 }

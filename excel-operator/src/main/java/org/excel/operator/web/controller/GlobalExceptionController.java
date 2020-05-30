@@ -56,19 +56,19 @@ public class GlobalExceptionController extends AbstractErrorController {
     // 创建一个Map进行封装
     if (e == null) {
       Map<String, Object> errorAttributes = getErrorAttributes(request, false);
-      log.error("全局异常捕获.[{}]", errorAttributes);
+      log.error("全局异常捕获 Error Attribute [{}]", errorAttributes);
       Integer status = (Integer) errorAttributes.get("status");
       String error = (String) errorAttributes.get("error");
       // 将 map 封装后的错误信息传入，统一返回
-      return ResponseResult.fail(status, error);
+      return new ResponseResult<>(status, error);
     }
-    log.error("全局异常捕获.[{}]", e);
+    log.error("全局异常捕获 [{}]", e.getMessage());
     if (e.getCause() instanceof BusinessException) {
-      BusinessException businessException = (BusinessException) e.getCause();
-      return ResponseResult.fail(businessException.getCode(), businessException.getMessage());
+      BusinessException be = (BusinessException) e.getCause();
+      return new ResponseResult<>(be.getCode(), be.getMessage());
     } else {
       // 从枚举类中取出自定义的错误码和错误信息
-      return ResponseResult.fail(ResultCode.KNOWN_ERROR.getCode(), e.getCause().getMessage());
+      return new ResponseResult<>(ResultCode.UN_KNOWN_ERROR);
     }
   }
 

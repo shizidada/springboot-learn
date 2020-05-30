@@ -26,6 +26,11 @@ public class BusinessException extends AuthenticationException {
     super(message, cause);
   }
 
+  public BusinessException(ResultCode resultCode) {
+    super(resultCode.getMessage());
+    this.code = resultCode.getCode();
+  }
+
   public BusinessException(ResultCode resultCode, Object... args) {
     super(String.format("%s %s", resultCode.getMessage(), JSON.toJSONString(args)));
     this.code = resultCode.getCode();

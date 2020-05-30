@@ -34,7 +34,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
   @Override public void commence(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
-    log.info(" >>>> CustomAuthenticationEntryPoint >>>> 用户未登录。");
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
@@ -45,8 +44,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       message = be.getMessage();
       code = be.getCode();
     }
+    log.info("CustomAuthenticationEntryPoint 用户未登录 [{}] [{}]", code, message);
     writer.write(
-        JSON.toJSONString(ResponseResult.fail(code, message)).getBytes());
+        JSON.toJSONString(new ResponseResult(code, message)).getBytes());
     writer.close();
   }
 }

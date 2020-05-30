@@ -20,8 +20,8 @@ public class FriendsListController {
   private UserInfoService userInfoService;
 
   @GetMapping("/list")
-  public ResponseResult getFriendsList() {
+  public ResponseResult<List<User>> getFriendsList() {
     List<User> allUsers = userInfoService.getAllUsers();
-    return ResponseResult.success(allUsers);
+    return new ResponseResult<>(allUsers);
   }
 }

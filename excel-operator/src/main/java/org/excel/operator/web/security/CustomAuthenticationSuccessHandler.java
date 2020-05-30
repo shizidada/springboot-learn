@@ -2,14 +2,12 @@ package org.excel.operator.web.security;
 
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
-import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.vo.TokenVo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -32,18 +30,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
   @Override public void onAuthenticationSuccess(HttpServletRequest request,
       HttpServletResponse response, Authentication authentication)
       throws IOException, ServletException {
-
     CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-    log.info(" >>>> CustomAuthenticationSuccessHandler >>>> 用户[{}]登录成功。",
-        principal.getUsername());
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
-    TokenVo tokenVo = new TokenVo();
-    String token = UUID.randomUUID().toString().replace("-", "");
-    tokenVo.setToken(token);
-    // TODO: save to redis
-    writer.write(JSON.toJSONString(ResponseResult.success(tokenVo)).getBytes());
+    // TODO: save to redis ???
+    log.info("CustomAuthenticationSuccessHandler 用户[{}]登录成功。", principal.getUsername());
+    writer.write(JSON.toJSONString(new ResponseResult(true)).getBytes());
     writer.close();
   }
 }

@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.web.filter.RedisTokenFilter;
+import org.excel.operator.web.service.AccountService;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +52,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Resource
   private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+  @Resource
+  private AccountService accountService;
 
   @Resource
   private RedisTemplate redisTemplate;
@@ -126,7 +130,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Bean
   RedisTokenFilter redisTokenFilter() {
-    return new RedisTokenFilter(customAuthenticationFailureHandler);
+    return new RedisTokenFilter(accountService, customAuthenticationFailureHandler);
   }
 
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {

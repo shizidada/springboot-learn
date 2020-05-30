@@ -14,7 +14,7 @@
   </resultMap>
 
   <sql id="Base_Column">
-    account_id, account_name, avatar, phone, status
+    account_id, account_name, avatar, phone, status, create_time, update_time
   </sql>
 
   <select id="findByAccountName" parameterType="org.excel.operator.domain.AccountDO"

@@ -28,11 +28,11 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
   public void handle(HttpServletRequest request, HttpServletResponse response,
       AccessDeniedException e) throws
       IOException {
-    log.info(" >>>> CustomAccessDeniedHandler >>>> 用户无权访问");
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter writer = response.getWriter();
-    writer.write(JSON.toJSONString(ResponseResult.fail(e.getMessage())));
+    log.info("CustomAccessDeniedHandler 用户无权访问 [{}]", e.getMessage());
+    writer.write(JSON.toJSONString(new ResponseResult<>(e.getMessage())));
     writer.close();
   }
 }

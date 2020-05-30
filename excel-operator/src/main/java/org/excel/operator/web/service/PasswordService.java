@@ -23,10 +23,10 @@ public interface PasswordService {
   PasswordModel getByAccountId(Long accountId);
 
   /**
-   * 插入账号密码
+   * 添加账号对应密码
    *
    * @param passwordModel 密码
    * @return 密码 model
    */
-  PasswordModel insertPassword(PasswordModel passwordModel);
+  PasswordModel addPassword(PasswordModel passwordModel);
 }

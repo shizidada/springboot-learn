@@ -34,4 +34,4 @@ mybatis:
 
 system:
   security:
-    anonymous-urls: /api/v1/account/login,/api/v1/account/logout,/api/v1/account/register,/api/v1/account/isLogin
+    anonymous-urls: /api/v1/account/login,/api/v1/account/register,/api/v1/account/login/status

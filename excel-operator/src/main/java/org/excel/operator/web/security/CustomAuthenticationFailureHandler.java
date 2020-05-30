@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -30,7 +32,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
   @Override public void onAuthenticationFailure(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
-    log.info(" >>>> CustomAuthenticationFailureHandler >>>> 用户登录失败。");
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
@@ -41,8 +42,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
       code = be.getCode();
       message = be.getMessage();
     }
-    String json = JSON.toJSONString(ResponseResult.fail(code, message));
-    writer.write(json.getBytes());
+    if (e instanceof DisabledException) {
+      code = ResultCode.ACCOUNT_DISABLED.getCode();
+      message = ResultCode.ACCOUNT_DISABLED.getMessage();
+    }
+    log.info("CustomAuthenticationFailureHandler 用户登录失败 [{}] [{}]", code, message);
+    writer.write(JSON.toJSONString(new ResponseResult(code, message)).getBytes());
     writer.close();
   }
 }

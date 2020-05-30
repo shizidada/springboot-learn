@@ -27,15 +27,19 @@ public enum ResultCode {
   ACCOUNT_NOT_EMPTY(10001, "账号不能为空"),
   ACCOUNT_OR_PASSWORD_ERROR(10002, "账号或密码错误"),
   ACCOUNT_NAME_EXITS(10003, "账号已存在"),
+  ACCOUNT_DISABLED(10004, "账号已禁用"),
+
+  PHONE_EXITS(10100, "手机号已存在"),
+
+  SECOND_PASSWORD_ERROR(10200, "两次密码不一致"),
+
+  REGISTER_SUCCESS(20006, "注册成功"),
+  REGISTER_FAIL(20007, "注册失败"),
 
   LOGIN_SUCCESS(20001, "登录成功"),
   LOGIN_FAIL(20002, "登录失败"),
-
-  RE_PASSWORD_ERROR(20003, "两次密码不一致"),
-  REGISTER_SUCCESS(20004, "注册成功"),
-  REGISTER_FAIL(20005, "注册失败"),
-
-  MEMBER_LOGOUT_SUCCESS(20006, "登出成功"),
+  LOGOUT_SUCCESS(20003, "登出成功"),
+  NOT_LOGIN(20004, "未登录，请先登录"),
 
   /**
    * 文件上传
@@ -61,7 +65,7 @@ public enum ResultCode {
   /**
    * 未知错误
    */
-  KNOWN_ERROR(-99999, "未知错误");
+  UN_KNOWN_ERROR(-99999, "未知错误");
 
   private final Integer code;
 

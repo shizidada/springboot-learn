@@ -32,27 +32,24 @@ public class PasswordServiceImpl implements PasswordService {
     if (passwordDO == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
-    return this.convertPasswordModelFormDataObject(passwordDO);
-  }
-
-  @Override public PasswordModel insertPassword(PasswordModel passwordModel) {
-    if (passwordModel == null) {
-      throw new BusinessException(ResultCode.REGISTER_FAIL);
-    }
-    PasswordDO passwordDO = this.convertPasswordModelToDataObject(passwordModel);
-    passwordMapper.insertPassword(passwordDO);
+    PasswordModel passwordModel = new PasswordModel();
+    BeanUtils.copyProperties(passwordDO, passwordModel);
     return passwordModel;
   }
 
-  private PasswordDO convertPasswordModelToDataObject(PasswordModel passwordModel) {
+  /**
+   * 插入密码
+   * @param passwordModel 密码
+   * @return
+   */
+  @Override
+  public PasswordModel addPassword(PasswordModel passwordModel) {
+    if (passwordModel == null) {
+      throw new BusinessException(ResultCode.REGISTER_FAIL);
+    }
     PasswordDO passwordDO = new PasswordDO();
     BeanUtils.copyProperties(passwordModel, passwordDO);
-    return passwordDO;
-  }
-
-  private PasswordModel convertPasswordModelFormDataObject(PasswordDO passwordDO) {
-    PasswordModel passwordModel = new PasswordModel();
-    BeanUtils.copyProperties(passwordDO, passwordModel);
+    passwordMapper.insertPassword(passwordDO);
     return passwordModel;
   }
 }

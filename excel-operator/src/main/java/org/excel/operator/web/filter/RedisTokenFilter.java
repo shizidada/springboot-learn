@@ -6,10 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.excel.operator.common.api.ResultCode;
-import org.excel.operator.exception.BusinessException;
 import org.excel.operator.web.security.CustomAuthenticationFailureHandler;
+import org.excel.operator.web.service.AccountService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,17 +20,17 @@ public class RedisTokenFilter extends OncePerRequestFilter {
 
   private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
-  //  private RedisTemplate redisTemplate;
-
   private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
+  private final AccountService accountService;
   @Value("${system.security.anonymous-urls}")
   private String[] anonymousUrls;
 
-  public RedisTokenFilter(CustomAuthenticationFailureHandler customAuthenticationFailureHandler
-      /*RedisTemplate redisTemplate*/) {
-    this.authenticationFailureHandler = customAuthenticationFailureHandler;
-    //    this.redisTemplate = redisTemplate;
+  public RedisTokenFilter(
+      AccountService accountService,
+      CustomAuthenticationFailureHandler authenticationFailureHandler) {
+    this.accountService = accountService;
+    this.authenticationFailureHandler = authenticationFailureHandler;
   }
 
   @Override
@@ -42,21 +40,31 @@ public class RedisTokenFilter extends OncePerRequestFilter {
       FilterChain filterChain
   )
       throws ServletException, IOException {
+
+    // 可以匿名访问
     if (match(request)) {
       filterChain.doFilter(request, response);
       return;
     }
-    String token = request.getParameter("token");
-    String uri = request.getRequestURI();
-    log.info("RedisTokenFilter then token :: {} uri :: {}", token, uri);
-    if (StringUtils.isAllBlank(token)) {
-      authenticationFailureHandler.onAuthenticationFailure(
-          request,
-          response,
-          new BusinessException(ResultCode.TOKEN_VALIDATE_EMPTY)
-      );
+
+    // 判断是否登陆
+    boolean isLogin = accountService.isLogin();
+    if (isLogin) {
+      filterChain.doFilter(request, response);
       return;
     }
+
+    //String token = request.getParameter("token");
+    //String uri = request.getRequestURI();
+    //log.info("RedisTokenFilter then token :: {} uri :: {}", token, uri);
+    //if (StringUtils.isAllBlank(token)) {
+    //  authenticationFailureHandler.onAuthenticationFailure(
+    //      request,
+    //      response,
+    //      new BusinessException(ResultCode.TOKEN_VALIDATE_EMPTY)
+    //  );
+    //  return;
+    //}
     // TODO:
     // Object redisToken = redisTemplate.opsForValue().get(token);
     filterChain.doFilter(request, response);

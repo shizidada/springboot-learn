@@ -26,8 +26,21 @@ public interface AccountService {
    * 更具账号查找用户
    *
    * @param accountName 账号
-   *
    * @return AccountModel
    */
   AccountModel getByAccountName(String accountName);
+
+  /**
+   * 判断账号是否登陆
+   *
+   * @return 是否登陆
+   */
+  boolean isLogin();
+
+  /**
+   * 获取授权信息
+   *
+   * @return 授权信息
+   */
+  Object getPrincipal();
 }

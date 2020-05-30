@@ -7,11 +7,14 @@ import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.domain.AccountDO;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.AccountMapper;
+import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.web.service.AccountService;
 import org.excel.operator.web.service.model.AccountModel;
 import org.excel.operator.web.service.model.PasswordModel;
 import org.excel.operator.web.service.model.RegisterInfoModel;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,53 +56,65 @@ public class AccountServiceImpl implements AccountService {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
-    return this.convertAccountModelFromDataObject(accountDO);
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override public void register(RegisterInfoModel registerInfoModel) {
-    String accountName = registerInfoModel.getAccountName();
-    String password = registerInfoModel.getPassword();
-    String rePassword = registerInfoModel.getRePassword();
-
-    if (!StringUtils.equals(password, rePassword)) {
-      throw new BusinessException(ResultCode.RE_PASSWORD_ERROR);
-    }
-
-    AccountDO account = accountMapper.findByAccountName(accountName);
-    if (account != null) {
-      throw new BusinessException(ResultCode.ACCOUNT_NAME_EXITS);
-    }
-
-    AccountDO accountDO = this.convertAccountDOFromModel(registerInfoModel);
-    PasswordModel passwordModel = this.convertPasswordModelFromRegisterInfoModel(registerInfoModel);
-    accountMapper.insertAccount(accountDO);
-
-    passwordModel.setPasswordId(snowflakeIdWorker.nextId());
-    passwordModel.setAccountId(accountDO.getAccountId());
-    passwordService.insertPassword(passwordModel);
-  }
-
-  private AccountModel convertAccountModelFromDataObject(AccountDO accountDO) {
     AccountModel accountModel = new AccountModel();
     BeanUtils.copyProperties(accountDO, accountModel);
     return accountModel;
   }
 
-  private PasswordModel convertPasswordModelFromRegisterInfoModel(
-      RegisterInfoModel registerInfoModel) {
-    PasswordModel passwordModel = new PasswordModel();
-    String password = passwordEncoder.encode(registerInfoModel.getPassword());
-    passwordModel.setPassword(password);
-    return passwordModel;
-  }
+  @Transactional(rollbackFor = Exception.class)
+  @Override public void register(RegisterInfoModel registerInfo) {
+    String password = registerInfo.getPassword();
+    String rePassword = registerInfo.getRePassword();
 
-  private AccountDO convertAccountDOFromModel(RegisterInfoModel registerInfo) {
+    // 比对两次密码是否一致
+    if (!StringUtils.equals(password, rePassword)) {
+      throw new BusinessException(ResultCode.SECOND_PASSWORD_ERROR);
+    }
+
+    // 查询对应 账号名称
+    String accountName = registerInfo.getAccountName();
+    AccountDO account = accountMapper.findByAccountName(accountName);
+    if (account != null) {
+      throw new BusinessException(ResultCode.ACCOUNT_NAME_EXITS);
+    }
+
+    // 查询手机号是否存在
+    String phone = registerInfo.getPhone();
+    account = accountMapper.findByPhone(phone);
+    if (account != null) {
+      throw new BusinessException(ResultCode.PHONE_EXITS);
+    }
+
     AccountDO accountDO = new AccountDO();
     accountDO.setAccountId(snowflakeIdWorker.nextId());
     accountDO.setAccountName(registerInfo.getAccountName());
     accountDO.setPhone(registerInfo.getPhone());
     accountDO.setAvatar(registerInfo.getAvatar());
-    return accountDO;
+    accountMapper.insertAccount(accountDO);
+
+    PasswordModel passwordModel = new PasswordModel();
+    passwordModel.setAccountId(accountDO.getAccountId());
+    passwordModel.setPasswordId(snowflakeIdWorker.nextId());
+    // 加密密码
+    passwordModel.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
+    passwordService.addPassword(passwordModel);
+  }
+
+  @Override
+  public boolean isLogin() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null) {
+      return false;
+    }
+    Object principal = authentication.getPrincipal();
+    return principal instanceof CustomUserDetails;
+  }
+
+  @Override public Object getPrincipal() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication != null) {
+      return authentication.getPrincipal();
+    }
+    return null;
   }
 }

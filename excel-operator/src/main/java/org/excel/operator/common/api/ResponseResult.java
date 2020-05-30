@@ -13,46 +13,34 @@ package org.excel.operator.common.api;
 public class ResponseResult<T> {
   private Integer code;
 
-  private T data;
-
   private String message;
+
+  private T data;
 
   private ResponseResult() {
   }
 
-  private ResponseResult(Integer code, String message, T data) {
-    this.code = code;
+  public ResponseResult(T data) {
+    this.code = ResultCode.SUCCESS.getCode();
+    this.message = ResultCode.SUCCESS.getMessage();
     this.data = data;
+  }
+
+  public ResponseResult(Integer code, String message) {
+    this.code = code;
     this.message = message;
   }
 
-  public static ResponseResult success(Object data) {
-    return new ResponseResult<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(),
-        data);
+  public ResponseResult(Integer code, String message, T data) {
+    this.code = code;
+    this.message = message;
+    this.data = data;
   }
 
-  public static ResponseResult success(Integer code, String message) {
-    return new ResponseResult<>(code, message, null);
-  }
-
-  public static ResponseResult success() {
-    return success(null);
-  }
-
-  public static ResponseResult fail(Object data) {
-    return new ResponseResult<>(ResultCode.FAIL.getCode(), ResultCode.FAIL.getMessage(), data);
-  }
-
-  public static ResponseResult fail(Integer code, String message) {
-    return new ResponseResult<>(code, message, null);
-  }
-
-  public static ResponseResult fail(Integer code, Throwable t) {
-    return new ResponseResult<>(code, t.getMessage(), null);
-  }
-
-  public static ResponseResult fail() {
-    return fail(null);
+  public ResponseResult(ResultCode resultCode, T data) {
+    this.code = resultCode.getCode();
+    this.message = resultCode.getMessage();
+    this.data = data;
   }
 
   public Integer getCode() {

@@ -37,6 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   /**
    * Spring Security
+   *
    * @param accountName 账号
    * @return 是否成功
    * @throws UsernameNotFoundException 用户名密码异常
@@ -44,6 +45,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String accountName)
       throws UsernameNotFoundException {
+
+    Object principal = accountService.getPrincipal();
+    if (principal instanceof CustomUserDetails) {
+      return (CustomUserDetails) principal;
+    }
+
     if (StringUtils.isEmpty(accountName)) {
       throw new BusinessException(ResultCode.ACCOUNT_NOT_EMPTY);
     }
@@ -53,11 +60,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
+    // TODO: 禁用账号如何防止多次请求，访问数据库 ？？？
+
     PasswordModel passwordModel = passwordService.getByAccountId(accountModel.getAccountId());
     if (passwordModel == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
-    // TODO 角色、权限集合
+
+    // TODO: 角色、权限集合
     List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
     grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
     return new CustomUserDetails(accountModel, passwordModel, grantedAuthorities);
