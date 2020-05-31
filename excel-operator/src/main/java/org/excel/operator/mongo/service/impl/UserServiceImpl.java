@@ -1,10 +1,10 @@
-package org.excel.operator.web.service.impl;
+package org.excel.operator.mongo.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.excel.operator.mongo.entity.User;
-import org.excel.operator.web.service.UserInfoService;
+import org.excel.operator.mongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -14,8 +14,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author taohua
+ */
 @Service
-public class UserInfoServiceImpl implements UserInfoService {
+public class UserServiceImpl implements UserService {
 
   @Autowired
   private MongoTemplate mongoTemplate;

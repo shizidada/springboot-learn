@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 import org.excel.operator.mongo.entity.Message;
 import org.excel.operator.mongo.entity.User;
 import org.excel.operator.web.service.MessageService;
-import org.excel.operator.web.service.UserInfoService;
+import org.excel.operator.mongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -27,7 +27,7 @@ public class MessageWebSocketHandler extends TextWebSocketHandler {
   private MessageService messageService;
 
   @Autowired
-  private UserInfoService userInfoService;
+  private UserService userService;
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -55,8 +55,8 @@ public class MessageWebSocketHandler extends TextWebSocketHandler {
     String toId = jsonNode.get("toId").asText();
     String msg = jsonNode.get("msg").asText();
 
-    User fromUser = userInfoService.getUser(userId);
-    User toUser = userInfoService.getUser(toId);
+    User fromUser = userService.getUser(userId);
+    User toUser = userService.getUser(toId);
 
     // 构造消息对象
     Message message = Message.builder()
