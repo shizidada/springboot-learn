@@ -47,7 +47,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
       message = ResultCode.ACCOUNT_DISABLED.getMessage();
     }
     log.info("CustomAuthenticationFailureHandler 用户登录失败 [{}] [{}]", code, message);
-    writer.write(JSON.toJSONString(new ResponseResult(code, message)).getBytes());
+    writer.write(JSON.toJSONString(new ResponseResult<>(code, message)).getBytes());
     writer.close();
   }
 }

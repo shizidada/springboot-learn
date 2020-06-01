@@ -46,7 +46,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
     log.info("CustomAuthenticationEntryPoint 用户未登录 [{}] [{}]", code, message);
     writer.write(
-        JSON.toJSONString(new ResponseResult(code, message)).getBytes());
+        JSON.toJSONString(new ResponseResult<>(code, message)).getBytes());
     writer.close();
   }
 }

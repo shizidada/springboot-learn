@@ -55,22 +55,19 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     }
     ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
     List<ExcelInfoDO> list = excelInfoMapper.selectAll(excelInfoDO);
-    PageInfo page = new PageInfo<>(list);
-    Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(page);
-    return basePageInfo;
+    PageInfo<ExcelInfoDO> page = new PageInfo<>(list);
+    return PageInfoUtils.getBasePageInfo(page);
   }
 
   @Override public ImportExcelModel selectByPrimaryKey(Long id) {
     ExcelInfoDO excelInfoDO = excelInfoMapper.selectByPrimaryKey(id);
-    ImportExcelModel importExcelModel = this.convertModelFromDataObject(excelInfoDO);
-    return importExcelModel;
+    return this.convertModelFromDataObject(excelInfoDO);
   }
 
   @Override public ImportExcelModel selectByImportExcel(ImportExcelModel importExcelModel) {
     ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
     excelInfoDO = excelInfoMapper.selectByImportExcel(excelInfoDO);
-    ImportExcelModel excelModel = this.convertModelFromDataObject(excelInfoDO);
-    return excelModel;
+    return this.convertModelFromDataObject(excelInfoDO);
   }
 
   @Override public int addImportExcelRecord(ImportExcelModel importExcelModel) {
@@ -93,10 +90,8 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
       throw new BusinessException(ResultCode.EXCEL_IMPORT_FAIL);
     }
 
-    List<ExcelInfoDO> excelInfoDOList = importExcelModels.stream().map(importExcelModel -> {
-      ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
-      return excelInfoDO;
-    }).collect(Collectors.toList());
+    List<ExcelInfoDO> excelInfoDOList = importExcelModels.stream().map(
+        this::convertImportExcelModel2ImportExcelDO).collect(Collectors.toList());
 
     int result = excelInfoMapper.addImportExcelRecordBatch(excelInfoDOList);
 
@@ -110,22 +105,17 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     List<ExcelInfoDO> excelInfoDOList =
         excelInfoMapper.selectSameReceiverAndPhoneAndAddress();
 
-    List<ImportExcelModel> importExcelModels = excelInfoDOList.stream().map(excelInfoDO -> {
-      ImportExcelModel itemModel = this.convertModelFromDataObject(excelInfoDO);
-      return itemModel;
+    return excelInfoDOList.stream().map(excelInfoDO -> {
+      ImportExcelModel importExcelModel = new ImportExcelModel();
+      BeanUtils.copyProperties(excelInfoDO, importExcelModel);
+      return importExcelModel;
     }).collect(Collectors.toList());
-
-    return importExcelModels;
   }
 
   @Override public List<ImportExcelModel> exportDiffReceiverAndPhoneAndAddress() {
     List<ExcelInfoDO> excelInfoDOList =
         excelInfoMapper.selectDiffReceiverAndPhoneAndAddress();
-    List<ImportExcelModel> importExcelModels = excelInfoDOList.stream().map(excelInfoDO -> {
-      ImportExcelModel importExcelModel = this.convertModelFromDataObject(excelInfoDO);
-      return importExcelModel;
-    }).collect(Collectors.toList());
-    return importExcelModels;
+    return excelInfoDOList.stream().map(this::convertModelFromDataObject).collect(Collectors.toList());
   }
 
   /**
@@ -163,7 +153,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
       throw new BusinessException(ResultCode.FILE_NOT_EMPTY);
     }
     String fileName = file.getOriginalFilename();
-    if (!fileName.endsWith(SUBFIX_FILE_NAME)) {
+    if (fileName != null && !fileName.endsWith(SUBFIX_FILE_NAME)) {
       throw new BusinessException(ResultCode.FILE_NOT_SUPPORT);
     }
     if (file.getSize() > FILE_SIZE) {
@@ -183,9 +173,6 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     ExcelOperator excelOperator = new ExcelOperator();
     excelOperator.setSnowflakeIdWorker(snowflakeIdWorker);
 
-    List<ImportExcelModel> importExcelModels =
-        excelOperator.importExcelFile(file.getInputStream(), uploadInfoModel.getPlatform());
-
-    return importExcelModels;
+    return excelOperator.importExcelFile(file.getInputStream(), uploadInfoModel.getPlatform());
   }
 }

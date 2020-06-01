@@ -21,7 +21,6 @@ public class FriendsListController {
 
   @GetMapping("/list")
   public ResponseResult<List<User>> getFriendsList() {
-    List<User> allUsers = userService.getAllUsers();
-    return new ResponseResult<>(allUsers);
+    return new ResponseResult<>(userService.getAllUsers());
   }
 }
