@@ -1,4 +1,4 @@
-package org.excel.operator.web.service.model;
+package org.excel.operator.model.dto;
 
 import java.util.Date;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.Data;
  * @see org.excel.operator.common
  */
 @Data
-public class BaseModel {
+public class BaseDTO {
 
   /**
    * 创建时间

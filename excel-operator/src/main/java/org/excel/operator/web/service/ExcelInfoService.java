@@ -2,8 +2,8 @@ package org.excel.operator.web.service;
 
 import java.util.List;
 import java.util.Map;
-import org.excel.operator.web.service.model.ImportExcelModel;
-import org.excel.operator.web.service.model.UploadInfoModel;
+import org.excel.operator.model.dto.ImportExcelDTO;
+import org.excel.operator.model.dto.UploadInfoDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -24,7 +24,7 @@ public interface ExcelInfoService {
    * @param importExcelModel 搜索参数
    * @return Map<String ,   Object>
    */
-  Map<String, Object> selectAll(ImportExcelModel importExcelModel);
+  Map<String, Object> selectAll(ImportExcelDTO importExcelModel);
 
   /**
    * 根据主键查询
@@ -32,7 +32,7 @@ public interface ExcelInfoService {
    * @param id 主键
    * @return ExcelInfoDO
    */
-  ImportExcelModel selectByPrimaryKey(Long id);
+  ImportExcelDTO selectByPrimaryKey(Long id);
 
   /**
    * 根据 importExcelDO 查询
@@ -40,7 +40,7 @@ public interface ExcelInfoService {
    * @param model 实体
    * @return ExcelInfoDO
    */
-  ImportExcelModel selectByImportExcel(ImportExcelModel model);
+  ImportExcelDTO selectByImportExcel(ImportExcelDTO model);
 
   /**
    * 添加一条 excel 数据
@@ -48,28 +48,28 @@ public interface ExcelInfoService {
    * @param model 实体
    * @return 添加成功
    */
-  int addImportExcelRecord(ImportExcelModel model);
+  int addImportExcelRecord(ImportExcelDTO model);
 
   /**
    * 批量添加 excel 数据
    *
    * @param file 上传文件
-   * @param uploadInfoModel 实体集合
+   * @param uploadInfoDTO 实体集合
    * @return 添加成功
    */
-  int addBatchImportExcelRecord(MultipartFile file, UploadInfoModel uploadInfoModel);
+  int addBatchImportExcelRecord(MultipartFile file, UploadInfoDTO uploadInfoDTO);
 
   /**
    * 批量导出相同 excel 数据 Receiver Phone Address
    *
    * @return 导出成功
    */
-  List<ImportExcelModel> exportSameReceiverAndPhoneAndAddress();
+  List<ImportExcelDTO> exportSameReceiverAndPhoneAndAddress();
 
   /**
    * 批量导出不同 excel 数据 Receiver Phone Address
    *
    * @return 导出成功
    */
-  List<ImportExcelModel> exportDiffReceiverAndPhoneAndAddress();
+  List<ImportExcelDTO> exportDiffReceiverAndPhoneAndAddress();
 }

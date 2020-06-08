@@ -13,7 +13,7 @@ import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.poi.ExcelOperator;
 import org.excel.operator.web.service.ExcelExportService;
-import org.excel.operator.web.service.model.ImportExcelModel;
+import org.excel.operator.model.dto.ImportExcelDTO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,7 +42,7 @@ public class ExcelExportServiceImpl implements ExcelExportService {
   public void downLoadExportExcelFile(HttpServletResponse response, String type) {
     response.setContentType("application/vnd.ms-excel");
     response.setCharacterEncoding("utf-8");
-    List<ImportExcelModel> exportList = new ArrayList<>();
+    List<ImportExcelDTO> exportList = new ArrayList<>();
     try {
       String fileName = URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8");
       response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");

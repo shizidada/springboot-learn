@@ -36,7 +36,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     ServletOutputStream writer = response.getOutputStream();
     // TODO: save to redis ???
     log.info("CustomAuthenticationSuccessHandler 用户[{}]登录成功。", principal.getUsername());
-    writer.write(JSON.toJSONString(new ResponseResult<>(true)).getBytes());
+    writer.write(JSON.toJSONString(new ResponseResult<>(true, "登录成功")).getBytes());
     writer.close();
   }
 }

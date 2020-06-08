@@ -1,6 +1,6 @@
 package org.excel.operator.web.service;
 
-import org.excel.operator.web.service.model.PasswordModel;
+import org.excel.operator.model.dto.PasswordDTO;
 
 /**
  * <p>
@@ -20,13 +20,13 @@ public interface PasswordService {
    * @param accountId 账号ID
    * @return PasswordModel
    */
-  PasswordModel getByAccountId(Long accountId);
+  PasswordDTO getByAccountId(Long accountId);
 
   /**
    * 添加账号对应密码
    *
-   * @param passwordModel 密码
+   * @param passwordDTO 密码
    * @return 密码 model
    */
-  PasswordModel addPassword(PasswordModel passwordModel);
+  PasswordDTO addPassword(PasswordDTO passwordDTO);
 }

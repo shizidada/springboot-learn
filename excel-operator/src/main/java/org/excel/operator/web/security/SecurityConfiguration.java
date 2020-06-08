@@ -8,7 +8,6 @@ import org.excel.operator.web.service.AccountService;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -56,9 +55,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Resource
   private AccountService accountService;
 
-  @Resource
-  private RedisTemplate redisTemplate;
-
   @Override protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
@@ -81,9 +77,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         SecurityConstants.LOGIN_IN_URL,
         SecurityConstants.LOGIN_OUT_URL,
+        SecurityConstants.LOGIN_STATUS_URL,
         SecurityConstants.REGISTER_URL,
-
-        "/api/v1/account/isLogin",
 
         // for test
         "/api/v1/excel/**",
@@ -100,8 +95,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .formLogin()
         .loginProcessingUrl(SecurityConstants.LOGIN_IN_URL)
-        //.usernameParameter("accountName")
-        //.passwordParameter("password")
+        .usernameParameter("accountName")
+        .passwordParameter("password")
         // 登录成功
         .successHandler(customAuthenticationSuccessHandler)
         // 登录失败

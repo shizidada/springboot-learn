@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.excel.operator.mapper.AccountMapper">
 
-  <resultMap id="BaseResultMap" type="org.excel.operator.domain.AccountDO">
+  <resultMap id="BaseResultMap" type="org.excel.operator.model.domain.AccountDO">
     <id column="account_id" jdbcType="BIGINT" property="accountId"/>
     <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
     <result column="status" jdbcType="VARCHAR" property="status"/>
@@ -17,21 +17,21 @@
     account_id, account_name, avatar, phone, status, create_time, update_time
   </sql>
 
-  <select id="findByAccountName" parameterType="org.excel.operator.domain.AccountDO"
+  <select id="findByAccountName" parameterType="org.excel.operator.model.domain.AccountDO"
       resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column"/>
     FROM t_account WHERE account_name=#{accountName}
   </select>
 
-  <select id="findByPhone" parameterType="org.excel.operator.domain.AccountDO"
+  <select id="findByPhone" parameterType="org.excel.operator.model.domain.AccountDO"
       resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column"/>
     FROM t_account WHERE phone=#{phone}
   </select>
 
-  <insert id="insertAccount" parameterType="org.excel.operator.domain.AccountDO">
+  <insert id="insertAccount" parameterType="org.excel.operator.model.domain.AccountDO">
     INSERT INTO
     t_account(account_id, account_name, phone, avatar)
     VALUES

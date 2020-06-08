@@ -1,4 +1,4 @@
-package org.excel.operator.web.service.model;
+package org.excel.operator.model.dto;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public class UploadInfoModel extends BaseModel {
+public class UploadInfoDTO extends BaseDTO {
 
   @NotBlank(message = "上传 {platform} 类型不能为空")
   private String platform;

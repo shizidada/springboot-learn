@@ -37,6 +37,12 @@ public class ResponseResult<T> {
     this.data = data;
   }
 
+  public ResponseResult(T data, String message) {
+    this.code = ResultCode.SUCCESS.getCode();
+    this.message = message;
+    this.data = data;
+  }
+
   public ResponseResult(ResultCode resultCode, T data) {
     this.code = resultCode.getCode();
     this.message = resultCode.getMessage();

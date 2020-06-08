@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.web.service.impl.ExcelExportServiceImpl;
 import org.excel.operator.web.service.impl.ExcelInfoServiceImpl;
-import org.excel.operator.web.service.model.ImportExcelModel;
+import org.excel.operator.model.dto.ImportExcelDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +33,7 @@ public class ExcelExportController {
   private ExcelExportServiceImpl excelExportService;
 
   @GetMapping(value = "/list")
-  public ResponseResult<Map<String, Object>> list(ImportExcelModel importExcelModel) {
+  public ResponseResult<Map<String, Object>> list(ImportExcelDTO importExcelModel) {
     Map<String, Object> map = excelInfoService.selectAll(importExcelModel);
     return new ResponseResult<>(map);
   }

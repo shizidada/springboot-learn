@@ -3,8 +3,8 @@ package org.excel.operator.web.security;
 import java.util.Collection;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import org.excel.operator.web.service.model.AccountModel;
-import org.excel.operator.web.service.model.PasswordModel;
+import org.excel.operator.model.dto.AccountDTO;
+import org.excel.operator.model.dto.PasswordDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,15 +16,15 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/11/20 22:04
- * @see org.excel.operator.web.service.model
+ * @see org.excel.operator.model.dto
  */
 public class CustomUserDetails implements UserDetails {
 
   public static final String CAN_USE = "1";
 
-  private AccountModel accountModel;
+  private AccountDTO accountDTO;
 
-  private PasswordModel passwordModel;
+  private PasswordDTO passwordDTO;
 
   /**
    * 权限集合
@@ -34,16 +34,16 @@ public class CustomUserDetails implements UserDetails {
   public CustomUserDetails() {
   }
 
-  public CustomUserDetails(AccountModel accountModel,
-      PasswordModel passwordModel,
+  public CustomUserDetails(AccountDTO accountDTO,
+      PasswordDTO passwordDTO,
       List<GrantedAuthority> authorities) {
-    this.accountModel = accountModel;
-    this.passwordModel = passwordModel;
+    this.accountDTO = accountDTO;
+    this.passwordDTO = passwordDTO;
     this.authorities = authorities;
   }
 
-  public AccountModel getAccountModel() {
-    return accountModel;
+  public AccountDTO getAccountDTO() {
+    return accountDTO;
   }
 
   @Override public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -51,11 +51,11 @@ public class CustomUserDetails implements UserDetails {
   }
 
   @Override public String getPassword() {
-    return passwordModel.getPassword();
+    return passwordDTO.getPassword();
   }
 
   @Override public String getUsername() {
-    return accountModel.getAccountName();
+    return accountDTO.getAccountName();
   }
 
   @Override public boolean isAccountNonExpired() {
@@ -71,6 +71,6 @@ public class CustomUserDetails implements UserDetails {
   }
 
   @Override public boolean isEnabled() {
-    return StringUtils.equals(accountModel.getStatus(), CAN_USE);
+    return StringUtils.equals(accountDTO.getStatus(), CAN_USE);
   }
 }

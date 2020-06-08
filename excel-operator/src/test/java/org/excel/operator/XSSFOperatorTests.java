@@ -17,7 +17,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.excel.operator.domain.ExcelInfoDO;
+import org.excel.operator.model.domain.ExcelInfoDO;
 import org.excel.operator.mapper.ExcelInfoMapper;
 
 /**

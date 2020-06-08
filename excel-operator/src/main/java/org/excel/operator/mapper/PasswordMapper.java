@@ -1,7 +1,7 @@
 package org.excel.operator.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.excel.operator.domain.PasswordDO;
+import org.excel.operator.model.domain.PasswordDO;
 
 /**
  * <p>

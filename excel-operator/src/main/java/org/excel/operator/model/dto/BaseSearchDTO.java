@@ -1,4 +1,4 @@
-package org.excel.operator.web.service.model;
+package org.excel.operator.model.dto;
 
 import lombok.Data;
 
@@ -13,9 +13,9 @@ import lombok.Data;
  * @see org.excel.operator.common
  */
 @Data
-public class BaseSearchModel extends BaseModel {
+public class BaseSearchDTO extends BaseDTO {
 
-  private int pageNum;
+  private Integer pageNum;
 
-  private int pageSize;
+  private Integer pageSize;
 }

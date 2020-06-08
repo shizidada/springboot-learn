@@ -11,4 +11,5 @@ public interface SecurityConstants {
 
   String REGISTER_URL = "/api/v1/account/register";
 
+  String LOGIN_STATUS_URL = "/api/v1/login/status";
 }

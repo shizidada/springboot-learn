@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.web.service.impl.ExcelInfoServiceImpl;
-import org.excel.operator.web.service.model.UploadInfoModel;
+import org.excel.operator.model.dto.UploadInfoDTO;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,15 +33,15 @@ public class ExcelImportController {
   private ExcelInfoServiceImpl importExcelService;
 
   /**
-   * @param uploadInfoModel 上传文件表单
+   * @param uploadInfoDTO 上传文件表单
    */
   @PostMapping(value = "/import")
   public ResponseResult<Integer> importFile(
       @RequestParam(value = "file") MultipartFile file,
-      @Valid UploadInfoModel uploadInfoModel, BindingResult result) {
-    log.info(file.getOriginalFilename(), JSON.toJSONString(uploadInfoModel));
+      @Valid UploadInfoDTO uploadInfoDTO, BindingResult result) {
+    log.info(file.getOriginalFilename(), JSON.toJSONString(uploadInfoDTO));
     // 存入数据库
-    int size = importExcelService.addBatchImportExcelRecord(file, uploadInfoModel);
+    int size = importExcelService.addBatchImportExcelRecord(file, uploadInfoDTO);
     return new ResponseResult<>(size);
   }
 }

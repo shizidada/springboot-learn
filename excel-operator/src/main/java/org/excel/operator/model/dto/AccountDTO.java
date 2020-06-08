@@ -1,4 +1,4 @@
-package org.excel.operator.domain;
+package org.excel.operator.model.dto;
 
 import lombok.Data;
 
@@ -9,19 +9,17 @@ import lombok.Data;
  *
  * @author taohua
  * @version v1.0.0
- * @date 2019 2019/11/16 22:20
- * @see org.excel.operator.domain
+ * @date 2019 2019/11/17 00:07
+ * @see org.excel.operator.model.dto
  */
 @Data
-public class AccountDO extends BaseDO {
+public class AccountDTO extends BaseDTO {
 
   private Long accountId;
 
   private String accountName;
 
   private String status;
-
-  private String phone;
 
   private String avatar;
 }

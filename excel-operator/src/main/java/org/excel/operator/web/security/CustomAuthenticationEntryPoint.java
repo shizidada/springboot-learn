@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -44,7 +46,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       message = be.getMessage();
       code = be.getCode();
     }
-    log.info("CustomAuthenticationEntryPoint 用户未登录 [{}] [{}]", code, message);
+    if (e instanceof InsufficientAuthenticationException) {
+      message = ResultCode.NOT_LOGIN.getMessage();
+    }
+    log.info("CustomAuthenticationEntryPoint code : [{}] message: [{}] errorMessage: [{}]",
+        code, message, e.getMessage());
     writer.write(
         JSON.toJSONString(new ResponseResult<>(code, message)).getBytes());
     writer.close();

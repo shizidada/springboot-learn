@@ -1,4 +1,4 @@
-package org.excel.operator.domain;
+package org.excel.operator.model.domain;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/10/27 15:06
- * @see org.excel.operator.domain
+ * @see org.excel.operator.model.domain
  */
 @Data
 public class ExcelInfoDO extends BaseDO {

@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.web.security.CustomUserDetails;
+import org.excel.operator.model.dto.AccountDTO;
+import org.excel.operator.model.dto.RegisterInfoDTO;
 import org.excel.operator.web.service.impl.AccountServiceImpl;
-import org.excel.operator.web.service.model.AccountModel;
-import org.excel.operator.web.service.model.RegisterInfoModel;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,20 +38,14 @@ public class AccountController {
    * spring security to register
    */
   @PostMapping(value = "/register")
-  public ResponseResult<Boolean> register(@Valid RegisterInfoModel registerInfoModel,
+  public ResponseResult<Boolean> register(@Valid @RequestBody RegisterInfoDTO registerInfoDTO,
       BindingResult result,
       HttpServletRequest request) {
-    String url = request.getRequestURL().toString();
-    String ip = request.getRemoteAddr();
-    log.info("register [ip {}], [url {}]", ip, url);
-    accountService.register(registerInfoModel);
-    return new ResponseResult<>(Boolean.TRUE);
+    return new ResponseResult<>(accountService.register(request, registerInfoDTO), "登录成功");
   }
 
   @PostMapping(value = "/info")
-  public ResponseResult<AccountModel> info() {
-    CustomUserDetails userDetails = (CustomUserDetails) accountService.getPrincipal();
-    AccountModel accountModel = userDetails.getAccountModel();
-    return new ResponseResult<>(accountModel);
+  public ResponseResult<AccountDTO> info() {
+    return new ResponseResult<>(accountService.getAccountInfo(), "获取用户信息成功");
   }
 }

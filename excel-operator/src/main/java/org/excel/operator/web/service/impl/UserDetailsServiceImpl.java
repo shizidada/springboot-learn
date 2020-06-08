@@ -7,8 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.web.security.CustomUserDetails;
-import org.excel.operator.web.service.model.AccountModel;
-import org.excel.operator.web.service.model.PasswordModel;
+import org.excel.operator.model.dto.AccountDTO;
+import org.excel.operator.model.dto.PasswordDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,21 +55,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
       throw new BusinessException(ResultCode.ACCOUNT_NOT_EMPTY);
     }
 
-    AccountModel accountModel = accountService.getByAccountName(accountName);
-    if (accountModel == null) {
+    AccountDTO accountDTO = accountService.getByAccountName(accountName);
+    if (accountDTO == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
     // TODO: 禁用账号如何防止多次请求，访问数据库 ？？？
 
-    PasswordModel passwordModel = passwordService.getByAccountId(accountModel.getAccountId());
-    if (passwordModel == null) {
+    PasswordDTO passwordDTO = passwordService.getByAccountId(accountDTO.getAccountId());
+    if (passwordDTO == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
     // TODO: 角色、权限集合
     List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
     grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
-    return new CustomUserDetails(accountModel, passwordModel, grantedAuthorities);
+    return new CustomUserDetails(accountDTO, passwordDTO, grantedAuthorities);
   }
 }

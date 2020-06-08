@@ -1,7 +1,8 @@
 package org.excel.operator.web.service;
 
-import org.excel.operator.web.service.model.AccountModel;
-import org.excel.operator.web.service.model.RegisterInfoModel;
+import javax.servlet.http.HttpServletRequest;
+import org.excel.operator.model.dto.AccountDTO;
+import org.excel.operator.model.dto.RegisterInfoDTO;
 
 /**
  * <p>
@@ -18,9 +19,11 @@ public interface AccountService {
   /**
    * 注册
    *
-   * @param registerInfoModel 注册信息
+   * @param registerInfoDTO 注册信息
+   * @param request         #HttpServletRequest
+   * @return 是否注册成功
    */
-  void register(RegisterInfoModel registerInfoModel);
+  boolean register(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
 
   /**
    * 更具账号查找用户
@@ -28,7 +31,14 @@ public interface AccountService {
    * @param accountName 账号
    * @return AccountModel
    */
-  AccountModel getByAccountName(String accountName);
+  AccountDTO getByAccountName(String accountName);
+
+  /**
+   * 获取用户信息
+   *
+   * @return AccountDTO
+   */
+  AccountDTO getAccountInfo();
 
   /**
    * 判断账号是否登陆

@@ -1,4 +1,4 @@
-package org.excel.operator.web.service.model;
+package org.excel.operator.model.dto;
 
 import lombok.Data;
 
@@ -10,10 +10,10 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2019 2019/11/17 00:02
- * @see org.excel.operator.web.service.model
+ * @see org.excel.operator.model.dto
  */
 @Data
-public class ImportExcelModel extends BaseSearchModel {
+public class ImportExcelDTO extends BaseSearchDTO {
 
   /**
    * 主键 id

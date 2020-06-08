@@ -28,7 +28,7 @@ public class LoginController {
   private AccountServiceImpl accountService;
 
   @PostMapping(value = "/status")
-  public ResponseResult<Boolean> isLogin() {
+  public ResponseResult<Boolean> status() {
     return new ResponseResult<>(accountService.isLogin());
   }
 }

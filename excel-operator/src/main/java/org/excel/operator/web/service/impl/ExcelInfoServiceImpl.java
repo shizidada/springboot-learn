@@ -10,15 +10,15 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.component.SnowflakeIdWorker;
-import org.excel.operator.domain.ExcelInfoDO;
+import org.excel.operator.model.domain.ExcelInfoDO;
 import org.excel.operator.es.repository.ExcelInfoRepository;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.ExcelInfoMapper;
 import org.excel.operator.poi.ExcelOperator;
 import org.excel.operator.utils.PageInfoUtils;
 import org.excel.operator.web.service.ExcelInfoService;
-import org.excel.operator.web.service.model.ImportExcelModel;
-import org.excel.operator.web.service.model.UploadInfoModel;
+import org.excel.operator.model.dto.ImportExcelDTO;
+import org.excel.operator.model.dto.UploadInfoDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,49 +49,49 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
-  @Override public Map<String, Object> selectAll(ImportExcelModel importExcelModel) {
+  @Override public Map<String, Object> selectAll(ImportExcelDTO importExcelModel) {
     if (importExcelModel.getPageNum() > 0 && importExcelModel.getPageSize() > 0) {
       PageHelper.startPage(importExcelModel.getPageNum(), importExcelModel.getPageSize());
     }
-    ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
+    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelModel);
     List<ExcelInfoDO> list = excelInfoMapper.selectAll(excelInfoDO);
     PageInfo<ExcelInfoDO> page = new PageInfo<>(list);
     return PageInfoUtils.getBasePageInfo(page);
   }
 
-  @Override public ImportExcelModel selectByPrimaryKey(Long id) {
+  @Override public ImportExcelDTO selectByPrimaryKey(Long id) {
     ExcelInfoDO excelInfoDO = excelInfoMapper.selectByPrimaryKey(id);
     return this.convertModelFromDataObject(excelInfoDO);
   }
 
-  @Override public ImportExcelModel selectByImportExcel(ImportExcelModel importExcelModel) {
-    ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
+  @Override public ImportExcelDTO selectByImportExcel(ImportExcelDTO importExcelModel) {
+    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelModel);
     excelInfoDO = excelInfoMapper.selectByImportExcel(excelInfoDO);
     return this.convertModelFromDataObject(excelInfoDO);
   }
 
-  @Override public int addImportExcelRecord(ImportExcelModel importExcelModel) {
-    ExcelInfoDO excelInfoDO = this.convertImportExcelModel2ImportExcelDO(importExcelModel);
+  @Override public int addImportExcelRecord(ImportExcelDTO importExcelModel) {
+    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelModel);
     return excelInfoMapper.addImportExcelRecord(excelInfoDO);
   }
 
   @Override
-  public int addBatchImportExcelRecord(MultipartFile file, UploadInfoModel uploadInfoModel) {
+  public int addBatchImportExcelRecord(MultipartFile file, UploadInfoDTO uploadInfoDTO) {
     /**
      * 判断上传文件
      */
     this.estimateUploadFile(file);
 
-    List<ImportExcelModel> importExcelModels = null;
+    List<ImportExcelDTO> importExcelModels = null;
     try {
-      importExcelModels = this.convertReadExcelToModel(file, uploadInfoModel);
+      importExcelModels = this.convertReadExcelToModel(file, uploadInfoDTO);
     } catch (IOException e) {
       log.error("导入 excel 文件失败", e);
       throw new BusinessException(ResultCode.EXCEL_IMPORT_FAIL);
     }
 
     List<ExcelInfoDO> excelInfoDOList = importExcelModels.stream().map(
-        this::convertImportExcelModel2ImportExcelDO).collect(Collectors.toList());
+        this::convertImportExcelDTO2ImportExcelDO).collect(Collectors.toList());
 
     int result = excelInfoMapper.addImportExcelRecordBatch(excelInfoDOList);
 
@@ -101,29 +101,29 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     return result;
   }
 
-  @Override public List<ImportExcelModel> exportSameReceiverAndPhoneAndAddress() {
+  @Override public List<ImportExcelDTO> exportSameReceiverAndPhoneAndAddress() {
     List<ExcelInfoDO> excelInfoDOList =
         excelInfoMapper.selectSameReceiverAndPhoneAndAddress();
 
     return excelInfoDOList.stream().map(excelInfoDO -> {
-      ImportExcelModel importExcelModel = new ImportExcelModel();
+      ImportExcelDTO importExcelModel = new ImportExcelDTO();
       BeanUtils.copyProperties(excelInfoDO, importExcelModel);
       return importExcelModel;
     }).collect(Collectors.toList());
   }
 
-  @Override public List<ImportExcelModel> exportDiffReceiverAndPhoneAndAddress() {
+  @Override public List<ImportExcelDTO> exportDiffReceiverAndPhoneAndAddress() {
     List<ExcelInfoDO> excelInfoDOList =
         excelInfoMapper.selectDiffReceiverAndPhoneAndAddress();
     return excelInfoDOList.stream().map(this::convertModelFromDataObject).collect(Collectors.toList());
   }
 
   /**
-   * 将 ImportExcelModel 转为 ExcelInfoDO
+   * 将 ImportExcelDTO 转为 ExcelInfoDO
    *
    * @return ExcelInfoDO
    */
-  private ExcelInfoDO convertImportExcelModel2ImportExcelDO(ImportExcelModel importExcelModel) {
+  private ExcelInfoDO convertImportExcelDTO2ImportExcelDO(ImportExcelDTO importExcelModel) {
     if (importExcelModel == null) {
       return null;
     }
@@ -133,12 +133,12 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
   }
 
   /**
-   * 将 ExcelInfoDO 转为 ImportExcelModel
+   * 将 ExcelInfoDO 转为 ImportExcelDTO
    *
-   * @return ImportExcelModel
+   * @return ImportExcelDTO
    */
-  private ImportExcelModel convertModelFromDataObject(ExcelInfoDO excelInfoDO) {
-    ImportExcelModel importExcelModel = new ImportExcelModel();
+  private ImportExcelDTO convertModelFromDataObject(ExcelInfoDO excelInfoDO) {
+    ImportExcelDTO importExcelModel = new ImportExcelDTO();
     BeanUtils.copyProperties(excelInfoDO, importExcelModel);
     return importExcelModel;
   }
@@ -166,13 +166,13 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
    *
    * @throws IOException
    */
-  private List<ImportExcelModel> convertReadExcelToModel(MultipartFile file,
-      UploadInfoModel uploadInfoModel)
+  private List<ImportExcelDTO> convertReadExcelToModel(MultipartFile file,
+      UploadInfoDTO uploadInfoDTO)
       throws IOException {
 
     ExcelOperator excelOperator = new ExcelOperator();
     excelOperator.setSnowflakeIdWorker(snowflakeIdWorker);
 
-    return excelOperator.importExcelFile(file.getInputStream(), uploadInfoModel.getPlatform());
+    return excelOperator.importExcelFile(file.getInputStream(), uploadInfoDTO.getPlatform());
   }
 }

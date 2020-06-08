@@ -35,7 +35,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     ServletOutputStream writer = response.getOutputStream();
 
     if (authentication == null) {
-      writer.write(JSON.toJSONString(new ResponseResult<>(ResultCode.NOT_LOGIN, null)).getBytes());
+      writer.write(JSON.toJSONString(new ResponseResult<String>(ResultCode.NOT_LOGIN, null)).getBytes());
       writer.close();
       return;
     }

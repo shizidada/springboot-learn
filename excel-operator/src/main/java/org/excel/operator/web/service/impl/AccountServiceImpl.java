@@ -1,17 +1,19 @@
 package org.excel.operator.web.service.impl;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.component.SnowflakeIdWorker;
-import org.excel.operator.domain.AccountDO;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.AccountMapper;
+import org.excel.operator.model.dto.AccountDTO;
+import org.excel.operator.model.dto.PasswordDTO;
+import org.excel.operator.model.dto.RegisterInfoDTO;
 import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.web.service.AccountService;
-import org.excel.operator.web.service.model.AccountModel;
-import org.excel.operator.web.service.model.PasswordModel;
-import org.excel.operator.web.service.model.RegisterInfoModel;
+import org.excel.operator.model.domain.AccountDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
+@Slf4j
 public class AccountServiceImpl implements AccountService {
 
   @Resource
@@ -45,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
-  @Override public AccountModel getByAccountName(String accountName) {
+  @Override public AccountDTO getByAccountName(String accountName) {
     accountName = accountName.trim();
     if (StringUtils.isEmpty(accountName)) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
@@ -56,15 +59,19 @@ public class AccountServiceImpl implements AccountService {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
-    AccountModel accountModel = new AccountModel();
-    BeanUtils.copyProperties(accountDO, accountModel);
-    return accountModel;
+    AccountDTO accountDTO = new AccountDTO();
+    BeanUtils.copyProperties(accountDO, accountDTO);
+    return accountDTO;
   }
 
   @Transactional(rollbackFor = Exception.class)
-  @Override public void register(RegisterInfoModel registerInfo) {
+  @Override
+  public boolean register(HttpServletRequest request, RegisterInfoDTO registerInfo) {
     String password = registerInfo.getPassword();
     String rePassword = registerInfo.getRePassword();
+    String url = request.getRequestURL().toString();
+    String ip = request.getRemoteAddr();
+    log.info("register [ip {}], [url {}]", ip, url);
 
     // 比对两次密码是否一致
     if (!StringUtils.equals(password, rePassword)) {
@@ -85,19 +92,26 @@ public class AccountServiceImpl implements AccountService {
       throw new BusinessException(ResultCode.PHONE_EXITS);
     }
 
-    AccountDO accountDO = new AccountDO();
-    accountDO.setAccountId(snowflakeIdWorker.nextId());
-    accountDO.setAccountName(registerInfo.getAccountName());
-    accountDO.setPhone(registerInfo.getPhone());
-    accountDO.setAvatar(registerInfo.getAvatar());
-    accountMapper.insertAccount(accountDO);
+    try {
+      AccountDO accountDO = new AccountDO();
+      accountDO.setAccountId(snowflakeIdWorker.nextId());
+      accountDO.setAccountName(registerInfo.getAccountName());
+      accountDO.setPhone(registerInfo.getPhone());
+      accountDO.setAvatar(registerInfo.getAvatar());
 
-    PasswordModel passwordModel = new PasswordModel();
-    passwordModel.setAccountId(accountDO.getAccountId());
-    passwordModel.setPasswordId(snowflakeIdWorker.nextId());
-    // 加密密码
-    passwordModel.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
-    passwordService.addPassword(passwordModel);
+      PasswordDTO passwordDTO = new PasswordDTO();
+      passwordDTO.setAccountId(accountDO.getAccountId());
+      passwordDTO.setPasswordId(snowflakeIdWorker.nextId());
+      // 加密密码
+      passwordDTO.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
+
+      accountMapper.insertAccount(accountDO);
+      passwordService.addPassword(passwordDTO);
+    } catch (Exception e) {
+      log.info("register failed error [{}]", e.getMessage());
+      return false;
+    }
+    return true;
   }
 
   @Override
@@ -116,5 +130,10 @@ public class AccountServiceImpl implements AccountService {
       return authentication.getPrincipal();
     }
     return null;
+  }
+
+  @Override public AccountDTO getAccountInfo() {
+    CustomUserDetails userDetails = (CustomUserDetails) this.getPrincipal();
+    return userDetails.getAccountDTO();
   }
 }
