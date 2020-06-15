@@ -8,12 +8,12 @@ import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.AccountMapper;
+import org.excel.operator.model.domain.AccountDO;
 import org.excel.operator.model.dto.AccountDTO;
 import org.excel.operator.model.dto.PasswordDTO;
 import org.excel.operator.model.dto.RegisterInfoDTO;
 import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.web.service.AccountService;
-import org.excel.operator.model.domain.AccountDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -116,7 +116,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public boolean isLogin() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Authentication authentication = (Authentication) this.getAuthentication();
     if (authentication == null) {
       return false;
     }
@@ -125,7 +125,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override public Object getPrincipal() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Authentication authentication = (Authentication) this.getAuthentication();
     if (authentication != null) {
       return authentication.getPrincipal();
     }
@@ -135,5 +135,14 @@ public class AccountServiceImpl implements AccountService {
   @Override public AccountDTO getAccountInfo() {
     CustomUserDetails userDetails = (CustomUserDetails) this.getPrincipal();
     return userDetails.getAccountDTO();
+  }
+
+  /**
+   * 获取登录信息
+   *
+   * @return Authentication
+   */
+  private Object getAuthentication() {
+    return SecurityContextHolder.getContext().getAuthentication();
   }
 }

@@ -23,6 +23,7 @@ public class RedisTokenFilter extends OncePerRequestFilter {
   private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
   private final AccountService accountService;
+
   @Value("${system.security.anonymous-urls}")
   private String[] anonymousUrls;
 
@@ -70,6 +71,12 @@ public class RedisTokenFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
+  /**
+   * 判断请求的 url 是否可以匿名访问
+   *
+   * @param request HttpServletRequest
+   * @return 是否可以匿名访问
+   */
   private boolean match(HttpServletRequest request) {
     boolean isMatch = false;
     for (String url : anonymousUrls) {

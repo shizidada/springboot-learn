@@ -37,7 +37,8 @@ public interface AccountMapper {
   /**
    * 插入 AccountDO 数据
    * @param accountDO 账号信息
+   * @throws Exception
    * @return AccountDO
    */
-  void insertAccount(AccountDO accountDO);
+  void insertAccount(AccountDO accountDO) throws Exception;
 }

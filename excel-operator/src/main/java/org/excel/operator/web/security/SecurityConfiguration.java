@@ -4,6 +4,8 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.web.filter.RedisTokenFilter;
+import org.excel.operator.web.security.sms.SmsCodeAuthenticationSecurityConfig;
+import org.excel.operator.web.security.sms.SmsCodeFilter;
 import org.excel.operator.web.service.AccountService;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +57,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Resource
   private AccountService accountService;
 
+  @Resource
+  private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
   @Override protected void configure(HttpSecurity http) throws Exception {
+
+    // TODO:
+    // ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+
+    SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+
+    http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class);
+
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
             "/",
@@ -121,6 +134,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     //.exceptionHandling().addObjectPostProcessor()
     http.csrf().disable();
+
+    http.apply(smsCodeAuthenticationSecurityConfig);
   }
 
   @Bean

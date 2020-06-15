@@ -3,6 +3,7 @@ package org.excel.operator.web.service;
 import javax.servlet.http.HttpServletRequest;
 import org.excel.operator.model.dto.AccountDTO;
 import org.excel.operator.model.dto.RegisterInfoDTO;
+import org.excel.operator.web.security.CustomUserDetails;
 
 /**
  * <p>

@@ -18,13 +18,18 @@ public interface PasswordMapper {
 
   /**
    * 根据用户名 accountId 查找
+   *
+   * @param accountId 账号 id
+   * @return PasswordDO
    */
   PasswordDO findByAccountId(Long accountId);
 
   /**
-   *  插入密码
+   * 插入密码
+   *
    * @param passwordDO 密码持久化
    * @return passwordDO
+   * @throws Exception
    */
-  void insertPassword(PasswordDO passwordDO);
+  void insertPassword(PasswordDO passwordDO) throws Exception;
 }

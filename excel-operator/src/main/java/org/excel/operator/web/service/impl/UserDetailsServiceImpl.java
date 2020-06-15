@@ -6,9 +6,9 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.model.dto.AccountDTO;
 import org.excel.operator.model.dto.PasswordDTO;
+import org.excel.operator.web.security.CustomUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,5 +71,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
     grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
     return new CustomUserDetails(accountDTO, passwordDTO, grantedAuthorities);
+  }
+
+  public UserDetails getAccountByPhone(String principal) {
+    return null;
   }
 }

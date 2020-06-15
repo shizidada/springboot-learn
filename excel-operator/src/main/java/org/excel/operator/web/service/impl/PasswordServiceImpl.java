@@ -1,12 +1,13 @@
 package org.excel.operator.web.service.impl;
 
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResultCode;
-import org.excel.operator.model.domain.PasswordDO;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.PasswordMapper;
-import org.excel.operator.web.service.PasswordService;
+import org.excel.operator.model.domain.PasswordDO;
 import org.excel.operator.model.dto.PasswordDTO;
+import org.excel.operator.web.service.PasswordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
+@Slf4j
 public class PasswordServiceImpl implements PasswordService {
 
   @Resource
@@ -39,11 +41,12 @@ public class PasswordServiceImpl implements PasswordService {
 
   /**
    * 插入密码
+   *
    * @param passwordDTO 密码
    * @return
    */
   @Override
-  public PasswordDTO addPassword(PasswordDTO passwordDTO) {
+  public PasswordDTO addPassword(PasswordDTO passwordDTO) throws Exception {
     if (passwordDTO == null) {
       throw new BusinessException(ResultCode.REGISTER_FAIL);
     }

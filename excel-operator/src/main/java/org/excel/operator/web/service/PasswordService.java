@@ -27,6 +27,7 @@ public interface PasswordService {
    *
    * @param passwordDTO 密码
    * @return 密码 model
+   * @throws Exception
    */
-  PasswordDTO addPassword(PasswordDTO passwordDTO);
+  PasswordDTO addPassword(PasswordDTO passwordDTO) throws Exception;
 }
