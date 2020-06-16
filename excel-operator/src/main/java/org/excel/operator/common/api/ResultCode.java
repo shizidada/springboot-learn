@@ -30,8 +30,14 @@ public enum ResultCode {
   ACCOUNT_DISABLED(10004, "账号已禁用"),
 
   PHONE_EXITS(10100, "手机号已存在"),
+  PHONE_NOT_EXITS(10101, "手机号不已存在"),
 
   SECOND_PASSWORD_ERROR(10200, "两次密码不一致"),
+
+  SMS_CODE_IS_EMPTY(10300, "验证码的值不能为空"),
+  SMS_CODE_NOT_EXITS(10301, "验证码不存在"),
+  SMS_CODE_IS_EXPRIED(10300, "验证码已过期"),
+  SMS_CODE_ERROR(10300, "验证码不正确"),
 
   REGISTER_SUCCESS(20006, "注册成功"),
   REGISTER_FAIL(20007, "注册失败"),
@@ -65,7 +71,6 @@ public enum ResultCode {
    * 未知错误
    */
   UN_KNOWN_ERROR(-99999, "未知错误");
-
   private final Integer code;
 
   private final String message;

@@ -3,7 +3,6 @@ package org.excel.operator.web.service;
 import javax.servlet.http.HttpServletRequest;
 import org.excel.operator.model.dto.AccountDTO;
 import org.excel.operator.model.dto.RegisterInfoDTO;
-import org.excel.operator.web.security.CustomUserDetails;
 
 /**
  * <p>
@@ -27,17 +26,25 @@ public interface AccountService {
   boolean register(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
 
   /**
-   * 更具账号查找用户
+   * 根据账号查找用户
    *
    * @param accountName 账号
-   * @return AccountModel
+   * @return AccountDTO
    */
   AccountDTO getByAccountName(String accountName);
 
   /**
+   * 根据手机号码查找用户
+   *
+   * @param phone 账号
+   * @return AccountDTO
+   */
+  AccountDTO getAccountByPhone(String phone);
+
+  /**
    * 获取用户信息
    *
-   * @return AccountDTO
+   * @return AccntDTO
    */
   AccountDTO getAccountInfo();
 

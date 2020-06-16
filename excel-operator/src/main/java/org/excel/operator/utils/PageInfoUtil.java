@@ -14,9 +14,9 @@ import java.util.Map;
  * @date 2019 2019/10/29 22:15
  * @see org.excel.operator.utils
  */
-public class PageInfoUtils {
+public class PageInfoUtil {
 
-  private PageInfoUtils() {
+  private PageInfoUtil() {
   }
 
   /**

@@ -15,7 +15,7 @@ import org.excel.operator.es.repository.ExcelInfoRepository;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.mapper.ExcelInfoMapper;
 import org.excel.operator.poi.ExcelOperator;
-import org.excel.operator.utils.PageInfoUtils;
+import org.excel.operator.utils.PageInfoUtil;
 import org.excel.operator.web.service.ExcelInfoService;
 import org.excel.operator.model.dto.ImportExcelDTO;
 import org.excel.operator.model.dto.UploadInfoDTO;
@@ -56,7 +56,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelModel);
     List<ExcelInfoDO> list = excelInfoMapper.selectAll(excelInfoDO);
     PageInfo<ExcelInfoDO> page = new PageInfo<>(list);
-    return PageInfoUtils.getBasePageInfo(page);
+    return PageInfoUtil.getBasePageInfo(page);
   }
 
   @Override public ImportExcelDTO selectByPrimaryKey(Long id) {

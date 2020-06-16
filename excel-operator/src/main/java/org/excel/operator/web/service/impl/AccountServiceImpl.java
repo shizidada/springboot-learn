@@ -64,6 +64,16 @@ public class AccountServiceImpl implements AccountService {
     return accountDTO;
   }
 
+  @Override public AccountDTO getAccountByPhone(String phone) {
+    AccountDO accountDO = accountMapper.findByPhone(phone);
+    if (accountDO == null) {
+      throw new BusinessException(ResultCode.PHONE_NOT_EXITS);
+    }
+    AccountDTO accountDTO = new AccountDTO();
+    BeanUtils.copyProperties(accountDO, accountDTO);
+    return accountDTO;
+  }
+
   @Transactional(rollbackFor = Exception.class)
   @Override
   public boolean register(HttpServletRequest request, RegisterInfoDTO registerInfo) {

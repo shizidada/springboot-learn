@@ -3,9 +3,9 @@ package org.excel.operator.web.security;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
-import org.excel.operator.web.filter.RedisTokenFilter;
+import org.excel.operator.web.security.filter.RedisTokenFilter;
 import org.excel.operator.web.security.sms.SmsCodeAuthenticationSecurityConfig;
-import org.excel.operator.web.security.sms.SmsCodeFilter;
+import org.excel.operator.web.security.filter.SmsCodeFilter;
 import org.excel.operator.web.service.AccountService;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -65,10 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // TODO:
     // ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
 
-    SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
-
-    http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class);
-
     http.authorizeRequests()
         .antMatchers(HttpMethod.GET,
             "/",
@@ -97,6 +93,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/api/v1/excel/**",
 
         "/ws/*",
+
+        "/authentication/mobile",
+
         "/friends/*").permitAll()
 
         .and()
@@ -128,14 +127,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests().anyRequest().authenticated()
 
-        .and().cors()
-
         .and()
+        .cors()
+
+        // add filter
+        .and()
+        .addFilterBefore(smsCodeFilter(), UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     //.exceptionHandling().addObjectPostProcessor()
-    http.csrf().disable();
 
     http.apply(smsCodeAuthenticationSecurityConfig);
+
+    http.csrf().disable();
+  }
+
+  @Bean
+  SmsCodeFilter smsCodeFilter() {
+    return new SmsCodeFilter(customAuthenticationFailureHandler);
   }
 
   @Bean

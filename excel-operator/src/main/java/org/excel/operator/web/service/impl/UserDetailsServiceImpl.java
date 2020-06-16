@@ -73,7 +73,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return new CustomUserDetails(accountDTO, passwordDTO, grantedAuthorities);
   }
 
-  public UserDetails getAccountByPhone(String principal) {
-    return null;
+  public UserDetails getAccountByPhone(String phone) {
+    Object principal = accountService.getPrincipal();
+    if (principal instanceof CustomUserDetails) {
+      return (CustomUserDetails) principal;
+    }
+    AccountDTO accountDTO = accountService.getAccountByPhone(phone);
+    List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
+    grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+    return new CustomUserDetails(accountDTO, null, grantedAuthorities);
   }
 }

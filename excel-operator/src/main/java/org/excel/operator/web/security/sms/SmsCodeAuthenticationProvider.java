@@ -1,5 +1,6 @@
 package org.excel.operator.web.security.sms;
 
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.web.security.CustomUserDetails;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -47,16 +48,17 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
     /**
      * 根据手机号码拿到用户信息
      */
+    String phone = (String) authenticationToken.getPrincipal();
+
     CustomUserDetails customUserDetails =
-        (CustomUserDetails) userDetailsService.getAccountByPhone(
-            (String) authenticationToken.getPrincipal());
+        (CustomUserDetails) userDetailsService.getAccountByPhone(phone);
     if (customUserDetails == null) {
-      throw new InternalAuthenticationServiceException("无法获取用户信息");
+      throw new InternalAuthenticationServiceException(ResultCode.PHONE_NOT_EXITS.getMessage());
     }
-    SmsCodeAuthenticationToken authenticationResult =
+    SmsCodeAuthenticationToken smsCodeAuthenticationToken =
         new SmsCodeAuthenticationToken(customUserDetails, customUserDetails.getAuthorities());
-    authenticationResult.setDetails(authenticationToken.getDetails());
-    return authenticationResult;
+    smsCodeAuthenticationToken.setDetails(authenticationToken.getDetails());
+    return smsCodeAuthenticationToken;
   }
 
   /**

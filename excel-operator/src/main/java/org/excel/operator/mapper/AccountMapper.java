@@ -20,8 +20,7 @@ public interface AccountMapper {
    * 根据用户名查找
    *
    * @param accountName
-   *
-   * @return
+   * @return AccountDO
    */
   AccountDO findByAccountName(String accountName);
 
@@ -29,8 +28,7 @@ public interface AccountMapper {
    * 根据手机号码查找
    *
    * @param phone
-   *
-   * @return
+   * @return AccountDO
    */
   AccountDO findByPhone(String phone);
 
