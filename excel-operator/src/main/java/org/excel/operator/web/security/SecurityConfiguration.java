@@ -10,6 +10,7 @@ import org.excel.operator.web.service.AccountService;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -60,6 +61,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Resource
   private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
+  @Resource
+  private RedisTemplate<String, Object> redisTemplate;
+
   @Override protected void configure(HttpSecurity http) throws Exception {
 
     // TODO:
@@ -88,6 +92,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         SecurityConstants.LOGIN_OUT_URL,
         SecurityConstants.LOGIN_STATUS_URL,
         SecurityConstants.REGISTER_URL,
+
+        SecurityConstants.SEND_SMS_CODE_URL,
 
         // for test
         "/api/v1/excel/**",
@@ -143,7 +149,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Bean
   SmsCodeFilter smsCodeFilter() {
-    return new SmsCodeFilter(customAuthenticationFailureHandler);
+    return new SmsCodeFilter(customAuthenticationFailureHandler, redisTemplate);
   }
 
   @Bean

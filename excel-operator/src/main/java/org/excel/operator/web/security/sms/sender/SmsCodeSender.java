@@ -11,5 +11,11 @@ package org.excel.operator.web.security.sms.sender;
  * @see org.excel.operator.web.security.sms
  */
 public interface SmsCodeSender {
-  void send(String mobile,String code);
+  /**
+   * 发送短信
+   *
+   * @param mobile 手机号
+   * @param code   短信验证码
+   */
+  void send(String mobile, String code);
 }

@@ -1,5 +1,10 @@
 package org.excel.operator.web.security.sms;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -12,12 +17,20 @@ import java.time.LocalDateTime;
  * @date 2020-06-15 23:22:23:22
  * @see org.excel.operator.web.security.sms
  */
-public class ValidateCode {
+public class ValidateCode implements Serializable {
+
   private String code;
   /**
    * 过期时间
    */
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime expireTime;
+
+  private boolean isExpried;
+
+  public ValidateCode() {
+  }
 
   public ValidateCode(String code, Integer expireIn) {
     this.code = code;
@@ -29,7 +42,11 @@ public class ValidateCode {
     this.expireTime = expireTime;
   }
 
-  public boolean isExpried() {
+  public void setExpried(boolean expried) {
+    isExpried = expried;
+  }
+
+  public boolean getExpried() {
     return LocalDateTime.now().isAfter(expireTime);
   }
 

@@ -36,8 +36,9 @@ public enum ResultCode {
 
   SMS_CODE_IS_EMPTY(10300, "验证码的值不能为空"),
   SMS_CODE_NOT_EXITS(10301, "验证码不存在"),
-  SMS_CODE_IS_EXPRIED(10300, "验证码已过期"),
-  SMS_CODE_ERROR(10300, "验证码不正确"),
+  SMS_CODE_IS_EXPRIED(10302, "验证码已过期"),
+  SMS_CODE_ERROR(10303, "验证码不正确"),
+  SMS_CODE_PHONE_NOT_EXITS(10304, "手机号码不能为空"),
 
   REGISTER_SUCCESS(20006, "注册成功"),
   REGISTER_FAIL(20007, "注册失败"),
