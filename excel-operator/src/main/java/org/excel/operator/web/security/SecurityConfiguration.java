@@ -4,8 +4,8 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.web.security.filter.RedisTokenFilter;
-import org.excel.operator.web.security.sms.SmsCodeAuthenticationSecurityConfig;
 import org.excel.operator.web.security.filter.SmsCodeFilter;
+import org.excel.operator.web.security.sms.SmsCodeAuthenticationSecurityConfig;
 import org.excel.operator.web.service.AccountService;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -92,15 +92,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         SecurityConstants.LOGIN_OUT_URL,
         SecurityConstants.LOGIN_STATUS_URL,
         SecurityConstants.REGISTER_URL,
-
+        SecurityConstants.SMS_LOGIN_URL,
         SecurityConstants.SEND_SMS_CODE_URL,
 
         // for test
         "/api/v1/excel/**",
 
         "/ws/*",
-
-        "/authentication/mobile",
 
         "/friends/*").permitAll()
 
@@ -145,6 +143,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.apply(smsCodeAuthenticationSecurityConfig);
 
     http.csrf().disable();
+
+    // 禁用 session
+    //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
   @Bean

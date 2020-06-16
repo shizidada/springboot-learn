@@ -13,6 +13,8 @@ public interface SecurityConstants {
 
   String LOGIN_STATUS_URL = "/api/v1/login/status";
 
+  String SMS_LOGIN_URL = "/api/v1/login/mobile";
+
   String SEND_SMS_CODE_URL = "/api/v1/sms/send";
 
   /**

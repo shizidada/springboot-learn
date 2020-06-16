@@ -48,7 +48,9 @@ public class RedisTokenFilter extends OncePerRequestFilter {
       return;
     }
 
-    // 判断是否登陆
+    /**
+     * 判断是否登陆
+     */
     boolean isLogin = accountService.isLogin();
     if (isLogin) {
       filterChain.doFilter(request, response);

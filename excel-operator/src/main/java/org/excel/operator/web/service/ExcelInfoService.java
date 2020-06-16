@@ -21,10 +21,10 @@ public interface ExcelInfoService {
   /**
    * 根据对应条件查询数据
    *
-   * @param importExcelModel 搜索参数
+   * @param importExcelDTO 搜索参数
    * @return Map<String ,   Object>
    */
-  Map<String, Object> selectAll(ImportExcelDTO importExcelModel);
+  Map<String, Object> selectAll(ImportExcelDTO importExcelDTO);
 
   /**
    * 根据主键查询

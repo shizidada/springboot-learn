@@ -3,7 +3,10 @@ package org.excel.operator.web.controller;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResponseResult;
+import org.excel.operator.common.api.ResultCode;
+import org.excel.operator.exception.BusinessException;
 import org.excel.operator.web.security.sms.DefaultSmsCodeSender;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +32,11 @@ public class SmsCodeController {
 
   @RequestMapping("/send")
   public ResponseResult<Boolean> sendSmsCode(String phone) {
+    if (StringUtils.isBlank(phone)) {
+      throw new BusinessException(ResultCode.PHONE_MUST_NOT_EMPTY);
+    }
     String smsCode = RandomStringUtils.randomNumeric(6);
     smsCodeSender.send(phone, smsCode);
-    return new ResponseResult<Boolean>(true, "短信验证码发送成功");
+    return new ResponseResult<>(true, "短信验证码发送成功");
   }
 }

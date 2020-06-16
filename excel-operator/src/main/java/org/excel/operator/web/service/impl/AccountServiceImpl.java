@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
 
     // 比对两次密码是否一致
     if (!StringUtils.equals(password, rePassword)) {
-      throw new BusinessException(ResultCode.SECOND_PASSWORD_ERROR);
+      throw new BusinessException(ResultCode.PASSWORD_ERROR);
     }
 
     // 查询对应 账号名称

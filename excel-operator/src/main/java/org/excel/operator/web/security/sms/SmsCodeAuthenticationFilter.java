@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.excel.operator.constants.SecurityConstants;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -22,15 +23,13 @@ import org.springframework.util.Assert;
  * @see org.excel.operator.web.security.sms
  */
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-  public static final String CORE_FORM_MOBILE_KEY = "mobile";
-
-  private static final String MOBILE_URL = "/authentication/mobile";
+  public static final String MOBILE_AUTH_KEY = "mobile";
 
   private static final String REQUEST_METHOD = "POST";
   /**
    * 请求中携带手机号的参数名称
    */
-  private String mobileParameter = CORE_FORM_MOBILE_KEY;
+  private String mobileParameter = MOBILE_AUTH_KEY;
 
   /**
    * 指定当前过滤器是否只处理POST请求
@@ -38,7 +37,7 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
   private boolean postOnly = true;
 
   protected SmsCodeAuthenticationFilter() {
-    super(new AntPathRequestMatcher(MOBILE_URL, REQUEST_METHOD));
+    super(new AntPathRequestMatcher(SecurityConstants.SMS_LOGIN_URL, REQUEST_METHOD));
   }
 
   @Override public Authentication attemptAuthentication(HttpServletRequest request,

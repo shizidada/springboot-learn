@@ -74,10 +74,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   }
 
   public UserDetails getAccountByPhone(String phone) {
+
+    if (StringUtils.isBlank(phone)) {
+      throw new BusinessException(ResultCode.PHONE_MUST_NOT_EMPTY);
+    }
+
     Object principal = accountService.getPrincipal();
     if (principal instanceof CustomUserDetails) {
       return (CustomUserDetails) principal;
     }
+
     AccountDTO accountDTO = accountService.getAccountByPhone(phone);
     List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
     grantedAuthorities.add(new SimpleGrantedAuthority("USER"));

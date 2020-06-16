@@ -42,7 +42,6 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
     // 利用UserDetailsService获取用户信息，拿到用户信息后重新组装一个已认证的Authentication
-
     SmsCodeAuthenticationToken authenticationToken = (SmsCodeAuthenticationToken) authentication;
 
     /**
@@ -69,7 +68,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
    */
   @Override
   public boolean supports(Class<?> clazz) {
-    // 判断出入进来的是不是SmsCodeAuthenticationToken类型
+    // 判断出入进来的是不是 SmsCodeAuthenticationToken 类型
     return SmsCodeAuthenticationToken.class.isAssignableFrom(clazz);
   }
 }

@@ -33,7 +33,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 public class SmsCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
-  private static final String SMS_CODE_FILTER_URL = "/authentication/mobile";
+  private static final String SMS_CODE_FILTER_URL = SecurityConstants.SMS_LOGIN_URL;
 
   private static final String SMS_CODE_POST_METHOD = "POST";
 
@@ -133,7 +133,7 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
     }
     String mobile = request.getParameter("mobile");
     if (StringUtils.isBlank(mobile)) {
-      throw new BusinessException(ResultCode.SMS_CODE_PHONE_NOT_EXITS);
+      throw new BusinessException(ResultCode.PHONE_MUST_NOT_EMPTY);
     }
     ValidateCode validateCode =
         (ValidateCode) redisTemplate.opsForValue().get(SecurityConstants.SMS_KEY + mobile);

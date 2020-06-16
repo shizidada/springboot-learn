@@ -14,8 +14,8 @@ spring:
       cluster-name: my-application
       cluster-nodes: localhost:9300
 
-    mongodb:
-      uri: mongodb://127.0.0.1:27017/learn
+#    mongodb:
+#      uri: mongodb://127.0.0.1:27017/learn
 
   redis:
     database: 0
@@ -24,8 +24,8 @@ spring:
 
 
 # logging settings
-logging:
-  path: E:/develop/elk/logs
+#logging:
+#  path: E:/develop/elk/logs
 
 ## mybatis settings
 mybatis:
