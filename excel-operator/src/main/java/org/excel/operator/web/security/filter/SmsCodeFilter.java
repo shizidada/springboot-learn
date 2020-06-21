@@ -42,11 +42,11 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
   /**
    * 存放所有需要校验验证码的url
    */
-  private Map<String, String> urlMap = new HashMap<>();
+  private final Map<String, String> urlMap = new HashMap<>();
   /**
    * 验证请求url与配置的url是否匹配的工具类
    */
-  private AntPathMatcher pathMatcher = new AntPathMatcher();
+  private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
   private AuthenticationFailureHandler authenticationFailureHandler;
 
@@ -136,17 +136,17 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
       throw new BusinessException(ResultCode.PHONE_MUST_NOT_EMPTY);
     }
     ValidateCode validateCode =
-        (ValidateCode) redisTemplate.opsForValue().get(SecurityConstants.SMS_KEY + mobile);
+        (ValidateCode) redisTemplate.opsForValue().get(SecurityConstants.SMS_CODE_KEY + mobile);
     if (validateCode == null) {
       throw new BusinessException(ResultCode.SMS_CODE_NOT_EXITS);
     }
     if (validateCode.getExpried()) {
-      redisTemplate.opsForValue().getOperations().delete(SecurityConstants.SMS_KEY + mobile);
+      redisTemplate.opsForValue().getOperations().delete(SecurityConstants.SMS_CODE_KEY + mobile);
       throw new BusinessException(ResultCode.SMS_CODE_IS_EXPRIED);
     }
     if (!validateCode.getCode().equals(smsCode)) {
       throw new BusinessException(ResultCode.SMS_CODE_ERROR);
     }
-    redisTemplate.opsForValue().getOperations().delete(SecurityConstants.SMS_KEY + mobile);
+    redisTemplate.opsForValue().getOperations().delete(SecurityConstants.SMS_CODE_KEY + mobile);
   }
 }

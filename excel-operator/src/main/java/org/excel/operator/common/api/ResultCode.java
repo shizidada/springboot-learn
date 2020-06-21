@@ -39,6 +39,7 @@ public enum ResultCode {
   SMS_CODE_NOT_EXITS(10301, "验证码不存在"),
   SMS_CODE_IS_EXPRIED(10302, "验证码已过期"),
   SMS_CODE_ERROR(10303, "验证码不正确"),
+  SMS_CODE_COUNT(10304, "验证码超过发送次数"),
 
   REGISTER_SUCCESS(20006, "注册成功"),
   REGISTER_FAIL(20007, "注册失败"),

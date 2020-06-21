@@ -1,9 +1,11 @@
 package org.excel.operator.web.security.sms;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.constants.SecurityConstants;
+import org.excel.operator.exception.BusinessException;
 import org.excel.operator.web.security.sms.sender.SmsCodeSender;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -21,21 +23,32 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class DefaultSmsCodeSender implements SmsCodeSender {
-  /**
-   * 15 分钟
-   */
-  private static final Integer SMS_KEY_TIMEOUT = 15;
 
   @Resource private RedisTemplate<String, Object> redisTemplate;
 
   @Override public void send(String mobile, String smsCode) {
 
-    /**
-     * TODO: 判断手机号时间范围内，累计发送次数 default 6 ??
-     */
-    ValidateCode validateCode = new ValidateCode(smsCode, SMS_KEY_TIMEOUT);
+    String smsMobileKey = SecurityConstants.SMS_MOBILE_KEY + mobile;
+
+    // 计算发送次数
+    Integer sendCount = (Integer) redisTemplate.opsForValue().get(smsMobileKey);
+    if (sendCount == null) {
+      redisTemplate.opsForValue()
+          .set(smsMobileKey, 1, SecurityConstants.SMS_TIME_OF_DAY, TimeUnit.SECONDS);
+    } else {
+      // 判断手机号时间范围内，累计发送次数
+      if (sendCount >= SecurityConstants.SMS_SEND_COUNT) {
+        throw new BusinessException(ResultCode.SMS_CODE_COUNT);
+      }
+      redisTemplate.opsForValue().increment(smsMobileKey);
+      redisTemplate.expire(smsMobileKey, SecurityConstants.SMS_TIME_OF_DAY, TimeUnit.SECONDS);
+    }
+
+    // 保存 smsCode
+    ValidateCode validateCode = new ValidateCode(smsCode, SecurityConstants.SMS_TIME_OF_TIMEOUT);
+    String smsCodeKey = SecurityConstants.SMS_CODE_KEY + mobile;
     redisTemplate.opsForValue()
-        .set(SecurityConstants.SMS_KEY + mobile, validateCode, Duration.ofMinutes(SMS_KEY_TIMEOUT));
+        .set(smsCodeKey, validateCode, SecurityConstants.SMS_TIME_OF_TIMEOUT, TimeUnit.SECONDS);
     log.info("手机号 [{}] 发送短信验证码 [{}]", mobile, smsCode);
   }
 }

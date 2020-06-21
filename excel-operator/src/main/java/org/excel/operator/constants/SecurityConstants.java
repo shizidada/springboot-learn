@@ -27,5 +27,22 @@ public interface SecurityConstants {
    */
   String DEFAULT_PARAMETER_NAME_CODE_SMS = "smsCode";
 
-  String SMS_KEY = "moose:sms:";
+  /**
+   * 短信验证 key
+   */
+  String SMS_CODE_KEY = "moose:sms:code:";
+
+  /**
+   * 发送短信到手机号码
+   */
+  String SMS_MOBILE_KEY = "moose:sms:mobile:";
+
+  Integer SMS_TIME_OF_DAY = 60;
+
+  Integer SMS_TIME_OF_TIMEOUT = 15 * 60;
+
+  /**
+   * 短信一天限制发送次数
+   */
+  Integer SMS_SEND_COUNT = 6;
 }
