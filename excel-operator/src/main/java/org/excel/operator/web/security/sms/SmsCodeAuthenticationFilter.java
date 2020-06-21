@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
  * @see org.excel.operator.web.security.sms
  */
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-  public static final String MOBILE_AUTH_KEY = "mobile";
+  public static final String MOBILE_AUTH_KEY = SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE;
 
   private static final String REQUEST_METHOD = "POST";
   /**

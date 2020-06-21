@@ -19,8 +19,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-;
-
 /**
  * <p>
  * Description:
@@ -127,11 +125,11 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
   }
 
   private void validate(HttpServletRequest request) {
-    String smsCode = request.getParameter("smsCode");
+    String smsCode = request.getParameter(SecurityConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
     if (StringUtils.isBlank(smsCode)) {
       throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
     }
-    String mobile = request.getParameter("mobile");
+    String mobile = request.getParameter(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
     if (StringUtils.isBlank(mobile)) {
       throw new BusinessException(ResultCode.PHONE_MUST_NOT_EMPTY);
     }
