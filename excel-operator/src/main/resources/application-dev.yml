@@ -22,6 +22,12 @@ spring:
     host: 127.0.0.1
     port: 6379
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss.SSS
+    time-zone: GMT+8
+#    defaultPropertyInclusion: non_null   #非空属性才序列化
+#    deserialization:
+#      FAIL_ON_UNKNOWN_PROPERTIES: false #未定义的key不序列化
 
 # logging settings
 #logging:

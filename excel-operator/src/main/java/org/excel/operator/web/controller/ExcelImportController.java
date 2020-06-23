@@ -1,12 +1,12 @@
 package org.excel.operator.web.controller;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
-import org.excel.operator.web.service.impl.ExcelInfoServiceImpl;
 import org.excel.operator.model.dto.UploadInfoDTO;
+import org.excel.operator.web.service.impl.ExcelInfoServiceImpl;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +29,19 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class ExcelImportController {
 
-  @Resource
-  private ExcelInfoServiceImpl importExcelService;
+  @Resource private ExcelInfoServiceImpl importExcelService;
+
+  @Resource private ObjectMapper objectMapper;
 
   /**
    * @param uploadInfoDTO 上传文件表单
    */
   @PostMapping(value = "/import")
   public ResponseResult<Integer> importFile(
+
       @RequestParam(value = "file") MultipartFile file,
-      @Valid UploadInfoDTO uploadInfoDTO, BindingResult result) {
-    log.info(file.getOriginalFilename(), JSON.toJSONString(uploadInfoDTO));
+      @Valid UploadInfoDTO uploadInfoDTO, BindingResult result) throws Exception {
+    log.info(file.getOriginalFilename(), objectMapper.writeValueAsString(uploadInfoDTO));
     // 存入数据库
     int size = importExcelService.addBatchImportExcelRecord(file, uploadInfoDTO);
     return new ResponseResult<>(size);

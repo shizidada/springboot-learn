@@ -1,8 +1,9 @@
 package org.excel.operator.web.security;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+  @Resource private ObjectMapper objectMapper;
+
   @Override
   public void handle(HttpServletRequest request, HttpServletResponse response,
       AccessDeniedException e) throws
@@ -32,7 +36,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter writer = response.getWriter();
     log.info("CustomAccessDeniedHandler 用户无权访问 [{}]", e.getMessage());
-    writer.write(JSON.toJSONString(new ResponseResult<>(e.getMessage())));
-    writer.close();
+    objectMapper.writeValue(writer, new ResponseResult<>(e.getMessage()));
   }
 }

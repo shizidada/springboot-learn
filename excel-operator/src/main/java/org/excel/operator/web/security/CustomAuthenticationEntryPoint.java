@@ -1,7 +1,8 @@
 package org.excel.operator.web.security;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+  @Resource private ObjectMapper objectMapper;
+
   @Override public void commence(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
@@ -51,8 +54,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
     log.info("CustomAuthenticationEntryPoint code : [{}] message: [{}] errorMessage: [{}]",
         code, message, e.getMessage());
-    writer.write(
-        JSON.toJSONString(new ResponseResult<>(code, message)).getBytes());
-    writer.close();
+    objectMapper.writeValue(writer, new ResponseResult<>(code, message));
   }
 }

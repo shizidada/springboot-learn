@@ -1,7 +1,8 @@
 package org.excel.operator.web.security;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+  @Resource private ObjectMapper objectMapper;
+
   @Override public void onAuthenticationSuccess(HttpServletRequest request,
       HttpServletResponse response, Authentication authentication)
       throws IOException, ServletException {
@@ -36,7 +39,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     ServletOutputStream writer = response.getOutputStream();
     // TODO: save to redis ???
     log.info("CustomAuthenticationSuccessHandler 用户[{}]登录成功。", principal.getUsername());
-    writer.write(JSON.toJSONString(new ResponseResult<>(true, "登录成功")).getBytes());
-    writer.close();
+    objectMapper.writeValue(writer, new ResponseResult<>(true, "登录成功"));
   }
 }

@@ -1,9 +1,12 @@
 package org.excel.operator;
 
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import okhttp3.MediaType;
@@ -24,18 +27,22 @@ import org.apache.commons.codec.binary.Base64;
  * @see org.excel.operator
  */
 public class DingDingRobotTests {
-  private static OkHttpClient client = new OkHttpClient();
+  private static final OkHttpClient client = new OkHttpClient();
+
+  private static final ObjectMapper objectMapper = new ObjectMapper();
 
   public static void main(String[] args) {
     String url = "";
     TextEntity textEntity = new TextEntity();
     textEntity.setMsgType("text");
-    textEntity.setContent("在呢，大 Boss。汪汪...");
+    textEntity.setContent("在呢，汪汪...");
     ArrayList<String> atMobiles = new ArrayList<>();
     atMobiles.add("17600606308");
     atMobiles.add("16601322126");
     textEntity.setAtMobiles(atMobiles);
     textEntity.setAtAll(Boolean.FALSE);
+    String jsonObjectString = textEntity.getJSONObjectString();
+    System.out.println(jsonObjectString);
     sendToDingDing(textEntity.getJSONObjectString(), url);
   }
 
@@ -111,11 +118,11 @@ public class DingDingRobotTests {
     }
 
     public String getJSONObjectString() {
-      JSONObject content = new JSONObject();
+      Map<String, Object> content = Maps.newHashMap();
       content.put("content", this.getContent());
 
       // at some body
-      JSONObject atMobile = new JSONObject();
+      Map<String, Object> atMobile = Maps.newHashMap();
       if (this.getAtMobiles().size() > 0) {
         List<String> mobiles = new ArrayList<String>();
         for (int i = 0; i < this.getAtMobiles().size(); i++) {
@@ -127,11 +134,18 @@ public class DingDingRobotTests {
         atMobile.put("isAtAll", this.getAtAll());
       }
 
-      JSONObject json = new JSONObject();
-      json.put("msgtype", this.getMsgType());
-      json.put("text", content);
-      json.put("at", atMobile);
-      return json.toJSONString();
+      Map<String, Object> allContents = Maps.newHashMap();
+      allContents.put("msgtype", this.getMsgType());
+      allContents.put("text", content);
+      allContents.put("at", atMobile);
+      String jsonString = null;
+      try {
+        jsonString = objectMapper.writeValueAsString(allContents);
+      } catch (JsonProcessingException e) {
+        e.printStackTrace();
+      }
+
+      return jsonString;
     }
   }
 }

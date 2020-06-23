@@ -1,7 +1,8 @@
 package org.excel.operator.web.interceptor;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class LoginInterceptor implements HandlerInterceptor {
 
   public static final String ACCOUNT_NAME = "accountName";
+  @Resource private ObjectMapper objectMapper;
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -52,8 +54,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
     response.setHeader("Content-Type", "application/json");
     ServletOutputStream out = response.getOutputStream();
-    out.print(JSON.toJSONString(new ResponseResult(HttpStatus.UNAUTHORIZED.getReasonPhrase())));
-    out.flush();
-    out.close();
+    objectMapper.writeValue(out, new ResponseResult<>(HttpStatus.UNAUTHORIZED.getReasonPhrase()));
   }
 }

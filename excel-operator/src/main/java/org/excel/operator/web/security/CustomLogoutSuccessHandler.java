@@ -1,7 +1,8 @@
 package org.excel.operator.web.security;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
+  @Resource private ObjectMapper objectMapper;
+
   @Override public void onLogoutSuccess(HttpServletRequest request,
       HttpServletResponse response, Authentication authentication)
       throws IOException, ServletException {
@@ -35,7 +38,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     ServletOutputStream writer = response.getOutputStream();
 
     if (authentication == null) {
-      writer.write(JSON.toJSONString(new ResponseResult<String>(ResultCode.NOT_LOGIN, null)).getBytes());
+      objectMapper.writeValue(writer, new ResponseResult<String>(ResultCode.NOT_LOGIN, null));
       writer.close();
       return;
     }
@@ -45,7 +48,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     Integer code = ResultCode.LOGOUT_SUCCESS.getCode();
     String message = ResultCode.LOGOUT_SUCCESS.getMessage();
-    writer.write(JSON.toJSONString(new ResponseResult<>(code, message)).getBytes());
+    objectMapper.writeValue(writer, new ResponseResult<>(code, message));
     writer.close();
   }
 }

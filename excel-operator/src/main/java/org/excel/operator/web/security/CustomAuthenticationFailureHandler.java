@@ -1,7 +1,8 @@
 package org.excel.operator.web.security;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
+  @Resource private ObjectMapper objectMapper;
+
   @Override public void onAuthenticationFailure(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
@@ -47,7 +50,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
       message = ResultCode.ACCOUNT_DISABLED.getMessage();
     }
     log.info("CustomAuthenticationFailureHandler 用户登录失败 [{}] [{}]", code, message);
-    writer.write(JSON.toJSONString(new ResponseResult<>(code, message)).getBytes());
-    writer.close();
+    objectMapper.writeValue(writer, new ResponseResult<>(code, message));
   }
 }
