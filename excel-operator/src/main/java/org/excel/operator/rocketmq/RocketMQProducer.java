@@ -1,6 +1,6 @@
 package org.excel.operator.rocketmq;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
@@ -29,7 +29,7 @@ public class RocketMQProducer {
     producer.setNamesrvAddr("localhost:9876");
     // 启动Producer实例
     producer.start();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1; i++) {
       // 创建消息，并指定Topic，Tag和消息体
       PaymentInfo paymentInfo = new PaymentInfo();
       paymentInfo.setPaymentId(String.format("%s", i));
@@ -37,7 +37,7 @@ public class RocketMQProducer {
       paymentInfo.setReceiveName("lisi");
       Message msg = new Message(
           /* Topic */
-          "TopicTest",
+          "test_demo_rocket_mq",
           /* Tag */
           "TagA",
           /* Message body */
