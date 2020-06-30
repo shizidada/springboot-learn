@@ -3,6 +3,7 @@ package org.excel.operator.web.security;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.constants.SecurityConstants;
+import org.excel.operator.web.security.filter.LoginFailCountFilter;
 import org.excel.operator.web.security.filter.RedisTokenFilter;
 import org.excel.operator.web.security.filter.SmsCodeFilter;
 import org.excel.operator.web.security.sms.SmsCodeAuthenticationSecurityConfig;
@@ -111,8 +112,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .formLogin()
         .loginProcessingUrl(SecurityConstants.LOGIN_IN_URL)
-        .usernameParameter("accountName")
-        .passwordParameter("password")
+        .usernameParameter(SecurityConstants.LOGIN_USERNAME_PARAMETER)
+        .passwordParameter(SecurityConstants.LOGIN_PASSWORD_PARAMETER)
         // 登录成功
         .successHandler(customAuthenticationSuccessHandler)
         // 登录失败
@@ -137,7 +138,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // add filter
         .and()
         .addFilterBefore(smsCodeFilter(), UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(redisTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(loginFailCountFilter(), UsernamePasswordAuthenticationFilter.class);
     //.exceptionHandling().addObjectPostProcessor()
 
     http.apply(smsCodeAuthenticationSecurityConfig);
@@ -156,6 +158,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   RedisTokenFilter redisTokenFilter() {
     return new RedisTokenFilter(accountService, customAuthenticationFailureHandler);
+  }
+
+  @Bean LoginFailCountFilter loginFailCountFilter() {
+    return new LoginFailCountFilter(customAuthenticationFailureHandler, redisTemplate);
   }
 
   @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {

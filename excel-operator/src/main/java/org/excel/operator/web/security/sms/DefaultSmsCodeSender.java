@@ -37,7 +37,7 @@ public class DefaultSmsCodeSender implements SmsCodeSender {
           .set(smsMobileKey, 1, SecurityConstants.SMS_TIME_OF_DAY, TimeUnit.SECONDS);
     } else {
       // 判断手机号时间范围内，累计发送次数
-      if (sendCount >= SecurityConstants.SMS_SEND_COUNT) {
+      if (sendCount >= SecurityConstants.MAX_COUNT_OF_DAY) {
         throw new BusinessException(ResultCode.SMS_CODE_COUNT);
       }
       redisTemplate.opsForValue().increment(smsMobileKey);

@@ -48,6 +48,7 @@ public enum ResultCode {
   LOGIN_FAIL(20002, "登录失败"),
   LOGOUT_SUCCESS(20003, "登出成功"),
   NOT_LOGIN(20004, "未登录，请先登录"),
+  LOGIN_MAX_COUNT_FAIL(20006, "频繁登录"),
 
   /**
    * 文件上传
