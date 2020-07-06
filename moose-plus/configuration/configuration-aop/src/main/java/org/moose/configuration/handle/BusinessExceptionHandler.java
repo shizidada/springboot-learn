@@ -8,6 +8,7 @@ import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.exception.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class BusinessExceptionHandler {
 
-  @ExceptionHandler(BusinessException.class)
+  @ExceptionHandler(Exception.class)
   public ResponseEntity<?> handlerException(HttpServletRequest request, Exception ex) {
     Integer code = ResultCode.UNKNOWN.getCode();
     String message = ResultCode.UNKNOWN.getMessage();
@@ -36,35 +37,19 @@ public class BusinessExceptionHandler {
       code = bse.getCode();
       message = bse.getMessage();
     }
-    log.warn("[全局业务异常] handlerException ", ex);
-    return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
-  }
 
-  /**
-   * RpcException 异常捕获
-   */
-  @ExceptionHandler({RpcException.class})
-  public ResponseEntity<?> handleRpcException(Exception ex) {
-    Integer code = ResultCode.UNKNOWN.getCode();
-    String message = ResultCode.UNKNOWN.getMessage();
-    // 业务异常
+    /**
+     * RpcException 异常捕获
+     */
     if (ex instanceof RpcException) {
       RpcException rpc = (RpcException) ex;
       code = rpc.getCode();
       message = rpc.getMessage();
     }
-    log.warn("[全局业务异常] handleRpcException ", ex);
-    return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
-  }
 
-  /**
-   * 系统异常捕获
-   */
-  @ExceptionHandler({Exception.class})
-  public ResponseEntity<?> handleOtherException(Exception ex) {
-    Integer code = ResultCode.UNKNOWN.getCode();
-    String message = ex.getMessage();
-    log.warn("[全局业务异常] handleOtherException ", ex);
-    return new ResponseEntity<ResponseResult>(new ResponseResult(code, message), HttpStatus.OK);
+    if (ex instanceof HttpMessageNotReadableException) {
+    }
+    log.warn("[全局业务异常] handlerException ", ex);
+    return new ResponseEntity<>(new ResponseResult<>(code, message), HttpStatus.BAD_REQUEST);
   }
 }
