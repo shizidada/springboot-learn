@@ -81,6 +81,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         // 授权访问
-        .antMatchers("/**").hasAuthority("USER");
+        .antMatchers("/**").authenticated();
   }
 }

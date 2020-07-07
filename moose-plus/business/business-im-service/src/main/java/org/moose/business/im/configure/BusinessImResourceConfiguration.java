@@ -45,7 +45,7 @@ public class BusinessImResourceConfiguration extends ResourceServerConfigurerAda
         //.antMatchers("/user/register", "/user/login", "/user/sms/send").permitAll()
         .and()
         .authorizeRequests()
-        .antMatchers("/**").hasAuthority("USER");
+        .antMatchers("/**").authenticated();
   }
 
   @Override

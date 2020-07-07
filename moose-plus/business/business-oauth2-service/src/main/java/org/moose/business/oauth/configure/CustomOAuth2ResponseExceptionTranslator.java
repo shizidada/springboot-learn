@@ -35,20 +35,20 @@ public class CustomOAuth2ResponseExceptionTranslator
         e instanceof InvalidGrantException ||
         e instanceof InvalidRequestException) {
       return ResponseEntity
-          .status(HttpStatus.OK)
+          .status(HttpStatus.BAD_REQUEST)
           .body(new CustomOAuth2Exception(e.getMessage(), ResultCode.OAUTH_ERROR.getCode()));
     }
 
     if (e instanceof BusinessException) {
       BusinessException ex = (BusinessException) e;
       return ResponseEntity
-          .status(HttpStatus.OK)
+          .status(HttpStatus.BAD_REQUEST)
           .body(new CustomOAuth2Exception(ex.getMessage(), ex.getCode()));
 
     }
 
     return ResponseEntity
-        .status(HttpStatus.OK)
+        .status(HttpStatus.BAD_REQUEST)
         .body(new CustomOAuth2Exception(e.getMessage(), ResultCode.UNKNOWN.getCode()));
   }
 }
