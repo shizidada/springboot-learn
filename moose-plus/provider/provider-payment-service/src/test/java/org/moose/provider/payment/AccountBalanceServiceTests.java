@@ -1,9 +1,8 @@
 package org.moose.provider.payment;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- *
  * <p>
  * Description
  * </p>
@@ -38,15 +36,17 @@ public class AccountBalanceServiceTests {
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
+  private final ObjectMapper objectMapper = new ObjectMapper();
+
   @Test
-  public void testIncreaseAccountBalance() {
+  public void testIncreaseAccountBalance() throws Exception {
     AccountBalanceDTO accountBalanceDTO = new AccountBalanceDTO();
     accountBalanceDTO.setId(snowflakeIdWorker.nextId());
     accountBalanceDTO.setAccountId(snowflakeIdWorker.nextId());
     accountBalanceDTO.setBalance(new BigDecimal("108940.00"));
     accountBalanceDTO.setCreateTime(LocalDateTime.now());
     accountBalanceDTO.setUpdateTime(LocalDateTime.now());
-    log.info("AccountBalance {}", JSON.toJSONString(accountBalanceDTO));
+    log.info("AccountBalance {}", objectMapper.writeValueAsString(accountBalanceDTO));
     accountBalanceService.increaseAccountBalance(accountBalanceDTO);
   }
 

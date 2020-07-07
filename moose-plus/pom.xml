@@ -35,7 +35,6 @@
     <rocketmq.starter.version>2.1.0</rocketmq.starter.version>
 
     <feign-okhttp.version>10.7.4</feign-okhttp.version>
-    <fastjson.version>1.2.62</fastjson.version>
     <commons-lang3.version>3.9</commons-lang3.version>
     <jackson.version>2.10.2</jackson.version>
   </properties>
@@ -167,12 +166,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang3.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.alibaba</groupId>
-        <artifactId>fastjson</artifactId>
-        <version>${fastjson.version}</version>
       </dependency>
 
       <dependency>

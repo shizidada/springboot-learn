@@ -47,7 +47,7 @@ public class SendSmsCodeMQTests {
   //  smsCodeDO.setCreateTime(LocalDateTime.now());
   //  smsCodeDO.setUpdateTime(LocalDateTime.now());
   //  try {
-  //    Message msg = new Message(topic, tag, "sms-code", JSON.toJSONString(smsCodeDO).getBytes());
+  //    Message msg = new Message(topic, tag, "sms-code", MapperUtils.obj2json(smsCodeDO).getBytes());
   //    rocketMQTemplate.getProducer().send(msg);
   //    System.in.read();
   //  } catch (Exception e) {

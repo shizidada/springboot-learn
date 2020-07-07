@@ -1,6 +1,5 @@
 package org.moose.provider.sms.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import org.apache.dubbo.config.annotation.Service;
 import org.moose.commons.base.dto.ResultCode;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
 import org.moose.commons.provider.exception.ProviderRpcException;
+import org.moose.commons.utils.MapperUtils;
 import org.moose.provider.sms.mapper.SmsCodeMapper;
 import org.moose.provider.sms.model.domain.SmsCodeDO;
 import org.moose.provider.sms.model.dto.SmsCodeDTO;
@@ -43,7 +43,12 @@ public class SmsSendServiceImpl implements SmsSendService {
       throw new ProviderRpcException(ResultCode.SMS_CODE_BODY_MUST_NOT_BE_NULL);
     }
 
-    SmsCodeDTO smsCodeDTO = JSON.parseObject(jsonStr, SmsCodeDTO.class);
+    SmsCodeDTO smsCodeDTO = null;
+    try {
+      smsCodeDTO = MapperUtils.json2pojo(jsonStr, SmsCodeDTO.class);
+    } catch (Exception e) {
+      log.info("mapper json error [{}]", e.getMessage());
+    }
     if (smsCodeDTO == null) {
       throw new ProviderRpcException(ResultCode.SMS_CODE_BODY_PARSE_ERROR);
     }

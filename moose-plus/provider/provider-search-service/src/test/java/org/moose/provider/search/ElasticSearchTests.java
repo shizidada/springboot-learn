@@ -1,6 +1,5 @@
 package org.moose.provider.search;
 
-import com.alibaba.fastjson.JSON;
 import com.github.jsonzou.jmockdata.JMockData;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -29,12 +28,12 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moose.commons.base.snowflake.SnowflakeIdWorker;
+import org.moose.commons.utils.MapperUtils;
 import org.moose.provider.order.model.domain.OrderDO;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- *
  * <p>
  * Description
  * </p>
@@ -81,7 +80,7 @@ public class ElasticSearchTests {
   }
 
   @Test
-  public void testAddData() throws IOException {
+  public void testAddData() throws Exception {
     IndexRequest indexRequest = new IndexRequest(ORDER_INDEX, "order_info");
 
     OrderDO order = new OrderDO();
@@ -94,42 +93,42 @@ public class ElasticSearchTests {
     order.setCreateTime(LocalDateTime.now());
     order.setUpdateTime(LocalDateTime.now());
 
-    IndexRequest source = indexRequest.source(JSON.toJSONString(order), XContentType.JSON);
+    IndexRequest source = indexRequest.source(MapperUtils.obj2json(order), XContentType.JSON);
     source.id(String.valueOf(order.getOrderId()));
 
     IndexResponse index = restHighLevelClient.index(source);
-    log.info("current json data : {}", JSON.toJSONString(index));
+    log.info("current json data : {}", MapperUtils.obj2json(index));
   }
 
   @Test
-  public void testGetRequest() throws IOException {
+  public void testGetRequest() throws Exception {
     GetRequest request = new GetRequest(ORDER_INDEX, "order_info", "698184454709231616");
     GetResponse response = restHighLevelClient.get(request, defaultOption);
     Map<String, Object> source = response.getSource();
-    log.info("get result {}", JSON.toJSONString(source));
+    log.info("get result {}", MapperUtils.obj2json(source));
   }
 
   @Test
-  public void bulkSave() throws IOException {
+  public void bulkSave() throws Exception {
     BulkRequest request = new BulkRequest();
     for (int i = 0; i < 10000; i++) {
       request.add(new IndexRequest(ORDER_INDEX, "order_info").source(
-          JSON.toJSONString(JMockData.mock(OrderDO.class)), XContentType.JSON));
+          MapperUtils.obj2json(JMockData.mock(OrderDO.class)), XContentType.JSON));
     }
     restHighLevelClient.bulk(request, defaultOption);
   }
 
   @Test
-  public void testDelete() throws IOException {
+  public void testDelete() throws Exception {
     DeleteRequest request = new DeleteRequest(ORDER_INDEX);
     request.type("order_info");
     request.id("698184454709231616");
     DeleteResponse deleteResponse = restHighLevelClient.delete(request, defaultOption);
-    log.info("delete :: {}", JSON.toJSONString(deleteResponse));
+    log.info("delete :: {}", MapperUtils.obj2json(deleteResponse));
   }
 
   @Test
-  public void testSearchRequest() throws IOException {
+  public void testSearchRequest() throws Exception {
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
     MatchQueryBuilder query = QueryBuilders.matchQuery("accountId", "698184454709231617");
@@ -143,7 +142,7 @@ public class ElasticSearchTests {
     SearchResponse response = restHighLevelClient.search(searchRequest);
     SearchHit[] hits = response.getHits().getHits();
     for (SearchHit hit : hits) {
-      OrderDO orderDO = JSON.parseObject(hit.getSourceAsString(), OrderDO.class);
+      OrderDO orderDO = MapperUtils.json2pojo(hit.getSourceAsString(), OrderDO.class);
       log.info("search hit : {}", orderDO);
     }
   }
