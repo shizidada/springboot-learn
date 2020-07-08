@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/4/11 22:03
- * @see org.moose.business.web.user.web.service.impl
+ * @see org.moose.business.user.web.service.impl
  */
 @Service
 @Slf4j
@@ -83,19 +83,19 @@ public class LoginServiceImpl implements LoginService {
     param.put("client_id", OAuth2Constants.OAUTH2_CLIENT_ID);
     param.put("client_secret", OAuth2Constants.OAUTH2_CLIENT_SECRET);
 
-    Map<String, Object> authToken = oAuth2RequestTokenApi.getOAuthToken(param);
-    if (authToken == null) {
+    Map<String, Object> authInfo = oAuth2RequestTokenApi.getOAuthToken(param);
+    if (authInfo == null) {
       throw new BusinessException(ResultCode.OAUTH_ERROR);
     }
 
-    String accessToken = (String) authToken.get("access_token");
+    String accessToken = (String) authInfo.get("access_token");
     if (accessToken == null) {
-      Integer code = (Integer) authToken.get("code");
-      String message = (String) authToken.get("message");
+      Integer code = (Integer) authInfo.get("code");
+      String message = (String) authInfo.get("message");
       return new ResponseResult<Map<String, Object>>(code, message);
     }
 
-    String refreshToken = (String) authToken.get("refresh_token");
+    String refreshToken = (String) authInfo.get("refresh_token");
     Map<String, Object> result = Maps.newHashMap();
     result.put("access_token", accessToken);
     result.put("refresh_token", refreshToken);

@@ -8,7 +8,7 @@ package org.moose.business.user.web.constants;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 16:27
- * @see org.moose.business.web.user.web.constants
+ * @see org.moose.business.user.web.constants
  */
 public interface OAuth2Constants {
 

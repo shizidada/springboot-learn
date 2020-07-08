@@ -1,4 +1,4 @@
-package org.moose.business.oauth.configure;
+package org.moose.configuration.security;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;

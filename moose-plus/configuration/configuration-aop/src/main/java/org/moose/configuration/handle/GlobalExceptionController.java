@@ -66,7 +66,7 @@ public class GlobalExceptionController extends AbstractErrorController {
     Map<String, Object> errorMap =
         getErrorAttributes(request, isIncludeStackTrace(request, MediaType.APPLICATION_JSON));
     logHandler(errorMap);
-    return new ResponseResult("测试成功");
+    return new ResponseResult<>("测试成功");
   }
 
   private void logHandler(Map<String, Object> errorMap) {

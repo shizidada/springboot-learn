@@ -2,6 +2,7 @@ package org.moose.business.oauth.configure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import javax.annotation.Resource;
@@ -50,7 +51,8 @@ public class CustomAuthenticationSuccessHandler extends
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) throws IOException, ServletException {
-    log.info("login sucesssful {}", objectMapper.writeValueAsString(authentication));
+
+    log.info("用户登录成功 [{}]", objectMapper.writeValueAsString(authentication));
 
     String header = request.getHeader("Authorization");
     if (header == null || !header.toLowerCase().startsWith("basic ")) {
@@ -91,7 +93,7 @@ public class CustomAuthenticationSuccessHandler extends
   private String[] extractAndDecodeHeader(String header, HttpServletRequest request)
       throws IOException {
 
-    byte[] base64Token = header.substring(6).getBytes("UTF-8");
+    byte[] base64Token = header.substring(6).getBytes(StandardCharsets.UTF_8);
     byte[] decoded;
     try {
       decoded = Base64.getDecoder().decode(base64Token);
@@ -100,7 +102,7 @@ public class CustomAuthenticationSuccessHandler extends
           "Failed to decode basic authentication token");
     }
 
-    String token = new String(decoded, "UTF-8");
+    String token = new String(decoded, StandardCharsets.UTF_8);
 
     int delim = token.indexOf(":");
 

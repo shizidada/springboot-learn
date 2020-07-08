@@ -12,7 +12,7 @@ import org.moose.commons.base.dto.ResponseResult;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/4/11 22:02
- * @see org.moose.business.web.user.web.service
+ * @see org.moose.business.user.web.service
  */
 public interface LoginService {
 

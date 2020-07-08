@@ -8,7 +8,7 @@ package org.moose.business.user.web.model.emun;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/4/4 15:14
- * @see org.moose.business.web.user.web.model.emun
+ * @see org.moose.business.user.web.model.emun
  */
 public enum SmsCodeEnum {
 

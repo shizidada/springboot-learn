@@ -10,7 +10,7 @@ import org.moose.provider.account.model.dto.AccountDTO;
  * @author taohua
  * @version v1.0.0
  * @date 2020-03-24 13:31:13:31
- * @see org.moose.business.web.user.web.service
+ * @see org.moose.business.user.web.service
  */
 public interface UserBaseService {
 

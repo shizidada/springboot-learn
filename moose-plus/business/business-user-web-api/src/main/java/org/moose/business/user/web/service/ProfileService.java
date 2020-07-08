@@ -10,7 +10,7 @@ import org.moose.commons.base.dto.ResponseResult;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/4/5 22:48
- * @see org.moose.business.web.user.web.service
+ * @see org.moose.business.user.web.service
  */
 public interface ProfileService {
 

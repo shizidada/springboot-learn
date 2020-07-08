@@ -5,6 +5,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.moose.commons.base.dto.ResultCode;
+import org.moose.commons.base.exception.BusinessException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -25,7 +28,9 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
   @Override
   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException exception) throws IOException, ServletException {
-    log.info("认证失败");
+    Integer code = HttpServletResponse.SC_UNAUTHORIZED;
+    String message = exception.getMessage();
+    log.info("用户登录失败 [{}] [{}]", code, message);
     response.setContentType("text/html;charset=utf-8");
     response.getWriter().write(exception.getMessage());
   }

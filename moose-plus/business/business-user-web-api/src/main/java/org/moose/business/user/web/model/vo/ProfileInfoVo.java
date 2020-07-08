@@ -14,7 +14,7 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2020-03-25 13:19:13:19
- * @see org.moose.business.web.user.web.model.vo
+ * @see org.moose.business.user.web.model.vo
  */
 @Data
 public class ProfileInfoVo {

@@ -48,8 +48,11 @@ public class BusinessExceptionHandler {
     }
 
     if (ex instanceof HttpMessageNotReadableException) {
+      HttpMessageNotReadableException hmnre = (HttpMessageNotReadableException) ex;
+      code = HttpStatus.BAD_REQUEST.value();
+      message = hmnre.getMessage();
     }
-    log.warn("[全局业务异常] handlerException ", ex);
+    log.warn("[全局业务异常]", ex);
     return new ResponseEntity<>(new ResponseResult<>(code, message), HttpStatus.BAD_REQUEST);
   }
 }

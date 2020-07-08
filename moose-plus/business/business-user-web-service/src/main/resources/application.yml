@@ -91,6 +91,9 @@ dubbo:
   registry:
     address: nacos://${moose.config.nacos.hostname}
     port: ${moose.config.nacos.port}
+    check: false
+  consumer:
+    check: false
 
 management:
   endpoints:

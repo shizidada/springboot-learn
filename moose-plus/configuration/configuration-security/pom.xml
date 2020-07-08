@@ -17,6 +17,7 @@
       <artifactId>spring-cloud-starter-oauth2</artifactId>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
@@ -33,6 +34,7 @@
     <dependency>
       <groupId>shizidada.github.io</groupId>
       <artifactId>commons-base</artifactId>
+      <scope>provided</scope>
       <version>${project.parent.version}</version>
     </dependency>
   </dependencies>

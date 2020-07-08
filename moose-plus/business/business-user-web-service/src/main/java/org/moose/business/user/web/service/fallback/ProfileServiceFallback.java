@@ -12,7 +12,7 @@ import org.moose.commons.base.dto.ResponseResult;
  * @author taohua
  * @version v1.0.0
  * @date 2020-04-08 13:22:13:22
- * @see org.moose.business.web.user.web.service.fallback
+ * @see org.moose.business.user.web.service.fallback
  */
 @Slf4j
 public class ProfileServiceFallback {

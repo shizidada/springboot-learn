@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/4/11 22:08
- * @see org.moose.business.web.user.web.service.impl
+ * @see org.moose.business.user.web.service.impl
  */
 @Service
 @Slf4j

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author taohua
  * @version v1.0.0
  * @date 2020-03-24 13:31:13:31
- * @see org.moose.business.web.user.web.service.impl
+ * @see org.moose.business.user.web.service.impl
  */
 @Slf4j
 @Component

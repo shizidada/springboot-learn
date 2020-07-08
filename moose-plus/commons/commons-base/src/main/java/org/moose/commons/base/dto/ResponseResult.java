@@ -1,6 +1,5 @@
 package org.moose.commons.base.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 
 /**
@@ -20,7 +19,9 @@ public class ResponseResult<T> implements Serializable {
 
   private Integer code;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
+  /**
+   * @JsonInclude(JsonInclude.Include.NON_NULL)
+   */
   private T data;
 
   private String message;

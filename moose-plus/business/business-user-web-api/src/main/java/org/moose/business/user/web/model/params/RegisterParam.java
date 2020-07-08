@@ -15,7 +15,7 @@ import org.moose.configuration.annotation.EnumValidator;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 22:38
- * @see org.moose.business.web.user.web.model.params
+ * @see org.moose.business.user.web.model.params
  */
 @Data
 public class RegisterParam implements Serializable {

@@ -1,4 +1,4 @@
-package org.moose.business.oauth.configure;
+package org.moose.configuration.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.moose.commons.base.dto.ResultCode;

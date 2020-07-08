@@ -166,7 +166,7 @@ public enum ResultCode {
   /**
    * 未知错误
    */
-  UNKNOWN(-1, "未知错误");
+  UNKNOWN(-1, "系统异常");
 
   private final Integer code;
 

@@ -101,6 +101,12 @@
 
     <dependency>
       <groupId>shizidada.github.io</groupId>
+      <artifactId>commons-base</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>shizidada.github.io</groupId>
       <artifactId>business-user-web-api</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
@@ -141,7 +147,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <mainClass>org.moose.BusinessUserApplication</mainClass>
+          <mainClass>org.moose.BusinessUserWebApplication</mainClass>
           <executable>true</executable>
         </configuration>
       </plugin>

@@ -20,9 +20,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableDubbo
-public class BusinessUserApplication {
+public class BusinessUserWebApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(BusinessUserApplication.class, args);
+    SpringApplication.run(BusinessUserWebApplication.class, args);
   }
 }

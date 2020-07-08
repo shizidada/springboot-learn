@@ -14,7 +14,7 @@ import org.moose.configuration.annotation.EnumValidator;
  * @author taohua
  * @version v1.0.0
  * @date 2020-04-01 17:15:17:15
- * @see org.moose.business.web.user.web.model.params
+ * @see org.moose.business.user.web.model.params
  */
 @Data
 public class SmsCodeParam implements Serializable {

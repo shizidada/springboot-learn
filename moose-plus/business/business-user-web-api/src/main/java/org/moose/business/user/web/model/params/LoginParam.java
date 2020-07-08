@@ -14,7 +14,7 @@ import org.moose.configuration.annotation.EnumValidator;
  * @author taohua
  * @version v1.0.0
  * @date 2020 2020/3/21 15:17
- * @see org.moose.business.web.user.web.model
+ * @see org.moose.business.user.web.model
  */
 @Data
 public class LoginParam implements Serializable {
