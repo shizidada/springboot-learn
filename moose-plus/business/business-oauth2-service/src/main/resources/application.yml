@@ -43,6 +43,9 @@ dubbo:
   registry:
     address: nacos://${moose.config.nacos.hostname}
     port: ${moose.config.nacos.port}
+    check: false
+  consumer:
+    check: false
 
 # feign client 配置
 feign:
