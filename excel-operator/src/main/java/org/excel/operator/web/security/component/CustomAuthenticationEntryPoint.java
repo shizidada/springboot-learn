@@ -1,4 +1,4 @@
-package org.excel.operator.web.security;
+package org.excel.operator.web.security.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,33 +23,37 @@ import org.springframework.stereotype.Component;
  *
  * @author taohua
  * @version v1.0.0
- * @date 2019 2019/11/20 21:56
- * @see org.excel.operator.component
+ * @date 2019 2019/11/20 22:54
+ * @see org.excel.operator.web.security
+ * <p>
+ * AuthenticationEntryPoint 用来解决匿名用户访问无权限资源时的异常
+ * <p>
+ * AccessDeineHandler 用来解决认证过的用户访问无权限资源时的异常
  */
 @Component
 @Slf4j
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
   @Resource private ObjectMapper objectMapper;
 
-  @Override public void onAuthenticationFailure(HttpServletRequest request,
+  @Override public void commence(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
-    Integer code = HttpServletResponse.SC_UNAUTHORIZED;
     String message = e.getMessage();
+    Integer code = HttpServletResponse.SC_UNAUTHORIZED;
     if (e instanceof BusinessException) {
       BusinessException be = (BusinessException) e;
-      code = be.getCode();
       message = be.getMessage();
+      code = be.getCode();
     }
-    if (e instanceof DisabledException) {
-      code = ResultCode.ACCOUNT_DISABLED.getCode();
-      message = ResultCode.ACCOUNT_DISABLED.getMessage();
+    if (e instanceof InsufficientAuthenticationException) {
+      message = ResultCode.NOT_LOGIN.getMessage();
     }
-    log.info("CustomAuthenticationFailureHandler 用户登录失败 [{}] [{}]", code, message);
+    log.info("CustomAuthenticationEntryPoint code : [{}] message: [{}] errorMessage: [{}]",
+        code, message, e.getMessage());
     objectMapper.writeValue(writer, new ResponseResult<>(code, message));
   }
 }

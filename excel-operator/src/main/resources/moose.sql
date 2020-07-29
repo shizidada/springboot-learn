@@ -1,22 +1,137 @@
 /*
-MySQL Data Transfer
-Source Host: localhost
-Source Database: moose
-Target Host: localhost
-Target Database: moose
-Date: 2020/5/28 16:39:31
+ Navicat MySQL Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 50728
+ Source Host           : localhost:3306
+ Source Schema         : moose
+
+ Target Server Type    : MySQL
+ Target Server Version : 50728
+ File Encoding         : 65001
+
+ Date: 29/07/2020 22:32:15
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for clientdetails
+-- ----------------------------
+DROP TABLE IF EXISTS `clientdetails`;
+CREATE TABLE `clientdetails` (
+  `appId` varchar(128) NOT NULL,
+  `resourceIds` varchar(256) DEFAULT NULL,
+  `appSecret` varchar(256) DEFAULT NULL,
+  `scope` varchar(256) DEFAULT NULL,
+  `grantTypes` varchar(256) DEFAULT NULL,
+  `redirectUrl` varchar(256) DEFAULT NULL,
+  `authorities` varchar(256) DEFAULT NULL,
+  `access_token_validity` int(11) DEFAULT NULL,
+  `refresh_token_validity` int(11) DEFAULT NULL,
+  `additionalInformation` varchar(4096) DEFAULT NULL,
+  `autoApproveScopes` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`appId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for oauth_access_token
+-- ----------------------------
+DROP TABLE IF EXISTS `oauth_access_token`;
+CREATE TABLE `oauth_access_token` (
+  `token_id` varchar(256) DEFAULT NULL,
+  `token` blob,
+  `authentication_id` varchar(128) NOT NULL,
+  `user_name` varchar(256) DEFAULT NULL,
+  `client_id` varchar(256) DEFAULT NULL,
+  `authentication` blob,
+  `refresh_token` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`authentication_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for oauth_approvals
+-- ----------------------------
+DROP TABLE IF EXISTS `oauth_approvals`;
+CREATE TABLE `oauth_approvals` (
+  `userId` varchar(256) DEFAULT NULL,
+  `clientId` varchar(256) DEFAULT NULL,
+  `scope` varchar(256) DEFAULT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `expiresAt` timestamp NULL DEFAULT NULL,
+  `lastModifiedAt` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for oauth_client_details
+-- ----------------------------
+DROP TABLE IF EXISTS `oauth_client_details`;
+CREATE TABLE `oauth_client_details` (
+  `client_id` varchar(128) NOT NULL,
+  `resource_ids` varchar(256) DEFAULT NULL,
+  `client_secret` varchar(256) DEFAULT NULL,
+  `scope` varchar(256) DEFAULT NULL,
+  `authorized_grant_types` varchar(256) DEFAULT NULL,
+  `web_server_redirect_uri` varchar(256) DEFAULT NULL,
+  `authorities` varchar(256) DEFAULT NULL,
+  `access_token_validity` int(11) DEFAULT NULL,
+  `refresh_token_validity` int(11) DEFAULT NULL,
+  `additional_information` varchar(4096) DEFAULT NULL,
+  `autoapprove` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of oauth_client_details
+-- ----------------------------
+BEGIN;
+INSERT INTO `oauth_client_details` VALUES ('client', 'app-resources', '$2a$10$zImwN.AOfOTU6m9xewoDZOqKHL3YThE4naYi5E1g13ZW2sjF.di8S', 'app', 'password,refresh_token', NULL, NULL, 86400, 2592000, NULL, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for oauth_client_token
+-- ----------------------------
+DROP TABLE IF EXISTS `oauth_client_token`;
+CREATE TABLE `oauth_client_token` (
+  `token_id` varchar(256) DEFAULT NULL,
+  `token` blob,
+  `authentication_id` varchar(128) NOT NULL,
+  `user_name` varchar(256) DEFAULT NULL,
+  `client_id` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`authentication_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for oauth_code
+-- ----------------------------
+DROP TABLE IF EXISTS `oauth_code`;
+CREATE TABLE `oauth_code` (
+  `code` varchar(256) DEFAULT NULL,
+  `authentication` blob
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for oauth_refresh_token
+-- ----------------------------
+DROP TABLE IF EXISTS `oauth_refresh_token`;
+CREATE TABLE `oauth_refresh_token` (
+  `token_id` varchar(256) DEFAULT NULL,
+  `token` blob,
+  `authentication` blob
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 -- Table structure for t_account
 -- ----------------------------
+DROP TABLE IF EXISTS `t_account`;
 CREATE TABLE `t_account` (
   `account_id` bigint(64) NOT NULL,
-  `account_name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
-  `status` int(1) NOT NULL DEFAULT '1' COMMENT '帐号启用状态:0->禁用；1->启用',
-  `phone` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
-  `avatar` varchar(250) NOT NULL DEFAULT '' COMMENT '头像',
+  `account_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
+  `status` varchar(1) COLLATE utf8_bin DEFAULT '1' COMMENT '帐号启用状态:0->禁用；1->启用',
+  `phone` varchar(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
+  `avatar` varchar(250) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '头像',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   UNIQUE KEY `idx_account_id` (`account_id`),
@@ -25,12 +140,21 @@ CREATE TABLE `t_account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
 
 -- ----------------------------
+-- Records of t_account
+-- ----------------------------
+BEGIN;
+INSERT INTO `t_account` VALUES (722205584761290752, 'taohua', '1', '13511083015', 'https://img3.doubanio.com/view/photo/l/public/p595295073.webp', '2020-06-15 21:47:09', '2020-06-16 20:54:12');
+INSERT INTO `t_account` VALUES (725123288577081344, 'tom', '1', '13611083018', 'https://img3.doubanio.com/view/photo/l/public/p595295073.webp', '2020-06-23 23:01:04', '2020-06-23 23:01:04');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for t_password
 -- ----------------------------
+DROP TABLE IF EXISTS `t_password`;
 CREATE TABLE `t_password` (
   `password_id` bigint(32) NOT NULL COMMENT '密码ID',
   `account_id` bigint(32) NOT NULL COMMENT '账号ID',
-  `password` varchar(64) NOT NULL COMMENT '密码',
+  `password` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '密码',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   UNIQUE KEY `idx_password_id` (`password_id`),
@@ -41,105 +165,11 @@ CREATE TABLE `t_password` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='密码表';
 
 -- ----------------------------
--- Table structure for t_excel_info
+-- Records of t_password
 -- ----------------------------
-CREATE TABLE `t_excel_info` (
-  `id` bigint(64) DEFAULT NULL,
-  `iccid` varchar(255) DEFAULT NULL COMMENT 'iccid SIM卡卡号',
-  `operators` varchar(50) DEFAULT NULL COMMENT '运营商',
-  `receiver` varchar(50) DEFAULT NULL COMMENT '收货人',
-  `phone` varchar(255) DEFAULT NULL COMMENT '收货手机号',
-  `address` varchar(255) DEFAULT NULL COMMENT '收货地址',
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `platform` varchar(10) DEFAULT NULL COMMENT '不同平台数据: tianpeng : xiaoming',
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='导入excel 信息表';
+BEGIN;
+INSERT INTO `t_password` VALUES (722205584761290753, 722205584761290752, '$2a$10$rUzRb9xlN/t3h16oXvv.Z.kMY0p1fwyHH.Co.dFHLLpPbmhepCvLC', '2020-06-15 21:47:09', '2020-06-15 21:47:09');
+INSERT INTO `t_password` VALUES (725123288577081345, 725123288577081344, '$2a$10$frNtQV7UoiKb0h3uGDJHN.X/opFJVwrZfVzouaJqIs4IKVpvTy0Wq', '2020-06-23 23:01:04', '2020-06-23 23:01:04');
+COMMIT;
 
--- ----------------------------
--- Table structure for tb_permission
--- ----------------------------
-CREATE TABLE `tb_permission` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '父权限',
-  `name` varchar(64) NOT NULL COMMENT '权限名称',
-  `enname` varchar(64) NOT NULL COMMENT '权限英文名称',
-  `url` varchar(255) NOT NULL COMMENT '授权路径',
-  `description` varchar(200) DEFAULT NULL COMMENT '备注',
-  `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='权限表';
-
--- ----------------------------
--- Table structure for tb_role
--- ----------------------------
-CREATE TABLE `tb_role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint(20) DEFAULT NULL COMMENT '父角色',
-  `name` varchar(64) NOT NULL COMMENT '角色名称',
-  `enname` varchar(64) NOT NULL COMMENT '角色英文名称',
-  `description` varchar(200) DEFAULT NULL COMMENT '备注',
-  `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COMMENT='角色表';
-
--- ----------------------------
--- Table structure for tb_role_permission
--- ----------------------------
-CREATE TABLE `tb_role_permission` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
-  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='角色权限表';
-
--- ----------------------------
--- Table structure for tb_user
--- ----------------------------
-CREATE TABLE `tb_user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL COMMENT '用户名',
-  `password` varchar(64) NOT NULL COMMENT '密码，加密存储',
-  `phone` varchar(20) DEFAULT NULL COMMENT '注册手机号',
-  `email` varchar(50) DEFAULT NULL COMMENT '注册邮箱',
-  `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`) USING BTREE,
-  UNIQUE KEY `phone` (`phone`) USING BTREE,
-  UNIQUE KEY `email` (`email`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COMMENT='用户表';
-
--- ----------------------------
--- Table structure for tb_user_role
--- ----------------------------
-CREATE TABLE `tb_user_role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
-  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COMMENT='用户角色表';
-
--- ----------------------------
--- Records 
--- ----------------------------
-INSERT INTO `t_account` VALUES ('653655131660746752', 'admin', '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '');
-INSERT INTO `t_account` VALUES ('713376466800214016', '狮子', '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '');INSERT INTO `t_password` VALUES ('653655144210104320', '653655131660746752', '$2a$10$N2jovfQTDdIGrqoOj0.4dumGZKZDbBjBCTRav2I2kVZ4K3jHhj5yi', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
-INSERT INTO `t_password` VALUES ('713376467228033024', '713376466800214016', '$2a$10$dDqZgTCN2K0q02fmIoVF3.P8z6XI4v5hDAWO9El5yQC6VAjmz1/bK', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
-INSERT INTO `tb_permission` VALUES ('37', '0', '系统管理', 'System', '/', null, '2019-04-04 23:22:54', '2019-04-04 23:22:56');
-INSERT INTO `tb_permission` VALUES ('38', '37', '用户管理', 'SystemUser', '/users/', null, '2019-04-04 23:25:31', '2019-04-04 23:25:33');
-INSERT INTO `tb_permission` VALUES ('39', '38', '查看用户', 'SystemUserView', '', null, '2019-04-04 15:30:30', '2019-04-04 15:30:43');
-INSERT INTO `tb_permission` VALUES ('40', '38', '新增用户', 'SystemUserInsert', '', null, '2019-04-04 15:30:31', '2019-04-04 15:30:44');
-INSERT INTO `tb_permission` VALUES ('41', '38', '编辑用户', 'SystemUserUpdate', '', null, '2019-04-04 15:30:32', '2019-04-04 15:30:45');
-INSERT INTO `tb_permission` VALUES ('42', '38', '删除用户', 'SystemUserDelete', '', null, '2019-04-04 15:30:48', '2019-04-04 15:30:45');
-INSERT INTO `tb_role` VALUES ('37', '0', '超级管理员', 'admin', null, '2019-04-04 23:22:03', '2019-04-04 23:22:05');
-INSERT INTO `tb_role_permission` VALUES ('37', '37', '37');
-INSERT INTO `tb_role_permission` VALUES ('38', '37', '38');
-INSERT INTO `tb_role_permission` VALUES ('39', '37', '39');
-INSERT INTO `tb_role_permission` VALUES ('40', '37', '40');
-INSERT INTO `tb_role_permission` VALUES ('41', '37', '41');
-INSERT INTO `tb_role_permission` VALUES ('42', '37', '42');
-INSERT INTO `tb_user` VALUES ('37', 'admin', '$2a$10$9ZhDOBp.sRKat4l14ygu/.LscxrMUcDAfeVOEPiYwbcRkoB09gCmi', '15888888888', 'lee.lusifer@gmail.com', '2019-04-04 23:21:27', '2019-04-04 23:21:29');
-INSERT INTO `tb_user_role` VALUES ('37', '37', '37');
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,5 +1,6 @@
 package org.excel.operator.model.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -13,7 +14,7 @@ import lombok.Data;
  * @see org.excel.operator.common
  */
 @Data
-public class BaseSearchDTO extends BaseDTO {
+public class BaseSearchDTO extends BaseDTO implements Serializable {
 
   private Integer pageNum;
 

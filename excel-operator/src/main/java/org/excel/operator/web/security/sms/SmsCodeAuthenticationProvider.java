@@ -1,7 +1,7 @@
 package org.excel.operator.web.security.sms;
 
 import org.excel.operator.common.api.ResultCode;
-import org.excel.operator.web.security.CustomUserDetails;
+import org.excel.operator.web.security.component.CustomUserDetails;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

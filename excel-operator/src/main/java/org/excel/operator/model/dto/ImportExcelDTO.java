@@ -1,5 +1,6 @@
 package org.excel.operator.model.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -13,7 +14,7 @@ import lombok.Data;
  * @see org.excel.operator.model.dto
  */
 @Data
-public class ImportExcelDTO extends BaseSearchDTO {
+public class ImportExcelDTO extends BaseSearchDTO implements Serializable {
 
   /**
    * 主键 id

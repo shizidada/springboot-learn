@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.excel.operator.web.security.CustomAuthenticationFailureHandler;
+import org.excel.operator.web.security.component.CustomAuthenticationFailureHandler;
 import org.excel.operator.web.service.AccountService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;

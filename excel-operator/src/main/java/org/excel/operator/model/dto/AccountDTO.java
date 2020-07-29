@@ -1,5 +1,6 @@
 package org.excel.operator.model.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -13,7 +14,7 @@ import lombok.Data;
  * @see org.excel.operator.model.dto
  */
 @Data
-public class AccountDTO extends BaseDTO {
+public class AccountDTO extends BaseDTO implements Serializable {
 
   private Long accountId;
 

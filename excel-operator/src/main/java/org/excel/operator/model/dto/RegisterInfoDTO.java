@@ -1,5 +1,6 @@
 package org.excel.operator.model.dto;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ import lombok.Data;
  */
 
 @Data
-public class RegisterInfoDTO extends BaseDTO {
+public class RegisterInfoDTO extends BaseDTO implements Serializable {
 
   @NotBlank(message = "账号不能为空")
   private String accountName;

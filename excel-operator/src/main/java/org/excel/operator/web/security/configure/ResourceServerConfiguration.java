@@ -2,11 +2,11 @@ package org.excel.operator.web.security.configure;
 
 import javax.annotation.Resource;
 import org.excel.operator.constants.SecurityConstants;
-import org.excel.operator.web.security.CustomAccessDeniedHandler;
-import org.excel.operator.web.security.CustomAuthenticationEntryPoint;
-import org.excel.operator.web.security.CustomAuthenticationFailureHandler;
-import org.excel.operator.web.security.CustomAuthenticationSuccessHandler;
-import org.excel.operator.web.security.CustomLogoutSuccessHandler;
+import org.excel.operator.web.security.component.CustomAccessDeniedHandler;
+import org.excel.operator.web.security.component.CustomAuthenticationEntryPoint;
+import org.excel.operator.web.security.component.CustomAuthenticationFailureHandler;
+import org.excel.operator.web.security.component.CustomAuthenticationSuccessHandler;
+import org.excel.operator.web.security.component.CustomLogoutSuccessHandler;
 import org.excel.operator.web.security.filter.LoginFailCountFilter;
 import org.excel.operator.web.security.filter.RedisTokenFilter;
 import org.excel.operator.web.security.filter.SmsCodeFilter;

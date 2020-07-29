@@ -12,7 +12,7 @@ import org.excel.operator.model.domain.AccountDO;
 import org.excel.operator.model.dto.AccountDTO;
 import org.excel.operator.model.dto.PasswordDTO;
 import org.excel.operator.model.dto.RegisterInfoDTO;
-import org.excel.operator.web.security.CustomUserDetails;
+import org.excel.operator.web.security.component.CustomUserDetails;
 import org.excel.operator.web.service.AccountService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
