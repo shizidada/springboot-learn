@@ -28,8 +28,8 @@ public class RedisTokenFilter extends OncePerRequestFilter {
   private String[] anonymousUrls;
 
   public RedisTokenFilter(
-      AccountService accountService,
-      CustomAuthenticationFailureHandler authenticationFailureHandler) {
+      CustomAuthenticationFailureHandler authenticationFailureHandler,
+      AccountService accountService) {
     this.accountService = accountService;
     this.authenticationFailureHandler = authenticationFailureHandler;
   }

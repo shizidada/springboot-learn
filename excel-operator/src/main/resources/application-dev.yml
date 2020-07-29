@@ -29,6 +29,16 @@ spring:
 #    deserialization:
 #      FAIL_ON_UNKNOWN_PROPERTIES: false #未定义的key不序列化
 
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: secret
+      access-token-uri: http://moose.com:7000/oauth/token
+      user-authorization-uri: http://moose.com:7000/oauth/authorize
+    resource:
+      token-info-uri: http://moose.com:7000/oauth/check_token
+
 # logging settings
 #logging:
 #  path: E:/develop/elk/logs

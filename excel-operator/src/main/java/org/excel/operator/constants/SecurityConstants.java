@@ -47,8 +47,7 @@ public interface SecurityConstants {
   Integer MAX_COUNT_OF_DAY = 6;
 
   /**
-   * 记录手机号在一段时间类不能连续登录
-   * save redis
+   * 记录手机号在一段时间类不能连续登录 save redis
    */
   String LOGIN_COUNT_MOBILE = "moose:login:mobile:count:";
 
@@ -66,4 +65,8 @@ public interface SecurityConstants {
    * 设置在一段时间范围类不能连续登录超过 6 次
    */
   Integer LOGIN_TIME_OF_SECONDS = 60;
+
+  String OAUTH2_CLIENT = "client";
+
+  String OAUTH2_SECRET = "secret";
 }
