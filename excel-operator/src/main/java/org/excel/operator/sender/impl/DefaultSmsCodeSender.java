@@ -1,12 +1,14 @@
-package org.excel.operator.web.security.sms;
+package org.excel.operator.sender.impl;
 
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResultCode;
+import org.excel.operator.constants.RedisKeyConstants;
 import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.web.security.sms.sender.SmsCodeSender;
+import org.excel.operator.sender.SmsCodeSender;
+import org.excel.operator.sender.model.ValidateCode;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +30,7 @@ public class DefaultSmsCodeSender implements SmsCodeSender {
 
   @Override public void send(String mobile, String smsCode) {
 
-    String smsMobileKey = SecurityConstants.SMS_MOBILE_KEY + mobile;
+    String smsMobileKey = RedisKeyConstants.SMS_MOBILE_KEY + mobile;
 
     // 计算发送次数
     Integer sendCount = (Integer) redisTemplate.opsForValue().get(smsMobileKey);
@@ -46,7 +48,7 @@ public class DefaultSmsCodeSender implements SmsCodeSender {
 
     // 保存 smsCode
     ValidateCode validateCode = new ValidateCode(smsCode, SecurityConstants.SMS_TIME_OF_TIMEOUT);
-    String smsCodeKey = SecurityConstants.SMS_CODE_KEY + mobile;
+    String smsCodeKey = RedisKeyConstants.SMS_CODE_KEY + mobile;
     redisTemplate.opsForValue()
         .set(smsCodeKey, validateCode, SecurityConstants.SMS_TIME_OF_TIMEOUT, TimeUnit.SECONDS);
     log.info("手机号 [{}] 发送短信验证码 [{}]", mobile, smsCode);

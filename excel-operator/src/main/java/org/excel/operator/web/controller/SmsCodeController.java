@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.web.security.sms.DefaultSmsCodeSender;
+import org.excel.operator.sender.impl.DefaultSmsCodeSender;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

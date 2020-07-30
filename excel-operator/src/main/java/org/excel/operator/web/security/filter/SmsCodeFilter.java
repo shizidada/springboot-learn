@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
+import org.excel.operator.constants.CommonConstants;
+import org.excel.operator.constants.RedisKeyConstants;
 import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.exception.BusinessException;
-import org.excel.operator.web.security.sms.ValidateCode;
+import org.excel.operator.sender.model.ValidateCode;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -33,9 +35,9 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
 
   private static final String SMS_CODE_FILTER_URL = SecurityConstants.SMS_LOGIN_URL;
 
-  private static final String SMS_CODE_POST_METHOD = "POST";
+  private static final String SMS_CODE_POST_METHOD = CommonConstants.METHOD_POST;
 
-  private static final String SMS_CODE_GET_METHOD = "get";
+  private static final String SMS_CODE_GET_METHOD = CommonConstants.METHOD_GET;
 
   /**
    * 存放所有需要校验验证码的url
@@ -134,17 +136,17 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
       throw new BusinessException(ResultCode.PHONE_MUST_NOT_EMPTY);
     }
     ValidateCode validateCode =
-        (ValidateCode) redisTemplate.opsForValue().get(SecurityConstants.SMS_CODE_KEY + mobile);
+        (ValidateCode) redisTemplate.opsForValue().get(RedisKeyConstants.SMS_CODE_KEY + mobile);
     if (validateCode == null) {
       throw new BusinessException(ResultCode.SMS_CODE_NOT_EXITS);
     }
     if (validateCode.getExpried()) {
-      redisTemplate.opsForValue().getOperations().delete(SecurityConstants.SMS_CODE_KEY + mobile);
+      redisTemplate.opsForValue().getOperations().delete(RedisKeyConstants.SMS_CODE_KEY + mobile);
       throw new BusinessException(ResultCode.SMS_CODE_IS_EXPRIED);
     }
     if (!validateCode.getCode().equals(smsCode)) {
       throw new BusinessException(ResultCode.SMS_CODE_ERROR);
     }
-    redisTemplate.opsForValue().getOperations().delete(SecurityConstants.SMS_CODE_KEY + mobile);
+    redisTemplate.opsForValue().getOperations().delete(RedisKeyConstants.SMS_CODE_KEY + mobile);
   }
 }

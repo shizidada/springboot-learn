@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
+import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.exception.BusinessException;
 import org.excel.operator.model.dto.AccountDTO;
 import org.excel.operator.model.dto.RoleDTO;
@@ -61,7 +62,7 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
     // 验证验证码
 
     // 客户端提交的验证码
-    String smsCode = parameters.get("smsCode");
+    String smsCode = parameters.get(SecurityConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
     if (StringUtils.isBlank(smsCode)) {
       throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
     }
@@ -78,7 +79,7 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
     // 验证通过后从缓存中移除验证码 etc...
 
     // 客户端提交的手机号码
-    String phone = parameters.get("phone");
+    String phone = parameters.get(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
     AccountDTO accountDTO = accountService.getAccountByPhone(phone);
 
     // TODO if account not exist , create a new account ??
@@ -86,6 +87,7 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
       throw new BusinessException(ResultCode.PHONE_NOT_EXITS);
     }
 
+    // TODO: 权限查询 etc...
     RoleDTO role = new RoleDTO();
     role.setRole("USER");
     //accountService.getAccountRole(accountDTO.getAccountId());

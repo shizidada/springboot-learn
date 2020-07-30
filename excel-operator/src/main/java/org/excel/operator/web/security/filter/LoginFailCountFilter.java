@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.excel.operator.common.api.ResultCode;
+import org.excel.operator.constants.RedisKeyConstants;
 import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.exception.BusinessException;
 import org.springframework.beans.factory.InitializingBean;
@@ -102,7 +103,7 @@ public class LoginFailCountFilter extends OncePerRequestFilter implements Initia
   private void validate(HttpServletRequest request) {
     String mobilePhone = request.getParameter(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
     String accountName = request.getParameter(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
-    String loginCountKey = SecurityConstants.LOGIN_COUNT_MOBILE;
+    String loginCountKey = RedisKeyConstants.LOGIN_COUNT_MOBILE;
     if (mobilePhone != null) {
       loginCountKey += mobilePhone;
     }

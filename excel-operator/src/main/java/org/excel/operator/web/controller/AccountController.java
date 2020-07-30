@@ -41,7 +41,7 @@ public class AccountController {
   public ResponseResult<Boolean> register(@Valid @RequestBody RegisterInfoDTO registerInfoDTO,
       BindingResult result,
       HttpServletRequest request) {
-    return new ResponseResult<>(accountService.register(request, registerInfoDTO), "登录成功");
+    return new ResponseResult<>(accountService.register(request, registerInfoDTO), "注册成功");
   }
 
   @PostMapping(value = "/info")

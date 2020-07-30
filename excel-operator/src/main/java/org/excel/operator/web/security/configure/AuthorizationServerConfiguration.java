@@ -116,11 +116,16 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     endpoints
-        // 用于支持密码模式
-        .authenticationManager(authenticationManager)
         .tokenGranter(tokenGranter(endpoints))
         .tokenStore(tokenStore())
         .exceptionTranslator(customOAuth2ResponseExceptionTranslator);
+
+    // 用于支持密码模式
+    endpoints.authenticationManager(authenticationManager);
+
+    // TODO: userDetailsService refresh_token
+    // TODO: The dependencies of some of the beans in the application context form a cycle:
+    //endpoints.userDetailsService(userDetailsService);
   }
 
   /**

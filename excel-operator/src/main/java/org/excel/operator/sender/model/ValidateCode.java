@@ -1,4 +1,4 @@
-package org.excel.operator.web.security.sms;
+package org.excel.operator.sender.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
