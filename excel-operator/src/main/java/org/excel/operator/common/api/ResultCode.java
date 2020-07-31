@@ -34,6 +34,7 @@ public enum ResultCode {
   PHONE_MUST_NOT_EMPTY(10102, "手机号不能为空"),
 
   PASSWORD_ERROR(10200, "两次密码不一致"),
+  PASSWORD_NOT_EMPTY(10200, "密码不能为空"),
 
   SMS_CODE_IS_EMPTY(10300, "验证码不能为空"),
   SMS_CODE_NOT_EXITS(10301, "验证码不存在"),
@@ -69,6 +70,8 @@ public enum ResultCode {
   PARAMS_VALIDATE_FAIL(-10000, "参数校验失败"),
   TOKEN_VALIDATE_EMPTY(-10001, "Token 不能为空"),
   TOKEN_VALIDATE_FAIL(-10002, "Token 校验失败"),
+  TOKEN_INVALID(-10003, "Token 无效"),
+
 
   /**
    * 未知错误

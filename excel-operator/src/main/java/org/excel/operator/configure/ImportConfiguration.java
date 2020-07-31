@@ -17,7 +17,7 @@ import org.springframework.util.unit.DataSize;
  * @see org.excel.operator.configure
  */
 @Configuration
-public class ImportConfig {
+public class ImportConfiguration {
 
   @Bean
   public MultipartConfigElement multipartConfigElement() {

@@ -35,8 +35,8 @@ public class CustomAuthenticationExceptionSerializer
     if (e.getAdditionalInformation() != null) {
       for (Map.Entry<String, String> entry : e.getAdditionalInformation().entrySet()) {
         String key = entry.getKey();
-        String add = entry.getValue();
-        jsonGenerator.writeStringField(key, add);
+        String value = entry.getValue();
+        jsonGenerator.writeStringField(key, value);
       }
     }
     jsonGenerator.writeEndObject();

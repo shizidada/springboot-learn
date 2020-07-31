@@ -1,6 +1,5 @@
 package org.excel.operator.web.security.configure;
 
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,11 +7,11 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import org.excel.operator.web.security.granter.SmsCodeTokenGranter;
 import org.excel.operator.web.service.AccountService;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -35,6 +34,9 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
  * @author taohua
  * @version v1.0.0
  * @see org.excel.operator.web.security.configure
+ * <p>
+ * [/oauth/authorize] [/oauth/token] [/oauth/check_token] [/oauth/confirm_access] [/oauth/token_key]
+ * [/oauth/error]
  */
 @Configuration
 @EnableAuthorizationServer
@@ -50,6 +52,15 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   private AccountService accountService;
 
   @Resource
+  private PasswordEncoder passwordEncoder;
+
+  @Resource
+  private UserDetailsService userDetailsService;
+
+  @Resource
+  private DataSource dataSource;
+
+  @Resource
   private WebResponseExceptionTranslator customOAuth2ResponseExceptionTranslator;
 
   /**
@@ -57,13 +68,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
    *
    * @return 数据库数据源
    */
-  @Bean
-  @Primary
-  @ConfigurationProperties(prefix = "spring.datasource")
-  public DataSource dataSource() {
-    // TODO:: DataSourceBuilder.create().build()
-    return DruidDataSourceBuilder.create().build();
-  }
+  //@Bean
+  //public DataSource dataSource() {
+  //  // TODO:: DataSourceBuilder.create().build()
+  //  return DruidDataSourceBuilder.create().build();
+  //}
 
   /**
    * Token 持久化
@@ -75,7 +84,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     // 保存在内存中
     // return new InMemoryTokenStore();
     // 基于 JDBC 实现，令牌保存到数据库
-    return new JdbcTokenStore(dataSource());
+    return new JdbcTokenStore(dataSource);
     //return new RedisTokenStore(redisConnectionFactory);
     //return new JwtTokenStore(accessTokenConverter());
   }
@@ -84,11 +93,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
    * A service that provides the details about an OAuth2 client.
    *
    * @return ClientDetailsService
+   *
+   * 基于 JDBC 实现，需要事先在数据库配置客户端信息
    */
   @Bean
   public ClientDetailsService jdbcClientDetailsService() {
-    // 基于 JDBC 实现，需要事先在数据库配置客户端信息
-    return new JdbcClientDetailsService(dataSource());
+    return new JdbcClientDetailsService(dataSource);
   }
 
   /**
@@ -123,9 +133,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     // 用于支持密码模式
     endpoints.authenticationManager(authenticationManager);
 
-    // TODO: userDetailsService refresh_token
-    // TODO: The dependencies of some of the beans in the application context form a cycle:
-    //endpoints.userDetailsService(userDetailsService);
+    // userDetailsService refresh_token
+    endpoints.userDetailsService(userDetailsService);
   }
 
   /**
@@ -138,7 +147,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
       throws Exception {
     oauthServer
         .tokenKeyAccess("permitAll()")
-        .checkTokenAccess("permitAll()")
+        .checkTokenAccess("isAuthenticated()")
         .allowFormAuthenticationForClients();
   }
 

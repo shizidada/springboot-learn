@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.web.security.component.CustomAuthenticationFailureHandler;
 import org.excel.operator.web.service.AccountService;
+import org.excel.operator.web.service.LoginService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,13 +25,17 @@ public class RedisTokenFilter extends OncePerRequestFilter {
 
   private final AccountService accountService;
 
+  private final LoginService loginService;
+
   @Value("${system.security.anonymous-urls}")
   private String[] anonymousUrls;
 
   public RedisTokenFilter(
       CustomAuthenticationFailureHandler authenticationFailureHandler,
-      AccountService accountService) {
+      AccountService accountService,
+      LoginService loginService) {
     this.accountService = accountService;
+    this.loginService = loginService;
     this.authenticationFailureHandler = authenticationFailureHandler;
   }
 
@@ -51,7 +56,7 @@ public class RedisTokenFilter extends OncePerRequestFilter {
     /**
      * 判断是否登陆
      */
-    boolean isLogin = accountService.isLogin();
+    boolean isLogin = loginService.isLogin();
     if (isLogin) {
       filterChain.doFilter(request, response);
       return;

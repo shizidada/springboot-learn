@@ -1,5 +1,6 @@
 package org.excel.operator.web.security.configure;
 
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -28,10 +28,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Slf4j
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  @Resource
+  private UserDetailsServiceImpl userDetailsService;
+
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth
-        .userDetailsService(userDetailsServiceBean())
+    auth.userDetailsService(userDetailsService)
         .passwordEncoder(passwordEncoder());
   }
 
@@ -41,12 +43,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
-  }
-
-  @Bean
-  @Override
-  public UserDetailsService userDetailsServiceBean() throws Exception {
-    return new UserDetailsServiceImpl();
   }
 
   /**

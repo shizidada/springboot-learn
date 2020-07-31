@@ -26,8 +26,11 @@ import org.springframework.stereotype.Service;
  * @date 2019 2019/11/20 21:22
  * @see org.excel.operator.web.service.impl
  */
-@Service
+@Service(value = "userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+  @Resource
+  private LoginServiceImpl loginService;
 
   @Resource
   private AccountServiceImpl accountService;
@@ -45,11 +48,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String accountName)
       throws UsernameNotFoundException {
-
-    Object principal = accountService.getPrincipal();
-    if (principal instanceof CustomUserDetails) {
-      return (CustomUserDetails) principal;
-    }
 
     if (StringUtils.isEmpty(accountName)) {
       throw new BusinessException(ResultCode.ACCOUNT_NOT_EMPTY);
@@ -79,7 +77,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
       throw new BusinessException(ResultCode.PHONE_MUST_NOT_EMPTY);
     }
 
-    Object principal = accountService.getPrincipal();
+    Object principal = loginService.getPrincipal();
     if (principal instanceof CustomUserDetails) {
       return (CustomUserDetails) principal;
     }

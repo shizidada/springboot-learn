@@ -5,27 +5,18 @@ import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.web.security.component.CustomAccessDeniedHandler;
 import org.excel.operator.web.security.component.CustomAuthenticationEntryPoint;
 import org.excel.operator.web.security.component.CustomAuthenticationFailureHandler;
-import org.excel.operator.web.security.component.CustomAuthenticationSuccessHandler;
 import org.excel.operator.web.security.component.CustomLogoutSuccessHandler;
-import org.excel.operator.web.security.filter.LoginFailCountFilter;
-import org.excel.operator.web.security.filter.RedisTokenFilter;
-import org.excel.operator.web.security.filter.SmsCodeFilter;
-import org.excel.operator.web.service.AccountService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-
-  @Resource
-  private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
   @Resource
   private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -39,65 +30,74 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
   @Resource
   private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-  @Resource
-  private AccountService accountService;
-
   //@Resource
-  //private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+  //private RedisTemplate<String, Object> redisTemplate;
 
-  @Resource
-  private RedisTemplate<String, Object> redisTemplate;
+  //@Bean
+  //SmsCodeFilter smsCodeFilter() {
+  //  return new SmsCodeFilter(customAuthenticationFailureHandler, redisTemplate);
+  //}
+  //
+  //@Bean
+  //RedisTokenFilter redisTokenFilter() {
+  //  return new RedisTokenFilter(customAuthenticationFailureHandler, accountService);
+  //}
+  //
+  //@Bean LoginFailCountFilter loginFailCountFilter() {
+  //  return new LoginFailCountFilter(customAuthenticationFailureHandler, redisTemplate);
+  //}
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-        .antMatchers(HttpMethod.GET,
-            "/",
-            "/*.html",
-            "/favicon.ico",
-            "/**/*.html",
-            "/**/*.css",
-            "/**/*.js",
-            "/swagger-resources/**",
-            "/v2/api-docs/**"
-        ).permitAll()
-        // druid 数据库监控
-        .antMatchers("/druid/**").permitAll()
-        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+    //http.authorizeRequests()
+    //    .antMatchers(HttpMethod.GET,
+    //        "/",
+    //        "/*.html",
+    //        "/favicon.ico",
+    //        "/**/*.html",
+    //        "/**/*.css",
+    //        "/**/*.js",
+    //        "/swagger-resources/**",
+    //        "/v2/api-docs/**"
+    //    ).permitAll()
+    //    // druid 数据库监控
+    //    .antMatchers("/druid/**").permitAll()
 
-        // 对登录注册要允许匿名访问
-        .and()
-        .authorizeRequests().antMatchers(
+    http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 
-        SecurityConstants.LOGIN_IN_URL,
-        SecurityConstants.LOGIN_OUT_URL,
-        SecurityConstants.LOGIN_STATUS_URL,
-        SecurityConstants.REGISTER_URL,
-        SecurityConstants.SMS_LOGIN_URL,
-        SecurityConstants.SEND_SMS_CODE_URL,
+    // 对登录注册要允许匿名访问
+    http
+        .authorizeRequests()
+        .antMatchers(
+            SecurityConstants.LOGIN_IN_URL,
+            SecurityConstants.LOGIN_OUT_URL,
+            SecurityConstants.LOGIN_STATUS_URL,
+            SecurityConstants.REGISTER_URL,
+            SecurityConstants.SMS_LOGIN_URL,
+            SecurityConstants.SEND_SMS_CODE_URL,
+            // for test
+            "/api/v1/excel/**",
 
-        // for test
-        "/api/v1/excel/**",
+            "/ws/*",
 
-        "/ws/*",
+            "/friends/*"
+        ).permitAll();
 
-        "/friends/*").permitAll()
-
-        .and()
+    http
         .exceptionHandling()
         .accessDeniedHandler(customAccessDeniedHandler)
         .authenticationEntryPoint(customAuthenticationEntryPoint)
 
         //自定义登录
-        //.and()
-        //.formLogin()
+        .and()
+        .formLogin()
         //.loginProcessingUrl(SecurityConstants.LOGIN_IN_URL)
         //.usernameParameter(SecurityConstants.LOGIN_USERNAME_PARAMETER)
         //.passwordParameter(SecurityConstants.LOGIN_PASSWORD_PARAMETER)
-        .and()
-        .formLogin()
+        //.and()
+        //.formLogin()
         // 登录成功
-        .successHandler(customAuthenticationSuccessHandler)
+        //.successHandler(customAuthenticationSuccessHandler)
         // 登录失败
         .failureHandler(customAuthenticationFailureHandler)
 
@@ -109,7 +109,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         // 自定义登出成功返回
         .logoutSuccessHandler(customLogoutSuccessHandler)
         // 清理 Session
-        .invalidateHttpSession(true)
+        //.invalidateHttpSession(true)
 
         // add filter
         //.and()
@@ -118,8 +118,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         //.addFilterBefore(loginFailCountFilter(), UsernamePasswordAuthenticationFilter.class)
         //.exceptionHandling()
 
-        .and()
         // 禁用 session
+        .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         .and()
@@ -131,17 +131,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     //http.apply(smsCodeAuthenticationSecurityConfig);
   }
 
-  @Bean
-  SmsCodeFilter smsCodeFilter() {
-    return new SmsCodeFilter(customAuthenticationFailureHandler, redisTemplate);
-  }
-
-  @Bean
-  RedisTokenFilter redisTokenFilter() {
-    return new RedisTokenFilter(customAuthenticationFailureHandler, accountService);
-  }
-
-  @Bean LoginFailCountFilter loginFailCountFilter() {
-    return new LoginFailCountFilter(customAuthenticationFailureHandler, redisTemplate);
+  @Override
+  public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+    // 配置资源 ID
+    resources
+        .resourceId("app-resources");
   }
 }

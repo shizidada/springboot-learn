@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -19,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * @see org.excel.operator.configure
  */
 @Configuration
-public class CorsConfig {
+public class CorsConfiguration {
 
   /**
    * 设置跨域
@@ -28,7 +27,8 @@ public class CorsConfig {
    */
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
+    org.springframework.web.cors.CorsConfiguration
+        configuration = new org.springframework.web.cors.CorsConfiguration();
     configuration.setAllowedOrigins(Collections.singletonList("*"));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
     configuration.setAllowCredentials(Boolean.TRUE);

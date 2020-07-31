@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @author taohua
  */
 @Configuration
-public class SnowflakeConfig {
+public class SnowflakeConfiguration {
 
   @Bean
   public SnowflakeIdWorker snowflakeIdWorker() {

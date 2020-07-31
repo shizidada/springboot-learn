@@ -2,8 +2,8 @@ package org.excel.operator.web.security.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.excel.operator.common.api.ResultCode;
-import org.excel.operator.exception.BusinessException;
 import org.excel.operator.exception.BusinessAuthenticationException;
+import org.excel.operator.exception.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -50,6 +50,7 @@ public class CustomAuthenticationResponseExceptionTranslator
 
     return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
-        .body(new BusinessAuthenticationException(e.getMessage(), ResultCode.UN_KNOWN_ERROR.getCode()));
+        .body(new BusinessAuthenticationException(e.getMessage(),
+            ResultCode.UN_KNOWN_ERROR.getCode()));
   }
 }

@@ -15,8 +15,6 @@ import org.excel.operator.model.dto.RegisterInfoDTO;
 import org.excel.operator.web.security.component.CustomUserDetails;
 import org.excel.operator.web.service.AccountService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +39,9 @@ public class AccountServiceImpl implements AccountService {
 
   @Resource
   private PasswordServiceImpl passwordService;
+
+  @Resource
+  private LoginServiceImpl loginService;
 
   @Resource
   private PasswordEncoder passwordEncoder;
@@ -124,35 +125,8 @@ public class AccountServiceImpl implements AccountService {
     return true;
   }
 
-  @Override
-  public boolean isLogin() {
-    Authentication authentication = (Authentication) this.getAuthentication();
-    if (authentication == null) {
-      return false;
-    }
-    Object principal = authentication.getPrincipal();
-    return principal instanceof CustomUserDetails;
-  }
-
-  @Override public Object getPrincipal() {
-    Authentication authentication = (Authentication) this.getAuthentication();
-    if (authentication != null) {
-      return authentication.getPrincipal();
-    }
-    return null;
-  }
-
   @Override public AccountDTO getAccountInfo() {
-    CustomUserDetails userDetails = (CustomUserDetails) this.getPrincipal();
+    CustomUserDetails userDetails = (CustomUserDetails) loginService.getPrincipal();
     return userDetails.getAccountDTO();
-  }
-
-  /**
-   * 获取登录信息
-   *
-   * @return Authentication
-   */
-  private Object getAuthentication() {
-    return SecurityContextHolder.getContext().getAuthentication();
   }
 }

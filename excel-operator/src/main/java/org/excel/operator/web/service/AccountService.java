@@ -44,21 +44,7 @@ public interface AccountService {
   /**
    * 获取用户信息
    *
-   * @return AccntDTO
+   * @return AccountDTO
    */
   AccountDTO getAccountInfo();
-
-  /**
-   * 判断账号是否登陆
-   *
-   * @return 是否登陆
-   */
-  boolean isLogin();
-
-  /**
-   * 获取授权信息
-   *
-   * @return 授权信息
-   */
-  Object getPrincipal();
 }
