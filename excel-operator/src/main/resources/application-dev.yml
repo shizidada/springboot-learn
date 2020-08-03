@@ -18,7 +18,7 @@ spring:
 #      uri: mongodb://127.0.0.1:27017/learn
 
   redis:
-    database: 0
+    database: 15
     host: redis.moose.com
     password: tRedisW135
     port: 6379
@@ -48,7 +48,3 @@ security:
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: org.excel.operator.model.domain
-
-system:
-  security:
-    anonymous-urls: /api/v1/account/login,/api/v1/account/register,/api/v1/account/login/status

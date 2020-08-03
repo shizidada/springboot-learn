@@ -49,7 +49,7 @@ public enum ResultCode {
   LOGIN_FAIL(20002, "登录失败"),
   LOGOUT_SUCCESS(20003, "登出成功"),
   NOT_LOGIN(20004, "未登录，请先登录"),
-  LOGIN_MAX_COUNT_FAIL(20006, "频繁登录"),
+  LOGIN_MAX_COUNT_FAIL(20006, "登录频繁异常，请稍后再试"),
 
   /**
    * 文件上传
@@ -71,7 +71,6 @@ public enum ResultCode {
   TOKEN_VALIDATE_EMPTY(-10001, "Token 不能为空"),
   TOKEN_VALIDATE_FAIL(-10002, "Token 校验失败"),
   TOKEN_INVALID(-10003, "Token 无效"),
-
 
   /**
    * 未知错误

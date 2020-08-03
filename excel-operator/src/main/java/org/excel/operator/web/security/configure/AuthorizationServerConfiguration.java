@@ -83,10 +83,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   public TokenStore tokenStore() {
     // 保存在内存中
     // return new InMemoryTokenStore();
-    // 基于 JDBC 实现，令牌保存到数据库
-    return new JdbcTokenStore(dataSource);
     //return new RedisTokenStore(redisConnectionFactory);
     //return new JwtTokenStore(accessTokenConverter());
+    // 基于 JDBC 实现，令牌保存到数据库
+    return new JdbcTokenStore(dataSource);
   }
 
   /**

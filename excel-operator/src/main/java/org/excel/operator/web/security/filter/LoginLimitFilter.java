@@ -14,7 +14,6 @@ import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.constants.RedisKeyConstants;
 import org.excel.operator.constants.SecurityConstants;
 import org.excel.operator.exception.BusinessException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,7 +29,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @see org.excel.operator.web.security.filter
  */
 @Slf4j
-public class LoginFailCountFilter extends OncePerRequestFilter implements InitializingBean {
+public class LoginLimitFilter extends OncePerRequestFilter {
 
   public static final String LOGIN_IN_URL = SecurityConstants.LOGIN_IN_URL;
 
@@ -41,24 +40,22 @@ public class LoginFailCountFilter extends OncePerRequestFilter implements Initia
    */
   private final Map<String, String> urlMap = new HashMap<>();
 
-  private AuthenticationFailureHandler authenticationFailureHandler;
-
   private RedisTemplate<String, Object> redisTemplate;
 
-  public LoginFailCountFilter() {
-  }
+  private AuthenticationFailureHandler authenticationFailureHandler;
 
-  public LoginFailCountFilter(
-      AuthenticationFailureHandler authenticationFailureHandler,
-      RedisTemplate<String, Object> redisTemplate) {
-    this.authenticationFailureHandler = authenticationFailureHandler;
+  public LoginLimitFilter(RedisTemplate<String, Object> redisTemplate,
+      AuthenticationFailureHandler authenticationFailureHandler) {
     this.redisTemplate = redisTemplate;
+    this.authenticationFailureHandler = authenticationFailureHandler;
   }
 
+  /**
+   * 如果不是登录请求，直接调用后面的过滤器链
+   */
   @Override
-  protected void doFilterInternal(HttpServletRequest request,
-      HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+      FilterChain filterChain) throws ServletException, IOException {
     if (StringUtils.equals(request.getRequestURI(), LOGIN_IN_URL)
         && StringUtils.equalsIgnoreCase(
         request.getMethod(), LOGIN_IN_POST_METHOD)) {
@@ -69,10 +66,6 @@ public class LoginFailCountFilter extends OncePerRequestFilter implements Initia
         return;
       }
     }
-
-    /**
-     * 如果不是登录请求，直接调用后面的过滤器链
-     */
     filterChain.doFilter(request, response);
   }
 
@@ -81,7 +74,6 @@ public class LoginFailCountFilter extends OncePerRequestFilter implements Initia
    */
   @Override
   public void afterPropertiesSet() throws ServletException {
-    super.afterPropertiesSet();
     addUrlToMap(LOGIN_IN_URL, SecurityConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
   }
 
@@ -100,21 +92,32 @@ public class LoginFailCountFilter extends OncePerRequestFilter implements Initia
     }
   }
 
-  private void validate(HttpServletRequest request) {
+  private void validate(HttpServletRequest request) throws IOException {
+
+    String accountName = request.getParameter(SecurityConstants.LOGIN_USERNAME_PARAMETER);
+
     String mobilePhone = request.getParameter(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
-    String accountName = request.getParameter(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
-    String loginCountKey = RedisKeyConstants.LOGIN_COUNT_MOBILE;
-    if (mobilePhone != null) {
-      loginCountKey += mobilePhone;
-    }
+
+    StringBuilder sb = new StringBuilder(RedisKeyConstants.LOGIN_FAIL_COUNT_KEY);
+
     if (accountName != null) {
-      loginCountKey += accountName;
+      sb.append(accountName);
     }
+
+    if (mobilePhone != null) {
+      sb.append(mobilePhone);
+    }
+
+    String loginCountKey = sb.toString();
+
+    log.info("login key [{}] ", loginCountKey);
+
     // 计算登录次数
     Integer loginCount = (Integer) redisTemplate.opsForValue().get(loginCountKey);
     if (loginCount == null) {
       redisTemplate.opsForValue()
-          .set(loginCountKey, 1, SecurityConstants.LOGIN_TIME_OF_SECONDS, TimeUnit.SECONDS);
+          .set(loginCountKey, 1, SecurityConstants.LOGIN_TIME_OF_SECONDS,
+              TimeUnit.SECONDS);
     } else {
       // 判断手机号时间范围内，累计发送次数
       if (loginCount >= SecurityConstants.MAX_COUNT_OF_DAY) {
@@ -125,6 +128,5 @@ public class LoginFailCountFilter extends OncePerRequestFilter implements Initia
       //redisTemplate.expire(loginCountKey, SecurityConstants.LOGIN_TIME_OF_SECONDS,
       //    TimeUnit.SECONDS);
     }
-    log.info("login key [{}] ", loginCountKey);
   }
 }

@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.common.api.ResultCode;
 import org.excel.operator.component.SnowflakeIdWorker;
 import org.excel.operator.exception.BusinessException;
@@ -77,7 +78,8 @@ public class AccountServiceImpl implements AccountService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public boolean register(HttpServletRequest request, RegisterInfoDTO registerInfo) {
+  public ResponseResult<Boolean> register(HttpServletRequest request,
+      RegisterInfoDTO registerInfo) {
     String password = registerInfo.getPassword();
     String rePassword = registerInfo.getRePassword();
     String url = request.getRequestURL().toString();
@@ -120,13 +122,17 @@ public class AccountServiceImpl implements AccountService {
       passwordService.addPassword(passwordDTO);
     } catch (Exception e) {
       log.info("register failed error [{}]", e.getMessage());
-      return false;
+      return new ResponseResult<>(false, "注册失败");
     }
-    return true;
+    return new ResponseResult<>(false, "注册成功");
   }
 
-  @Override public AccountDTO getAccountInfo() {
-    CustomUserDetails userDetails = (CustomUserDetails) loginService.getPrincipal();
-    return userDetails.getAccountDTO();
+  @Override public ResponseResult<AccountDTO> getAccountInfo() {
+    Object principal = loginService.getPrincipal();
+    if (principal instanceof CustomUserDetails) {
+      CustomUserDetails userDetails = (CustomUserDetails) principal;
+      return new ResponseResult<>(userDetails.getAccountDTO(), "获取用户信息成功");
+    }
+    return new ResponseResult<>(ResultCode.FAIL.getCode(), "获取用户信息失败");
   }
 }

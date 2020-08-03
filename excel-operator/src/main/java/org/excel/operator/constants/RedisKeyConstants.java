@@ -5,7 +5,7 @@ public interface RedisKeyConstants {
   /**
    * 记录手机号在一段时间类不能连续登录 save redis
    */
-  String LOGIN_COUNT_MOBILE = "moose:login:mobile:count:";
+  String LOGIN_FAIL_COUNT_KEY = "moose:login:fail:count:";
 
   /**
    * 短信验证 key

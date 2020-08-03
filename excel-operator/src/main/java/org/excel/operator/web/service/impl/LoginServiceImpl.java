@@ -49,9 +49,9 @@ public class LoginServiceImpl implements LoginService {
     }
 
     if (LoginTypeEnum.SMS_CODE.getValue().equals(loginType)) {
-      params.put("username", loginParam.getPhone());
+      params.put("mobile", loginParam.getPhone());
       params.put("smsCode", loginParam.getSmsCode());
-      params.put("grant_type", LoginTypeEnum.PASSWORD.getValue());
+      params.put("grant_type", LoginTypeEnum.SMS_CODE.getValue());
     }
 
     params.put("client_id", "client");
@@ -74,7 +74,8 @@ public class LoginServiceImpl implements LoginService {
       result.put("access_token", accessToken);
       result.put("refresh_token", refreshToken);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.info("调用 /oauth/token 失败; {}", e.getMessage());
+      throw new BusinessException(e.getMessage());
     }
     return new ResponseResult<>(result);
   }

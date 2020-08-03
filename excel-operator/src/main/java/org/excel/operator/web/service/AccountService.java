@@ -1,6 +1,7 @@
 package org.excel.operator.web.service;
 
 import javax.servlet.http.HttpServletRequest;
+import org.excel.operator.common.api.ResponseResult;
 import org.excel.operator.model.dto.AccountDTO;
 import org.excel.operator.model.dto.RegisterInfoDTO;
 
@@ -23,7 +24,7 @@ public interface AccountService {
    * @param request         #HttpServletRequest
    * @return 是否注册成功
    */
-  boolean register(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
+  ResponseResult<Boolean> register(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
 
   /**
    * 根据账号查找用户
@@ -44,7 +45,7 @@ public interface AccountService {
   /**
    * 获取用户信息
    *
-   * @return AccountDTO
+   * @return ResponseResult<AccountDTO>
    */
-  AccountDTO getAccountInfo();
+  ResponseResult<AccountDTO> getAccountInfo();
 }
