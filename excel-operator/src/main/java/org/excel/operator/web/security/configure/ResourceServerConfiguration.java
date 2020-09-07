@@ -54,7 +54,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             SecurityConstants.LOGIN_OUT_URL,
             SecurityConstants.LOGIN_STATUS_URL,
             SecurityConstants.REGISTER_URL,
-            SecurityConstants.SEND_SMS_CODE_URL
+            SecurityConstants.SEND_SMS_CODE_URL,
+            SecurityConstants.GET_REFRESH_TOKEN_URL,
+            SecurityConstants.REFRESH_TOKEN_URL
         ).permitAll();
 
     http

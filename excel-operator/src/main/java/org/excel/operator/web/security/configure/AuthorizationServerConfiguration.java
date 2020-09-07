@@ -9,6 +9,7 @@ import org.excel.operator.web.security.granter.SmsCodeTokenGranter;
 import org.excel.operator.web.service.AccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +24,7 @@ import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * 资源认证配置
@@ -63,6 +64,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   @Resource
   private WebResponseExceptionTranslator customOAuth2ResponseExceptionTranslator;
 
+  @Resource
+  private RedisConnectionFactory redisConnectionFactory;
+
   /**
    * 配置数据库数据源
    *
@@ -83,17 +87,18 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   public TokenStore tokenStore() {
     // 保存在内存中
     // return new InMemoryTokenStore();
-    //return new RedisTokenStore(redisConnectionFactory);
-    //return new JwtTokenStore(accessTokenConverter());
     // 基于 JDBC 实现，令牌保存到数据库
-    return new JdbcTokenStore(dataSource);
+    //return new JdbcTokenStore(dataSource);
+    // 基于 Redis 实现，令牌保存到 Redis
+    return new RedisTokenStore(redisConnectionFactory);
+    //return new JwtTokenStore(accessTokenConverter());
   }
 
   /**
    * A service that provides the details about an OAuth2 client.
    *
    * @return ClientDetailsService
-   *
+   * <p>
    * 基于 JDBC 实现，需要事先在数据库配置客户端信息
    */
   @Bean

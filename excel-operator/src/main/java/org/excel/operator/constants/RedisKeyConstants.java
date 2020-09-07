@@ -16,4 +16,9 @@ public interface RedisKeyConstants {
    * 发送短信到手机号码
    */
   String SMS_MOBILE_KEY = "moose:sms:mobile:";
+
+  /**
+   * 保存刷新 token
+   */
+  String REFRESH_TOKEN_KEY = "moose:refresh:token:";
 }

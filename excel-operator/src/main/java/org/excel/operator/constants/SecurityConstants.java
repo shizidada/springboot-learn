@@ -15,6 +15,11 @@ public interface SecurityConstants {
 
   String SEND_SMS_CODE_URL = "/api/v1/sms/send";
 
+  String GET_REFRESH_TOKEN_URL = "/api/v1/account/getRefreshToken";
+
+  String REFRESH_TOKEN_URL = "/api/v1/account/refreshToken";
+
+
   /**
    * 发送短信验证码 或 验证短信验证码时，传递手机号的参数的名称
    */

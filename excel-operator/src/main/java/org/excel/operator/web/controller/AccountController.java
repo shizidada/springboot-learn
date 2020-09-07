@@ -1,6 +1,5 @@
 package org.excel.operator.web.controller;
 
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -36,10 +35,22 @@ public class AccountController {
    * @PostMapping(value = "/login")
    */
   @PostMapping(value = "/login")
-  public ResponseResult<Map<String, Object>> login(@Valid LoginParam loginParam,
+  public ResponseResult<Object> login(@Valid LoginParam loginParam,
       BindingResult result,
       HttpServletRequest request) {
     return loginService.login(loginParam);
+  }
+
+  @PostMapping(value = "/getRefreshToken")
+  public ResponseResult<Object> getRefreshToken(HttpServletRequest request) {
+    String accessToken = request.getParameter("accessToken");
+    return loginService.getRefreshTokenByAccessToken(accessToken);
+  }
+
+  @PostMapping(value = "/refreshToken")
+  public ResponseResult<Object> refreshToken(HttpServletRequest request) {
+    String refreshToken = request.getParameter("refreshToken");
+    return loginService.getAccessTokenByRefreshToken(refreshToken);
   }
 
   /**
