@@ -42,14 +42,15 @@ public enum ResultCode {
   SMS_CODE_ERROR(10303, "验证码不正确"),
   SMS_CODE_COUNT(10304, "验证码超过发送次数"),
 
-  REGISTER_SUCCESS(20006, "注册成功"),
-  REGISTER_FAIL(20007, "注册失败"),
-
   LOGIN_SUCCESS(20001, "登录成功"),
   LOGIN_FAIL(20002, "登录失败"),
   LOGOUT_SUCCESS(20003, "登出成功"),
   NOT_LOGIN(20004, "未登录，请先登录"),
   LOGIN_MAX_COUNT_FAIL(20006, "登录频繁异常，请稍后再试"),
+  LOGIN_METHOD_EMPTY(20007, "登录方式不能为空"),
+
+  REGISTER_SUCCESS(20100, "注册成功"),
+  REGISTER_FAIL(20101, "注册失败"),
 
   /**
    * 文件上传

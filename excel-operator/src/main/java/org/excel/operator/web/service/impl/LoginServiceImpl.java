@@ -20,6 +20,7 @@ import org.excel.operator.web.service.LoginService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,15 +41,19 @@ public class LoginServiceImpl implements LoginService {
 
     // 登录方式
     String loginType = loginParam.getLoginType();
+    if (null == loginType || loginType.isEmpty()) {
+      throw new BusinessException(ResultCode.LOGIN_METHOD_EMPTY);
+    }
 
+    // 密码方式登录
     if (LoginTypeEnum.PASSWORD.getValue().equals(loginType)) {
       String accountName = loginParam.getAccountName();
-      if (StringUtils.isEmpty(accountName)) {
+      if (null == accountName || StringUtils.isEmpty(accountName)) {
         throw new BusinessException(ResultCode.ACCOUNT_NOT_EMPTY);
       }
 
       String password = loginParam.getPassword();
-      if (StringUtils.isEmpty(password)) {
+      if (null == password || StringUtils.isEmpty(password)) {
         throw new BusinessException(ResultCode.PASSWORD_NOT_EMPTY);
       }
 
@@ -57,6 +62,7 @@ public class LoginServiceImpl implements LoginService {
       params.put("grant_type", LoginTypeEnum.PASSWORD.getValue());
     }
 
+    // 短信方式登录
     if (LoginTypeEnum.SMS_CODE.getValue().equals(loginType)) {
       params.put("mobile", loginParam.getPhone());
       params.put("smsCode", loginParam.getSmsCode());
@@ -70,16 +76,18 @@ public class LoginServiceImpl implements LoginService {
     try {
       String jsonString = Objects.requireNonNull(response.body()).string();
       Map<String, Object> authInfo = MapperUtils.json2map(jsonString);
-      String accessToken = (String) authInfo.get("access_token");
-      if (accessToken == null) {
+      String accessToken = (String) authInfo.get(OAuth2AccessToken.ACCESS_TOKEN);
+      if (null == accessToken) {
         Integer code = (Integer) authInfo.get("code");
         String message = (String) authInfo.get("message");
         return new ResponseResult<>(code, message);
       }
-      String refreshToken = (String) authInfo.get("refresh_token");
+
+      // save refresh token redis
+      String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
       redisTemplate.opsForValue()
           .set(RedisKeyConstants.REFRESH_TOKEN_KEY + accessToken, refreshToken);
-      return new ResponseResult<>(accessToken);
+      return new ResponseResult<>(accessToken, "登录成功");
     } catch (Exception e) {
       log.info("调用 /oauth/token get token 失败; {}", e.getMessage());
       throw new BusinessException(e.getMessage());
@@ -96,7 +104,7 @@ public class LoginServiceImpl implements LoginService {
     if (null == refreshToken) {
       throw new BusinessException(ResultCode.REFRESH_TOKEN_NOT_EXIST);
     }
-    return new ResponseResult<>(refreshToken);
+    return new ResponseResult<>(refreshToken, "获取 refresh token 成功");
   }
 
   /**
@@ -104,7 +112,7 @@ public class LoginServiceImpl implements LoginService {
    */
   @Override public ResponseResult<Object> getAccessTokenByRefreshToken(String refresh_token) {
 
-    if (null == refresh_token) {
+    if (null == refresh_token || refresh_token.isEmpty()) {
       throw new BusinessException(ResultCode.TOKEN_VALIDATE_EMPTY);
     }
 
@@ -119,17 +127,19 @@ public class LoginServiceImpl implements LoginService {
     try {
       String jsonString = Objects.requireNonNull(response.body()).string();
       Map<String, Object> authInfo = MapperUtils.json2map(jsonString);
-      String accessToken = (String) authInfo.get("access_token");
-      if (accessToken == null) {
+      String accessToken = (String) authInfo.get(OAuth2AccessToken.ACCESS_TOKEN);
+      if (null == accessToken) {
         Integer code = (Integer) authInfo.get("code");
         String message = (String) authInfo.get("message");
         return new ResponseResult<>(code, message);
       }
-      String refreshToken = (String) authInfo.get("refresh_token");
+
+      // save redis
+      String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
       redisTemplate.opsForValue()
           .set(RedisKeyConstants.REFRESH_TOKEN_KEY + accessToken, refreshToken);
 
-      return new ResponseResult<>(accessToken);
+      return new ResponseResult<>(accessToken, "获取 access token 成功");
     } catch (Exception e) {
       log.info("调用 /oauth/token refresh_token 失败; {}", e.getMessage());
       throw new BusinessException(e.getMessage());
@@ -137,18 +147,18 @@ public class LoginServiceImpl implements LoginService {
   }
 
   @Override
-  public boolean isLogin() {
+  public ResponseResult<Object> isLogin() {
     Authentication authentication = (Authentication) this.getAuthentication();
-    if (authentication == null) {
-      return false;
+    if (null == authentication) {
+      return new ResponseResult<>(false, "获取登录状态成功");
     }
     Object principal = authentication.getPrincipal();
-    return principal instanceof CustomUserDetails;
+    return new ResponseResult<>(principal instanceof CustomUserDetails, "获取登录状态成功");
   }
 
   @Override public Object getPrincipal() {
     Authentication authentication = (Authentication) this.getAuthentication();
-    if (authentication != null) {
+    if (null != authentication) {
       return authentication.getPrincipal();
     }
     return null;

@@ -18,7 +18,7 @@ public interface LoginService {
    *
    * @return 是否登陆
    */
-  boolean isLogin();
+  ResponseResult<Object> isLogin();
 
   /**
    * 获取授权信息

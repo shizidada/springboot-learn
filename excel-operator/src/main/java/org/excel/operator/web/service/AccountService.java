@@ -24,7 +24,7 @@ public interface AccountService {
    * @param request         #HttpServletRequest
    * @return 是否注册成功
    */
-  ResponseResult<Boolean> register(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
+  ResponseResult<Object> register(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
 
   /**
    * 根据账号查找用户
@@ -47,5 +47,5 @@ public interface AccountService {
    *
    * @return ResponseResult<AccountDTO>
    */
-  ResponseResult<AccountDTO> getAccountInfo();
+  ResponseResult<Object> getAccountInfo();
 }

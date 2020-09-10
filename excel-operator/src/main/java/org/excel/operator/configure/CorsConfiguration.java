@@ -1,11 +1,8 @@
 package org.excel.operator.configure;
 
-import java.util.Arrays;
-import java.util.Collections;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * <p>
@@ -18,22 +15,30 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * @see org.excel.operator.configure
  */
 @Configuration
-public class CorsConfiguration {
-
-  /**
-   * 设置跨域
-   *
-   * @return CorsConfigurationSource
-   */
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    org.springframework.web.cors.CorsConfiguration
-        configuration = new org.springframework.web.cors.CorsConfiguration();
-    configuration.setAllowedOrigins(Collections.singletonList("*"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
-    configuration.setAllowCredentials(Boolean.TRUE);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
+public class CorsConfiguration implements WebMvcConfigurer {
+  @Override public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+        .allowedOrigins("*")
+        .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
+        .allowCredentials(true)
+        .maxAge(3600)
+        .allowedHeaders("*");
   }
+
+  ///**
+  // * 设置跨域
+  // *
+  // * @return CorsConfigurationSource
+  // */
+  //@Bean
+  //CorsConfigurationSource corsConfigurationSource() {
+  //  org.springframework.web.cors.CorsConfiguration
+  //      configuration = new org.springframework.web.cors.CorsConfiguration();
+  //  configuration.setAllowedOrigins(Collections.singletonList("*"));
+  //  configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+  //  configuration.setAllowCredentials(Boolean.TRUE);
+  //  UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+  //  source.registerCorsConfiguration("/**", configuration);
+  //  return source;
+  //}
 }

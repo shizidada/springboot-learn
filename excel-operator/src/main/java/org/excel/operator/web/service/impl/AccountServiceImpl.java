@@ -78,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public ResponseResult<Boolean> register(HttpServletRequest request,
+  public ResponseResult<Object> register(HttpServletRequest request,
       RegisterInfoDTO registerInfo) {
     String password = registerInfo.getPassword();
     String rePassword = registerInfo.getRePassword();
@@ -127,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
     return new ResponseResult<>(false, "注册成功");
   }
 
-  @Override public ResponseResult<AccountDTO> getAccountInfo() {
+  @Override public ResponseResult<Object> getAccountInfo() {
     Object principal = loginService.getPrincipal();
     if (principal instanceof CustomUserDetails) {
       CustomUserDetails userDetails = (CustomUserDetails) principal;
