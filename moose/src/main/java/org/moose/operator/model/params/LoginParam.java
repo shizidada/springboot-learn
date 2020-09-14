@@ -3,7 +3,7 @@ package org.moose.operator.model.params;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
-import org.moose.operator.annotation.EnumValidator;
+import org.moose.operator.annotation.ValueIn;
 import org.moose.operator.model.emun.LoginTypeEnum;
 
 /**
@@ -35,6 +35,6 @@ public class LoginParam implements Serializable {
   private String smsCode;
 
   @NotBlank(message = "登录方式不能为空")
-  @EnumValidator(value = LoginTypeEnum.class, message = "登录方式不正确")
+  @ValueIn(value = LoginTypeEnum.class, message = "登录方式不正确")
   private String loginType;
 }

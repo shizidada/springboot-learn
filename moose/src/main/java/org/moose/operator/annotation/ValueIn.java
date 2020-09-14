@@ -14,8 +14,8 @@ import javax.validation.Payload;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-@Constraint(validatedBy = EnumValidatorClass.class)
-public @interface EnumValidator {
+@Constraint(validatedBy = {ValueInValidator.class})
+public @interface ValueIn {
 
   Class<?> value();
 

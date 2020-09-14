@@ -1,5 +1,6 @@
 package org.moose.operator.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,11 +31,14 @@ public class AccountController {
   @Resource
   private LoginService loginService;
 
+  @Resource
+  private ObjectMapper objectMapper;
+
   /**
    * spring security oauth2.0 to login
    */
   @PostMapping(value = "/login", consumes = "application/json")
-  public ResponseResult<Object> login(@Valid @RequestBody LoginParam loginParam,
+  public ResponseResult<Object> login(@RequestBody @Valid LoginParam loginParam,
       BindingResult result) {
     return loginService.login(loginParam);
   }
