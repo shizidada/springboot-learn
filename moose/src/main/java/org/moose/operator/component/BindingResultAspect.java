@@ -1,5 +1,6 @@
 package org.moose.operator.component;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -20,7 +21,7 @@ import org.springframework.validation.FieldError;
 @Component
 @Order(2)
 public class BindingResultAspect {
-  @Pointcut("execution(public * org.excel.operator.web.controller.*.*(..))")
+  @Pointcut("execution(public * org.moose.operator.web.controller.*.*(..))")
   public void validateAnnotation() {
   }
 
@@ -33,10 +34,11 @@ public class BindingResultAspect {
         if (result.hasErrors()) {
           FieldError fieldError = result.getFieldError();
           String message = ResultCode.PARAMS_VALIDATE_FAIL.getMessage();
-          if (fieldError != null) {
+          Integer code = ResultCode.PARAMS_VALIDATE_FAIL.getCode();
+          if (ObjectUtils.isNotEmpty(fieldError)) {
             message = fieldError.getDefaultMessage();
           }
-          throw new BusinessException(ResultCode.PARAMS_VALIDATE_FAIL, message);
+          throw new BusinessException(message, code);
         }
       }
     }

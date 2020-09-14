@@ -1,4 +1,4 @@
-package org.moose.operator.sender.model;
+package org.moose.operator.model.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
  * @author taohua
  * @version v1.0.0
  * @date 2020-06-15 23:22:23:22
- * @see org.moose.operator.web.security.sms
+ * @see org.moose.operator.model.dto
  */
-public class ValidateCode implements Serializable {
+public class ValidateCodeDTO implements Serializable {
 
   private String code;
   /**
@@ -27,26 +27,26 @@ public class ValidateCode implements Serializable {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime expireTime;
 
-  private boolean isExpried;
+  private Boolean isExpired;
 
-  public ValidateCode() {
+  public ValidateCodeDTO() {
   }
 
-  public ValidateCode(String code, Integer expireIn) {
+  public ValidateCodeDTO(String code, Integer expireIn) {
     this.code = code;
     this.expireTime = LocalDateTime.now().plusMinutes(expireIn);
   }
 
-  public ValidateCode(String code, LocalDateTime expireTime) {
+  public ValidateCodeDTO(String code, LocalDateTime expireTime) {
     this.code = code;
     this.expireTime = expireTime;
   }
 
-  public void setExpried(boolean isExpried) {
-    this.isExpried = isExpried;
+  public void setExpired(Boolean isExpired) {
+    this.isExpired = isExpired;
   }
 
-  public boolean getExpried() {
+  public boolean getExpired() {
     return LocalDateTime.now().isAfter(expireTime);
   }
 

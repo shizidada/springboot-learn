@@ -3,18 +3,21 @@ package org.moose.operator.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author taohua
  */
 @Slf4j
 public class ValueInValidator implements ConstraintValidator<ValueIn, Object>, Annotation {
-  private List<Object> values = new ArrayList<>();
+  private final List<Object> values = new ArrayList<>();
 
   @Override
   public void initialize(ValueIn valueIn) {
@@ -42,13 +45,11 @@ public class ValueInValidator implements ConstraintValidator<ValueIn, Object>, A
 
   @Override
   public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
-    //if (value instanceof String) {
-    //  String valueStr = (String) value;
-    //  return StringUtils.isEmpty(valueStr) || values.contains(value);
-    //}
-    ////return Objects.isNull(value) || values.contains(value) ? true : false;
-    //return Objects.isNull(value) || values.contains(value);
-    return false;
+    if (value instanceof String) {
+      String valueStr = (String) value;
+      return StringUtils.isEmpty(valueStr) || values.contains(value);
+    }
+    return Objects.isNull(value) || values.contains(value);
   }
 }
 

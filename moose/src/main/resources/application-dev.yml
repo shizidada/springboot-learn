@@ -22,8 +22,9 @@ spring:
 
   redis:
     database: 15
-    host: redis.moose.com
-    password: tRedisW135
+    #    host: redis.moose.com
+    host: localhost
+#    password: tRedisW135
     port: 6379
 
   jackson:

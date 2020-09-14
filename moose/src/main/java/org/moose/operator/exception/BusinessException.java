@@ -27,6 +27,12 @@ public class BusinessException extends AuthenticationException {
     this.message = message;
   }
 
+  public BusinessException(String message, Integer code) {
+    super(message);
+    this.message = message;
+    this.code = code;
+  }
+
   public BusinessException(String message, Throwable cause) {
     super(message, cause);
     this.message = String.format("%s %s", message, cause.getMessage());

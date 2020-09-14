@@ -2,12 +2,8 @@ package org.moose.operator.web.controller;
 
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResponseResult;
-import org.moose.operator.common.api.ResultCode;
-import org.moose.operator.exception.BusinessException;
-import org.moose.operator.sender.impl.DefaultSmsCodeSender;
+import org.moose.operator.web.service.impl.DefaultSmsCodeSenderServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,15 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SmsCodeController {
 
   @Resource
-  DefaultSmsCodeSender smsCodeSender;
+  DefaultSmsCodeSenderServiceImpl smsCodeSenderService;
 
   @RequestMapping("/send")
-  public ResponseResult<Boolean> sendSmsCode(String phone) {
-    if (StringUtils.isBlank(phone)) {
-      throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
-    }
-    String smsCode = RandomStringUtils.randomNumeric(6);
-    smsCodeSender.send(phone, smsCode);
-    return new ResponseResult<>(true, "短信验证码发送成功");
+  public ResponseResult<Object> sendSmsCode(String phone) {
+    return smsCodeSenderService.sendSmsCode(phone);
   }
 }
