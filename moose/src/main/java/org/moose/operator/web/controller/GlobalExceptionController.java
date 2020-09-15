@@ -66,10 +66,9 @@ public class GlobalExceptionController extends AbstractErrorController {
     if (e.getCause() instanceof BusinessException) {
       BusinessException be = (BusinessException) e.getCause();
       return new ResponseResult<>(be.getCode(), be.getMessage());
-    } else {
-      // 从枚举类中取出自定义的错误码和错误信息
-      return new ResponseResult<>(ResultCode.UN_KNOWN_ERROR);
     }
+    // 从枚举类中取出自定义的错误码和错误信息
+    return new ResponseResult<>(ResultCode.UN_KNOWN_ERROR.getCode(), e.getMessage());
   }
 
   //@ExceptionHandler(Exception.class)
