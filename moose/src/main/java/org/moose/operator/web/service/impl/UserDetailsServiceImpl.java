@@ -3,6 +3,7 @@ package org.moose.operator.web.service.impl;
 import com.google.common.collect.Lists;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
@@ -54,14 +55,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     AccountDTO accountDTO = accountService.getByAccountName(accountName);
-    if (accountDTO == null) {
+    if (ObjectUtils.isEmpty(accountDTO)) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 
     // TODO: 禁用账号如何防止多次请求，访问数据库 ？？？
 
     PasswordDTO passwordDTO = passwordService.getByAccountId(accountDTO.getAccountId());
-    if (passwordDTO == null) {
+    if (ObjectUtils.isEmpty(passwordDTO)) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
     }
 

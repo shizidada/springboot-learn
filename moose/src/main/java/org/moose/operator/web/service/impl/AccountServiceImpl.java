@@ -111,6 +111,7 @@ public class AccountServiceImpl implements AccountService {
       accountDO.setAccountName(registerInfo.getAccountName());
       accountDO.setPhone(registerInfo.getPhone());
       accountDO.setAvatar(registerInfo.getAvatar());
+      accountDO.setGender(registerInfo.getGender());
 
       PasswordDTO passwordDTO = new PasswordDTO();
       passwordDTO.setAccountId(accountDO.getAccountId());
@@ -122,9 +123,9 @@ public class AccountServiceImpl implements AccountService {
       passwordService.savePassword(passwordDTO);
     } catch (Exception e) {
       log.info("register failed error [{}]", e.getMessage());
-      return new ResponseResult<>(false, "注册失败");
+      throw new BusinessException(ResultCode.REGISTER_FAIL);
     }
-    return new ResponseResult<>(false, "注册成功");
+    return new ResponseResult<>(Boolean.TRUE, "注册成功");
   }
 
   @Override public ResponseResult<Object> getAccountInfo() {

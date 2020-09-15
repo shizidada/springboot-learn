@@ -13,7 +13,6 @@ import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.LoginService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,7 +57,7 @@ public class AccountController {
   /**
    * spring security oauth2.0 to register
    */
-  @PostMapping(value = "/register", consumes = "application/json")
+  @PostMapping(value = "/register")
   public ResponseResult<Object> register(@Valid RegisterInfoDTO registerInfoDTO,
       BindingResult result,
       HttpServletRequest request) {

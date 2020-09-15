@@ -15,13 +15,33 @@ import lombok.Data;
 @Data
 public class AccountDO extends BaseDO {
 
+  /**
+   * 账号 Id
+   */
   private Long accountId;
 
+  /**
+   * 账号
+   */
   private String accountName;
 
+  /**
+   * 状态
+   */
   private String status;
 
+  /**
+   * 手机号码
+   */
   private String phone;
 
+  /**
+   * 头像
+   */
   private String avatar;
+
+  /**
+   * 性别
+   */
+  private String gender;
 }

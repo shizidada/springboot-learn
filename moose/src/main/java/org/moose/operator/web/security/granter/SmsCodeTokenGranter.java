@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
-import org.moose.operator.constant.SecurityConstants;
+import org.moose.operator.constant.DefaultConstants;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.RoleDTO;
@@ -70,7 +70,7 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
     // 验证验证码
 
     // 客户端提交的验证码
-    String smsCode = parameters.get(SecurityConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
+    String smsCode = parameters.get(DefaultConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
     if (StringUtils.isBlank(smsCode)) {
       throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
     }
@@ -87,7 +87,7 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
     // 验证通过后从缓存中移除验证码 etc...
 
     // 客户端提交的手机号码
-    String phone = parameters.get(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
+    String phone = parameters.get(DefaultConstants.DEFAULT_PARAMETER_NAME_MOBILE);
     AccountDTO accountDTO = accountService.getAccountByPhone(phone);
 
     // TODO if account not exist , create a new account ??

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
+import org.moose.operator.constant.DefaultConstants;
 import org.moose.operator.constant.HttpMethod;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
@@ -73,7 +74,7 @@ public class LoginLimitFilter extends OncePerRequestFilter {
    */
   @Override
   public void afterPropertiesSet() throws ServletException {
-    addUrlToMap(LOGIN_IN_URL, SecurityConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
+    addUrlToMap(LOGIN_IN_URL, DefaultConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
   }
 
   /**
@@ -91,11 +92,19 @@ public class LoginLimitFilter extends OncePerRequestFilter {
     }
   }
 
+  /**
+   * TODO: 限制
+   *  - 手动输入验证码？
+   *  - 一段时间内不让登录
+   *
+   * @param request
+   * @throws IOException
+   */
   private void validate(HttpServletRequest request) throws IOException {
 
-    String accountName = request.getParameter(SecurityConstants.LOGIN_USERNAME_PARAMETER);
+    String accountName = request.getParameter(DefaultConstants.DEFAULT_LOGIN_USERNAME_PARAMETER);
 
-    String mobilePhone = request.getParameter(SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
+    String mobilePhone = request.getParameter(DefaultConstants.DEFAULT_PARAMETER_NAME_MOBILE);
 
     StringBuilder sb = new StringBuilder(RedisKeyConstants.LOGIN_FAIL_COUNT_KEY);
 
