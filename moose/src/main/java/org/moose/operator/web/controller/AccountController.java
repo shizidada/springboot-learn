@@ -37,20 +37,20 @@ public class AccountController {
   /**
    * spring security oauth2.0 to login
    */
-  @PostMapping(value = "/login", consumes = "application/json")
-  public ResponseResult<Object> login(@RequestBody @Valid LoginParam loginParam,
+  @PostMapping(value = "/login")
+  public ResponseResult<Object> login(@Valid LoginParam loginParam,
       BindingResult result) {
     return loginService.login(loginParam);
   }
 
   @PostMapping(value = "/getRefreshToken")
-  public ResponseResult<Object> getRefreshToken(@RequestBody AuthTokenParam tokenParam) {
+  public ResponseResult<Object> getRefreshToken(AuthTokenParam tokenParam) {
     String accessToken = tokenParam.getAccessToken();
     return loginService.getRefreshTokenByAccessToken(accessToken);
   }
 
   @PostMapping(value = "/refreshToken")
-  public ResponseResult<Object> refreshToken(@RequestBody AuthTokenParam tokenParam) {
+  public ResponseResult<Object> refreshToken(AuthTokenParam tokenParam) {
     String refreshToken = tokenParam.getRefreshToken();
     return loginService.getAccessTokenByRefreshToken(refreshToken);
   }

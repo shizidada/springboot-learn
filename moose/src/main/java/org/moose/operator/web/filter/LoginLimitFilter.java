@@ -1,4 +1,4 @@
-package org.moose.operator.web.security.filter;
+package org.moose.operator.web.filter;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
+import org.moose.operator.constant.HttpMethod;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
 import org.moose.operator.exception.BusinessException;
@@ -26,14 +27,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author taohua
  * @version v1.0.0
  * @date 2020-06-30 22:59:22:59
- * @see org.moose.operator.web.security.filter
+ * @see org.moose.operator.web.filter
  */
 @Slf4j
 public class LoginLimitFilter extends OncePerRequestFilter {
 
   public static final String LOGIN_IN_URL = SecurityConstants.LOGIN_IN_URL;
-
-  public static final String LOGIN_IN_POST_METHOD = "POST";
 
   /**
    * 存放所有需要校验验证码的url
@@ -58,7 +57,7 @@ public class LoginLimitFilter extends OncePerRequestFilter {
       FilterChain filterChain) throws ServletException, IOException {
     if (StringUtils.equals(request.getRequestURI(), LOGIN_IN_URL)
         && StringUtils.equalsIgnoreCase(
-        request.getMethod(), LOGIN_IN_POST_METHOD)) {
+        request.getMethod(), HttpMethod.POST)) {
       try {
         validate(request);
       } catch (BusinessException e) {
@@ -78,7 +77,7 @@ public class LoginLimitFilter extends OncePerRequestFilter {
   }
 
   /**
-   * 讲系统中配置的需要校验验证码的URL根据校验的类型放入map
+   * 将系统中配置的需要校验验证码的URL根据校验的类型放入map
    *
    * @param urlString
    * @param smsParam

@@ -103,7 +103,7 @@ public class LoginServiceImpl implements LoginService {
       String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
       redisTemplate.opsForValue()
           .set(RedisKeyConstants.REFRESH_TOKEN_KEY + accessToken, refreshToken);
-      return new ResponseResult<>(accessToken, "登录成功");
+      return new ResponseResult<>(accessToken, "获取 access token 成功");
     } catch (Exception e) {
       log.info("调用 /oauth/token get token 失败; {}", e.getMessage());
       throw new BusinessException(e.getMessage());

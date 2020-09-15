@@ -6,7 +6,7 @@ import org.moose.operator.web.security.component.CustomAccessDeniedHandler;
 import org.moose.operator.web.security.component.CustomAuthenticationEntryPoint;
 import org.moose.operator.web.security.component.CustomAuthenticationFailureHandler;
 import org.moose.operator.web.security.component.CustomLogoutSuccessHandler;
-import org.moose.operator.web.security.filter.LoginLimitFilter;
+import org.moose.operator.web.filter.LoginLimitFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
