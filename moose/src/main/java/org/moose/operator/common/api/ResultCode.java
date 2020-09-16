@@ -78,7 +78,7 @@ public enum ResultCode {
   /**
    * 未知错误
    */
-  UN_KNOWN_ERROR(-99999, "未知错误"),
+  UN_KNOWN_ERROR(-1, "未知错误"),
   ;
 
   private final Integer code;

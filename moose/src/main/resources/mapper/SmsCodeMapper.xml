@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.moose.operator.mapper.SmsCodeMapper">
+
+  <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.SmsCodeDO">
+    <id column="phone" jdbcType="VARCHAR" property="phone"/>
+    <result column="type" jdbcType="VARCHAR" property="type"/>
+    <result column="code" jdbcType="VARCHAR" property="code"/>
+  </resultMap>
+
+  <sql id="Base_Column">
+    phone, type, code
+  </sql>
+
+  <insert id="insertSmsCode" parameterType="org.moose.operator.model.domain.SmsCodeDO"
+      useGeneratedKeys="true">
+    INSERT INTO `t_sms_verify`(phone, type, code) VALUES (#{phone}, #{type}, #{code})
+  </insert>
+
+</mapper>

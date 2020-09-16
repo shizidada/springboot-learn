@@ -5,7 +5,7 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.ResponseResult;
 import org.moose.operator.model.params.SmsCodeParam;
-import org.moose.operator.web.service.impl.DefaultSmsCodeSenderServiceImpl;
+import org.moose.operator.web.service.SmsCodeSenderService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/v1/sms")
 @Slf4j
 public class SmsCodeController {
-
   @Resource
-  DefaultSmsCodeSenderServiceImpl smsCodeSenderService;
+  private SmsCodeSenderService smsCodeSenderService;
 
   @PostMapping("/send")
   public ResponseResult<Object> sendSmsCode(@Valid SmsCodeParam smsCodeParam,

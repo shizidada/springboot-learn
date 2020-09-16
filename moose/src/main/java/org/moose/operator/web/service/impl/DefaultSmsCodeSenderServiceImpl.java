@@ -10,11 +10,14 @@ import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
 import org.moose.operator.exception.BusinessException;
+import org.moose.operator.mapper.SmsCodeMapper;
+import org.moose.operator.model.domain.SmsCodeDO;
 import org.moose.operator.model.dto.SmsCodeDTO;
 import org.moose.operator.model.params.SmsCodeParam;
 import org.moose.operator.web.service.SmsCodeSenderService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -30,8 +33,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultSmsCodeSenderServiceImpl implements SmsCodeSenderService {
 
+  @Resource
+  private SmsCodeMapper smsCodeMapper;
+
   @Resource private RedisTemplate<String, Object> redisTemplate;
 
+  @Transactional(rollbackFor = Exception.class)
   @Override public ResponseResult<Object> sendSmsCode(SmsCodeParam smsCodeParam) {
 
     // 发送短信
@@ -72,6 +79,13 @@ public class DefaultSmsCodeSenderServiceImpl implements SmsCodeSenderService {
     if (ObjectUtils.isNotEmpty(smsCodeDTO) && !smsCodeDTO.getExpired()) {
       return;
     }
+
+    // sms code save db
+    SmsCodeDO smsCodeDO = new SmsCodeDO();
+    smsCodeDO.setPhone(phoneNumber);
+    smsCodeDO.setType(smsType);
+    smsCodeDO.setCode(smsCode);
+    smsCodeMapper.insertSmsCode(smsCodeDO);
 
     smsCodeDTO =
         new SmsCodeDTO(smsCode, smsType, SecurityConstants.SMS_TIME_OF_TIMEOUT);

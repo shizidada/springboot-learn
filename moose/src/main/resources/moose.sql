@@ -173,4 +173,16 @@ INSERT INTO `t_password` VALUES (722205584761290753, 722205584761290752, '$2a$10
 INSERT INTO `t_password` VALUES (725123288577081345, 725123288577081344, '$2a$10$frNtQV7UoiKb0h3uGDJHN.X/opFJVwrZfVzouaJqIs4IKVpvTy0Wq', '2020-06-23 23:01:04', '2020-06-23 23:01:04');
 COMMIT;
 
+DROP TABLE IF EXISTS `t_sms_verify`;
+CREATE TABLE `t_sms_verify` (
+  `id` bigint(32) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT '短信验证码ID',
+  `phone` char(11) COLLATE utf8_bin NOT NULL COMMENT '手机号码',
+  `type` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '短信类型',
+  `code` char(6) COLLATE utf8_bin NOT NULL COMMENT '验证码',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  KEY `phone` (`phone`),
+  KEY `type` (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='短信验证码表';
+
 SET FOREIGN_KEY_CHECKS = 1;
