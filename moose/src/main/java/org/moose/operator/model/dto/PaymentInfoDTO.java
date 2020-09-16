@@ -1,4 +1,4 @@
-package org.moose.operator.rocketmq.entity;
+package org.moose.operator.model.dto;
 
 import lombok.Data;
 
@@ -10,10 +10,10 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2020-05-21 22:39:22:39
- * @see org.moose.operator.rocketmq.entity
+ * @see org.moose.operator.model.dto
  */
 @Data
-public class PaymentInfo {
+public class PaymentInfoDTO {
   private String paymentId;
   private String receiveName;
   private String fromName;

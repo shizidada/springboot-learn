@@ -12,6 +12,11 @@ public enum SmsCodeEnum {
   REGISTER("register"),
 
   /**
+   * sms login
+   */
+  SMS_LOGIN("sms_login"),
+
+  /**
    * 重置密码
    */
   REST_PASSWORD("rest_password");

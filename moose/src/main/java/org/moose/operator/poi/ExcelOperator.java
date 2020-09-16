@@ -142,7 +142,7 @@ public class ExcelOperator {
   /**
    * 写出 excel
    */
-  public void exportExcelFile(List<ImportExcelDTO> importExcelDTOs, OutputStream outputStream) {
+  public void exportExcelFile(List<ImportExcelDTO> importExcelDTOList, OutputStream outputStream) {
     XSSFWorkbook workbook = new XSSFWorkbook();
 
     // 设置 XSSFCellStyle 样式
@@ -160,7 +160,7 @@ public class ExcelOperator {
     titleRow.createCell(3).setCellValue("收货手机号");
     titleRow.createCell(4).setCellValue("收货地址");
 
-    for (ImportExcelDTO importExcelDTO : importExcelDTOs) {
+    for (ImportExcelDTO importExcelDTO : importExcelDTOList) {
       // 填充内容
       int lastRowNum = sheet.getLastRowNum();
       XSSFRow dataRow = sheet.createRow(lastRowNum + 1);

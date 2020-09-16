@@ -10,6 +10,7 @@ import org.moose.operator.web.service.AccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,6 +68,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   @Resource
   private RedisConnectionFactory redisConnectionFactory;
 
+  @Resource
+  private RedisTemplate<String, Object> redisTemplate;
+
   /**
    * 配置数据库数据源
    *
@@ -118,6 +122,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     SmsCodeTokenGranter smsCodeTokenGranter =
         new SmsCodeTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(),
             endpoints.getOAuth2RequestFactory());
+    smsCodeTokenGranter.setRedisTemplate(redisTemplate);
     smsCodeTokenGranter.setAccountService(accountService);
     granters.add(smsCodeTokenGranter);
     return new CompositeTokenGranter(granters);

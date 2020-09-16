@@ -4,12 +4,16 @@ import com.google.common.collect.Lists;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.DefaultConstants;
+import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.RoleDTO;
+import org.moose.operator.model.dto.SmsCodeDTO;
 import org.moose.operator.web.security.component.CustomUserDetails;
 import org.moose.operator.web.service.AccountService;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -43,14 +47,14 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
 
   private AccountService accountService;
 
-  private RedisTemplate<String, String> redisTemplate;
+  private RedisTemplate<String, Object> redisTemplate;
 
   public void setAccountService(AccountService accountService) {
     this.accountService = accountService;
   }
 
   public void setRedisTemplate(
-      RedisTemplate<String, String> redisTemplate) {
+      RedisTemplate<String, Object> redisTemplate) {
     this.redisTemplate = redisTemplate;
   }
 
@@ -67,7 +71,11 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
     Map<String, String> parameters =
         new LinkedHashMap<String, String>(tokenRequest.getRequestParameters());
 
-    // 验证验证码
+    // 客户端提交的手机号码
+    String phoneNumber = parameters.get(DefaultConstants.DEFAULT_PARAMETER_NAME_PHONE);
+    if (StringUtils.isBlank(phoneNumber)) {
+      throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
+    }
 
     // 客户端提交的验证码
     String smsCode = parameters.get(DefaultConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
@@ -75,23 +83,28 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
       throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
     }
 
+    //sms_login
+    String smsCodeKey =
+        String.format(RedisKeyConstants.SMS_CODE_KEY, "sms_login", phoneNumber);
+    SmsCodeDTO smsCodeDTO = (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);
+
     // 获取服务中保存的用户验证码, 在生成好后放到缓存中
-    String smsCodeCached = "123456";
-    if (StringUtils.isBlank(smsCodeCached)) {
-      throw new BusinessException(ResultCode.SMS_CODE_NOT_EXITS);
+    if (ObjectUtils.isEmpty(smsCodeDTO) || smsCodeDTO.getExpired()) {
+      throw new BusinessException(ResultCode.SMS_CODE_ERROR);
     }
-    if (!smsCode.equals(smsCodeCached)) {
+    String smsCodeCached = smsCodeDTO.getCode();
+    if (!StringUtils.equals(smsCode, smsCodeCached)) {
       throw new BusinessException(ResultCode.SMS_CODE_ERROR);
     }
 
     // 验证通过后从缓存中移除验证码 etc...
+    redisTemplate.expire(smsCodeKey, 0, TimeUnit.SECONDS);
 
     // 客户端提交的手机号码
-    String phone = parameters.get(DefaultConstants.DEFAULT_PARAMETER_NAME_MOBILE);
-    AccountDTO accountDTO = accountService.getAccountByPhone(phone);
+    AccountDTO accountDTO = accountService.getAccountByPhone(phoneNumber);
 
-    // TODO if account not exist , create a new account ??
-    if (accountDTO == null) {
+    // TODO: if account not exist , create a new account ??
+    if (ObjectUtils.isEmpty(accountDTO)) {
       throw new BusinessException(ResultCode.PHONE_NOT_EXITS);
     }
 

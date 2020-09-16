@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.DefaultConstants;
@@ -33,8 +34,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class LoginLimitFilter extends OncePerRequestFilter {
 
-  public static final String LOGIN_IN_URL = SecurityConstants.LOGIN_IN_URL;
-
   /**
    * 存放所有需要校验验证码的url
    */
@@ -51,14 +50,21 @@ public class LoginLimitFilter extends OncePerRequestFilter {
   }
 
   /**
+   * 初始化要拦截的url配置信息
+   */
+  @Override
+  public void afterPropertiesSet() throws ServletException {
+    addUrlToMap(SecurityConstants.LOGIN_IN_URL, DefaultConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
+  }
+
+  /**
    * 如果不是登录请求，直接调用后面的过滤器链
    */
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
-    if (StringUtils.equals(request.getRequestURI(), LOGIN_IN_URL)
-        && StringUtils.equalsIgnoreCase(
-        request.getMethod(), HttpMethod.POST)) {
+    if (ObjectUtils.isNotEmpty(urlMap.get(request.getRequestURI())) &&
+        StringUtils.equalsIgnoreCase(request.getMethod(), HttpMethod.POST)) {
       try {
         validate(request);
       } catch (BusinessException e) {
@@ -67,14 +73,6 @@ public class LoginLimitFilter extends OncePerRequestFilter {
       }
     }
     filterChain.doFilter(request, response);
-  }
-
-  /**
-   * 初始化要拦截的url配置信息
-   */
-  @Override
-  public void afterPropertiesSet() throws ServletException {
-    addUrlToMap(LOGIN_IN_URL, DefaultConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
   }
 
   /**
@@ -93,36 +91,29 @@ public class LoginLimitFilter extends OncePerRequestFilter {
   }
 
   /**
-   * TODO: 限制
-   *  - 手动输入验证码？
-   *  - 一段时间内不让登录
+   * TODO: 限制 - 手动输入验证码？ - 一段时间内不让登录
    *
    * @param request
    * @throws IOException
    */
   private void validate(HttpServletRequest request) throws IOException {
 
+    StringBuilder sb = new StringBuilder(RedisKeyConstants.LOGIN_LIMIT_KEY);
+
     String accountName = request.getParameter(DefaultConstants.DEFAULT_LOGIN_USERNAME_PARAMETER);
-
-    String mobilePhone = request.getParameter(DefaultConstants.DEFAULT_PARAMETER_NAME_MOBILE);
-
-    StringBuilder sb = new StringBuilder(RedisKeyConstants.LOGIN_FAIL_COUNT_KEY);
-
-    if (accountName != null) {
+    if (StringUtils.isNotEmpty(accountName)) {
       sb.append(accountName);
     }
 
-    if (mobilePhone != null) {
-      sb.append(mobilePhone);
+    String phoneNumber = request.getParameter(DefaultConstants.DEFAULT_PARAMETER_NAME_PHONE);
+    if (StringUtils.isNotEmpty(phoneNumber)) {
+      sb.append(phoneNumber);
     }
 
-    String loginCountKey = sb.toString();
-
-    log.info("login key [{}] ", loginCountKey);
-
     // 计算登录次数
+    String loginCountKey = sb.toString();
     Integer loginCount = (Integer) redisTemplate.opsForValue().get(loginCountKey);
-    if (loginCount == null) {
+    if (ObjectUtils.isEmpty(loginCount)) {
       redisTemplate.opsForValue()
           .set(loginCountKey, 1, SecurityConstants.LOGIN_TIME_OF_SECONDS,
               TimeUnit.SECONDS);

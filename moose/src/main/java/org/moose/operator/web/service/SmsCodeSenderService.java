@@ -1,6 +1,7 @@
 package org.moose.operator.web.service;
 
 import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.model.params.SmsCodeParam;
 
 /**
  * <p>
@@ -16,8 +17,8 @@ public interface SmsCodeSenderService {
   /**
    * 发送短信
    *
-   * @param mobile 手机号
+   * @param smsCodeParam 短信
    * @return ResponseResult<Object>
    */
-  ResponseResult<Object> sendSmsCode(String mobile);
+  ResponseResult<Object> sendSmsCode(SmsCodeParam smsCodeParam);
 }

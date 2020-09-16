@@ -21,7 +21,7 @@ public interface SecurityConstants {
 
   Integer SMS_TIME_OF_DAY = 60;
 
-  Integer SMS_TIME_OF_TIMEOUT = 15 * 60;
+  Integer SMS_TIME_OF_TIMEOUT = 10 * 60;
 
   /**
    * 短信一天限制发送次数

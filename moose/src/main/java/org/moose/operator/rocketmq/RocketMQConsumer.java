@@ -29,7 +29,7 @@ public class RocketMQConsumer {
     DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("please_rename_unique_group_name");
 
     // 设置NameServer的地址
-    consumer.setNamesrvAddr("localhost:9876");
+    consumer.setNamesrvAddr("rocketmq.moose.com:9876");
 
     // 订阅一个或者多个Topic，以及Tag来过滤需要消费的消息
     consumer.subscribe("test_demo_rocket_mq", "*");

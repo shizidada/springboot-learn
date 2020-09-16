@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @date 2020-06-15 23:22:23:22
  * @see org.moose.operator.model.dto
  */
-public class ValidateCodeDTO implements Serializable {
+public class SmsCodeDTO implements Serializable {
 
   private String code;
   /**
@@ -27,26 +27,24 @@ public class ValidateCodeDTO implements Serializable {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime expireTime;
 
-  private Boolean isExpired;
+  private Boolean expired;
 
-  public ValidateCodeDTO() {
+  private String type;
+
+  public SmsCodeDTO() {
   }
 
-  public ValidateCodeDTO(String code, Integer expireIn) {
+  public SmsCodeDTO(String code, String smsType, Integer expireIn) {
     this.code = code;
+    this.type = smsType;
     this.expireTime = LocalDateTime.now().plusMinutes(expireIn);
   }
 
-  public ValidateCodeDTO(String code, LocalDateTime expireTime) {
-    this.code = code;
-    this.expireTime = expireTime;
+  public void setExpired(Boolean expired) {
+    this.expired = expired;
   }
 
-  public void setExpired(Boolean isExpired) {
-    this.isExpired = isExpired;
-  }
-
-  public boolean getExpired() {
+  public Boolean getExpired() {
     return LocalDateTime.now().isAfter(expireTime);
   }
 
@@ -64,5 +62,22 @@ public class ValidateCodeDTO implements Serializable {
 
   public void setExpireTime(LocalDateTime expireTime) {
     this.expireTime = expireTime;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  @Override public String toString() {
+    return "SmsCodeDTO{" +
+        "code='" + code + '\'' +
+        ", expireTime=" + expireTime +
+        ", expired=" + expired +
+        ", type='" + type + '\'' +
+        '}';
   }
 }

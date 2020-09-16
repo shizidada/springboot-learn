@@ -37,8 +37,8 @@ public enum ResultCode {
   PASSWORD_IS_EMPTY(10200, "密码不能为空"),
 
   SMS_CODE_IS_EMPTY(10300, "验证码不能为空"),
-  SMS_CODE_NOT_EXITS(10301, "验证码不存在"),
-  SMS_CODE_IS_EXPIRED(10302, "验证码已过期"),
+  //SMS_CODE_NOT_EXITS(10301, "验证码不存在"),
+  //SMS_CODE_IS_EXPIRED(10302, "验证码已过期"),
   SMS_CODE_ERROR(10303, "验证码不正确"),
   SMS_CODE_COUNT(10304, "验证码超过发送次数"),
 
@@ -78,7 +78,8 @@ public enum ResultCode {
   /**
    * 未知错误
    */
-  UN_KNOWN_ERROR(-99999, "未知错误");
+  UN_KNOWN_ERROR(-99999, "未知错误"),
+  ;
 
   private final Integer code;
 

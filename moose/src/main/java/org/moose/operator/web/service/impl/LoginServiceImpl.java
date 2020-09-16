@@ -38,7 +38,8 @@ public class LoginServiceImpl implements LoginService {
   private RedisTemplate<String, String> redisTemplate;
 
   /**
-   * localhost:7000/oauth/token?grant_type=sms_code&client_id=client&client_secret=secret&mobile=13511083015&smsCode=123456
+   * localhost:7000/oauth/token?grant_type=sms_code&client_id=client&client_secret=secret&phone=13500181521&smsCode=123456
+   * localhost:7000/oauth/token?grant_type=password&client_id=client&client_secret=secret&accountName=tom&password=123456
    */
   @Override public ResponseResult<Object> login(LoginParam loginParam) {
     // 通过 HTTP 客户端请求登录接口
@@ -70,8 +71,8 @@ public class LoginServiceImpl implements LoginService {
     // 短信方式登录
     if (LoginTypeEnum.SMS_CODE.getValue().equals(loginType)) {
 
-      String mobile = loginParam.getPhone();
-      if (StringUtils.isEmpty(mobile)) {
+      String phoneNumber = loginParam.getPhone();
+      if (StringUtils.isEmpty(phoneNumber)) {
         throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
       }
 
@@ -80,7 +81,7 @@ public class LoginServiceImpl implements LoginService {
         throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
       }
 
-      params.put("mobile", mobile);
+      params.put("phone", phoneNumber);
       params.put("smsCode", smsCode);
       params.put("grant_type", loginType);
     }
