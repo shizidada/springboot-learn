@@ -69,9 +69,9 @@ public enum ResultCode {
    * 参数校验
    */
   PARAMS_VALIDATE_FAIL(-10000, "参数校验失败"),
-  TOKEN_IS_EMPTY(-10001, "token 不能为空"),
-  TOKEN_VALIDATE_FAIL(-10002, "token 校验失败"),
-  TOKEN_INVALID(-10003, "token 无效"),
+  TOKEN_IS_EMPTY(-10001, "token must not be null"),
+  TOKEN_VALIDATE_FAIL(-10002, "token check fail"),
+  TOKEN_INVALID(-10003, "invalid access token"),
   REFRESH_TOKEN_NOT_EXIST(-10004, "refresh token not exist"),
   ACCESS_TOKEN_IS_EMPTY(-10005, "access token is empty"),
 

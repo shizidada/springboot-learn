@@ -23,5 +23,5 @@ public interface RedisKeyConstants {
   /**
    * 保存刷新 token
    */
-  String REFRESH_TOKEN_KEY = "moose:refresh:token:";
+  String REFRESH_TOKEN_KEY = "moose:refresh:token:%s";
 }

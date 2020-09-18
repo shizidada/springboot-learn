@@ -48,7 +48,7 @@ public class AccountController {
     return loginService.getRefreshTokenByAccessToken(accessToken);
   }
 
-  @PostMapping(value = "/refreshToken")
+  @PostMapping(value = "/refresh")
   public ResponseResult<Object> refreshToken(AuthTokenParam tokenParam) {
     String refreshToken = tokenParam.getRefreshToken();
     return loginService.getAccessTokenByRefreshToken(refreshToken);

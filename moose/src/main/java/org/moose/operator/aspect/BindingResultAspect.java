@@ -1,4 +1,4 @@
-package org.moose.operator.component;
+package org.moose.operator.aspect;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

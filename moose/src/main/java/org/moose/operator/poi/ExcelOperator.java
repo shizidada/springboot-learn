@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.moose.operator.component.SnowflakeIdWorker;
+import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.model.dto.ImportExcelDTO;
 
 /**

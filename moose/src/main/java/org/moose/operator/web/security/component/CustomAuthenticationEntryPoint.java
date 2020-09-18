@@ -13,6 +13,7 @@ import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
@@ -51,6 +52,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
     if (e instanceof InsufficientAuthenticationException) {
       message = ResultCode.NOT_LOGIN.getMessage();
+
+      Throwable cause = e.getCause();
+      if (cause instanceof InvalidTokenException) {
+        message = ResultCode.TOKEN_INVALID.getMessage();
+        code = ResultCode.TOKEN_INVALID.getCode();
+      }
     }
     log.info("CustomAuthenticationEntryPoint code : [{}] message: [{}] errorMessage: [{}]",
         code, message, e.getMessage());

@@ -17,7 +17,7 @@ public interface SecurityConstants {
 
   String GET_REFRESH_TOKEN_URL = "/api/v1/account/getRefreshToken";
 
-  String REFRESH_TOKEN_URL = "/api/v1/account/refreshToken";
+  String REFRESH_TOKEN_URL = "/api/v1/account/refresh";
 
   Integer SMS_TIME_OF_DAY = 60;
 

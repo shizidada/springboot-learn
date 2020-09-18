@@ -1,6 +1,6 @@
 package org.moose.operator.configure;
 
-import org.moose.operator.component.SnowflakeIdWorker;
+import org.moose.operator.util.SnowflakeIdWorker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

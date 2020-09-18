@@ -2,11 +2,11 @@ package org.moose.operator.web.security.configure;
 
 import javax.annotation.Resource;
 import org.moose.operator.constant.SecurityConstants;
+import org.moose.operator.web.filter.LoginLimitFilter;
 import org.moose.operator.web.security.component.CustomAccessDeniedHandler;
 import org.moose.operator.web.security.component.CustomAuthenticationEntryPoint;
 import org.moose.operator.web.security.component.CustomAuthenticationFailureHandler;
 import org.moose.operator.web.security.component.CustomLogoutSuccessHandler;
-import org.moose.operator.web.filter.LoginLimitFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -62,31 +62,24 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             SecurityConstants.REFRESH_TOKEN_URL
         ).permitAll();
 
-    http
-        .exceptionHandling()
-        .accessDeniedHandler(customAccessDeniedHandler)
-        .authenticationEntryPoint(customAuthenticationEntryPoint);
-
     // add filter
     http
         .addFilterBefore(loginLimitFilter(), AbstractPreAuthenticatedProcessingFilter.class);
 
     // 禁用 session
     http
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-        .and()
-        .csrf()
-        .disable()
-        .exceptionHandling()
-
-        .and()
-        .authorizeRequests().anyRequest().authenticated();
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().authorizeRequests().anyRequest().authenticated()
+        .and().cors()
+        .and().csrf().disable();
   }
 
   @Override
   public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
     // 配置资源 ID
     resources.resourceId("app-resources").stateless(true);
+    resources.accessDeniedHandler(customAccessDeniedHandler);
+    resources.authenticationEntryPoint(customAuthenticationEntryPoint);
   }
 }

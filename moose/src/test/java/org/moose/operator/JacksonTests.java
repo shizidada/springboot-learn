@@ -3,7 +3,7 @@ package org.moose.operator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.component.SnowflakeIdWorker;
+import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.model.domain.AccountDO;
 import org.junit.Before;
 import org.junit.Test;

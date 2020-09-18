@@ -37,6 +37,10 @@ public class LoginServiceImpl implements LoginService {
   @Resource
   private RedisTemplate<String, String> redisTemplate;
 
+  // Error creating bean with name 'tokenStore': Requested bean is currently in creation: Is there an unresolvable circular reference?
+  //@Resource
+  //private TokenStore tokenStore;
+
   /**
    * localhost:7000/oauth/token?grant_type=sms_code&client_id=client&client_secret=secret&phone=13500181521&smsCode=123456
    * localhost:7000/oauth/token?grant_type=password&client_id=client&client_secret=secret&accountName=tom&password=123456
@@ -103,7 +107,7 @@ public class LoginServiceImpl implements LoginService {
       // save refresh token redis
       String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
       redisTemplate.opsForValue()
-          .set(RedisKeyConstants.REFRESH_TOKEN_KEY + accessToken, refreshToken);
+          .set(String.format(RedisKeyConstants.REFRESH_TOKEN_KEY, accessToken), refreshToken);
       return new ResponseResult<>(accessToken, "获取 access token 成功");
     } catch (Exception e) {
       log.info("调用 /oauth/token get token 失败; {}", e.getMessage());
@@ -116,7 +120,13 @@ public class LoginServiceImpl implements LoginService {
       throw new BusinessException(ResultCode.ACCESS_TOKEN_IS_EMPTY);
     }
     String refreshToken =
-        redisTemplate.opsForValue().get(RedisKeyConstants.REFRESH_TOKEN_KEY + accessToken);
+        redisTemplate.opsForValue()
+            .get(String.format(RedisKeyConstants.REFRESH_TOKEN_KEY, accessToken));
+
+    // remove access token
+    // OAuth2AccessToken oauthAccessToken = new DefaultOAuth2AccessToken(accessToken);
+    // tokenStore.removeAccessToken(oauthAccessToken);
+
     // TODO: IP 限制
     if (StringUtils.isEmpty(refreshToken)) {
       throw new BusinessException(ResultCode.REFRESH_TOKEN_NOT_EXIST);
@@ -155,6 +165,10 @@ public class LoginServiceImpl implements LoginService {
       String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
       redisTemplate.opsForValue()
           .set(RedisKeyConstants.REFRESH_TOKEN_KEY + accessToken, refreshToken);
+
+      // remove refresh token
+      // OAuth2RefreshToken oauthRefreshToken = new DefaultOAuth2RefreshToken(refreshToken);
+      // tokenStore.removeRefreshToken(oauthRefreshToken);
 
       return new ResponseResult<>(accessToken, "获取 access token 成功");
     } catch (Exception e) {

@@ -13,7 +13,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -54,9 +54,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   private AccountService accountService;
 
   @Resource
-  private PasswordEncoder passwordEncoder;
-
-  @Resource
   private UserDetailsService userDetailsService;
 
   @Resource
@@ -70,6 +67,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
   @Resource
   private RedisTemplate<String, Object> redisTemplate;
+
+  /**
+   * 设置用户密码的加密方式
+   */
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
   /**
    * 配置数据库数据源
@@ -155,6 +160,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   @Override
   public void configure(AuthorizationServerSecurityConfigurer oauthServer)
       throws Exception {
+    oauthServer.passwordEncoder(passwordEncoder());
+
     oauthServer
         .tokenKeyAccess("permitAll()")
         .checkTokenAccess("isAuthenticated()")
