@@ -9,6 +9,7 @@ import org.moose.operator.web.security.granter.SmsCodeTokenGranter;
 import org.moose.operator.web.service.AccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,7 +54,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   @Resource
   private AccountService accountService;
 
-  @Resource
+  @Lazy
+  @Resource(name = "userDetailsServiceBean")
   private UserDetailsService userDetailsService;
 
   @Resource

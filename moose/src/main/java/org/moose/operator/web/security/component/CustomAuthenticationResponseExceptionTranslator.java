@@ -32,8 +32,14 @@ public class CustomAuthenticationResponseExceptionTranslator
   public ResponseEntity<BusinessAuthenticationException> translate(Exception e) throws Exception {
     log.error("CustomAuthenticationResponseExceptionTranslator :: ", e);
 
+    if (e instanceof InvalidGrantException) {
+      return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .body(
+              new BusinessAuthenticationException(e.getMessage(), ResultCode.NOT_LOGIN.getCode()));
+    }
+
     if (e instanceof InternalAuthenticationServiceException ||
-        e instanceof InvalidGrantException ||
         e instanceof InvalidRequestException ||
         e instanceof HttpRequestMethodNotSupportedException) {
       return ResponseEntity

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * <p>
@@ -21,18 +22,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @date 2019 2019/11/20 21:20
  * @see org.moose.operator.configure
  */
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
-@Slf4j
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  @Resource
-  private UserDetailsServiceImpl userDetailsService;
+  @Bean
+  @Override
+  public UserDetailsService userDetailsServiceBean() throws Exception {
+    return new UserDetailsServiceImpl();
+  }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userDetailsService);
+    auth.userDetailsService(userDetailsServiceBean());
   }
 
   /**

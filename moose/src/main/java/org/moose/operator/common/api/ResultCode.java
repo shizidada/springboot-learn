@@ -48,6 +48,7 @@ public enum ResultCode {
   NOT_LOGIN(20004, "未登录，请先登录"),
   LOGIN_MAX_COUNT_FAIL(20006, "登录频繁异常，请稍后再试"),
   LOGIN_METHOD_IS_EMPTY(20007, "登录方式不能为空"),
+  LOGIN_SERVER_ERROR(20008, "登录授权异常"),
 
   REGISTER_SUCCESS(20100, "注册成功"),
   REGISTER_FAIL(20101, "注册失败"),

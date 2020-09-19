@@ -6,7 +6,6 @@ import org.moose.operator.web.filter.LoginLimitFilter;
 import org.moose.operator.web.security.component.CustomAccessDeniedHandler;
 import org.moose.operator.web.security.component.CustomAuthenticationEntryPoint;
 import org.moose.operator.web.security.component.CustomAuthenticationFailureHandler;
-import org.moose.operator.web.security.component.CustomLogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,9 +26,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
   @Resource
   private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-
-  @Resource
-  private CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
   @Resource
   private CustomAccessDeniedHandler customAccessDeniedHandler;

@@ -15,7 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -27,11 +26,7 @@ import org.springframework.stereotype.Service;
  * @date 2019 2019/11/20 21:22
  * @see org.moose.operator.web.service.impl
  */
-@Service(value = "userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-
-  @Resource
-  private LoginServiceImpl loginService;
 
   @Resource
   private AccountServiceImpl accountService;
@@ -78,7 +73,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
       throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
     }
 
-    Object principal = loginService.getPrincipal();
+    Object principal = accountService.getPrincipal();
     if (principal instanceof CustomUserDetails) {
       return (CustomUserDetails) principal;
     }

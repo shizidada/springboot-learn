@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.moose.operator.common.api.ResponseResult;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.RegisterInfoDTO;
+import org.moose.operator.model.params.LoginParam;
 
 /**
  * <p>
@@ -27,6 +28,22 @@ public interface AccountService {
   ResponseResult<Object> saveAccount(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
 
   /**
+   * 登录 获取 Token
+   *
+   * @param loginParam 登录信息
+   * @return 是否登录成功信息
+   */
+  ResponseResult<Object> getToken(LoginParam loginParam);
+
+  /**
+   * 退出登录 删除 Token
+   *
+   * @param accessToken accessToken
+   * @return 是否退出成功信息
+   */
+  ResponseResult<Object> removeToken(String accessToken);
+
+  /**
    * 根据账号查找用户
    *
    * @param accountName 账号
@@ -48,4 +65,34 @@ public interface AccountService {
    * @return ResponseResult<AccountDTO>
    */
   ResponseResult<Object> getAccountInfo();
+
+  /**
+   * 判断账号是否登陆
+   *
+   * @return 是否登陆
+   */
+  ResponseResult<Object> isLogin();
+
+  /**
+   * 获取授权信息
+   *
+   * @return 授权信息
+   */
+  Object getPrincipal();
+
+  /**
+   * 刷新 token
+   *
+   * @param accessToken accessToken
+   * @return refreshToken
+   */
+  ResponseResult<Object> getRefreshTokenByAccessToken(String accessToken);
+
+  /**
+   * 刷新 token
+   *
+   * @param refreshToken refreshToken
+   * @return accessToken
+   */
+  ResponseResult<Object> getAccessTokenByRefreshToken(String refreshToken);
 }

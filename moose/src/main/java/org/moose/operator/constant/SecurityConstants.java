@@ -11,13 +11,13 @@ public interface SecurityConstants {
 
   String REGISTER_URL = "/api/v1/account/register";
 
-  String LOGIN_STATUS_URL = "/api/v1/login/status";
-
-  String SEND_SMS_CODE_URL = "/api/v1/sms/send";
+  String LOGIN_STATUS_URL = "/api/v1/account/status";
 
   String GET_REFRESH_TOKEN_URL = "/api/v1/account/getRefreshToken";
 
-  String REFRESH_TOKEN_URL = "/api/v1/account/refresh";
+  String REFRESH_TOKEN_URL = "/api/v1/account/refreshToken";
+
+  String SEND_SMS_CODE_URL = "/api/v1/sms/send";
 
   Integer SMS_TIME_OF_DAY = 60;
 
