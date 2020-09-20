@@ -1,6 +1,7 @@
 package org.moose.operator.model.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -13,6 +14,7 @@ import lombok.Data;
  * @see org.moose.operator.model.domain
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class AccountDO extends BaseDO {
 
   /**
@@ -34,14 +36,4 @@ public class AccountDO extends BaseDO {
    * 手机号码
    */
   private String phone;
-
-  /**
-   * 头像
-   */
-  private String avatar;
-
-  /**
-   * 性别
-   */
-  private String gender;
 }

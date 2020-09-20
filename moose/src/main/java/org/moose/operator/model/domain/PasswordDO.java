@@ -1,6 +1,7 @@
 package org.moose.operator.model.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -13,6 +14,7 @@ import lombok.Data;
  * @see org.moose.operator.model.domain
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class PasswordDO extends BaseDO {
 
   private Long passwordId;

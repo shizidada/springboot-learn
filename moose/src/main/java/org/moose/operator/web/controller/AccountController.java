@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.ResponseResult;
-import org.moose.operator.model.dto.RegisterInfoDTO;
 import org.moose.operator.model.params.AuthTokenParam;
 import org.moose.operator.model.params.LoginParam;
+import org.moose.operator.model.params.RegisterInfoParam;
 import org.moose.operator.web.service.AccountService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,10 +33,10 @@ public class AccountController {
    * spring security oauth2.0 to register
    */
   @PostMapping(value = "/register")
-  public ResponseResult<Object> register(@Valid RegisterInfoDTO registerInfoDTO,
+  public ResponseResult<Object> register(@Valid RegisterInfoParam registerInfoParam,
       BindingResult result,
       HttpServletRequest request) {
-    return accountService.saveAccount(request, registerInfoDTO);
+    return accountService.saveAccount(request, registerInfoParam);
   }
 
   /**

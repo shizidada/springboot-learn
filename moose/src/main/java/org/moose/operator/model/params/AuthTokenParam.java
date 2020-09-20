@@ -1,11 +1,9 @@
 package org.moose.operator.model.params;
 
-import java.io.Serializable;
-
 /**
  * @author taohua
  */
-public class AuthTokenParam implements Serializable {
+public class AuthTokenParam {
 
   private String accessToken;
 

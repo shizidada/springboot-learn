@@ -1,7 +1,8 @@
 package org.moose.operator.model.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * <p>
@@ -19,10 +20,12 @@ public class BaseDO {
   /**
    * 创建时间
    */
-  private Date createTime;
+  @Field("create_time")
+  private LocalDateTime createTime;
 
   /**
    * 修改时间
    */
-  private Date updateTime;
+  @Field("update_time")
+  private LocalDateTime updateTime;
 }

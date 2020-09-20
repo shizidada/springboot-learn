@@ -17,8 +17,10 @@ spring:
       cluster-name: my-application
       cluster-nodes: localhost:9300
 
-#    mongodb:
-#      uri: mongodb://127.0.0.1:27017/learn
+    mongodb:
+      host: localhost
+      port: 27017
+      database: moose
 
   redis:
     database: 15

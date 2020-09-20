@@ -3,6 +3,8 @@ package org.moose.operator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.moose.operator.model.dto.MessageInfoDTO;
+import org.moose.operator.util.MapperUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.model.domain.AccountDO;
 import org.junit.Before;
@@ -40,5 +42,15 @@ public class JacksonTests {
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
+  }
+
+  @Test
+  public void testMessageInfo() throws Exception {
+    MessageInfoDTO messageInfo = new MessageInfoDTO();
+    messageInfo.setMessage("hi");
+    messageInfo.setToId("123");
+    String messageInfoJson = MapperUtils.obj2json(messageInfo);
+    // {"toId":"757308185127157760","message":"hi"}
+    log.info(messageInfoJson);
   }
 }

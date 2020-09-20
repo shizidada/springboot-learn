@@ -131,8 +131,6 @@ CREATE TABLE `t_account` (
   `account_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
   `status` varchar(1) COLLATE utf8_bin DEFAULT '1' COMMENT '帐号启用状态:0->禁用；1->启用',
   `phone` varchar(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
-  `avatar` varchar(250) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '头像',
-  `gender` varchar(1) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '性别: 1->male；2->female；0->un_known',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   UNIQUE KEY `idx_account_id` (`account_id`),
@@ -144,8 +142,8 @@ CREATE TABLE `t_account` (
 -- Records of t_account
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_account` VALUES (722205584761290752, 'taohua', '1', '13511083015', 'https://img3.doubanio.com/view/photo/l/public/p595295073.webp', '2', '2020-06-15 21:47:09', '2020-06-16 20:54:12');
-INSERT INTO `t_account` VALUES (725123288577081344, 'tom', '1', '13611083018', 'https://img3.doubanio.com/view/photo/l/public/p595295073.webp', '1','2020-06-23 23:01:04', '2020-06-23 23:01:04');
+INSERT INTO `t_account` VALUES (722205584761290752, 'taohua', '1', '13511083015', '2020-06-15 21:47:09', '2020-06-16 20:54:12');
+INSERT INTO `t_account` VALUES (725123288577081344, 'tom', '1', '13611083018', '2020-06-23 23:01:04', '2020-06-23 23:01:04');
 COMMIT;
 
 -- ----------------------------

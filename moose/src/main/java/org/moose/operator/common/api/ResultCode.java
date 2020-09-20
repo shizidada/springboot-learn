@@ -28,6 +28,7 @@ public enum ResultCode {
   ACCOUNT_OR_PASSWORD_ERROR(10002, "账号或密码错误"),
   ACCOUNT_NAME_EXITS(10003, "账号已存在"),
   ACCOUNT_DISABLED(10004, "账号已禁用"),
+  USER_INFO_NOT_EXIST(10005, "用户信息不存在"),
 
   PHONE_EXITS(10100, "手机号已存在"),
   PHONE_NOT_EXITS(10101, "手机号不存在"),

@@ -1,7 +1,7 @@
 package org.moose.operator.web.service;
 
 import com.mongodb.client.result.UpdateResult;
-import org.moose.operator.mongo.entity.Message;
+import org.moose.operator.model.dto.ChatMessageDTO;
 
 /**
  * @author taohua
@@ -11,10 +11,10 @@ public interface MessageService {
   /**
    * 保存消息
    *
-   * @param message #Message
+   * @param chatMessageDTO #Message
    * @return Message
    */
-  Message saveMessage(Message message);
+  ChatMessageDTO saveMessage(ChatMessageDTO chatMessageDTO);
 
   /**
    * 跟新消息状态
@@ -23,5 +23,5 @@ public interface MessageService {
    * @param status    消息状态
    * @return UpdateResult
    */
-  UpdateResult updateMessageState(String messageId, Integer status);
+  UpdateResult updateMessageStatus(String messageId, Integer status);
 }

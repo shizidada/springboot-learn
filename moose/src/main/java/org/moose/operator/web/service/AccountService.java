@@ -3,8 +3,8 @@ package org.moose.operator.web.service;
 import javax.servlet.http.HttpServletRequest;
 import org.moose.operator.common.api.ResponseResult;
 import org.moose.operator.model.dto.AccountDTO;
-import org.moose.operator.model.dto.RegisterInfoDTO;
 import org.moose.operator.model.params.LoginParam;
+import org.moose.operator.model.params.RegisterInfoParam;
 
 /**
  * <p>
@@ -21,11 +21,12 @@ public interface AccountService {
   /**
    * 注册
    *
-   * @param registerInfoDTO 注册信息
-   * @param request         #HttpServletRequest
+   * @param registerInfoParam 注册信息
+   * @param request           #HttpServletRequest
    * @return 是否注册成功
    */
-  ResponseResult<Object> saveAccount(HttpServletRequest request, RegisterInfoDTO registerInfoDTO);
+  ResponseResult<Object> saveAccount(HttpServletRequest request,
+      RegisterInfoParam registerInfoParam);
 
   /**
    * 登录 获取 Token

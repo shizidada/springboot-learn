@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,10 +97,10 @@ public class XSSFOperatorTests {
         importExcelDO.setAddress(address);
 
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
-        importExcelDO.setCreateTime(new Date());
+        importExcelDO.setCreateTime(LocalDateTime.now());
 
         //importExcelDO.setUpdateTime(dateFormat.format(new Date()));
-        importExcelDO.setUpdateTime(new Date());
+        importExcelDO.setUpdateTime(LocalDateTime.now());
 
         importExcelInfoList.add(importExcelDO);
       }

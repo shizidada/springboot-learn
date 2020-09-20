@@ -1,6 +1,5 @@
 package org.moose.operator.model.params;
 
-import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import org.moose.operator.annotation.ValueIn;
@@ -17,8 +16,7 @@ import org.moose.operator.model.emun.SmsCodeEnum;
  * @see org.moose.operator.model.params
  */
 @Data
-public class SmsCodeParam implements Serializable {
-  private static final long serialVersionUID = -3613427894460743407L;
+public class SmsCodeParam {
 
   @NotBlank(message = "手机号码不能为空")
   private String phone;

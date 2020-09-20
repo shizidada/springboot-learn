@@ -1,4 +1,4 @@
-package org.moose.operator.mongo.entity;
+package org.moose.operator.model.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Data
 @Document(collection = "product")
-public class Product {
+public class ProductDO {
   @Id
   @Field("product_id")
   private String productId;

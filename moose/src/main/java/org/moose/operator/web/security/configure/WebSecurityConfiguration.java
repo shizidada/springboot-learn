@@ -1,6 +1,5 @@
 package org.moose.operator.web.security.configure;
 
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.web.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;

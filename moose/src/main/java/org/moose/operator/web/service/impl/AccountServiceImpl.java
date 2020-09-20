@@ -1,6 +1,7 @@
 package org.moose.operator.web.service.impl;
 
 import com.google.common.collect.Maps;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -17,16 +18,19 @@ import org.moose.operator.constant.SecurityConstants;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.AccountMapper;
 import org.moose.operator.model.domain.AccountDO;
+import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.PasswordDTO;
-import org.moose.operator.model.dto.RegisterInfoDTO;
+import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.emun.LoginTypeEnum;
 import org.moose.operator.model.params.LoginParam;
+import org.moose.operator.model.params.RegisterInfoParam;
 import org.moose.operator.util.MapperUtils;
 import org.moose.operator.util.OkHttpClientUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.web.security.component.CustomUserDetails;
 import org.moose.operator.web.service.AccountService;
+import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
@@ -73,6 +77,9 @@ public class AccountServiceImpl implements AccountService {
   private PasswordServiceImpl passwordService;
 
   @Resource
+  private UserInfoService userInfoService;
+
+  @Resource
   private PasswordEncoder passwordEncoder;
 
   @Resource
@@ -107,7 +114,7 @@ public class AccountServiceImpl implements AccountService {
   @Transactional(rollbackFor = Exception.class)
   @Override
   public ResponseResult<Object> saveAccount(HttpServletRequest request,
-      RegisterInfoDTO registerInfo) {
+      RegisterInfoParam registerInfo) {
     String password = registerInfo.getPassword();
     String rePassword = registerInfo.getRePassword();
     String url = request.getRequestURL().toString();
@@ -138,8 +145,6 @@ public class AccountServiceImpl implements AccountService {
       accountDO.setAccountId(snowflakeIdWorker.nextId());
       accountDO.setAccountName(registerInfo.getAccountName());
       accountDO.setPhone(registerInfo.getPhone());
-      accountDO.setAvatar(registerInfo.getAvatar());
-      accountDO.setGender(registerInfo.getGender());
 
       PasswordDTO passwordDTO = new PasswordDTO();
       passwordDTO.setAccountId(accountDO.getAccountId());
@@ -149,6 +154,19 @@ public class AccountServiceImpl implements AccountService {
 
       accountMapper.insertAccount(accountDO);
       passwordService.savePassword(passwordDTO);
+
+      UserInfoDO userInfoDO = new UserInfoDO();
+      userInfoDO.setPhone(phone);
+      userInfoDO.setUserId(String.valueOf(snowflakeIdWorker.nextId()));
+      userInfoDO.setUserName(accountName);
+      userInfoDO.setAccountId(accountDO.getAccountId());
+      userInfoDO.setAccountName(accountName);
+      userInfoDO.setGender(registerInfo.getGender());
+      userInfoDO.setAvatar(registerInfo.getAvatar());
+      userInfoDO.setCreateTime(LocalDateTime.now());
+      userInfoDO.setUpdateTime(LocalDateTime.now());
+
+      userInfoService.saveUserInfo(userInfoDO);
     } catch (Exception e) {
       log.info("register failed error [{}]", e.getMessage());
       throw new BusinessException(ResultCode.REGISTER_FAIL);
@@ -260,11 +278,23 @@ public class AccountServiceImpl implements AccountService {
 
   @Override public ResponseResult<Object> getAccountInfo() {
     Object principal = this.getPrincipal();
-    if (principal instanceof CustomUserDetails) {
-      CustomUserDetails userDetails = (CustomUserDetails) principal;
-      return new ResponseResult<>(userDetails.getAccountDTO(), "获取用户信息成功");
+    if (!(principal instanceof CustomUserDetails)) {
+      throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
     }
-    return new ResponseResult<>(ResultCode.FAIL.getCode(), "获取用户信息失败");
+
+    CustomUserDetails userDetails = (CustomUserDetails) principal;
+    AccountDTO accountDTO = userDetails.getAccountDTO();
+    if (ObjectUtils.isEmpty(accountDTO)) {
+      throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
+    }
+
+    Long accountId = accountDTO.getAccountId();
+    String accountName = accountDTO.getAccountName();
+    UserInfoDTO userInfoDTO = userInfoService.getUserInfo(accountId, accountName);
+    if (ObjectUtils.isEmpty(userInfoDTO)) {
+      throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
+    }
+    return new ResponseResult<>(userInfoDTO, "获取用户信息成功");
   }
 
   @Override public ResponseResult<Object> getRefreshTokenByAccessToken(String accessToken) {

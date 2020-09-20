@@ -1,6 +1,5 @@
 package org.moose.operator.model.params;
 
-import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import org.moose.operator.annotation.ValueIn;
@@ -10,9 +9,7 @@ import org.moose.operator.model.emun.LoginTypeEnum;
  * @author taohua
  */
 @Data
-public class LoginParam implements Serializable {
-
-  private static final long serialVersionUID = 8989667558166315317L;
+public class LoginParam {
 
   /**
    * 账号

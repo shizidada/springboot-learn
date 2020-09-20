@@ -2,6 +2,8 @@ package org.moose.operator.model.params;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import org.moose.operator.annotation.ValueIn;
+import org.moose.operator.model.emun.GenderEnum;
 
 /**
  * @author taohua
@@ -23,4 +25,8 @@ public class RegisterInfoParam {
 
   @NotBlank(message = "头像不能为空")
   private String avatar;
+
+  @NotBlank(message = "性别不能为空")
+  @ValueIn(value = GenderEnum.class, message = "性别不正确")
+  private String gender;
 }

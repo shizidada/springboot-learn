@@ -3,6 +3,7 @@ package org.moose.operator.web.websocket;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.moose.operator.constant.ChatMessageConstants;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,6 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 @Component
 @Slf4j
 public class MessageHandshakeInterceptor implements HandshakeInterceptor {
-  public static final int LENGTH = 2;
 
   /**
    * 握手前
@@ -31,12 +31,12 @@ public class MessageHandshakeInterceptor implements HandshakeInterceptor {
   public boolean beforeHandshake(ServerHttpRequest serverHttpRequest,
       ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler,
       Map<String, Object> map) throws Exception {
-    log.info("----------开始握手！------------");
-    // 处理请求路径为 ---> /ws/{uid}
+    log.info("------ web socket before Handshake ------");
+    // 处理请求路径为 ---> /socket.io/{userId}
     String path = serverHttpRequest.getURI().getPath();
     String[] split = StringUtils.split(path, "/");
     // 请求路径切割后不等于2的排除掉
-    if (split.length != LENGTH) {
+    if (split.length != ChatMessageConstants.SOCKET_URL_PARAM_LENGTH) {
       return false;
     }
     // 第二个参数不是数字排除掉
@@ -44,7 +44,8 @@ public class MessageHandshakeInterceptor implements HandshakeInterceptor {
     if (StringUtils.isEmpty(userId)) {
       return false;
     }
-    map.put("uid", userId);
+
+    map.put("userId", userId);
     return true;
   }
 
@@ -59,6 +60,6 @@ public class MessageHandshakeInterceptor implements HandshakeInterceptor {
   @Override
   public void afterHandshake(ServerHttpRequest serverHttpRequest,
       ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
-    log.info("----------握手完成！------------");
+    log.info("------ web socket after Handshake ------");
   }
 }

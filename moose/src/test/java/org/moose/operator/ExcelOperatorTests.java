@@ -1,9 +1,10 @@
 package org.moose.operator;
 
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-import org.moose.operator.mongo.entity.Product;
-import org.moose.operator.mongo.entity.User;
+import org.moose.operator.model.domain.ProductDO;
+import org.moose.operator.model.domain.UserInfoDO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class ExcelOperatorTests {
 
   @Test
   public void testInsert() {
-    User user = new User();
-    user.setUsername("username");
+    UserInfoDO user = new UserInfoDO();
+    user.setAccountName("username");
     mongoTemplate.insert(user);
   }
 
@@ -45,48 +46,48 @@ public class ExcelOperatorTests {
 
   @Test
   public void testFind() {
-    List<User> all = mongoTemplate.findAll(User.class);
+    List<UserInfoDO> all = mongoTemplate.findAll(UserInfoDO.class);
     System.out.println(all);
   }
 
   @Test
   public void insertUser() {
-    User user = new User();
+    UserInfoDO user = new UserInfoDO();
     user.setUserId(ObjectId.get().toHexString());
     user.setAvatar("https://avatars1.githubusercontent.com/u/14831261?s=64&v=4");
-    user.setUsername("小桃花");
+    user.setAccountName("小桃花");
     user.setEmail("xiaotaohua@gmail.com");
     user.setPhone("13611083015");
     user.setDescription("好开心😄");
     user.setGender("0");
-    user.setCreateDate(new Date());
-    user.setUpdateDate(new Date());
+    user.setCreateTime(LocalDateTime.now());
+    user.setUpdateTime(LocalDateTime.now());
     mongoTemplate.insert(user);
   }
 
   @Test
   public void deleteUser() {
-    List<User> users = mongoTemplate.findAll(User.class);
+    List<UserInfoDO> users = mongoTemplate.findAll(UserInfoDO.class);
     log.info("DeleteResult {}", users);
   }
 
   @Test
   public void testInsertUserAndProduct() {
-    Product product = new Product();
-    product.setUserId("5e0b6d05424ac70ab28b70b6");
-    product.setProductId(ObjectId.get().toHexString());
-    product.setProductName("良品铺子 - 波力海苔");
-    product.setDescription("良品铺子，高端零食，连续4年高端零食全国销售领先，买好零食，更多人到良品铺子");
-    product.setPrice(new BigDecimal("1.89"));
-    product.setCreateDate(new Date());
-    product.setUpdateDate(new Date());
-    mongoTemplate.insert(product);
+    ProductDO productDO = new ProductDO();
+    productDO.setUserId("5e0b6d05424ac70ab28b70b6");
+    productDO.setProductId(ObjectId.get().toHexString());
+    productDO.setProductName("良品铺子 - 波力海苔");
+    productDO.setDescription("良品铺子，高端零食，连续4年高端零食全国销售领先，买好零食，更多人到良品铺子");
+    productDO.setPrice(new BigDecimal("1.89"));
+    productDO.setCreateDate(new Date());
+    productDO.setUpdateDate(new Date());
+    mongoTemplate.insert(productDO);
   }
 
   @Test
   public void findProduct() {
-    List<Product> products = mongoTemplate.findAll(Product.class);
-    log.info("{}", products);
+    List<ProductDO> productDOS = mongoTemplate.findAll(ProductDO.class);
+    log.info("{}", productDOS);
   }
 
   @Test

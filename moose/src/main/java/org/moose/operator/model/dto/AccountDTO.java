@@ -22,7 +22,5 @@ public class AccountDTO extends BaseDTO implements Serializable {
 
   private String status;
 
-  private String avatar;
-
-  private String gender;
+  private String phone;
 }

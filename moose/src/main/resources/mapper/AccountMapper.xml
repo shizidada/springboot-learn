@@ -8,14 +8,12 @@
     <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
     <result column="status" jdbcType="VARCHAR" property="status"/>
     <result column="phone" jdbcType="VARCHAR" property="phone"/>
-    <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
-    <result column="gender" jdbcType="VARCHAR" property="gender"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
 
   <sql id="Base_Column">
-    account_id, account_name, avatar, phone, gender, status, create_time, update_time
+    account_id, account_name, phone, status, create_time, update_time
   </sql>
 
   <select id="findByAccountName" parameterType="org.moose.operator.model.domain.AccountDO"
@@ -34,8 +32,8 @@
 
   <insert id="insertAccount" parameterType="org.moose.operator.model.domain.AccountDO">
     INSERT INTO
-    t_account(account_id, account_name, phone, avatar, gender)
+    t_account(account_id, account_name, phone)
     VALUES
-    (#{accountId}, #{accountName}, #{phone}, #{avatar}, #{gender})
+    (#{accountId}, #{accountName}, #{phone})
   </insert>
 </mapper>
