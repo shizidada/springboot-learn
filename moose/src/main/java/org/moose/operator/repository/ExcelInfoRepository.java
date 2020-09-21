@@ -1,4 +1,4 @@
-package org.moose.operator.es.repository;
+package org.moose.operator.repository;
 
 import org.moose.operator.es.entity.ExcelInfoEntity;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;

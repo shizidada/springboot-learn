@@ -18,6 +18,24 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfiguration {
 
+  //@Bean
+  //public RedisConnectionFactory redisConnectionFactory() {
+  //  RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+  //  redisStandaloneConfiguration.setHostName("localhost");
+  //  redisStandaloneConfiguration.setDatabase(0);
+  //  redisStandaloneConfiguration.setPort(6379);
+  //  JedisConnectionFactory factory = new JedisConnectionFactory(redisStandaloneConfiguration);
+  //  return factory;
+  //}
+
+  //@Bean
+  //public JedisPoolConfig jedisPoolConfig() {
+  //  JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+  //  jedisPoolConfig.setMaxIdle(10);
+  //  jedisPoolConfig.setMinIdle(2);
+  //  return jedisPoolConfig;
+  //}
+
   @Bean
   public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
     RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();

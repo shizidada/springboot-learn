@@ -14,7 +14,7 @@ spring:
   # elasticsearch settings
   data:
     elasticsearch:
-      cluster-name: my-application
+      cluster-name: elasticsearch
       cluster-nodes: localhost:9300
 
     mongodb:
