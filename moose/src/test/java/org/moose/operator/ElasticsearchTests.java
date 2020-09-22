@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moose.operator.es.entity.ExcelInfoEntity;
 import org.moose.operator.es.entity.OrderEntity;
+import org.moose.operator.es.entity.PoetryEntity;
+import org.moose.operator.repository.PoetryRepository;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -144,5 +147,38 @@ public class ElasticsearchTests {
     queries.add(indexQuery2);
 
     elasticsearchTemplate.bulkIndex(queries);
+  }
+
+  @Test
+  public void testStringQueryPoetry() throws JsonProcessingException {
+    String string = QueryBuilders.termQuery("poetry_author", "李白").toString();
+    StringQuery stringQuery = new StringQuery(string);
+    Page<PoetryEntity> poetryEntities =
+        elasticsearchTemplate.queryForPage(stringQuery, PoetryEntity.class);
+    log.info(objectMapper.writeValueAsString(poetryEntities));
+  }
+
+  @Test
+  public void testQueryPoetry() throws JsonProcessingException {
+    Criteria address = Criteria.where("poetry_author").is("李白");
+    CriteriaQuery criteriaQuery = new CriteriaQuery(address);
+    Page<PoetryEntity> poetryEntities =
+        elasticsearchTemplate.queryForPage(criteriaQuery, PoetryEntity.class);
+    log.info(objectMapper.writeValueAsString(poetryEntities));
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  @Resource
+  private PoetryRepository poetryRepository;
+
+  @Test
+  public void testPoetryRepository() throws JsonProcessingException {
+    BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+        .must(QueryBuilders.matchQuery("poetry_author", "李白"))
+        .must(QueryBuilders.matchQuery("poetry_num", 117));
+
+    Iterable<PoetryEntity> search = poetryRepository.search(boolQueryBuilder);
+
+    log.info(objectMapper.writeValueAsString(search));
   }
 }
