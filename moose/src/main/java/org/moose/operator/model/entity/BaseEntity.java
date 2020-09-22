@@ -1,4 +1,4 @@
-package org.moose.operator.es.entity;
+package org.moose.operator.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
