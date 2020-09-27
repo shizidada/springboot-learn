@@ -1,6 +1,5 @@
 package org.moose.operator.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,9 +24,6 @@ public class AccountController {
 
   @Resource
   private AccountService accountService;
-
-  @Resource
-  private ObjectMapper objectMapper;
 
   /**
    * spring security oauth2.0 to register
@@ -55,18 +51,6 @@ public class AccountController {
   public ResponseResult<Object> logout(AuthTokenParam tokenParam) {
     String accessToken = tokenParam.getAccessToken();
     return accountService.removeToken(accessToken);
-  }
-
-  @PostMapping(value = "/getRefreshToken")
-  public ResponseResult<Object> getRefreshToken(AuthTokenParam tokenParam) {
-    String accessToken = tokenParam.getAccessToken();
-    return accountService.getRefreshTokenByAccessToken(accessToken);
-  }
-
-  @PostMapping(value = "/refreshToken")
-  public ResponseResult<Object> refreshToken(AuthTokenParam tokenParam) {
-    String refreshToken = tokenParam.getRefreshToken();
-    return accountService.getAccessTokenByRefreshToken(refreshToken);
   }
 
   @PostMapping(value = "/status")
