@@ -4,7 +4,7 @@
 <mapper namespace="org.moose.operator.mapper.AccountMapper">
 
   <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.AccountDO">
-    <id column="account_id" jdbcType="BIGINT" property="accountId"/>
+    <id column="account_id" jdbcType="VARCHAR" property="accountId"/>
     <result column="account_name" jdbcType="VARCHAR" property="accountName"/>
     <result column="status" jdbcType="VARCHAR" property="status"/>
     <result column="phone" jdbcType="VARCHAR" property="phone"/>

@@ -22,7 +22,7 @@ public interface PasswordMapper {
    * @param accountId 账号 id
    * @return PasswordDO
    */
-  PasswordDO findByAccountId(Long accountId);
+  PasswordDO findByAccountId(String accountId);
 
   /**
    * 插入密码

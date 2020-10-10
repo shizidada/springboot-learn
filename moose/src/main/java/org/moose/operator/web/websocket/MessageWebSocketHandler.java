@@ -82,14 +82,14 @@ public class MessageWebSocketHandler extends TextWebSocketHandler {
         return;
       }
 
-      UserInfoDTO toUser = userService.getUserByUserId(toId);
+      UserInfoDTO toUser = userService.getUserInfoByUserId(toId);
       if (ObjectUtils.isEmpty(toUser)) {
         log.info("parse toUser is empty :: [{}]", messageInfo);
         return;
       }
 
       String userId = (String) session.getAttributes().get("userId");
-      UserInfoDTO fromUser = userService.getUserByUserId(userId);
+      UserInfoDTO fromUser = userService.getUserInfoByUserId(userId);
       if (ObjectUtils.isEmpty(fromUser)) {
         log.info("parse fromUser is empty :: [{}]", messageInfo);
         return;

@@ -9,33 +9,34 @@ import org.moose.operator.model.dto.UserInfoDTO;
 public interface UserInfoService {
 
   /**
-   * mongodb save User
+   * save User
    *
    * @param userInfoDO user info
    * @return 是否保存成功
    */
-  Boolean saveUserInfo(UserInfoDO userInfoDO);
+  void saveUserInfo(UserInfoDO userInfoDO);
 
   /**
-   * mongo 数据库获取 User
+   * 获取 User
    *
    * @param userId user id
    * @return User
    */
-  UserInfoDTO getUserByUserId(String userId);
-
-  /**
-   * 获取 User 对应 Product
-   *
-   * @return User 对应 Product
-   */
-  Object getUserProducts();
+  UserInfoDTO getUserInfoByUserId(String userId);
 
   /**
    * 获取用户信息
-   * @param accountId 账号 Id
-   * @param accountName 账号
+   *
+   * @param accountId   账号 Id
    * @return 用户信息
    */
-  UserInfoDTO getUserInfo(Long accountId, String accountName);
+  UserInfoDTO getUserInfoByAccountId(String accountId);
+
+  /**
+   * 更新用户信息
+   *
+   * @param userInfoDTO 用户信息
+   * @return ResponseResult
+   */
+  Boolean updateUserInfo(UserInfoDTO userInfoDTO);
 }

@@ -1,0 +1,46 @@
+package org.moose.operator.mapper;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.moose.operator.model.domain.UserInfoDO;
+import org.moose.operator.model.dto.UserInfoDTO;
+
+/**
+ * @author taohua
+ */
+@Mapper
+public interface UserInfoMapper {
+
+  /**
+   * 保存用户信息
+   *
+   * @param userInfoDO 用户信息
+   */
+  void insertUserInfo(UserInfoDO userInfoDO);
+
+  /**
+   * 根据 accountId and accountName 查询用户
+   *
+   * @param accountId 账号Id
+   * @return 用户信息
+   */
+  UserInfoDO findByAccountId(@Param("accountId") String accountId);
+
+  /**
+   * 根据用户 Id 查询用户信息
+   *
+   * @param userId 用户Id
+   * @return 用户信息
+   */
+  UserInfoDO findByUserId(@Param("userId") String userId);
+
+  /**
+   * 更新用户信息
+   *
+   * @param userInfo  用户信息
+   * @param accountId 账号Id
+   * @return 是否成功
+   */
+  boolean updateUserInfoByAccountId(@Param("accountId") String accountId,
+      @Param("userInfo") UserInfoDTO userInfo);
+}

@@ -3,12 +3,12 @@ package org.moose.operator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
+import org.junit.Test;
+import org.moose.operator.model.domain.AccountDO;
 import org.moose.operator.model.dto.MessageInfoDTO;
 import org.moose.operator.util.MapperUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
-import org.moose.operator.model.domain.AccountDO;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * <p>
@@ -35,7 +35,7 @@ public class JacksonTests {
   public void testBase() {
     ObjectMapper mapper = new ObjectMapper();
     AccountDO accountDO = new AccountDO();
-    accountDO.setAccountId(snowflakeIdWorker.nextId());
+    accountDO.setAccountId(String.valueOf(snowflakeIdWorker.nextId()));
     try {
       String s = mapper.writeValueAsString(accountDO);
       log.info("s {}", s);

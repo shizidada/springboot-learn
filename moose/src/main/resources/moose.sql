@@ -127,7 +127,7 @@ CREATE TABLE `oauth_refresh_token` (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_account`;
 CREATE TABLE `t_account` (
-  `account_id` bigint(64) NOT NULL,
+  `account_id` varchar(64) NOT NULL,
   `account_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
   `status` varchar(1) COLLATE utf8_bin DEFAULT '1' COMMENT '帐号启用状态:0->禁用；1->启用',
   `phone` varchar(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
@@ -139,20 +139,12 @@ CREATE TABLE `t_account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
 
 -- ----------------------------
--- Records of t_account
--- ----------------------------
-BEGIN;
-INSERT INTO `t_account` VALUES (722205584761290752, 'taohua', '1', '13511083015', '2020-06-15 21:47:09', '2020-06-16 20:54:12');
-INSERT INTO `t_account` VALUES (725123288577081344, 'tom', '1', '13611083018', '2020-06-23 23:01:04', '2020-06-23 23:01:04');
-COMMIT;
-
--- ----------------------------
 -- Table structure for t_password
 -- ----------------------------
 DROP TABLE IF EXISTS `t_password`;
 CREATE TABLE `t_password` (
-  `password_id` bigint(32) NOT NULL COMMENT '密码ID',
-  `account_id` bigint(32) NOT NULL COMMENT '账号ID',
+  `password_id` varchar(64) NOT NULL COMMENT '密码ID',
+  `account_id` varchar(64) NOT NULL COMMENT '账号ID',
   `password` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '密码',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -162,14 +154,6 @@ CREATE TABLE `t_password` (
   KEY `password_id` (`password_id`),
   CONSTRAINT `t_account_password_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `t_account` (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='密码表';
-
--- ----------------------------
--- Records of t_password
--- ----------------------------
-BEGIN;
-INSERT INTO `t_password` VALUES (722205584761290753, 722205584761290752, '$2a$10$rUzRb9xlN/t3h16oXvv.Z.kMY0p1fwyHH.Co.dFHLLpPbmhepCvLC', '2020-06-15 21:47:09', '2020-06-15 21:47:09');
-INSERT INTO `t_password` VALUES (725123288577081345, 725123288577081344, '$2a$10$frNtQV7UoiKb0h3uGDJHN.X/opFJVwrZfVzouaJqIs4IKVpvTy0Wq', '2020-06-23 23:01:04', '2020-06-23 23:01:04');
-COMMIT;
 
 DROP TABLE IF EXISTS `t_sms_verify`;
 CREATE TABLE `t_sms_verify` (
@@ -182,5 +166,24 @@ CREATE TABLE `t_sms_verify` (
   KEY `phone` (`phone`),
   KEY `type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='短信验证码表';
+
+DROP TABLE IF EXISTS `t_user_info`;
+CREATE TABLE `t_user_info` (
+  `user_id` varchar(64) PRIMARY KEY NOT NULL COMMENT '用户Id',
+  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
+  `account_id` varchar(64) NOT NULL,
+  `account_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
+  `phone` varchar(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
+  `gender` char(1) COLLATE utf8_bin NOT NULL COMMENT '性别 male 1； female 2；un_known or hide 0',
+  `avatar` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '头像',
+  `email` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '邮箱',
+  `job` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '职位',
+  `address` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '地址',
+  `description` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  KEY `user_id` (`user_id`),
+  KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息表';
 
 SET FOREIGN_KEY_CHECKS = 1;

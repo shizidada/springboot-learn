@@ -20,7 +20,7 @@ public class AccountDO extends BaseDO {
   /**
    * 账号 Id
    */
-  private Long accountId;
+  private String accountId;
 
   /**
    * 账号

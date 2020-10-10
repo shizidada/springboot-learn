@@ -3,27 +3,20 @@ package org.moose.operator.model.domain;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author taohua
  */
 @Data
-@Document(collection = "user_info")
 @EqualsAndHashCode(callSuper = true)
 public class UserInfoDO extends BaseDO implements Serializable {
 
-  @Field("user_id")
   private String userId;
 
-  @Field("username")
   private String userName;
 
-  @Field("account_id")
-  private Long accountId;
+  private String accountId;
 
-  @Field("account_name")
   private String accountName;
 
   private String phone;

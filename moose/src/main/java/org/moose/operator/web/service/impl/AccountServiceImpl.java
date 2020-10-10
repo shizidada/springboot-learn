@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.moose.operator.common.api.ResponseResult;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
@@ -113,7 +112,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public ResponseResult<Object> saveAccount(HttpServletRequest request,
+  public Boolean saveAccount(HttpServletRequest request,
       RegisterInfoParam registerInfo) {
     String password = registerInfo.getPassword();
     String rePassword = registerInfo.getRePassword();
@@ -142,13 +141,13 @@ public class AccountServiceImpl implements AccountService {
 
     try {
       AccountDO accountDO = new AccountDO();
-      accountDO.setAccountId(snowflakeIdWorker.nextId());
+      accountDO.setAccountId(String.valueOf(snowflakeIdWorker.nextId()));
       accountDO.setAccountName(registerInfo.getAccountName());
       accountDO.setPhone(registerInfo.getPhone());
 
       PasswordDTO passwordDTO = new PasswordDTO();
       passwordDTO.setAccountId(accountDO.getAccountId());
-      passwordDTO.setPasswordId(snowflakeIdWorker.nextId());
+      passwordDTO.setPasswordId(String.valueOf(snowflakeIdWorker.nextId()));
       // 加密密码
       passwordDTO.setPassword(passwordEncoder.encode(registerInfo.getPassword()));
 
@@ -171,11 +170,11 @@ public class AccountServiceImpl implements AccountService {
       log.info("register failed error [{}]", e.getMessage());
       throw new BusinessException(ResultCode.REGISTER_FAIL);
     }
-    return new ResponseResult<>(Boolean.TRUE, "注册成功");
+    return true;
   }
 
   @Override
-  public ResponseResult<Object> removeToken(String accessToken) {
+  public Boolean removeToken(String accessToken) {
     if (StringUtils.isEmpty(accessToken)) {
       throw new BusinessException(ResultCode.ACCESS_TOKEN_IS_EMPTY);
     }
@@ -199,14 +198,14 @@ public class AccountServiceImpl implements AccountService {
     // remove refresh Token
     redisTemplate.expire(refreshTokenKey, 0, TimeUnit.SECONDS);
 
-    return new ResponseResult<>(true, "退出成功");
+    return true;
   }
 
   /**
    * localhost:7000/oauth/token?grant_type=sms_code&client_id=client&client_secret=secret&phone=13500181521&smsCode=123456
    * localhost:7000/oauth/token?grant_type=password&client_id=client&client_secret=secret&accountName=tom&password=123456
    */
-  @Override public ResponseResult<Object> getToken(LoginParam loginParam) {
+  @Override public String getToken(LoginParam loginParam) {
     // 通过 HTTP 客户端请求登录接口
     Map<String, String> params = Maps.newHashMap();
 
@@ -262,21 +261,21 @@ public class AccountServiceImpl implements AccountService {
       if (StringUtils.isEmpty(accessToken)) {
         Integer code = (Integer) authInfo.get("code");
         String message = (String) authInfo.get("message");
-        return new ResponseResult<>(code, message);
+        throw new BusinessException(message, code);
       }
 
       // save refresh token redis
       String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
       redisTemplate.opsForValue()
           .set(String.format(RedisKeyConstants.REFRESH_TOKEN_KEY, accessToken), refreshToken);
-      return new ResponseResult<>(accessToken, "获取 access token 成功");
+      return accessToken;
     } catch (Exception e) {
       log.info("调用 /oauth/token get token 失败; {}", e.getMessage());
       throw new BusinessException(e.getMessage());
     }
   }
 
-  @Override public ResponseResult<Object> getAccountInfo() {
+  @Override public UserInfoDTO getAccountInfo() {
     Object principal = this.getPrincipal();
     if (!(principal instanceof CustomUserDetails)) {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
@@ -288,16 +287,15 @@ public class AccountServiceImpl implements AccountService {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
     }
 
-    Long accountId = accountDTO.getAccountId();
-    String accountName = accountDTO.getAccountName();
-    UserInfoDTO userInfoDTO = userInfoService.getUserInfo(accountId, accountName);
+    String accountId = accountDTO.getAccountId();
+    UserInfoDTO userInfoDTO = userInfoService.getUserInfoByAccountId(accountId);
     if (ObjectUtils.isEmpty(userInfoDTO)) {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
     }
-    return new ResponseResult<>(userInfoDTO, "获取用户信息成功");
+    return userInfoDTO;
   }
 
-  @Override public ResponseResult<Object> getRefreshTokenByAccessToken(String accessToken) {
+  @Override public String getRefreshTokenByAccessToken(String accessToken) {
     if (StringUtils.isEmpty(accessToken)) {
       throw new BusinessException(ResultCode.ACCESS_TOKEN_IS_EMPTY);
     }
@@ -312,13 +310,13 @@ public class AccountServiceImpl implements AccountService {
 
     redisTemplate.expire(accessTokenKey, 0, TimeUnit.SECONDS);
 
-    return new ResponseResult<>(refreshToken, "获取 refresh token 成功");
+    return refreshToken;
   }
 
   /**
    * http://localhost:7000/oauth/token?grant_type=refresh_token&refresh_token=bc3721b0-9611-471f-867c-1259022614bc&client_id=client&client_secret=secret
    */
-  @Override public ResponseResult<Object> getAccessTokenByRefreshToken(String refreshTokenParam) {
+  @Override public String getAccessTokenByRefreshToken(String refreshTokenParam) {
 
     if (StringUtils.isEmpty(refreshTokenParam)) {
       throw new BusinessException(ResultCode.TOKEN_IS_EMPTY);
@@ -357,17 +355,16 @@ public class AccountServiceImpl implements AccountService {
     String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
     redisTemplate.opsForValue().set(refreshTokenKey, refreshToken);
 
-    return new ResponseResult<>(accessToken, "获取 access token 成功");
+    return accessToken;
   }
 
   @Override
-  public ResponseResult<Object> isLogin() {
+  public Boolean isLogin() {
     Authentication authentication = (Authentication) this.getAuthentication();
     if (ObjectUtils.isEmpty(authentication)) {
-      return new ResponseResult<>(false, "获取登录状态成功");
+      return false;
     }
-    Object principal = authentication.getPrincipal();
-    return new ResponseResult<>(principal instanceof CustomUserDetails, "获取登录状态成功");
+    return authentication.getPrincipal() instanceof CustomUserDetails;
   }
 
   @Override public Object getPrincipal() {

@@ -16,9 +16,9 @@ import lombok.Data;
 @Data
 public class PasswordDTO extends BaseDTO implements Serializable {
 
-  private Long passwordId;
+  private String passwordId;
 
-  private Long accountId;
+  private String accountId;
 
   private String password;
 }

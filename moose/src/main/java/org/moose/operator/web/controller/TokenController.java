@@ -24,12 +24,14 @@ public class TokenController {
   @PostMapping(value = "/getRefreshToken")
   public ResponseResult<Object> getRefreshToken(AuthTokenParam tokenParam) {
     String accessToken = tokenParam.getAccessToken();
-    return accountService.getRefreshTokenByAccessToken(accessToken);
+    return new ResponseResult<>(accountService.getRefreshTokenByAccessToken(accessToken),
+        "获取 refresh token 成功");
   }
 
   @PostMapping(value = "/refreshToken")
   public ResponseResult<Object> refreshToken(AuthTokenParam tokenParam) {
     String refreshToken = tokenParam.getRefreshToken();
-    return accountService.getAccessTokenByRefreshToken(refreshToken);
+    return new ResponseResult<>(accountService.getAccessTokenByRefreshToken(refreshToken),
+        "获取 access token 成功");
   }
 }

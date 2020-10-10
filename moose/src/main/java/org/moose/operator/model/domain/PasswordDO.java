@@ -17,9 +17,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class PasswordDO extends BaseDO {
 
-  private Long passwordId;
+  private String passwordId;
 
-  private Long accountId;
+  private String accountId;
 
   private String password;
 }

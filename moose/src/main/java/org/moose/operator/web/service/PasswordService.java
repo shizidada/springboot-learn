@@ -20,7 +20,7 @@ public interface PasswordService {
    * @param accountId 账号ID
    * @return PasswordModel
    */
-  PasswordDTO getByAccountId(Long accountId);
+  PasswordDTO getByAccountId(String accountId);
 
   /**
    * 添加账号对应密码

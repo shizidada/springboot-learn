@@ -1,20 +1,17 @@
 package org.moose.operator.web.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
+import org.moose.operator.common.api.ResultCode;
+import org.moose.operator.exception.BusinessException;
+import org.moose.operator.mapper.UserInfoMapper;
 import org.moose.operator.model.domain.UserInfoDO;
+import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
+import org.moose.operator.web.security.component.CustomUserDetails;
+import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.LookupOperation;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,19 +21,23 @@ import org.springframework.stereotype.Service;
 public class UserInfoServiceImpl implements UserInfoService {
 
   @Resource
-  private MongoTemplate mongoTemplate;
+  private UserInfoMapper userInfoMapper;
+
+  @Resource
+  private AccountService accountService;
 
   @Override
-  public Boolean saveUserInfo(UserInfoDO userInfoDO) {
-    UserInfoDO saveUser = mongoTemplate.save(userInfoDO);
-    return ObjectUtils.isNotEmpty(saveUser);
+  public void saveUserInfo(UserInfoDO userInfoDO) {
+    userInfoMapper.insertUserInfo(userInfoDO);
   }
 
-  @Override
-  public UserInfoDTO getUserInfo(Long accountId, String accountName) {
-    Query query =
-        Query.query(Criteria.where("account_id").is(accountId).and("account_name").is(accountName));
-    UserInfoDO userInfoDO = this.mongoTemplate.findOne(query, UserInfoDO.class);
+  @Override public UserInfoDTO getUserInfoByAccountId(String accountId) {
+    //Query query =
+    //    Query.query(Criteria.where("account_id").is(accountId).and("account_name").is(accountName));
+    //UserInfoDO userInfoDO = this.mongoTemplate.findOne(query, UserInfoDO.class);
+
+    UserInfoDO userInfoDO =
+        userInfoMapper.findByAccountId(accountId);
     if (ObjectUtils.isEmpty(userInfoDO)) {
       return null;
     }
@@ -46,9 +47,8 @@ public class UserInfoServiceImpl implements UserInfoService {
   }
 
   @Override
-  public UserInfoDTO getUserByUserId(String userId) {
-    Query query = Query.query(Criteria.where("user_id").is(userId));
-    UserInfoDO userInfoDO = this.mongoTemplate.findOne(query, UserInfoDO.class);
+  public UserInfoDTO getUserInfoByUserId(String userId) {
+    UserInfoDO userInfoDO = userInfoMapper.findByUserId(userId);
     if (ObjectUtils.isEmpty(userInfoDO)) {
       return null;
     }
@@ -57,27 +57,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     return userInfoDTO;
   }
 
-  @Override
-  public Object getUserProducts() {
-    List<AggregationOperation> operations = new ArrayList<>();
-    LookupOperation productAggregation = LookupOperation.newLookup()
-        .from("product")
-        .localField("user_id")
-        .foreignField("user_id")
-        .as("products");
 
-    operations.add(productAggregation);
+  @Override public Boolean updateUserInfo(UserInfoDTO userInfoDTO) {
+    if (ObjectUtils.isEmpty(userInfoDTO)) {
+      throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
+    }
 
-    AggregationOperation userIdOperation =
-        Aggregation.match(Criteria.where("user_id").is("5e0b6d05424ac70ab28b70b6"));
-    operations.add(userIdOperation);
-
-    operations.add(Aggregation.project("username", "user_id", "products").andExclude("_id"));
-
-    Aggregation aggregation = Aggregation.newAggregation(operations);
-
-    List<Map> user =
-        this.mongoTemplate.aggregate(aggregation, "user", Map.class).getMappedResults();
-    return user;
+    Object principal = accountService.getPrincipal();
+    CustomUserDetails userDetails = (CustomUserDetails) principal;
+    AccountDTO accountDTO = userDetails.getAccountDTO();
+    String accountId = accountDTO.getAccountId();
+    return userInfoMapper.updateUserInfoByAccountId(accountId, userInfoDTO);
   }
 }

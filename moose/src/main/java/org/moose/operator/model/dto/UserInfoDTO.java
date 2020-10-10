@@ -1,7 +1,10 @@
 package org.moose.operator.model.dto;
 
 import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import org.moose.operator.annotation.ValueIn;
+import org.moose.operator.model.emun.GenderEnum;
 
 /**
  * <p>
@@ -18,9 +21,15 @@ public class UserInfoDTO implements Serializable {
 
   private String userId;
 
+  @NotBlank(message = "用户名不能为空")
   private String userName;
 
+  @NotBlank(message = "手机号不能为空")
   private String phone;
+
+  @NotBlank(message = "性别不能为空")
+  @ValueIn(value = GenderEnum.class, message = "性别不正确")
+  private String gender;
 
   private String avatar;
 
@@ -31,6 +40,4 @@ public class UserInfoDTO implements Serializable {
   private String address;
 
   private String description;
-
-  private String gender;
 }

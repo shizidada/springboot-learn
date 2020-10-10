@@ -29,7 +29,7 @@ public class PasswordServiceImpl implements PasswordService {
   @Resource
   private PasswordMapper passwordMapper;
 
-  @Override public PasswordDTO getByAccountId(Long accountId) {
+  @Override public PasswordDTO getByAccountId(String accountId) {
     PasswordDO passwordDO = passwordMapper.findByAccountId(accountId);
     if (passwordDO == null) {
       throw new BusinessException(ResultCode.ACCOUNT_OR_PASSWORD_ERROR);
