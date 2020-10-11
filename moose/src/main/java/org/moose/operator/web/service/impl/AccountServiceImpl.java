@@ -22,7 +22,7 @@ import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.PasswordDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.emun.LoginTypeEnum;
-import org.moose.operator.model.params.LoginParam;
+import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
 import org.moose.operator.util.MapperUtils;
 import org.moose.operator.util.OkHttpClientUtils;
@@ -205,24 +205,24 @@ public class AccountServiceImpl implements AccountService {
    * localhost:7000/oauth/token?grant_type=sms_code&client_id=client&client_secret=secret&phone=13500181521&smsCode=123456
    * localhost:7000/oauth/token?grant_type=password&client_id=client&client_secret=secret&accountName=tom&password=123456
    */
-  @Override public String getToken(LoginParam loginParam) {
+  @Override public String getToken(LoginInfoParam loginInfoParam) {
     // 通过 HTTP 客户端请求登录接口
     Map<String, String> params = Maps.newHashMap();
 
     // 登录方式
-    String loginType = loginParam.getLoginType();
+    String loginType = loginInfoParam.getLoginType();
     if (StringUtils.isEmpty(loginType)) {
       throw new BusinessException(ResultCode.LOGIN_METHOD_IS_EMPTY);
     }
 
     // 密码方式登录
     if (LoginTypeEnum.PASSWORD.getValue().equals(loginType)) {
-      String accountName = loginParam.getAccountName();
+      String accountName = loginInfoParam.getAccountName();
       if (StringUtils.isEmpty(accountName)) {
         throw new BusinessException(ResultCode.ACCOUNT_IS_EMPTY);
       }
 
-      String password = loginParam.getPassword();
+      String password = loginInfoParam.getPassword();
       if (StringUtils.isEmpty(password)) {
         throw new BusinessException(ResultCode.PASSWORD_IS_EMPTY);
       }
@@ -235,12 +235,12 @@ public class AccountServiceImpl implements AccountService {
     // 短信方式登录
     if (LoginTypeEnum.SMS_CODE.getValue().equals(loginType)) {
 
-      String phoneNumber = loginParam.getPhone();
+      String phoneNumber = loginInfoParam.getPhone();
       if (StringUtils.isEmpty(phoneNumber)) {
         throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
       }
 
-      String smsCode = loginParam.getSmsCode();
+      String smsCode = loginInfoParam.getSmsCode();
       if (StringUtils.isEmpty(smsCode)) {
         throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
       }
@@ -271,7 +271,12 @@ public class AccountServiceImpl implements AccountService {
       return accessToken;
     } catch (Exception e) {
       log.info("调用 /oauth/token get token 失败; {}", e.getMessage());
-      throw new BusinessException(e.getMessage());
+      Integer code = ResultCode.LOGIN_SERVER_ERROR.getCode();
+      if (e instanceof BusinessException) {
+        BusinessException be = (BusinessException) e;
+        code = be.getCode();
+      }
+      throw new BusinessException(e.getMessage(), code);
     }
   }
 

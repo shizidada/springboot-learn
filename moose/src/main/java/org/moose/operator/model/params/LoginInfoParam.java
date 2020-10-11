@@ -9,7 +9,7 @@ import org.moose.operator.model.emun.LoginTypeEnum;
  * @author taohua
  */
 @Data
-public class LoginParam {
+public class LoginInfoParam {
 
   /**
    * 账号

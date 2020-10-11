@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.ResponseResult;
-import org.moose.operator.model.dto.UserInfoDTO;
+import org.moose.operator.model.params.UserInfoParam;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.validation.BindingResult;
@@ -32,9 +32,9 @@ public class UserInfoController {
   }
 
   @PostMapping(value = "/update")
-  public ResponseResult<Object> update(@Valid UserInfoDTO userInfoDTO,
+  public ResponseResult<Object> update(@Valid UserInfoParam userInfoParam,
       BindingResult result) {
-    boolean isSuccess = userInfoService.updateUserInfo(userInfoDTO);
+    boolean isSuccess = userInfoService.updateUserInfo(userInfoParam);
     return new ResponseResult<>(isSuccess, String.format("更新%s", isSuccess ? "成功" : "失败"));
   }
 }

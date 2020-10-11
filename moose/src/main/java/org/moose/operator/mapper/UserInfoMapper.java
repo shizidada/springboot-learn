@@ -42,5 +42,5 @@ public interface UserInfoMapper {
    * @return 是否成功
    */
   boolean updateUserInfoByAccountId(@Param("accountId") String accountId,
-      @Param("userInfo") UserInfoDTO userInfo);
+      @Param("userInfo") UserInfoDO userInfo);
 }

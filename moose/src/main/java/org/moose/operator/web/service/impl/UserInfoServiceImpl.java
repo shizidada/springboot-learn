@@ -4,15 +4,18 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
+import org.moose.operator.mapper.AccountMapper;
 import org.moose.operator.mapper.UserInfoMapper;
 import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
+import org.moose.operator.model.params.UserInfoParam;
 import org.moose.operator.web.security.component.CustomUserDetails;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author taohua
@@ -25,6 +28,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
   @Resource
   private AccountService accountService;
+
+  @Resource
+  private AccountMapper accountMapper;
 
   @Override
   public void saveUserInfo(UserInfoDO userInfoDO) {
@@ -57,16 +63,25 @@ public class UserInfoServiceImpl implements UserInfoService {
     return userInfoDTO;
   }
 
-
-  @Override public Boolean updateUserInfo(UserInfoDTO userInfoDTO) {
-    if (ObjectUtils.isEmpty(userInfoDTO)) {
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public Boolean updateUserInfo(UserInfoParam userInfoParam) {
+    if (ObjectUtils.isEmpty(userInfoParam)) {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
     }
+
+    UserInfoDTO userInfoDTO = new UserInfoDTO();
+    BeanUtils.copyProperties(userInfoParam, userInfoDTO);
 
     Object principal = accountService.getPrincipal();
     CustomUserDetails userDetails = (CustomUserDetails) principal;
     AccountDTO accountDTO = userDetails.getAccountDTO();
     String accountId = accountDTO.getAccountId();
-    return userInfoMapper.updateUserInfoByAccountId(accountId, userInfoDTO);
+
+    accountMapper.updateAccountNameByAccountId(userInfoDTO.getUserName(), accountId);
+
+    UserInfoDO userInfoDO = new UserInfoDO();
+    BeanUtils.copyProperties(userInfoDTO, userInfoDO);
+    return userInfoMapper.updateUserInfoByAccountId(accountId, userInfoDO);
   }
 }

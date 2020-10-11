@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.ResponseResult;
 import org.moose.operator.model.params.AuthTokenParam;
-import org.moose.operator.model.params.LoginParam;
+import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
 import org.moose.operator.web.service.AccountService;
 import org.springframework.validation.BindingResult;
@@ -39,9 +39,9 @@ public class AccountController {
    * spring security oauth2.0 to login
    */
   @PostMapping(value = "/login")
-  public ResponseResult<Object> login(@Valid LoginParam loginParam,
+  public ResponseResult<Object> login(@Valid LoginInfoParam loginInfoParam,
       BindingResult result) {
-    return new ResponseResult<>(accountService.getToken(loginParam), "获取 access token 成功");
+    return new ResponseResult<>(accountService.getToken(loginInfoParam), "获取 access token 成功");
   }
 
   /**

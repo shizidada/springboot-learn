@@ -44,7 +44,7 @@ public class CustomAuthenticationResponseExceptionTranslator
         e instanceof HttpRequestMethodNotSupportedException) {
       return ResponseEntity
           .status(HttpStatus.BAD_REQUEST)
-          .body(new BusinessAuthenticationException(e.getMessage(), ResultCode.FAIL.getCode()));
+          .body(new BusinessAuthenticationException(e.getMessage(), ResultCode.LOGIN_SERVER_ERROR.getCode()));
     }
 
     if (e instanceof BusinessException) {

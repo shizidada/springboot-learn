@@ -3,7 +3,7 @@ package org.moose.operator.web.service;
 import javax.servlet.http.HttpServletRequest;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
-import org.moose.operator.model.params.LoginParam;
+import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
 
 /**
@@ -31,10 +31,10 @@ public interface AccountService {
   /**
    * 登录 获取 Token
    *
-   * @param loginParam 登录信息
+   * @param loginInfoParam 登录信息
    * @return 是否登录成功信息
    */
-  String getToken(LoginParam loginParam);
+  String getToken(LoginInfoParam loginInfoParam);
 
   /**
    * 退出登录 删除 Token

@@ -2,6 +2,7 @@ package org.moose.operator.web.service;
 
 import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.UserInfoDTO;
+import org.moose.operator.model.params.UserInfoParam;
 
 /**
  * @author taohua
@@ -35,8 +36,8 @@ public interface UserInfoService {
   /**
    * 更新用户信息
    *
-   * @param userInfoDTO 用户信息
+   * @param userInfoParam 用户信息
    * @return ResponseResult
    */
-  Boolean updateUserInfo(UserInfoDTO userInfoDTO);
+  Boolean updateUserInfo(UserInfoParam userInfoParam);
 }

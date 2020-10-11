@@ -47,9 +47,6 @@
       <if test="userInfo.userName != '' and userInfo.userName != null">
         username=#{userInfo.userName}, account_name=#{userInfo.userName},
       </if>
-      <if test="userInfo.phone != '' and userInfo.phone != null">
-        phone=#{userInfo.phone},
-      </if>
       <if test="userInfo.gender != '' and userInfo.gender != null">
         gender=#{userInfo.gender},
       </if>

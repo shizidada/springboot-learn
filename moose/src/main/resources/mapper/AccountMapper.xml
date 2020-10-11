@@ -36,4 +36,8 @@
     VALUES
     (#{accountId}, #{accountName}, #{phone})
   </insert>
+
+  <update id="updateAccountNameByAccountId">
+    UPDATE `t_account` set `account_name`=#{accountName} where `account_id`=#{accountId}
+  </update>
 </mapper>
