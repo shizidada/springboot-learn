@@ -2,7 +2,6 @@ package org.moose.operator.web.service;
 
 import javax.servlet.http.HttpServletRequest;
 import org.moose.operator.model.dto.AccountDTO;
-import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
 
@@ -65,7 +64,7 @@ public interface AccountService {
    *
    * @return ResponseResult<AccountDTO>
    */
-  UserInfoDTO getAccountInfo();
+  AccountDTO getAccountInfo();
 
   /**
    * 判断账号是否登陆
@@ -96,4 +95,13 @@ public interface AccountService {
    * @return accessToken
    */
   String getAccessTokenByRefreshToken(String refreshToken);
+
+  /**
+   * 更新账号手机号码
+   *
+   * @param accountId 账号Id
+   * @param phone     手机号码
+   * @return 是否更新成功
+   */
+  Boolean updateAccountPhone(String accountId, String phone);
 }

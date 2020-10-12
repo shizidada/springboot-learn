@@ -3,7 +3,6 @@ package org.moose.operator.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.moose.operator.model.domain.UserInfoDO;
-import org.moose.operator.model.dto.UserInfoDTO;
 
 /**
  * @author taohua
@@ -41,6 +40,16 @@ public interface UserInfoMapper {
    * @param accountId 账号Id
    * @return 是否成功
    */
-  boolean updateUserInfoByAccountId(@Param("accountId") String accountId,
+  Boolean updateUserInfoByAccountId(@Param("accountId") String accountId,
       @Param("userInfo") UserInfoDO userInfo);
+
+  /**
+   * 更新用户信息手机号码
+   *
+   * @param accountId 账号Id
+   * @param phone     手机号码
+   * @return 是否更新成功
+   */
+  Boolean updatePhoneByAccountId(@Param("accountId") String accountId,
+      @Param("phone") String phone);
 }

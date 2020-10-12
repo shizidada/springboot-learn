@@ -34,6 +34,7 @@ public enum ResultCode {
   PHONE_NOT_EXITS(10101, "手机号不存在"),
   PHONE_NUMBER_IS_EMPTY(10102, "手机号不能为空"),
   PHONE_IS_EXITS_BIND(10103, "手机号已绑定"),
+  PHONE_EXITS_WITH_CURRENT(10104, "手机号与当前一致"),
 
   PASSWORD_ERROR(10200, "两次密码不一致"),
   PASSWORD_IS_EMPTY(10200, "密码不能为空"),

@@ -40,4 +40,20 @@ public interface UserInfoService {
    * @return ResponseResult
    */
   Boolean updateUserInfo(UserInfoParam userInfoParam);
+
+  /**
+   * 获取用户信息
+   *
+   * @return 用户信息
+   */
+  UserInfoDTO getUserInfo();
+
+  /**
+   * 重置手机号码
+   *
+   * @param phone 用户信息
+   * @param smsCode 用户信息
+   * @return 是否成功
+   */
+  Boolean resetPhone(String phone, String smsCode);
 }

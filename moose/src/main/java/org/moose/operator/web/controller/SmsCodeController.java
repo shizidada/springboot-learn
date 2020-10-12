@@ -32,6 +32,7 @@ public class SmsCodeController {
   @PostMapping("/send")
   public ResponseResult<Object> sendSmsCode(@Valid SmsCodeParam smsCodeParam,
       BindingResult result) {
-    return smsCodeSenderService.sendSmsCode(smsCodeParam);
+    smsCodeSenderService.sendSmsCode(smsCodeParam);
+    return new ResponseResult<>(Boolean.TRUE, "短信验证码发送成功");
   }
 }

@@ -46,10 +46,20 @@ public interface AccountMapper {
    * 根据 accountId 更新 AccountDO 数据
    *
    * @param accountName 账号名称
-   * @param accountId 账号Id
+   * @param accountId   账号Id
    * @return 是否更新成功
    * @throws Exception
    */
   void updateAccountNameByAccountId(@Param("accountName") String accountName,
       @Param("accountId") String accountId);
+
+  /**
+   * 更新账号手机号码
+   *
+   * @param accountId 账号Id
+   * @param phone     手机号码
+   * @return 是否更新成功
+   */
+  boolean updatePhoneByAccountId(@Param("accountId") String accountId,
+      @Param("phone") String phone);
 }

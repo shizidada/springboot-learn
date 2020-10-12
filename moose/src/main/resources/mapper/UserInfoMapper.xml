@@ -61,4 +61,8 @@
     where account_id=#{accountId}
   </update>
 
+  <update id="updatePhoneByAccountId">
+    UPDATE `t_user_info` set phone=#{phone} where account_id=#{accountId}
+  </update>
+
 </mapper>

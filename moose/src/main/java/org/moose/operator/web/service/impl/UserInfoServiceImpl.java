@@ -2,18 +2,23 @@ package org.moose.operator.web.service.impl;
 
 import javax.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
+import org.moose.operator.constant.RedisKeyConstants;
+import org.moose.operator.constant.SmsTypes;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.AccountMapper;
 import org.moose.operator.mapper.UserInfoMapper;
 import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.AccountDTO;
+import org.moose.operator.model.dto.SmsCodeDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.params.UserInfoParam;
 import org.moose.operator.web.security.component.CustomUserDetails;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +36,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
   @Resource
   private AccountMapper accountMapper;
+
+  @Resource
+  private RedisTemplate<String, Object> redisTemplate;
 
   @Override
   public void saveUserInfo(UserInfoDO userInfoDO) {
@@ -83,5 +91,44 @@ public class UserInfoServiceImpl implements UserInfoService {
     UserInfoDO userInfoDO = new UserInfoDO();
     BeanUtils.copyProperties(userInfoDTO, userInfoDO);
     return userInfoMapper.updateUserInfoByAccountId(accountId, userInfoDO);
+  }
+
+  @Override public UserInfoDTO getUserInfo() {
+    AccountDTO accountDTO = accountService.getAccountInfo();
+    String accountId = accountDTO.getAccountId();
+    UserInfoDTO userInfoDTO = this.getUserInfoByAccountId(accountId);
+    if (ObjectUtils.isEmpty(userInfoDTO)) {
+      throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
+    }
+    return userInfoDTO;
+  }
+
+  // TODO: 变更手机号码
+  @Transactional(rollbackFor = Exception.class)
+  @Override public Boolean resetPhone(String phone, String smsCode) {
+    if (StringUtils.isEmpty(phone)) {
+      throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
+    }
+    if (StringUtils.isEmpty(smsCode)) {
+      throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
+    }
+    AccountDTO accountDTO = accountService.getAccountInfo();
+    UserInfoDTO userInfoDTO = this.getUserInfoByAccountId(accountDTO.getAccountId());
+    if (StringUtils.equals(phone, userInfoDTO.getPhone())) {
+      throw new BusinessException(ResultCode.PHONE_EXITS_WITH_CURRENT);
+    }
+
+    String smsCodeKey =
+        String.format(RedisKeyConstants.SMS_CODE_KEY, SmsTypes.RESET_PHONE, phone);
+    SmsCodeDTO smsCodeDTO = (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);
+    if (ObjectUtils.isEmpty(smsCodeDTO) || smsCodeDTO.getExpired()) {
+      throw new BusinessException(ResultCode.SMS_CODE_ERROR);
+    }
+
+    Boolean accountSuccess = accountService.updateAccountPhone(accountDTO.getAccountId(), phone);
+    if (accountSuccess) {
+      return userInfoMapper.updatePhoneByAccountId(accountDTO.getAccountId(), phone);
+    }
+    return Boolean.FALSE;
   }
 }

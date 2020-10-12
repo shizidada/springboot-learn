@@ -28,7 +28,7 @@ public class UserInfoController {
 
   @PostMapping(value = "/info")
   public ResponseResult<Object> info() {
-    return new ResponseResult<>(accountService.getAccountInfo(), "获取用户信息成功");
+    return new ResponseResult<>(userInfoService.getUserInfo(), "获取用户信息成功");
   }
 
   @PostMapping(value = "/update")
@@ -36,5 +36,11 @@ public class UserInfoController {
       BindingResult result) {
     boolean isSuccess = userInfoService.updateUserInfo(userInfoParam);
     return new ResponseResult<>(isSuccess, String.format("更新%s", isSuccess ? "成功" : "失败"));
+  }
+
+  @PostMapping(value = "/resetPhone")
+  public ResponseResult<Object> resetPhone(String phone, String smsCode) {
+    boolean isSuccess = userInfoService.resetPhone(phone, smsCode);
+    return new ResponseResult<>(isSuccess, String.format("重置%s", isSuccess ? "成功" : "失败"));
   }
 }

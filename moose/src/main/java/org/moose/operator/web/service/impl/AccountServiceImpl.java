@@ -20,7 +20,6 @@ import org.moose.operator.model.domain.AccountDO;
 import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.PasswordDTO;
-import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.emun.LoginTypeEnum;
 import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
@@ -280,7 +279,7 @@ public class AccountServiceImpl implements AccountService {
     }
   }
 
-  @Override public UserInfoDTO getAccountInfo() {
+  @Override public AccountDTO getAccountInfo() {
     Object principal = this.getPrincipal();
     if (!(principal instanceof CustomUserDetails)) {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
@@ -291,13 +290,7 @@ public class AccountServiceImpl implements AccountService {
     if (ObjectUtils.isEmpty(accountDTO)) {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
     }
-
-    String accountId = accountDTO.getAccountId();
-    UserInfoDTO userInfoDTO = userInfoService.getUserInfoByAccountId(accountId);
-    if (ObjectUtils.isEmpty(userInfoDTO)) {
-      throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
-    }
-    return userInfoDTO;
+    return accountDTO;
   }
 
   @Override public String getRefreshTokenByAccessToken(String accessToken) {
@@ -361,6 +354,11 @@ public class AccountServiceImpl implements AccountService {
     redisTemplate.opsForValue().set(refreshTokenKey, refreshToken);
 
     return accessToken;
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override public Boolean updateAccountPhone(String accountId, String phone) {
+    return accountMapper.updatePhoneByAccountId(accountId, phone);
   }
 
   @Override

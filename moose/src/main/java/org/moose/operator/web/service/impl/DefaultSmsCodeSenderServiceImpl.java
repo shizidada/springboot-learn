@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.moose.operator.common.api.ResponseResult;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
@@ -14,7 +13,9 @@ import org.moose.operator.mapper.SmsCodeMapper;
 import org.moose.operator.model.domain.SmsCodeDO;
 import org.moose.operator.model.dto.SmsCodeDTO;
 import org.moose.operator.model.params.SmsCodeParam;
+import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.SmsCodeSenderService;
+import org.moose.operator.web.service.UserInfoService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,15 +37,29 @@ public class DefaultSmsCodeSenderServiceImpl implements SmsCodeSenderService {
   @Resource
   private SmsCodeMapper smsCodeMapper;
 
+  @Resource
+  private AccountService accountService;
+
+  @Resource
+  private UserInfoService userInfoService;
+
   @Resource private RedisTemplate<String, Object> redisTemplate;
 
+  //String type = smsCodeParam.getType();
+  //if (StringUtils.equals(type, SmsTypes.RESET_PHONE)) {
+  //  String phone = smsCodeParam.getPhone();
+  //  AccountDTO accountDTO = accountService.getAccountInfo();
+  //  UserInfoDTO userInfoDTO = userInfoService.getUserInfoByAccountId(accountDTO.getAccountId());
+  //  if (StringUtils.equals(phone, userInfoDTO.getPhone())) {
+  //    throw new BusinessException(ResultCode.PHONE_EXITS_WITH_CURRENT);
+  //  }
+  //}
+
   @Transactional(rollbackFor = Exception.class)
-  @Override public ResponseResult<Object> sendSmsCode(SmsCodeParam smsCodeParam) {
+  @Override public void sendSmsCode(SmsCodeParam smsCodeParam) {
 
     // 发送短信
     sendAndSaveSmsCode(smsCodeParam);
-
-    return new ResponseResult<>(true, "短信验证码发送成功");
   }
 
   private void sendAndSaveSmsCode(SmsCodeParam smsCodeParam) {

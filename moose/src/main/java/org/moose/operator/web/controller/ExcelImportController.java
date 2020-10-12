@@ -43,7 +43,6 @@ public class ExcelImportController {
       @Valid UploadInfoDTO uploadInfoDTO, BindingResult result) throws Exception {
     log.info(file.getOriginalFilename(), objectMapper.writeValueAsString(uploadInfoDTO));
     // 存入数据库
-    int size = importExcelService.addBatchImportExcelRecord(file, uploadInfoDTO);
-    return new ResponseResult<>(size);
+    return new ResponseResult<>(importExcelService.addBatchImportExcelRecord(file, uploadInfoDTO));
   }
 }
