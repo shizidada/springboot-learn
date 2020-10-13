@@ -40,9 +40,13 @@ public class UserInfoServiceImpl implements UserInfoService {
   @Resource
   private RedisTemplate<String, Object> redisTemplate;
 
+  @Transactional(rollbackFor = Exception.class)
   @Override
-  public void saveUserInfo(UserInfoDO userInfoDO) {
-    userInfoMapper.insertUserInfo(userInfoDO);
+  public boolean saveUserInfo(UserInfoDO userInfoDO) {
+    if (!userInfoMapper.insertUserInfo(userInfoDO)) {
+      throw new BusinessException(ResultCode.USER_INFO_SAVE_FAIL);
+    }
+    return Boolean.TRUE;
   }
 
   @Override public UserInfoDTO getUserInfoByAccountId(String accountId) {
@@ -50,8 +54,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     //    Query.query(Criteria.where("account_id").is(accountId).and("account_name").is(accountName));
     //UserInfoDO userInfoDO = this.mongoTemplate.findOne(query, UserInfoDO.class);
 
-    UserInfoDO userInfoDO =
-        userInfoMapper.findByAccountId(accountId);
+    UserInfoDO userInfoDO = userInfoMapper.findByAccountId(accountId);
     if (ObjectUtils.isEmpty(userInfoDO)) {
       return null;
     }
@@ -73,7 +76,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public Boolean updateUserInfo(UserInfoParam userInfoParam) {
+  public boolean updateUserInfo(UserInfoParam userInfoParam) {
     if (ObjectUtils.isEmpty(userInfoParam)) {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
     }
@@ -86,11 +89,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     AccountDTO accountDTO = userDetails.getAccountDTO();
     String accountId = accountDTO.getAccountId();
 
-    accountMapper.updateAccountNameByAccountId(userInfoDTO.getUserName(), accountId);
+    if (!accountMapper.updateAccountNameByAccountId(userInfoDTO.getUserName(), accountId)) {
+      throw new BusinessException(ResultCode.USER_INFO_UPDATE_FAIL);
+    }
 
     UserInfoDO userInfoDO = new UserInfoDO();
     BeanUtils.copyProperties(userInfoDTO, userInfoDO);
-    return userInfoMapper.updateUserInfoByAccountId(accountId, userInfoDO);
+
+    if (!userInfoMapper.updateUserInfoByAccountId(accountId, userInfoDO)) {
+      throw new BusinessException(ResultCode.USER_INFO_UPDATE_FAIL);
+    }
+    return Boolean.TRUE;
   }
 
   @Override public UserInfoDTO getUserInfo() {
@@ -105,7 +114,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
   // TODO: 变更手机号码
   @Transactional(rollbackFor = Exception.class)
-  @Override public Boolean resetPhone(String phone, String smsCode) {
+  @Override public boolean resetPhone(String phone, String smsCode) {
     if (StringUtils.isEmpty(phone)) {
       throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
     }
@@ -125,10 +134,11 @@ public class UserInfoServiceImpl implements UserInfoService {
       throw new BusinessException(ResultCode.SMS_CODE_ERROR);
     }
 
-    Boolean accountSuccess = accountService.updateAccountPhone(accountDTO.getAccountId(), phone);
-    if (accountSuccess) {
-      return userInfoMapper.updatePhoneByAccountId(accountDTO.getAccountId(), phone);
+    if (accountService.updateAccountPhone(accountDTO.getAccountId(), phone)) {
+      if (!userInfoMapper.updatePhoneByAccountId(accountDTO.getAccountId(), phone)) {
+        throw new BusinessException(ResultCode.PHONE_RESET_FAIL);
+      }
     }
-    return Boolean.FALSE;
+    return Boolean.TRUE;
   }
 }

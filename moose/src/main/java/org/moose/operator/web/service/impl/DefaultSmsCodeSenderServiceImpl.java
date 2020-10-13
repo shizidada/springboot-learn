@@ -5,10 +5,8 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
-import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.SmsCodeMapper;
 import org.moose.operator.model.domain.SmsCodeDO;
 import org.moose.operator.model.dto.SmsCodeDTO;
@@ -68,26 +66,10 @@ public class DefaultSmsCodeSenderServiceImpl implements SmsCodeSenderService {
 
     String phoneNumber = smsCodeParam.getPhone();
 
-    // 计算发送次数
-    String smsSendCountKey = RedisKeyConstants.SMS_PHONE_KEY + phoneNumber;
-    Integer sendCount = (Integer) redisTemplate.opsForValue().get(smsSendCountKey);
-    if (ObjectUtils.isEmpty(sendCount)) {
-      redisTemplate.opsForValue()
-          .set(smsSendCountKey, 1, SecurityConstants.SMS_TIME_OF_DAY, TimeUnit.SECONDS);
-    } else {
-      // 判断手机号时间范围内，累计发送次数
-      if (sendCount >= SecurityConstants.MAX_COUNT_OF_DAY) {
-        throw new BusinessException(ResultCode.SMS_CODE_COUNT);
-      }
-      redisTemplate.opsForValue().increment(smsSendCountKey);
-      redisTemplate.expire(smsSendCountKey, SecurityConstants.SMS_TIME_OF_DAY, TimeUnit.SECONDS);
-    }
-
     String smsType = smsCodeParam.getType();
 
     // reset save sms code to redis
-    String smsCodeKey =
-        String.format(RedisKeyConstants.SMS_CODE_KEY, smsType, phoneNumber);
+    String smsCodeKey = String.format(RedisKeyConstants.SMS_CODE_KEY, smsType, phoneNumber);
 
     // TODO: get sms code not expired return ?
     SmsCodeDTO smsCodeDTO = (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);

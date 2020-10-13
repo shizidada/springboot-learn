@@ -10,6 +10,8 @@ public interface DefaultConstants {
    */
   String DEFAULT_PARAMETER_NAME_PHONE = "phone";
 
+  String DEFAULT_PARAMETER_NAME_SMS_TYPE = "type";
+
   /**
    * 账号
    */

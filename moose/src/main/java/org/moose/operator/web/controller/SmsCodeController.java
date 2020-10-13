@@ -33,6 +33,6 @@ public class SmsCodeController {
   public ResponseResult<Object> sendSmsCode(@Valid SmsCodeParam smsCodeParam,
       BindingResult result) {
     smsCodeSenderService.sendSmsCode(smsCodeParam);
-    return new ResponseResult<>(Boolean.TRUE, "短信验证码发送成功");
+    return new ResponseResult<>(Boolean.TRUE, "发送短信验证码");
   }
 }

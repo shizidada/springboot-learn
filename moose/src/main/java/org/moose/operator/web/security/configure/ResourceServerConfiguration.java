@@ -2,7 +2,8 @@ package org.moose.operator.web.security.configure;
 
 import javax.annotation.Resource;
 import org.moose.operator.constant.SecurityConstants;
-import org.moose.operator.web.filter.LoginLimitFilter;
+import org.moose.operator.web.filter.LoginVerifyLimitFilter;
+import org.moose.operator.web.filter.SmsVerifyLimitFilter;
 import org.moose.operator.web.security.component.CustomAccessDeniedHandler;
 import org.moose.operator.web.security.component.CustomAuthenticationEntryPoint;
 import org.moose.operator.web.security.component.CustomAuthenticationFailureHandler;
@@ -36,8 +37,13 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
   @Resource
   private RedisTemplate<String, Object> redisTemplate;
 
-  @Bean LoginLimitFilter loginLimitFilter() {
-    return new LoginLimitFilter(redisTemplate, customAuthenticationFailureHandler);
+  @Bean LoginVerifyLimitFilter loginLimitFilter() {
+    return new LoginVerifyLimitFilter(redisTemplate, customAuthenticationFailureHandler);
+  }
+
+  @Bean
+  SmsVerifyLimitFilter smsVerifyFilter() {
+    return new SmsVerifyLimitFilter(redisTemplate, customAuthenticationFailureHandler);
   }
 
   @Override
@@ -60,7 +66,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     // add filter
     http
-        .addFilterBefore(loginLimitFilter(), AbstractPreAuthenticatedProcessingFilter.class);
+        .addFilterBefore(loginLimitFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+        .addFilterBefore(smsVerifyFilter(), AbstractPreAuthenticatedProcessingFilter.class);
 
     // 禁用 session
     http

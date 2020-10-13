@@ -71,7 +71,7 @@ public interface AccountService {
    *
    * @return 是否登陆
    */
-  Boolean isLogin();
+  boolean isLogin();
 
   /**
    * 获取授权信息
@@ -103,5 +103,5 @@ public interface AccountService {
    * @param phone     手机号码
    * @return 是否更新成功
    */
-  Boolean updateAccountPhone(String accountId, String phone);
+  boolean updateAccountPhone(String accountId, String phone);
 }

@@ -1,5 +1,6 @@
 package org.moose.operator.model.emun;
 
+import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.constant.SmsTypes;
 
 /**
@@ -36,5 +37,17 @@ public enum SmsCodeEnum {
 
   public String getValue() {
     return value;
+  }
+
+  public static boolean isExist(String value) {
+    if (StringUtils.isEmpty(value)) {
+      return Boolean.FALSE;
+    }
+    for (SmsCodeEnum smsCodeEnum : SmsCodeEnum.values()) {
+      if (StringUtils.equals(smsCodeEnum.value, value)) {
+        return Boolean.TRUE;
+      }
+    }
+    return Boolean.FALSE;
   }
 }

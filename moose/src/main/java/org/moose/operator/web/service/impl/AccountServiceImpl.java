@@ -357,12 +357,12 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  @Override public Boolean updateAccountPhone(String accountId, String phone) {
+  @Override public boolean updateAccountPhone(String accountId, String phone) {
     return accountMapper.updatePhoneByAccountId(accountId, phone);
   }
 
   @Override
-  public Boolean isLogin() {
+  public boolean isLogin() {
     Authentication authentication = (Authentication) this.getAuthentication();
     if (ObjectUtils.isEmpty(authentication)) {
       return false;

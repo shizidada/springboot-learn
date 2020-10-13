@@ -54,3 +54,8 @@ security:
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: org.moose.operator.model.domain
+
+# elastic job
+elasticJob:
+  serverList: localhost:2181
+  namespace: moose_elasticjob

@@ -50,7 +50,7 @@ public interface AccountMapper {
    * @return 是否更新成功
    * @throws Exception
    */
-  void updateAccountNameByAccountId(@Param("accountName") String accountName,
+  boolean updateAccountNameByAccountId(@Param("accountName") String accountName,
       @Param("accountId") String accountId);
 
   /**

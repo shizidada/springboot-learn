@@ -14,8 +14,9 @@ public interface UserInfoMapper {
    * 保存用户信息
    *
    * @param userInfoDO 用户信息
+   * @return 是否成功
    */
-  void insertUserInfo(UserInfoDO userInfoDO);
+  boolean insertUserInfo(UserInfoDO userInfoDO);
 
   /**
    * 根据 accountId and accountName 查询用户
@@ -40,7 +41,7 @@ public interface UserInfoMapper {
    * @param accountId 账号Id
    * @return 是否成功
    */
-  Boolean updateUserInfoByAccountId(@Param("accountId") String accountId,
+  boolean updateUserInfoByAccountId(@Param("accountId") String accountId,
       @Param("userInfo") UserInfoDO userInfo);
 
   /**
@@ -50,6 +51,6 @@ public interface UserInfoMapper {
    * @param phone     手机号码
    * @return 是否更新成功
    */
-  Boolean updatePhoneByAccountId(@Param("accountId") String accountId,
+  boolean updatePhoneByAccountId(@Param("accountId") String accountId,
       @Param("phone") String phone);
 }

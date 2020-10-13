@@ -32,7 +32,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @see org.moose.operator.web.filter
  */
 @Slf4j
-public class LoginLimitFilter extends OncePerRequestFilter {
+public class LoginVerifyLimitFilter extends OncePerRequestFilter {
 
   /**
    * 存放所有需要校验验证码的url
@@ -43,7 +43,7 @@ public class LoginLimitFilter extends OncePerRequestFilter {
 
   private AuthenticationFailureHandler authenticationFailureHandler;
 
-  public LoginLimitFilter(RedisTemplate<String, Object> redisTemplate,
+  public LoginVerifyLimitFilter(RedisTemplate<String, Object> redisTemplate,
       AuthenticationFailureHandler authenticationFailureHandler) {
     this.redisTemplate = redisTemplate;
     this.authenticationFailureHandler = authenticationFailureHandler;
@@ -54,6 +54,7 @@ public class LoginLimitFilter extends OncePerRequestFilter {
    */
   @Override
   public void afterPropertiesSet() throws ServletException {
+    super.afterPropertiesSet();
     addUrlToMap(SecurityConstants.LOGIN_IN_URL, DefaultConstants.DEFAULT_PARAMETER_NAME_CODE_SMS);
   }
 

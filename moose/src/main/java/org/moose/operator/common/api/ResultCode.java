@@ -29,12 +29,15 @@ public enum ResultCode {
   ACCOUNT_NAME_EXITS(10003, "账号已存在"),
   ACCOUNT_DISABLED(10004, "账号已禁用"),
   USER_INFO_NOT_EXIST(10005, "用户信息不存在"),
+  USER_INFO_UPDATE_FAIL(10006, "更新用户信息失败"),
+  USER_INFO_SAVE_FAIL(10007, "保存用户信息失败"),
 
   PHONE_EXITS(10100, "手机号已存在"),
   PHONE_NOT_EXITS(10101, "手机号不存在"),
   PHONE_NUMBER_IS_EMPTY(10102, "手机号不能为空"),
   PHONE_IS_EXITS_BIND(10103, "手机号已绑定"),
   PHONE_EXITS_WITH_CURRENT(10104, "手机号与当前一致"),
+  PHONE_RESET_FAIL(10105, "变更手机号码失败"),
 
   PASSWORD_ERROR(10200, "两次密码不一致"),
   PASSWORD_IS_EMPTY(10200, "密码不能为空"),
@@ -44,6 +47,7 @@ public enum ResultCode {
   //SMS_CODE_IS_EXPIRED(10302, "验证码已过期"),
   SMS_CODE_ERROR(10303, "验证码不正确"),
   SMS_CODE_COUNT(10304, "验证码超过发送次数"),
+  SMS_TYPE_ERROR(10305, "短信类型不正确"),
 
   LOGIN_SUCCESS(20001, "登录成功"),
   LOGIN_FAIL(20002, "登录失败"),

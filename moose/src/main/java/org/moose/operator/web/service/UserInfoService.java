@@ -15,7 +15,7 @@ public interface UserInfoService {
    * @param userInfoDO user info
    * @return 是否保存成功
    */
-  void saveUserInfo(UserInfoDO userInfoDO);
+  boolean saveUserInfo(UserInfoDO userInfoDO);
 
   /**
    * 获取 User
@@ -39,7 +39,7 @@ public interface UserInfoService {
    * @param userInfoParam 用户信息
    * @return ResponseResult
    */
-  Boolean updateUserInfo(UserInfoParam userInfoParam);
+  boolean updateUserInfo(UserInfoParam userInfoParam);
 
   /**
    * 获取用户信息
@@ -55,5 +55,5 @@ public interface UserInfoService {
    * @param smsCode 用户信息
    * @return 是否成功
    */
-  Boolean resetPhone(String phone, String smsCode);
+  boolean resetPhone(String phone, String smsCode);
 }

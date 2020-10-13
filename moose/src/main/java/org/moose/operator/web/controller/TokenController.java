@@ -25,13 +25,13 @@ public class TokenController {
   public ResponseResult<Object> getRefreshToken(AuthTokenParam tokenParam) {
     String accessToken = tokenParam.getAccessToken();
     return new ResponseResult<>(accountService.getRefreshTokenByAccessToken(accessToken),
-        "获取 refresh token 成功");
+        "获取 refresh token");
   }
 
   @PostMapping(value = "/refreshToken")
   public ResponseResult<Object> refreshToken(AuthTokenParam tokenParam) {
     String refreshToken = tokenParam.getRefreshToken();
     return new ResponseResult<>(accountService.getAccessTokenByRefreshToken(refreshToken),
-        "获取 access token 成功");
+        "获取 access token");
   }
 }
