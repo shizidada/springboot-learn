@@ -32,7 +32,7 @@ public class AccountController {
   public ResponseResult<Object> register(@Valid RegisterInfoParam registerInfoParam,
       BindingResult result,
       HttpServletRequest request) {
-    return new ResponseResult<>(accountService.saveAccount(request, registerInfoParam), "注册成功");
+    return new ResponseResult<>(accountService.saveAccount(request, registerInfoParam), "用户注册");
   }
 
   /**
@@ -41,7 +41,7 @@ public class AccountController {
   @PostMapping(value = "/login")
   public ResponseResult<Object> login(@Valid LoginInfoParam loginInfoParam,
       BindingResult result) {
-    return new ResponseResult<>(accountService.getToken(loginInfoParam), "获取 access token 成功");
+    return new ResponseResult<>(accountService.getToken(loginInfoParam), "获取 access token");
   }
 
   /**
@@ -50,11 +50,11 @@ public class AccountController {
   @PostMapping(value = "/logout")
   public ResponseResult<Object> logout(AuthTokenParam tokenParam) {
     String accessToken = tokenParam.getAccessToken();
-    return new ResponseResult<>(accountService.removeToken(accessToken), "退出成功");
+    return new ResponseResult<>(accountService.removeToken(accessToken), "用户退出");
   }
 
   @PostMapping(value = "/status")
   public ResponseResult<Object> status() {
-    return new ResponseResult<>(accountService.isLogin(), "获取登录状态成功");
+    return new ResponseResult<>(accountService.isLogin(), "获取登录状态");
   }
 }
