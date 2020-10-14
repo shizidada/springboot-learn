@@ -11,5 +11,5 @@ public interface UploadFileService {
    * @param file 文件
    * @return 是否上传成功
    */
-  void uploadFile(MultipartFile file);
+  void uploadFile(MultipartFile [] file);
 }

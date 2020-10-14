@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.repository.ExcelInfoRepository;
 import org.moose.operator.exception.BusinessException;
@@ -36,7 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @Slf4j
 public class ExcelInfoServiceImpl implements ExcelInfoService {
-  private static final String SUBFIX_FILE_NAME = ".xlsx";
+  private static final String SUFFIX_FILE_NAME = ".xlsx";
 
   private static final Long FILE_SIZE = 1024 * 1024 * 5L;
 
@@ -80,7 +82,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     /**
      * 判断上传文件
      */
-    this.estimateUploadFile(file);
+    this.checkUploadFile(file);
 
     List<ImportExcelDTO> importExcelList = null;
     try {
@@ -150,16 +152,16 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
    *
    * @param file 文件
    */
-  private void estimateUploadFile(MultipartFile file) {
-    if (file.isEmpty()) {
+  private void checkUploadFile(MultipartFile file) {
+    if (ObjectUtils.isEmpty(file)) {
       throw new BusinessException(ResultCode.FILE_NOT_EMPTY);
     }
     String fileName = file.getOriginalFilename();
-    if (fileName != null && !fileName.endsWith(SUBFIX_FILE_NAME)) {
+    if (fileName != null && !fileName.endsWith(SUFFIX_FILE_NAME)) {
       throw new BusinessException(ResultCode.FILE_NOT_SUPPORT);
     }
     if (file.getSize() > FILE_SIZE) {
-      throw new BusinessException(ResultCode.FILE_MUCH);
+      throw new BusinessException(ResultCode.FILE_TOO_LARGE);
     }
   }
 

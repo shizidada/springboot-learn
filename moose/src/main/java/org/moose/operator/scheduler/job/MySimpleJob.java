@@ -1,4 +1,4 @@
-package org.moose.operator.job;
+package org.moose.operator.scheduler.job;
 
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;

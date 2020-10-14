@@ -5,7 +5,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.RedisKeyConstants;
-import org.moose.operator.constant.SmsTypes;
+import org.moose.operator.constant.SmsTypeConstants;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.AccountMapper;
 import org.moose.operator.mapper.UserInfoMapper;
@@ -128,7 +128,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     String smsCodeKey =
-        String.format(RedisKeyConstants.SMS_CODE_KEY, SmsTypes.RESET_PHONE, phone);
+        String.format(RedisKeyConstants.SMS_CODE_KEY, SmsTypeConstants.RESET_PHONE, phone);
     SmsCodeDTO smsCodeDTO = (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);
     if (ObjectUtils.isEmpty(smsCodeDTO) || smsCodeDTO.getExpired()) {
       throw new BusinessException(ResultCode.SMS_CODE_ERROR);

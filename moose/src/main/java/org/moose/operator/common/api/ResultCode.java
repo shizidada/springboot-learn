@@ -63,10 +63,10 @@ public enum ResultCode {
   /**
    * 文件上传
    */
-  FILE_NOT_EMPTY(30001, "文件不能为空，请选择重新上传"),
-  FILE_NOT_SUPPORT(30002, "文件不支持，请重新上传"),
-  FILE_MUCH(30003, "文件太大，请重新上传"),
-  FILE_LEGITIMATE_ERROR(30004, "文件不合法，请重新上传"),
+  FILE_NOT_EMPTY(30001, "文件不能为空"),
+  FILE_NOT_SUPPORT(30002, "文件不支持"),
+  FILE_TOO_LARGE(30003, "文件太大"),
+  FILE_LEGITIMATE_ERROR(30004, "文件不合法"),
   FILE_UPLOAD_ERROR(30005, "文件上传失败"),
 
   /**

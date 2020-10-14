@@ -3,7 +3,7 @@ package org.moose.operator.constant;
 /**
  * @author taihua
  */
-public interface SmsTypes {
+public interface SmsTypeConstants {
 
   String REGISTER = "register";
 

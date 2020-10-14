@@ -22,8 +22,8 @@ public class UploadFileController {
   private UploadFileService uploadFileService;
 
   @PostMapping(value = "/file")
-  public ResponseResult<Object> uploadFile(@RequestParam("file") MultipartFile file) {
-    uploadFileService.uploadFile(file);
+  public ResponseResult<Object> uploadFile(@RequestParam("files") MultipartFile [] files) {
+    uploadFileService.uploadFile(files);
     return new ResponseResult<>(Boolean.TRUE, "文件上传");
   }
 }

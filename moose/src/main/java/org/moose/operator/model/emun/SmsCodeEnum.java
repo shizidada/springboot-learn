@@ -1,7 +1,7 @@
 package org.moose.operator.model.emun;
 
 import org.apache.commons.lang3.StringUtils;
-import org.moose.operator.constant.SmsTypes;
+import org.moose.operator.constant.SmsTypeConstants;
 
 /**
  * @author taohua
@@ -12,22 +12,22 @@ public enum SmsCodeEnum {
   /**
    * 注册
    */
-  REGISTER(SmsTypes.REGISTER),
+  REGISTER(SmsTypeConstants.REGISTER),
 
   /**
    * sms login
    */
-  SMS_LOGIN(SmsTypes.SMS_LOGIN),
+  SMS_LOGIN(SmsTypeConstants.SMS_LOGIN),
 
   /**
    * reset phone number
    */
-  RESET_PHONE(SmsTypes.RESET_PHONE),
+  RESET_PHONE(SmsTypeConstants.RESET_PHONE),
 
   /**
    * 重置密码
    */
-  RESET_PASSWORD(SmsTypes.RESET_PASSWORD);
+  RESET_PASSWORD(SmsTypeConstants.RESET_PASSWORD);
 
   private String value;
 

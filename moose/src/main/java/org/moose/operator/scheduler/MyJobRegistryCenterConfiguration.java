@@ -1,4 +1,4 @@
-package org.moose.operator.configure;
+package org.moose.operator.scheduler;
 
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
