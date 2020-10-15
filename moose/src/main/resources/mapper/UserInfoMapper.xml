@@ -53,7 +53,6 @@
       <if test="userInfo.avatar != '' and userInfo.avatar != null">
         avatar=#{userInfo.avatar},
       </if>
-      email=#{userInfo.email},
       job=#{userInfo.job},
       address=#{userInfo.address},
       description=#{userInfo.description}

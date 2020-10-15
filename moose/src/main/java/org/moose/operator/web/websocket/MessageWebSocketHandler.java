@@ -75,14 +75,14 @@ public class MessageWebSocketHandler extends TextWebSocketHandler {
       }
 
       // TODO: check toId, the user is exist
-      String toId = messageInfo.getToId();
+      String toUserId = messageInfo.getToId();
       String message = messageInfo.getMessage();
-      if (StringUtils.isEmpty(toId) || StringUtils.isEmpty(message)) {
-        log.info("parse toId is empty or message is empty :: [{}: {}]", toId, message);
+      if (StringUtils.isEmpty(toUserId) || StringUtils.isEmpty(message)) {
+        log.info("parse toId is empty or message is empty :: [{}: {}]", toUserId, message);
         return;
       }
 
-      UserInfoDTO toUser = userService.getUserInfoByUserId(toId);
+      UserInfoDTO toUser = userService.getUserInfoByUserId(toUserId);
       if (ObjectUtils.isEmpty(toUser)) {
         log.info("parse toUser is empty :: [{}]", messageInfo);
         return;
@@ -113,7 +113,7 @@ public class MessageWebSocketHandler extends TextWebSocketHandler {
         return;
       }
       // 判断 to 用户是否在线
-      WebSocketSession socketSession = SESSION_MAP.get(toId);
+      WebSocketSession socketSession = SESSION_MAP.get(toUserId);
       if (ObjectUtils.isNotEmpty(socketSession) && socketSession.isOpen()) {
         // TODO: 根据前端的格式对接
         // 响应消息

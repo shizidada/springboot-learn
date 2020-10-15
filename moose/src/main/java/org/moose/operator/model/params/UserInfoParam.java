@@ -27,8 +27,6 @@ public class UserInfoParam {
 
   private String avatar;
 
-  private String email;
-
   private String job;
 
   private String address;

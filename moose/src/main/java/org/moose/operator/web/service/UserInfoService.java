@@ -28,7 +28,7 @@ public interface UserInfoService {
   /**
    * 获取用户信息
    *
-   * @param accountId   账号 Id
+   * @param accountId 账号 Id
    * @return 用户信息
    */
   UserInfoDTO getUserInfoByAccountId(String accountId);
@@ -51,9 +51,25 @@ public interface UserInfoService {
   /**
    * 重置手机号码
    *
-   * @param phone 用户信息
+   * @param phone   用户信息
    * @param smsCode 用户信息
    * @return 是否成功
    */
   boolean resetPhone(String phone, String smsCode);
+
+  /**
+   * save user info redis cache
+   *
+   * @param accountId accountId
+   * @param userInfoDTO user info
+   */
+  void saveUserInfoToCache(String accountId, UserInfoDTO userInfoDTO);
+
+  /**
+   * get user info form redis cache
+   *
+   * @param accountId accountId
+   * @return user info
+   */
+  UserInfoDTO getUserInfoFromCache(String accountId);
 }

@@ -186,4 +186,16 @@ CREATE TABLE `t_user_info` (
   KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息表';
 
+DROP TABLE IF EXISTS `t_dynamic_record`;
+CREATE TABLE `t_dynamic_record` (
+  `dr_id` varchar(64) PRIMARY KEY NOT NULL COMMENT '动态记录Id',
+  `user_id` varchar(64) NOT NULL COMMENT '用户Id',
+  `title` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT '动态标题',
+  `description` varchar(500) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT '动态描述',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  KEY `dr_id` (`dr_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='发布动态记录表';
+
 SET FOREIGN_KEY_CHECKS = 1;

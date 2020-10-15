@@ -24,9 +24,9 @@ spring:
 
   redis:
     database: 15
-    host: redis.moose.com
-#    host: localhost
-    password: tRedisW135
+#    host: redis.moose.com
+    host: localhost
+#    password: tRedisW135
     port: 6379
 
   jackson:
@@ -59,3 +59,10 @@ mybatis:
 elasticJob:
   serverList: localhost:2181
   namespace: moose_elasticjob
+
+aliyun:
+  oss:
+    endpoint: http://oss-cn-shenzhen.aliyuncs.com
+    accessKeyId: LTAI4G3irMqXB5G8NQgQRAb9
+    accessKeySecret: 6Ubyl6ITVtR1xHUhx8PawIeIKfuCWC
+    bucketName: moose-plus

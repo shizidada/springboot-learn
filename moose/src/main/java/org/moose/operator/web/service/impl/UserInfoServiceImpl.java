@@ -1,5 +1,6 @@
 package org.moose.operator.web.service.impl;
 
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * mongodb operator
+ * Query query = Query.query(Criteria.where("account_id").is(accountId).and("account_name").is(accountName));
+ * UserInfoDO userInfoDO = this.mongoTemplate.findOne(query, UserInfoDO.class);
+ */
 
 /**
  * @author taohua
@@ -50,16 +57,22 @@ public class UserInfoServiceImpl implements UserInfoService {
   }
 
   @Override public UserInfoDTO getUserInfoByAccountId(String accountId) {
-    //Query query =
-    //    Query.query(Criteria.where("account_id").is(accountId).and("account_name").is(accountName));
-    //UserInfoDO userInfoDO = this.mongoTemplate.findOne(query, UserInfoDO.class);
+
+    UserInfoDTO userInfoFromCache = this.getUserInfoFromCache(accountId);
+    if (ObjectUtils.isNotEmpty(userInfoFromCache)) {
+      return userInfoFromCache;
+    }
 
     UserInfoDO userInfoDO = userInfoMapper.findByAccountId(accountId);
     if (ObjectUtils.isEmpty(userInfoDO)) {
       return null;
     }
+
     UserInfoDTO userInfoDTO = new UserInfoDTO();
     BeanUtils.copyProperties(userInfoDO, userInfoDTO);
+
+    // save to redis cache
+    this.saveUserInfoToCache(accountId, userInfoDTO);
     return userInfoDTO;
   }
 
@@ -99,6 +112,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     if (!userInfoMapper.updateUserInfoByAccountId(accountId, userInfoDO)) {
       throw new BusinessException(ResultCode.USER_INFO_UPDATE_FAIL);
     }
+
+    // update cache user info
+    UserInfoDTO userInfoFromCache = this.getUserInfoFromCache(accountId);
+    userInfoFromCache.setUserName(userInfoParam.getUserName());
+    userInfoFromCache.setAvatar(userInfoParam.getAvatar());
+    userInfoFromCache.setAddress(userInfoParam.getAddress());
+    userInfoFromCache.setDescription(userInfoParam.getDescription());
+    userInfoFromCache.setGender(userInfoParam.getGender());
+    userInfoFromCache.setJob(userInfoParam.getJob());
+    this.saveUserInfoToCache(accountId, userInfoFromCache);
     return Boolean.TRUE;
   }
 
@@ -118,27 +141,48 @@ public class UserInfoServiceImpl implements UserInfoService {
     if (StringUtils.isEmpty(phone)) {
       throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
     }
+
     if (StringUtils.isEmpty(smsCode)) {
       throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
-    }
-    AccountDTO accountDTO = accountService.getAccountInfo();
-    UserInfoDTO userInfoDTO = this.getUserInfoByAccountId(accountDTO.getAccountId());
-    if (StringUtils.equals(phone, userInfoDTO.getPhone())) {
-      throw new BusinessException(ResultCode.PHONE_EXITS_WITH_CURRENT);
     }
 
     String smsCodeKey =
         String.format(RedisKeyConstants.SMS_CODE_KEY, SmsTypeConstants.RESET_PHONE, phone);
+
+    AccountDTO accountDTO = accountService.getAccountInfo();
+    UserInfoDTO userInfoDTO = this.getUserInfoByAccountId(accountDTO.getAccountId());
+    if (StringUtils.equals(phone, userInfoDTO.getPhone())) {
+      redisTemplate.expire(smsCodeKey, 0, TimeUnit.SECONDS);
+      throw new BusinessException(ResultCode.PHONE_EXITS_WITH_CURRENT);
+    }
+
     SmsCodeDTO smsCodeDTO = (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);
     if (ObjectUtils.isEmpty(smsCodeDTO) || smsCodeDTO.getExpired()) {
       throw new BusinessException(ResultCode.SMS_CODE_ERROR);
     }
 
-    if (accountService.updateAccountPhone(accountDTO.getAccountId(), phone)) {
-      if (!userInfoMapper.updatePhoneByAccountId(accountDTO.getAccountId(), phone)) {
+    String accountId = accountDTO.getAccountId();
+
+    if (accountService.updateAccountPhone(accountId, phone)) {
+      if (!userInfoMapper.updatePhoneByAccountId(accountId, phone)) {
         throw new BusinessException(ResultCode.PHONE_RESET_FAIL);
       }
     }
+
+    // update cache user info
+    userInfoDTO.setPhone(phone);
+    this.saveUserInfoToCache(accountId, userInfoDTO);
+
     return Boolean.TRUE;
+  }
+
+  @Override public UserInfoDTO getUserInfoFromCache(String accountId) {
+    String userInfoKey = String.format(RedisKeyConstants.USER_INFO_KEY, accountId);
+    return (UserInfoDTO) redisTemplate.opsForValue().get(userInfoKey);
+  }
+
+  @Override public void saveUserInfoToCache(String accountId, UserInfoDTO userInfoDTO) {
+    String userInfoKey = String.format(RedisKeyConstants.USER_INFO_KEY, accountId);
+    redisTemplate.opsForValue().set(userInfoKey, userInfoDTO);
   }
 }

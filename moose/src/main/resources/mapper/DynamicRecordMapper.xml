@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.moose.operator.mapper.DynamicRecordMapper">
+
+  <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.DynamicRecordDO">
+    <result column="dr_id" jdbcType="VARCHAR" property="drId"/>
+    <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    <result column="title" jdbcType="VARCHAR" property="title"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+  </resultMap>
+
+  <sql id="Base_Column">
+    dr_id, title, description
+  </sql>
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM `t_dynamic_record` WHERE user_id=#{userId}
+  </select>
+
+  <insert id="insertDynamicRecord" parameterType="org.moose.operator.model.domain.DynamicRecordDO"
+      useGeneratedKeys="true">
+    INSERT INTO `t_dynamic_record`(dr_id, user_id, title, description)
+    VALUES (#{drId}, #{userId}, #{title}, #{description})
+  </insert>
+
+</mapper>
