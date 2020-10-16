@@ -29,4 +29,6 @@ public interface RedisKeyConstants {
    * moose user inf key
    */
   String USER_INFO_KEY = "moose:user:info:%s";
+
+  String USER_LIKED_KEY = "moose:user:liked:%s";
 }

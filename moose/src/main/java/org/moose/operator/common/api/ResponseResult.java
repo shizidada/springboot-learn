@@ -1,5 +1,7 @@
 package org.moose.operator.common.api;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * Description
@@ -10,7 +12,7 @@ package org.moose.operator.common.api;
  * @date 2019 2019/10/28 21:59
  * @see org.moose.operator.common
  */
-public class ResponseResult<T> {
+public class ResponseResult<T> implements Serializable {
   private Integer code;
 
   private String message;
@@ -43,10 +45,28 @@ public class ResponseResult<T> {
     this.data = data;
   }
 
-  public ResponseResult(ResultCode resultCode, T data) {
-    this.code = resultCode.getCode();
-    this.message = resultCode.getMessage();
-    this.data = data;
+  public static <T> ResponseResult<T> ok() {
+    return restResult(null, ResultCode.SUCCESS.getCode(), null);
+  }
+
+  public static <T> ResponseResult<T> ok(T data) {
+    return restResult(data, ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage());
+  }
+
+  public static <T> ResponseResult<T> ok(T data, String msg) {
+    return restResult(data, ResultCode.SUCCESS.getCode(), msg);
+  }
+
+  public static <T> ResponseResult<T> failed(ResultCode resultCode, T data) {
+    return restResult(data, resultCode.getCode(), resultCode.getMessage());
+  }
+
+  private static <T> ResponseResult<T> restResult(T data, Integer code, String message) {
+    ResponseResult<T> apiResult = new ResponseResult<>();
+    apiResult.setCode(code);
+    apiResult.setData(data);
+    apiResult.setMessage(message);
+    return apiResult;
   }
 
   public Integer getCode() {
