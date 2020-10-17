@@ -7,6 +7,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
+import org.moose.operator.constant.SmsTypeConstants;
 import org.moose.operator.mapper.SmsCodeMapper;
 import org.moose.operator.model.domain.SmsCodeDO;
 import org.moose.operator.model.dto.SmsCodeDTO;
@@ -58,6 +59,18 @@ public class DefaultSmsCodeSenderServiceImpl implements SmsCodeSenderService {
 
     // 发送短信
     sendAndSaveSmsCode(smsCodeParam);
+  }
+
+  @Override public void setSmsCodeCacheExpire(String phone) {
+    String smsCodeKey =
+        String.format(RedisKeyConstants.SMS_CODE_KEY, SmsTypeConstants.RESET_PHONE, phone);
+    redisTemplate.expire(smsCodeKey, 0, TimeUnit.SECONDS);
+  }
+
+  @Override public SmsCodeDTO getSmsCodeFromCacheByPhone(String phone) {
+    String smsCodeKey =
+        String.format(RedisKeyConstants.SMS_CODE_KEY, SmsTypeConstants.RESET_PHONE, phone);
+    return (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);
   }
 
   private void sendAndSaveSmsCode(SmsCodeParam smsCodeParam) {

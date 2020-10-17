@@ -26,9 +26,14 @@ public interface RedisKeyConstants {
   String REFRESH_TOKEN_KEY = "moose:refresh:token:%s";
 
   /**
-   * moose user inf key
+   * moose privacy user info key
    */
-  String USER_INFO_KEY = "moose:user:info:%s";
+  String USER_INFO_KEY = "moose:user:privacy:info:%s";
+
+  /**
+   * moose base user info key
+   */
+  String USER_BASE_INFO_KEY = "moose:user:base:info:%s";
 
   String USER_LIKED_KEY = "moose:user:liked:%s";
 }

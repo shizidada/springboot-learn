@@ -1,6 +1,7 @@
 package org.moose.operator.web.security.configure;
 
 import javax.annotation.Resource;
+import org.moose.operator.constant.PermitAllConstants;
 import org.moose.operator.constant.SecurityConstants;
 import org.moose.operator.web.filter.LoginVerifyLimitFilter;
 import org.moose.operator.web.filter.SmsVerifyLimitFilter;
@@ -55,13 +56,15 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     http
         .authorizeRequests()
         .antMatchers(
-            SecurityConstants.LOGIN_IN_URL,
-            SecurityConstants.LOGIN_OUT_URL,
-            SecurityConstants.LOGIN_STATUS_URL,
-            SecurityConstants.REGISTER_URL,
-            SecurityConstants.SEND_SMS_CODE_URL,
-            SecurityConstants.GET_REFRESH_TOKEN_URL,
-            SecurityConstants.REFRESH_TOKEN_URL
+            PermitAllConstants.LOGIN_IN_URL,
+            PermitAllConstants.LOGIN_OUT_URL,
+            PermitAllConstants.LOGIN_STATUS_URL,
+            PermitAllConstants.REGISTER_URL,
+            PermitAllConstants.SEND_SMS_CODE_URL,
+            PermitAllConstants.GET_REFRESH_TOKEN_URL,
+            PermitAllConstants.REFRESH_TOKEN_URL,
+
+            PermitAllConstants.DYNAMIC_GET_LIST
         ).permitAll();
 
     // add filter

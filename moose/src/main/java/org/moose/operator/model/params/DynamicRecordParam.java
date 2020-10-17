@@ -18,6 +18,6 @@ public class DynamicRecordParam {
   /**
    * 动态描述
    */
-  @NotBlank(message = "动态描述不能为空")
-  private String description;
+  @NotBlank(message = "动态内容不能为空")
+  private String content;
 }

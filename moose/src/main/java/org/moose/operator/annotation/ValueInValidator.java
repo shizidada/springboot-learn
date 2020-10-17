@@ -45,7 +45,7 @@ public class ValueInValidator implements ConstraintValidator<ValueIn, Object>, A
     if (value instanceof String) {
       return values.contains(value);
     }
-    return false;
+    return Boolean.FALSE;
   }
 }
 

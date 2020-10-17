@@ -5,20 +5,6 @@ package org.moose.operator.constant;
  */
 public interface SecurityConstants {
 
-  String LOGIN_IN_URL = "/api/v1/account/login";
-
-  String LOGIN_OUT_URL = "/api/v1/account/logout";
-
-  String REGISTER_URL = "/api/v1/account/register";
-
-  String LOGIN_STATUS_URL = "/api/v1/account/status";
-
-  String GET_REFRESH_TOKEN_URL = "/api/v1/account/getRefreshToken";
-
-  String REFRESH_TOKEN_URL = "/api/v1/account/refreshToken";
-
-  String SEND_SMS_CODE_URL = "/api/v1/sms/send";
-
   Integer SMS_TIME_OF_DAY = 60;
 
   Integer SMS_TIME_OF_TIMEOUT = 10 * 60;
@@ -32,6 +18,16 @@ public interface SecurityConstants {
    * 设置在一段时间范围类不能连续登录超过 6 次
    */
   Integer LOGIN_TIME_OF_SECONDS = 60;
+
+  /**
+   * access token 有效时间
+   */
+  Integer ACCESS_TOKEN_VALIDITY = 86400;
+
+  /**
+   * refresh token 有效时间
+   */
+  Integer REFRESH_TOKEN_VALIDITY = 2592000;
 
   String OAUTH2_CLIENT = "client";
 

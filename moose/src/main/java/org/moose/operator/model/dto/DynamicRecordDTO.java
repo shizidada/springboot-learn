@@ -14,14 +14,19 @@ public class DynamicRecordDTO extends BaseDTO {
   private String drId;
 
   /**
+   * author
+   */
+  private UserBaseInfoDTO author;
+
+  /**
    * 动态标题
    */
   private String title;
 
   /**
-   * 动态描述
+   * 动态内容
    */
-  private String description;
+  private String content;
 
   /**
    * is like

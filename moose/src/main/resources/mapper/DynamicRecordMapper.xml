@@ -7,11 +7,17 @@
     <result column="dr_id" jdbcType="VARCHAR" property="drId"/>
     <result column="user_id" jdbcType="VARCHAR" property="userId"/>
     <result column="title" jdbcType="VARCHAR" property="title"/>
-    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="content" jdbcType="VARCHAR" property="content"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <association
+        property="author"
+        column="user_id"
+        javaType="org.moose.operator.model.domain.UserInfoDO"
+        select="org.moose.operator.mapper.UserInfoMapper.findUserBaseInfoByUserId"/>
   </resultMap>
 
   <sql id="Base_Column">
-    dr_id, title, description
+    dr_id, user_id, title, content, create_time
   </sql>
 
   <select id="selectByUserId" resultMap="BaseResultMap">
@@ -20,10 +26,15 @@
     FROM `t_dynamic_record` WHERE user_id=#{userId}
   </select>
 
+  <select id="selectRecommendDynamicRecord" resultMap="BaseResultMap">
+    SELECT dr.dr_id, dr.user_id, dr.title, dr.content, dr.create_time FROM `t_dynamic_record` dr
+    ORDER BY `create_time` DESC
+  </select>
+
   <insert id="insertDynamicRecord" parameterType="org.moose.operator.model.domain.DynamicRecordDO"
       useGeneratedKeys="true">
-    INSERT INTO `t_dynamic_record`(dr_id, user_id, title, description)
-    VALUES (#{drId}, #{userId}, #{title}, #{description})
+    INSERT INTO `t_dynamic_record`(dr_id, user_id, title, content)
+    VALUES (#{drId}, #{userId}, #{title}, #{content})
   </insert>
 
 </mapper>

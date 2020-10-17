@@ -49,17 +49,17 @@ public class RedisTemplateTests {
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
     dynamicRecordDTO.setDrId("766462045200580606");
     dynamicRecordDTO.setTitle("你今天吃饭了吗？");
-    dynamicRecordDTO.setDescription("戴上耳机 \uD83C\uDFA7 \n 点击左上角的最大化按钮");
+    dynamicRecordDTO.setContent("戴上耳机 \uD83C\uDFA7 \n 点击左上角的最大化按钮");
 
     DynamicRecordDTO dynamicRecordDTO2 = new DynamicRecordDTO();
     dynamicRecordDTO2.setDrId("766462045200580607");
     dynamicRecordDTO2.setTitle("走，一起去月亮上看看");
-    dynamicRecordDTO2.setDescription("等待放假的日子里\n 百无聊赖的雀雀\n 用文档给大家做了一个游戏");
+    dynamicRecordDTO2.setContent("等待放假的日子里\n 百无聊赖的雀雀\n 用文档给大家做了一个游戏");
 
     DynamicRecordDTO dynamicRecordDTO3 = new DynamicRecordDTO();
     dynamicRecordDTO3.setDrId("766462045200580608");
     dynamicRecordDTO3.setTitle("先处理情绪，再解决事情");
-    dynamicRecordDTO3.setDescription(
+    dynamicRecordDTO3.setContent(
         "最近我正尝试着换个角度来看待成长这件事情，去思考，别人因为我的存在学到了什么东西，别人因为我的存在做成了什么事情，别人因为我的存在解决了什么问题，这就有点意思了，也就是说，我用他人的成长来反映我的成长，而他人的成长是受我影响的，这需要彻底打破之前的观念。");
 
     recordDTOList.add(dynamicRecordDTO);

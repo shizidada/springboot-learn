@@ -35,6 +35,14 @@ public interface UserInfoMapper {
   UserInfoDO findByUserId(@Param("userId") String userId);
 
   /**
+   * 根据用户 Id 查询用户基本信息
+   *
+   * @param userId 用户Id
+   * @return 用户查询用户基本信息
+   */
+  UserInfoDO findUserBaseInfoByUserId(@Param("userId") String userId);
+
+  /**
    * 更新用户信息
    *
    * @param userInfo  用户信息

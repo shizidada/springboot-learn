@@ -166,7 +166,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     oauthServer
         .tokenKeyAccess("permitAll()")
-        .checkTokenAccess("isAuthenticated()")
+        .checkTokenAccess("permitAll()")
         .allowFormAuthenticationForClients();
   }
 

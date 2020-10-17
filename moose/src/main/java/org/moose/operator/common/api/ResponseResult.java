@@ -13,6 +13,7 @@ import java.io.Serializable;
  * @see org.moose.operator.common
  */
 public class ResponseResult<T> implements Serializable {
+  private static final long serialVersionUID = 6738387175874422264L;
   private Integer code;
 
   private String message;

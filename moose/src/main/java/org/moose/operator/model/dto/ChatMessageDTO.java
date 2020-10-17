@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class ChatMessageDTO extends BaseDTO implements Serializable {
 
+  private static final long serialVersionUID = 3485857095796059412L;
   private String messageId;
 
   private String message;

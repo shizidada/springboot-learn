@@ -37,16 +37,16 @@ public class MessageHandshakeInterceptor implements HandshakeInterceptor {
     String[] split = StringUtils.split(path, "/");
     // 请求路径切割后不等于2的排除掉
     if (split.length != ChatMessageConstants.SOCKET_URL_PARAM_LENGTH) {
-      return false;
+      return Boolean.FALSE;
     }
     // 第二个参数不是数字排除掉
     String userId = split[1];
     if (StringUtils.isEmpty(userId)) {
-      return false;
+      return Boolean.FALSE;
     }
 
     map.put("userId", userId);
-    return true;
+    return Boolean.TRUE;
   }
 
   /**

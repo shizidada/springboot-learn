@@ -191,7 +191,7 @@ CREATE TABLE `t_dynamic_record` (
   `dr_id` varchar(64) PRIMARY KEY NOT NULL COMMENT '动态记录Id',
   `user_id` varchar(64) NOT NULL COMMENT '用户Id',
   `title` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT '动态标题',
-  `description` varchar(500) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT '动态描述',
+  `content` varchar(500) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT '动态描述',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   KEY `dr_id` (`dr_id`),

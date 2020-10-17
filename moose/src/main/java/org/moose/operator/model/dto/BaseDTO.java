@@ -1,7 +1,9 @@
 package org.moose.operator.model.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * <p>
@@ -19,10 +21,10 @@ public class BaseDTO {
   /**
    * 创建时间
    */
-  private Date createTime;
+  private LocalDateTime createTime;
 
   /**
    * 修改时间
    */
-  private Date updateTime;
+  private LocalDateTime updateTime;
 }

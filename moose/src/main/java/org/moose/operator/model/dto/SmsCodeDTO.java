@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
  */
 public class SmsCodeDTO implements Serializable {
 
+  private static final long serialVersionUID = 8181529586466090339L;
   private String code;
   /**
    * 过期时间

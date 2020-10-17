@@ -29,8 +29,13 @@ public class DynamicController {
     return new ResponseResult<Object>(Boolean.TRUE, "创建动态");
   }
 
-  @PostMapping("/list")
-  public ResponseResult<Object> list() {
-    return new ResponseResult<Object>(dynamicRecordService.getDynamicRecordByUserId(), "获取动态列表");
+  @PostMapping("/getRecommendList")
+  public ResponseResult<Object> recommendList() {
+    return new ResponseResult<Object>(dynamicRecordService.getRecommendDynamicRecord(), "获取推荐动态列表");
+  }
+
+  @PostMapping("/my")
+  public ResponseResult<Object> my() {
+    return new ResponseResult<Object>(dynamicRecordService.getMyDynamicRecord(), "获取我的动态列表");
   }
 }

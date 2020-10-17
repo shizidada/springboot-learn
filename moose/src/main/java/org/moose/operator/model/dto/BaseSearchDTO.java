@@ -16,6 +16,7 @@ import lombok.Data;
 @Data
 public class BaseSearchDTO extends BaseDTO implements Serializable {
 
+  private static final long serialVersionUID = -2630834847018115027L;
   private Integer pageNum;
 
   private Integer pageSize;

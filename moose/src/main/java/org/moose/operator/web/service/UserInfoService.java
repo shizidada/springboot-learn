@@ -1,6 +1,7 @@
 package org.moose.operator.web.service;
 
 import org.moose.operator.model.domain.UserInfoDO;
+import org.moose.operator.model.dto.UserBaseInfoDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.params.UserInfoParam;
 
@@ -56,20 +57,4 @@ public interface UserInfoService {
    * @return 是否成功
    */
   boolean resetPhone(String phone, String smsCode);
-
-  /**
-   * save user info redis cache
-   *
-   * @param accountId accountId
-   * @param userInfoDTO user info
-   */
-  void saveUserInfoToCache(String accountId, UserInfoDTO userInfoDTO);
-
-  /**
-   * get user info form redis cache
-   *
-   * @param accountId accountId
-   * @return user info
-   */
-  UserInfoDTO getUserInfoFromCache(String accountId);
 }

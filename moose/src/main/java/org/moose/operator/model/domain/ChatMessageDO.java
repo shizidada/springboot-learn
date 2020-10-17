@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @EqualsAndHashCode(callSuper = true)
 public class ChatMessageDO extends BaseDO implements Serializable {
 
+  private static final long serialVersionUID = -5799222851618141727L;
   @Field("message_id")
   private String messageId;
 

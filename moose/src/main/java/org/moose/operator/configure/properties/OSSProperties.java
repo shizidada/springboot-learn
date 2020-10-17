@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OSSProperties implements Serializable {
 
+  private static final long serialVersionUID = 1742952576179879952L;
   @Value("${aliyun.oss.endpoint}")
   private String endpoint;
 

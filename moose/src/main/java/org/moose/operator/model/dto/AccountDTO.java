@@ -16,6 +16,7 @@ import lombok.Data;
 @Data
 public class AccountDTO extends BaseDTO implements Serializable {
 
+  private static final long serialVersionUID = -7675270879349686296L;
   private String accountId;
 
   private String accountName;

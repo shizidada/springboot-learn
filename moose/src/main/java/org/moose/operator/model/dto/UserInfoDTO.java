@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * <p>
- * Description:
+ * Description: Privacy user info
  * </p>
  *
  * @author taohua
@@ -14,23 +14,14 @@ import lombok.Data;
  * @see org.moose.operator.model.dto
  */
 @Data
-public class UserInfoDTO implements Serializable {
+public class UserInfoDTO extends UserBaseInfoDTO implements Serializable {
 
-  private String userId;
-
-  private String userName;
-
+  private static final long serialVersionUID = 2261972319373525797L;
   private String phone;
-
-  private String gender;
-
-  private String avatar;
 
   private String email;
 
   private String job;
 
   private String address;
-
-  private String description;
 }

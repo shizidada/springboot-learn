@@ -24,4 +24,11 @@ public interface DynamicRecordMapper {
    * @return all record
    */
   List<DynamicRecordDO> selectByUserId(String userId);
+
+  /**
+   * select dynamic record order by createTime
+   *
+   * @return all record
+   */
+  List<DynamicRecordDO> selectRecommendDynamicRecord();
 }

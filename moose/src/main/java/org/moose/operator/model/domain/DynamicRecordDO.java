@@ -14,5 +14,7 @@ public class DynamicRecordDO extends BaseDO {
 
   private String title;
 
-  private String description;
+  private String content;
+
+  private UserInfoDO author;
 }

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.DefaultConstants;
 import org.moose.operator.constant.HttpMethod;
+import org.moose.operator.constant.PermitAllConstants;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.constant.SecurityConstants;
 import org.moose.operator.exception.BusinessException;
@@ -46,7 +47,7 @@ public class SmsVerifyLimitFilter extends OncePerRequestFilter {
   @Override public void afterPropertiesSet() throws ServletException {
     super.afterPropertiesSet();
 
-    addUrlToMap(SecurityConstants.SEND_SMS_CODE_URL, DefaultConstants.DEFAULT_PARAMETER_NAME_PHONE);
+    addUrlToMap(PermitAllConstants.SEND_SMS_CODE_URL, DefaultConstants.DEFAULT_PARAMETER_NAME_PHONE);
   }
 
   protected void addUrlToMap(String urlString, String smsParam) {

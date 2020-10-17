@@ -17,9 +17,16 @@ public interface DynamicRecordService {
   void saveDynamicRecord(DynamicRecordParam dynamicRecordParam);
 
   /**
-   * get dynamic record by user id
+   * get my dynamic record
    *
-   * @return list of dynamic record
+   * @return list of dynamic record me
    */
-  List<DynamicRecordDTO> getDynamicRecordByUserId();
+  List<DynamicRecordDTO> getMyDynamicRecord();
+
+  /**
+   * get recommend dynamic record
+   *
+   * @return list of recommend dynamic record
+   */
+  List<DynamicRecordDTO> getRecommendDynamicRecord();
 }

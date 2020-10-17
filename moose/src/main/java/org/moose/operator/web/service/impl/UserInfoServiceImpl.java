@@ -1,12 +1,9 @@
 package org.moose.operator.web.service.impl;
 
-import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
-import org.moose.operator.constant.RedisKeyConstants;
-import org.moose.operator.constant.SmsTypeConstants;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.AccountMapper;
 import org.moose.operator.mapper.UserInfoMapper;
@@ -17,15 +14,15 @@ import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.params.UserInfoParam;
 import org.moose.operator.web.security.component.CustomUserDetails;
 import org.moose.operator.web.service.AccountService;
+import org.moose.operator.web.service.SmsCodeSenderService;
+import org.moose.operator.web.service.UserInfoCacheService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * mongodb operator
- * Query query = Query.query(Criteria.where("account_id").is(accountId).and("account_name").is(accountName));
+ * mongodb operator Query query = Query.query(Criteria.where("account_id").is(accountId).and("account_name").is(accountName));
  * UserInfoDO userInfoDO = this.mongoTemplate.findOne(query, UserInfoDO.class);
  */
 
@@ -36,16 +33,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserInfoServiceImpl implements UserInfoService {
 
   @Resource
-  private UserInfoMapper userInfoMapper;
-
-  @Resource
   private AccountService accountService;
 
   @Resource
-  private AccountMapper accountMapper;
+  private SmsCodeSenderService smsCodeSenderService;
 
   @Resource
-  private RedisTemplate<String, Object> redisTemplate;
+  private UserInfoCacheService userInfoCacheService;
+
+  @Resource
+  private UserInfoMapper userInfoMapper;
+
+  @Resource
+  private AccountMapper accountMapper;
 
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -58,7 +58,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
   @Override public UserInfoDTO getUserInfoByAccountId(String accountId) {
 
-    UserInfoDTO userInfoFromCache = this.getUserInfoFromCache(accountId);
+    UserInfoDTO userInfoFromCache =
+        userInfoCacheService.getUserInfoFromCacheByAccountId(accountId);
     if (ObjectUtils.isNotEmpty(userInfoFromCache)) {
       return userInfoFromCache;
     }
@@ -72,18 +73,25 @@ public class UserInfoServiceImpl implements UserInfoService {
     BeanUtils.copyProperties(userInfoDO, userInfoDTO);
 
     // save to redis cache
-    this.saveUserInfoToCache(accountId, userInfoDTO);
+    userInfoCacheService.saveUserInfoToCacheByAccountId(accountId, userInfoDTO);
+    userInfoCacheService.saveUserInfoToCacheByUserId(userInfoDTO.getUserId(), userInfoDTO);
     return userInfoDTO;
   }
 
   @Override
   public UserInfoDTO getUserInfoByUserId(String userId) {
+    UserInfoDTO userInfo = userInfoCacheService.getUserInfoFromCacheByUserId(userId);
+    if (ObjectUtils.isNotEmpty(userInfo)) {
+      return userInfo;
+    }
+
     UserInfoDO userInfoDO = userInfoMapper.findByUserId(userId);
     if (ObjectUtils.isEmpty(userInfoDO)) {
       return null;
     }
     UserInfoDTO userInfoDTO = new UserInfoDTO();
     BeanUtils.copyProperties(userInfoDO, userInfoDTO);
+    userInfoCacheService.saveUserInfoToCacheByUserId(userId, userInfoDTO);
     return userInfoDTO;
   }
 
@@ -114,14 +122,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     // update cache user info
-    UserInfoDTO userInfoFromCache = this.getUserInfoFromCache(accountId);
+    UserInfoDTO userInfoFromCache = userInfoCacheService.getUserInfoFromCacheByAccountId(accountId);
     userInfoFromCache.setUserName(userInfoParam.getUserName());
     userInfoFromCache.setAvatar(userInfoParam.getAvatar());
     userInfoFromCache.setAddress(userInfoParam.getAddress());
     userInfoFromCache.setDescription(userInfoParam.getDescription());
     userInfoFromCache.setGender(userInfoParam.getGender());
     userInfoFromCache.setJob(userInfoParam.getJob());
-    this.saveUserInfoToCache(accountId, userInfoFromCache);
+    userInfoCacheService.saveUserInfoToCacheByAccountId(accountId, userInfoFromCache);
     return Boolean.TRUE;
   }
 
@@ -146,17 +154,14 @@ public class UserInfoServiceImpl implements UserInfoService {
       throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
     }
 
-    String smsCodeKey =
-        String.format(RedisKeyConstants.SMS_CODE_KEY, SmsTypeConstants.RESET_PHONE, phone);
-
     AccountDTO accountDTO = accountService.getAccountInfo();
     UserInfoDTO userInfoDTO = this.getUserInfoByAccountId(accountDTO.getAccountId());
     if (StringUtils.equals(phone, userInfoDTO.getPhone())) {
-      redisTemplate.expire(smsCodeKey, 0, TimeUnit.SECONDS);
+      smsCodeSenderService.setSmsCodeCacheExpire(phone);
       throw new BusinessException(ResultCode.PHONE_EXITS_WITH_CURRENT);
     }
 
-    SmsCodeDTO smsCodeDTO = (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);
+    SmsCodeDTO smsCodeDTO = smsCodeSenderService.getSmsCodeFromCacheByPhone(phone);
     if (ObjectUtils.isEmpty(smsCodeDTO) || smsCodeDTO.getExpired()) {
       throw new BusinessException(ResultCode.SMS_CODE_ERROR);
     }
@@ -171,18 +176,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     // update cache user info
     userInfoDTO.setPhone(phone);
-    this.saveUserInfoToCache(accountId, userInfoDTO);
+
+    userInfoCacheService.saveUserInfoToCacheByAccountId(accountId, userInfoDTO);
+
+    String userId = userInfoDTO.getUserId();
+    userInfoCacheService.saveUserInfoToCacheByUserId(userId, userInfoDTO);
 
     return Boolean.TRUE;
-  }
-
-  @Override public UserInfoDTO getUserInfoFromCache(String accountId) {
-    String userInfoKey = String.format(RedisKeyConstants.USER_INFO_KEY, accountId);
-    return (UserInfoDTO) redisTemplate.opsForValue().get(userInfoKey);
-  }
-
-  @Override public void saveUserInfoToCache(String accountId, UserInfoDTO userInfoDTO) {
-    String userInfoKey = String.format(RedisKeyConstants.USER_INFO_KEY, accountId);
-    redisTemplate.opsForValue().set(userInfoKey, userInfoDTO);
   }
 }

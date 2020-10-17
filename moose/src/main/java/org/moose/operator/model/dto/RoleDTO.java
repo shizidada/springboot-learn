@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class RoleDTO extends BaseDTO implements Serializable {
 
+  private static final long serialVersionUID = -6787365847689995969L;
   /**
    * 角色 id
    */

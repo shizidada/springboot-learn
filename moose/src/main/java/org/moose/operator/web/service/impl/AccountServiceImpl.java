@@ -169,7 +169,7 @@ public class AccountServiceImpl implements AccountService {
       log.info("register failed error [{}]", e.getMessage());
       throw new BusinessException(ResultCode.REGISTER_FAIL);
     }
-    return true;
+    return Boolean.TRUE;
   }
 
   @Override
@@ -197,7 +197,7 @@ public class AccountServiceImpl implements AccountService {
     // remove refresh Token
     redisTemplate.expire(refreshTokenKey, 0, TimeUnit.SECONDS);
 
-    return true;
+    return Boolean.TRUE;
   }
 
   /**
@@ -365,7 +365,7 @@ public class AccountServiceImpl implements AccountService {
   public boolean isLogin() {
     Authentication authentication = (Authentication) this.getAuthentication();
     if (ObjectUtils.isEmpty(authentication)) {
-      return false;
+      return Boolean.FALSE;
     }
     return authentication.getPrincipal() instanceof CustomUserDetails;
   }

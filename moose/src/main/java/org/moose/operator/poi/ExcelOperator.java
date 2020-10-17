@@ -3,6 +3,7 @@ package org.moose.operator.poi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -121,10 +122,10 @@ public class ExcelOperator {
         importExcelDTO.setPlatform(platform);
 
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
-        importExcelDTO.setCreateTime(new Date());
+        importExcelDTO.setCreateTime(LocalDateTime.now());
 
         //importExcelDO.setUpdateTime(dateFormat.format(new Date()));
-        importExcelDTO.setUpdateTime(new Date());
+        importExcelDTO.setUpdateTime(LocalDateTime.now());
 
         // add to list, need to optimize list add any more data
         importExcelInfoList.add(importExcelDTO);

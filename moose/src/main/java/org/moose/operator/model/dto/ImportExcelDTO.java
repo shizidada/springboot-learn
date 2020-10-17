@@ -16,6 +16,7 @@ import lombok.Data;
 @Data
 public class ImportExcelDTO extends BaseSearchDTO implements Serializable {
 
+  private static final long serialVersionUID = -4965876569583536645L;
   /**
    * 主键 id
    */

@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class UserInfoDO extends BaseDO implements Serializable {
 
+  private static final long serialVersionUID = 7836466254399105986L;
   private String userId;
 
   private String userName;
