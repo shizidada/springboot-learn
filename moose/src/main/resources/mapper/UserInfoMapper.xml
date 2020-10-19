@@ -22,7 +22,7 @@
   </sql>
 
   <sql id="User_Base_Info_Column">
-    username, avatar, description, gender
+    user_id, username, avatar, description, gender
   </sql>
 
   <insert id="insertUserInfo" parameterType="org.moose.operator.model.domain.UserInfoDO"

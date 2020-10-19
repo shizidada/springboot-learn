@@ -28,7 +28,7 @@ public class PageInfoUtils {
     map.put("pageSize", page.getPageSize());
     map.put("total", page.getTotal());
     map.put("pages", page.getPages());
-    map.put("list", page.getList());
+    map.put("lists", page.getList());
     return map;
   }
 }

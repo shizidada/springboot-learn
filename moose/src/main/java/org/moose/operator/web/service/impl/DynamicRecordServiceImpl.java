@@ -1,6 +1,9 @@
 package org.moose.operator.web.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
@@ -12,6 +15,8 @@ import org.moose.operator.model.dto.DynamicRecordDTO;
 import org.moose.operator.model.dto.UserBaseInfoDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.params.DynamicRecordParam;
+import org.moose.operator.model.params.SearchParam;
+import org.moose.operator.util.PageInfoUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.DynamicRecordService;
@@ -63,14 +68,24 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     return dynamicRecordList.stream().map(this::convertDTOFromDO).collect(Collectors.toList());
   }
 
-  @Override public List<DynamicRecordDTO> getRecommendDynamicRecord() {
+  @Override public Map<String, Object> getRecommendDynamicRecord(SearchParam searchParam) {
+    PageHelper.startPage(searchParam);
     List<DynamicRecordDO> dynamicRecordList =
         dynamicRecordMapper.selectRecommendDynamicRecord();
-    return dynamicRecordList.stream().map(this::convertDTOFromDO).collect(Collectors.toList());
+    PageInfo<DynamicRecordDO> pageInfo = new PageInfo<>(dynamicRecordList);
+    if (ObjectUtils.isEmpty(pageInfo)) {
+      return null;
+    }
+    List<DynamicRecordDTO> dynamicRecordDTOList =
+        pageInfo.getList().stream().map(this::convertDTOFromDO).collect(Collectors.toList());
+    Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(pageInfo);
+    basePageInfo.put("lists", dynamicRecordDTOList);
+    return basePageInfo;
   }
 
   /**
    * convert DO to DTO
+   *
    * @param dynamicRecordDO data object
    * @return dto
    */

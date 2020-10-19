@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.R;
 import org.moose.operator.model.params.DynamicRecordParam;
+import org.moose.operator.model.params.SearchParam;
 import org.moose.operator.web.service.DynamicRecordService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +29,8 @@ public class DynamicController {
   }
 
   @PostMapping("/getRecommendList")
-  public R<Object> recommendList() {
-    return R.ok(dynamicRecordService.getRecommendDynamicRecord(), "获取推荐动态列表");
+  public R<Object> recommendList(SearchParam searchParam) {
+    return R.ok(dynamicRecordService.getRecommendDynamicRecord(searchParam), "获取推荐动态列表");
   }
 
   @PostMapping("/my")
