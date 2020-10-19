@@ -2,7 +2,7 @@ package org.moose.operator.web.controller;
 
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.model.params.AuthTokenParam;
 import org.moose.operator.web.service.AccountService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,16 +22,14 @@ public class TokenController {
   private AccountService accountService;
 
   @PostMapping(value = "/getRefreshToken")
-  public ResponseResult<Object> getRefreshToken(AuthTokenParam tokenParam) {
-    String accessToken = tokenParam.getAccessToken();
-    return new ResponseResult<>(accountService.getRefreshTokenByAccessToken(accessToken),
+  public R<Object> getRefreshToken(AuthTokenParam tokenParam) {
+    return R.ok(accountService.getRefreshTokenByAccessToken(tokenParam),
         "获取 refresh token");
   }
 
   @PostMapping(value = "/refreshToken")
-  public ResponseResult<Object> refreshToken(AuthTokenParam tokenParam) {
-    String refreshToken = tokenParam.getRefreshToken();
-    return new ResponseResult<>(accountService.getAccessTokenByRefreshToken(refreshToken),
+  public R<Object> refreshToken(AuthTokenParam tokenParam) {
+    return R.ok(accountService.getAccessTokenByRefreshToken(tokenParam),
         "获取 access token");
   }
 }

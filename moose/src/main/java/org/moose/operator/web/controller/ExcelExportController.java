@@ -4,7 +4,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.model.dto.ImportExcelDTO;
 import org.moose.operator.web.service.impl.ExcelExportServiceImpl;
 import org.moose.operator.web.service.impl.ExcelInfoServiceImpl;
@@ -33,9 +33,9 @@ public class ExcelExportController {
   private ExcelExportServiceImpl excelExportService;
 
   @GetMapping(value = "/list")
-  public ResponseResult<Map<String, Object>> list(ImportExcelDTO importExcelDTO) {
+  public R<Map<String, Object>> list(ImportExcelDTO importExcelDTO) {
     Map<String, Object> map = excelInfoService.selectAll(importExcelDTO);
-    return new ResponseResult<>(map);
+    return R.ok(map);
   }
 
   @RequestMapping(value = "/export")

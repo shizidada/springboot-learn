@@ -21,6 +21,7 @@ import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.PasswordDTO;
 import org.moose.operator.model.emun.LoginTypeEnum;
+import org.moose.operator.model.params.AuthTokenParam;
 import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
 import org.moose.operator.util.MapperUtils;
@@ -293,7 +294,8 @@ public class AccountServiceImpl implements AccountService {
     return accountDTO;
   }
 
-  @Override public String getRefreshTokenByAccessToken(String accessToken) {
+  @Override public String getRefreshTokenByAccessToken(AuthTokenParam tokenParam) {
+    String accessToken = tokenParam.getAccessToken();
     if (StringUtils.isEmpty(accessToken)) {
       throw new BusinessException(ResultCode.ACCESS_TOKEN_IS_EMPTY);
     }
@@ -314,7 +316,8 @@ public class AccountServiceImpl implements AccountService {
   /**
    * http://localhost:7000/oauth/token?grant_type=refresh_token&refresh_token=bc3721b0-9611-471f-867c-1259022614bc&client_id=client&client_secret=secret
    */
-  @Override public String getAccessTokenByRefreshToken(String refreshTokenParam) {
+  @Override public String getAccessTokenByRefreshToken(AuthTokenParam tokenParam) {
+    String refreshTokenParam = tokenParam.getRefreshToken();
 
     if (StringUtils.isEmpty(refreshTokenParam)) {
       throw new BusinessException(ResultCode.TOKEN_IS_EMPTY);

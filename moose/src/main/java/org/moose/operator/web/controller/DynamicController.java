@@ -3,7 +3,7 @@ package org.moose.operator.web.controller;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.model.params.DynamicRecordParam;
 import org.moose.operator.web.service.DynamicRecordService;
 import org.springframework.validation.BindingResult;
@@ -23,19 +23,17 @@ public class DynamicController {
   private DynamicRecordService dynamicRecordService;
 
   @PostMapping("/create")
-  public ResponseResult<Object> create(@Valid DynamicRecordParam dynamicRecordParam,
-      BindingResult result) {
-    dynamicRecordService.saveDynamicRecord(dynamicRecordParam);
-    return new ResponseResult<Object>(Boolean.TRUE, "创建动态");
+  public R<Object> create(@Valid DynamicRecordParam dynamicRecordParam, BindingResult result) {
+    return R.ok(dynamicRecordService.saveDynamicRecord(dynamicRecordParam), "创建动态");
   }
 
   @PostMapping("/getRecommendList")
-  public ResponseResult<Object> recommendList() {
-    return new ResponseResult<Object>(dynamicRecordService.getRecommendDynamicRecord(), "获取推荐动态列表");
+  public R<Object> recommendList() {
+    return R.ok(dynamicRecordService.getRecommendDynamicRecord(), "获取推荐动态列表");
   }
 
   @PostMapping("/my")
-  public ResponseResult<Object> my() {
-    return new ResponseResult<Object>(dynamicRecordService.getMyDynamicRecord(), "获取我的动态列表");
+  public R<Object> my() {
+    return R.ok(dynamicRecordService.getMyDynamicRecord(), "获取我的动态列表");
   }
 }

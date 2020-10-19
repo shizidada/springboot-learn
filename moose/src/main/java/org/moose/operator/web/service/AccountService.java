@@ -2,6 +2,7 @@ package org.moose.operator.web.service;
 
 import javax.servlet.http.HttpServletRequest;
 import org.moose.operator.model.dto.AccountDTO;
+import org.moose.operator.model.params.AuthTokenParam;
 import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
 
@@ -62,7 +63,7 @@ public interface AccountService {
   /**
    * 获取用户信息
    *
-   * @return ResponseResult<AccountDTO>
+   * @return AccountDTO
    */
   AccountDTO getAccountInfo();
 
@@ -83,18 +84,18 @@ public interface AccountService {
   /**
    * 刷新 token
    *
-   * @param accessToken accessToken
+   * @param authTokenParam authTokenParam
    * @return refreshToken
    */
-  String getRefreshTokenByAccessToken(String accessToken);
+  String getRefreshTokenByAccessToken(AuthTokenParam authTokenParam);
 
   /**
    * 刷新 token
    *
-   * @param refreshToken refreshToken
+   * @param authTokenParam authTokenParam
    * @return accessToken
    */
-  String getAccessTokenByRefreshToken(String refreshToken);
+  String getAccessTokenByRefreshToken(AuthTokenParam authTokenParam);
 
   /**
    * 更新账号手机号码

@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.model.params.AuthTokenParam;
 import org.moose.operator.model.params.LoginInfoParam;
 import org.moose.operator.model.params.RegisterInfoParam;
@@ -29,32 +29,30 @@ public class AccountController {
    * spring security oauth2.0 to register
    */
   @PostMapping(value = "/register")
-  public ResponseResult<Object> register(@Valid RegisterInfoParam registerInfoParam,
-      BindingResult result,
+  public R<Object> register(@Valid RegisterInfoParam registerInfoParam, BindingResult result,
       HttpServletRequest request) {
-    return new ResponseResult<>(accountService.saveAccount(request, registerInfoParam), "用户注册");
+    return R.ok(accountService.saveAccount(request, registerInfoParam), "用户注册");
   }
 
   /**
    * spring security oauth2.0 to login
    */
   @PostMapping(value = "/login")
-  public ResponseResult<Object> login(@Valid LoginInfoParam loginInfoParam,
-      BindingResult result) {
-    return new ResponseResult<>(accountService.getToken(loginInfoParam), "获取 access token");
+  public R<Object> login(@Valid LoginInfoParam loginInfoParam, BindingResult result) {
+    return R.ok(accountService.getToken(loginInfoParam), "获取 access token");
   }
 
   /**
    * spring security oauth2.0 to logout
    */
   @PostMapping(value = "/logout")
-  public ResponseResult<Object> logout(AuthTokenParam tokenParam) {
+  public R<Object> logout(AuthTokenParam tokenParam) {
     String accessToken = tokenParam.getAccessToken();
-    return new ResponseResult<>(accountService.removeToken(accessToken), "用户退出");
+    return R.ok(accountService.removeToken(accessToken), "用户退出");
   }
 
   @PostMapping(value = "/status")
-  public ResponseResult<Object> status() {
-    return new ResponseResult<>(accountService.isLogin(), "获取登录状态");
+  public R<Object> status() {
+    return R.ok(accountService.isLogin(), "获取登录状态");
   }
 }

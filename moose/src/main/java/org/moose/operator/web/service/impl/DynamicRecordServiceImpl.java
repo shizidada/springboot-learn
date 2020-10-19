@@ -15,7 +15,6 @@ import org.moose.operator.model.params.DynamicRecordParam;
 import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.DynamicRecordService;
-import org.moose.operator.web.service.UserInfoCacheService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -44,7 +43,7 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
   private SnowflakeIdWorker snowflakeIdWorker;
 
   @Transactional(rollbackFor = Exception.class)
-  @Override public void saveDynamicRecord(DynamicRecordParam dynamicRecordParam) {
+  @Override public boolean saveDynamicRecord(DynamicRecordParam dynamicRecordParam) {
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
     BeanUtils.copyProperties(dynamicRecordParam, dynamicRecordDTO);
 
@@ -54,7 +53,7 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
 
     UserInfoDTO userInfo = userInfoService.getUserInfo();
     dynamicRecordDO.setUserId(userInfo.getUserId());
-    dynamicRecordMapper.insertDynamicRecord(dynamicRecordDO);
+    return dynamicRecordMapper.insertDynamicRecord(dynamicRecordDO);
   }
 
   @Override public List<DynamicRecordDTO> getMyDynamicRecord() {

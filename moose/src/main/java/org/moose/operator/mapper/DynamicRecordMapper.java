@@ -14,8 +14,9 @@ public interface DynamicRecordMapper {
    * insert a dynamic record
    *
    * @param dynamicRecordDO dynamic do
+   * @return is success
    */
-  void insertDynamicRecord(DynamicRecordDO dynamicRecordDO);
+  boolean insertDynamicRecord(DynamicRecordDO dynamicRecordDO);
 
   /**
    * select dynamic record by userId

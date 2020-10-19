@@ -3,7 +3,7 @@ package org.moose.operator.web.controller;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.model.params.SmsCodeParam;
 import org.moose.operator.web.service.SmsCodeSenderService;
 import org.springframework.validation.BindingResult;
@@ -30,9 +30,8 @@ public class SmsCodeController {
   private SmsCodeSenderService smsCodeSenderService;
 
   @PostMapping("/send")
-  public ResponseResult<Object> sendSmsCode(@Valid SmsCodeParam smsCodeParam,
-      BindingResult result) {
+  public R<Object> sendSmsCode(@Valid SmsCodeParam smsCodeParam, BindingResult result) {
     smsCodeSenderService.sendSmsCode(smsCodeParam);
-    return new ResponseResult<>(Boolean.TRUE, "发送短信验证码");
+    return R.ok("发送短信验证码");
   }
 }

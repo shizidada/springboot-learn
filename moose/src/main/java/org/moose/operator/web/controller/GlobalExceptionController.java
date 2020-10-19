@@ -3,7 +3,7 @@ package org.moose.operator.web.controller;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
@@ -60,15 +60,15 @@ public class GlobalExceptionController extends AbstractErrorController {
       Integer status = (Integer) errorAttributes.get("status");
       String error = (String) errorAttributes.get("error");
       // 将 map 封装后的错误信息传入，统一返回
-      return new ResponseResult<>(status, error);
+      return R.failed(status, error);
     }
     log.error("全局异常捕获 [{}]", e.getMessage());
     if (e.getCause() instanceof BusinessException) {
       BusinessException be = (BusinessException) e.getCause();
-      return new ResponseResult<>(be.getCode(), be.getMessage());
+      return R.failed(be.getCode(), be.getMessage());
     }
     // 从枚举类中取出自定义的错误码和错误信息
-    return new ResponseResult<>(ResultCode.UN_KNOWN_ERROR.getCode(), e.getMessage());
+    return R.failed(ResultCode.UN_KNOWN_ERROR.getCode(), e.getMessage());
   }
 
   //@ExceptionHandler(Exception.class)
@@ -95,6 +95,6 @@ public class GlobalExceptionController extends AbstractErrorController {
   //  }
   //
   //  //将map封装后的错误信息传入，统一返回
-  //  return ResponseResult.fail(responseData);
+  //  return R.fail(responseData);
   //}
 }

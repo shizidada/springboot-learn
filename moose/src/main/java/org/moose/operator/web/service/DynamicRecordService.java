@@ -13,8 +13,9 @@ public interface DynamicRecordService {
    * save dynamic record
    *
    * @param dynamicRecordParam record
+   * @return success
    */
-  void saveDynamicRecord(DynamicRecordParam dynamicRecordParam);
+  boolean saveDynamicRecord(DynamicRecordParam dynamicRecordParam);
 
   /**
    * get my dynamic record

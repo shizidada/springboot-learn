@@ -8,7 +8,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -61,6 +61,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
     log.info("CustomAuthenticationEntryPoint code : [{}] message: [{}] errorMessage: [{}]",
         code, message, e.getMessage());
-    objectMapper.writeValue(writer, new ResponseResult<>(code, message));
+    objectMapper.writeValue(writer, R.failed(code, message));
   }
 }

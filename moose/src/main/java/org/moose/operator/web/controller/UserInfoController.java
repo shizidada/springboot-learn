@@ -3,7 +3,7 @@ package org.moose.operator.web.controller;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.moose.operator.common.api.ResponseResult;
+import org.moose.operator.common.api.R;
 import org.moose.operator.model.params.UserInfoParam;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.UserInfoService;
@@ -27,18 +27,17 @@ public class UserInfoController {
   private UserInfoService userInfoService;
 
   @PostMapping(value = "/info")
-  public ResponseResult<Object> info() {
-    return new ResponseResult<>(userInfoService.getUserInfo(), "获取用户信息");
+  public R<Object> info() {
+    return R.ok(userInfoService.getUserInfo(), "获取用户信息");
   }
 
   @PostMapping(value = "/update")
-  public ResponseResult<Object> update(@Valid UserInfoParam userInfoParam,
-      BindingResult result) {
-    return new ResponseResult<>(userInfoService.updateUserInfo(userInfoParam), "更新用户信息");
+  public R<Object> update(@Valid UserInfoParam userInfoParam, BindingResult result) {
+    return R.ok(userInfoService.updateUserInfo(userInfoParam), "更新用户信息");
   }
 
   @PostMapping(value = "/resetPhone")
-  public ResponseResult<Object> resetPhone(String phone, String smsCode) {
-    return new ResponseResult<>(userInfoService.resetPhone(phone, smsCode), "变更手机号码");
+  public R<Object> resetPhone(String phone, String smsCode) {
+    return R.ok(userInfoService.resetPhone(phone, smsCode), "变更手机号码");
   }
 }

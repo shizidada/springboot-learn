@@ -1,14 +1,18 @@
 package org.moose.operator.web.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
+import org.moose.operator.model.dto.UploadInfoDTO;
 import org.moose.operator.util.OSSClientUtils;
-import org.moose.operator.web.service.UploadFileService;
+import org.moose.operator.web.service.FileUploadService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 @Slf4j
-public class UploadFileServiceImpl implements UploadFileService {
+public class FileUploadServiceImpl implements FileUploadService {
 
   @Resource
   private ObjectMapper objectMapper;
@@ -25,7 +29,7 @@ public class UploadFileServiceImpl implements UploadFileService {
   @Resource
   private OSSClientUtils ossClientUtils;
 
-  @Override public void uploadFile(MultipartFile[] files) {
+  @Override public List<UploadInfoDTO> uploadFile(MultipartFile[] files) {
     if (ObjectUtils.isEmpty(files)) {
       throw new BusinessException(ResultCode.FILE_NOT_EMPTY);
     }
@@ -40,5 +44,10 @@ public class UploadFileServiceImpl implements UploadFileService {
       String fileName = ossClientUtils.uploadFile(file, originalFilename);
       log.info("文件上传成功 : {} ", fileName);
     }
+    return new ArrayList<>();
+  }
+
+  @Override public Map<String, String> crateSignature() {
+    return ossClientUtils.getSignature();
   }
 }
