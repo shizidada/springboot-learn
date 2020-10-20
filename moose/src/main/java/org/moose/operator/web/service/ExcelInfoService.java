@@ -3,7 +3,7 @@ package org.moose.operator.web.service;
 import java.util.List;
 import java.util.Map;
 import org.moose.operator.model.dto.ImportExcelDTO;
-import org.moose.operator.model.dto.UploadInfoDTO;
+import org.moose.operator.model.dto.ExcelUploadInfoDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -54,10 +54,10 @@ public interface ExcelInfoService {
    * 批量添加 excel 数据
    *
    * @param file          上传文件
-   * @param uploadInfoDTO 实体集合
+   * @param excelUploadInfoDTO 实体集合
    * @return 添加成功
    */
-  int addBatchImportExcelRecord(MultipartFile file, UploadInfoDTO uploadInfoDTO);
+  int addBatchImportExcelRecord(MultipartFile file, ExcelUploadInfoDTO excelUploadInfoDTO);
 
   /**
    * 批量导出相同 excel 数据 Receiver Phone Address

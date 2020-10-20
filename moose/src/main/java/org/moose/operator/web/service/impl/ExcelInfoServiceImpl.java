@@ -9,14 +9,13 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.repository.ExcelInfoRepository;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.ExcelInfoMapper;
 import org.moose.operator.model.domain.ExcelInfoDO;
 import org.moose.operator.model.dto.ImportExcelDTO;
-import org.moose.operator.model.dto.UploadInfoDTO;
+import org.moose.operator.model.dto.ExcelUploadInfoDTO;
 import org.moose.operator.poi.ExcelOperator;
 import org.moose.operator.util.PageInfoUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
@@ -78,7 +77,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
   }
 
   @Override
-  public int addBatchImportExcelRecord(MultipartFile file, UploadInfoDTO uploadInfoDTO) {
+  public int addBatchImportExcelRecord(MultipartFile file, ExcelUploadInfoDTO excelUploadInfoDTO) {
     /**
      * 判断上传文件
      */
@@ -86,7 +85,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
 
     List<ImportExcelDTO> importExcelList = null;
     try {
-      importExcelList = this.convertReadExcelToDTO(file, uploadInfoDTO);
+      importExcelList = this.convertReadExcelToDTO(file, excelUploadInfoDTO);
     } catch (IOException e) {
       log.error("导入 excel 文件失败", e);
       throw new BusinessException(ResultCode.EXCEL_IMPORT_FAIL);
@@ -171,12 +170,12 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
    * @throws IOException
    */
   private List<ImportExcelDTO> convertReadExcelToDTO(MultipartFile file,
-      UploadInfoDTO uploadInfoDTO)
+      ExcelUploadInfoDTO excelUploadInfoDTO)
       throws IOException {
 
     ExcelOperator excelOperator = new ExcelOperator();
     excelOperator.setSnowflakeIdWorker(snowflakeIdWorker);
 
-    return excelOperator.importExcelFile(file.getInputStream(), uploadInfoDTO.getPlatform());
+    return excelOperator.importExcelFile(file.getInputStream(), excelUploadInfoDTO.getPlatform());
   }
 }

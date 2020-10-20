@@ -1,5 +1,6 @@
 package org.moose.operator.model.params;
 
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -20,4 +21,6 @@ public class DynamicRecordParam {
    */
   @NotBlank(message = "动态内容不能为空")
   private String content;
+
+  private List<AttachmentParam> attachmentIds;
 }

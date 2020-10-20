@@ -1,5 +1,6 @@
 package org.moose.operator.model.dto;
 
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -32,4 +33,6 @@ public class DynamicRecordDTO extends BaseDTO {
    * is like
    */
   private Integer like;
+
+  List<FileUploadDTO> attachmentFiles;
 }

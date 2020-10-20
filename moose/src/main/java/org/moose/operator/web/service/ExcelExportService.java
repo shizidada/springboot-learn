@@ -1,5 +1,6 @@
 package org.moose.operator.web.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -18,7 +19,7 @@ public interface ExcelExportService {
    * 根据类型下载 excel
    *
    * @param response HttpServletResponse
-   * @param type     类型
+   * @param request  HttpServletResponse
    */
-  void downLoadExportExcelFile(HttpServletResponse response, String type);
+  void downLoadExportExcelFile(HttpServletResponse response, HttpServletRequest request);
 }

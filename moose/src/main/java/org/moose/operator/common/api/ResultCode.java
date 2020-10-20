@@ -69,6 +69,8 @@ public enum ResultCode {
   FILE_LEGITIMATE_ERROR(30004, "文件不合法"),
   FILE_UPLOAD_ERROR(30005, "文件上传失败"),
 
+  UPLOAD_ATTACHMENT_SIZE_ERROR(300100, "上传的文件超过6个"),
+
   /**
    * Excel 导出失败
    */

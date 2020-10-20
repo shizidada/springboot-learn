@@ -34,13 +34,11 @@ public class ExcelExportController {
 
   @GetMapping(value = "/list")
   public R<Map<String, Object>> list(ImportExcelDTO importExcelDTO) {
-    Map<String, Object> map = excelInfoService.selectAll(importExcelDTO);
-    return R.ok(map);
+    return R.ok(excelInfoService.selectAll(importExcelDTO));
   }
 
   @RequestMapping(value = "/export")
   public void exportFile(HttpServletResponse response, HttpServletRequest request) {
-    String type = request.getParameter("type");
-    excelExportService.downLoadExportExcelFile(response, type);
+    excelExportService.downLoadExportExcelFile(response, request);
   }
 }

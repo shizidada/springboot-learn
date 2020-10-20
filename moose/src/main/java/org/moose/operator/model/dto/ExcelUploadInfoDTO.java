@@ -9,7 +9,7 @@ import lombok.Data;
  */
 
 @Data
-public class UploadInfoDTO extends BaseDTO implements Serializable {
+public class ExcelUploadInfoDTO extends BaseDTO implements Serializable {
 
   @NotBlank(message = "上传 {platform} 类型不能为空")
   private String platform;

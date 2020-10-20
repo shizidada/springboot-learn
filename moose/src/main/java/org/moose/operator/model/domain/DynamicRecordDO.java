@@ -1,5 +1,6 @@
 package org.moose.operator.model.domain;
 
+import java.util.List;
 import lombok.Data;
 
 /**

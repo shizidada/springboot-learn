@@ -25,8 +25,7 @@
     user_id, username, avatar, description, gender
   </sql>
 
-  <insert id="insertUserInfo" parameterType="org.moose.operator.model.domain.UserInfoDO"
-      useGeneratedKeys="true">
+  <insert id="insertUserInfo" parameterType="org.moose.operator.model.domain.UserInfoDO">
     INSERT INTO `t_user_info`(user_id, username, account_id, account_name,
     phone, avatar, email, job, address, description, gender)
     VALUES(#{userId}, #{userName},#{accountId}, #{accountName},

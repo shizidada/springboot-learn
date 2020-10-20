@@ -7,15 +7,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
+import org.moose.operator.common.api.ResultCode;
+import org.moose.operator.constant.CommonConstants;
 import org.moose.operator.constant.RedisKeyConstants;
+import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.DynamicRecordMapper;
 import org.moose.operator.model.domain.DynamicRecordDO;
 import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.DynamicRecordDTO;
+import org.moose.operator.model.dto.FileUploadDTO;
 import org.moose.operator.model.dto.UserBaseInfoDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
+import org.moose.operator.model.params.AttachmentParam;
 import org.moose.operator.model.params.DynamicRecordParam;
 import org.moose.operator.model.params.SearchParam;
+import org.moose.operator.util.ListBeanUtils;
 import org.moose.operator.util.PageInfoUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.web.service.AccountService;
@@ -49,12 +55,25 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override public boolean saveDynamicRecord(DynamicRecordParam dynamicRecordParam) {
+    List<AttachmentParam> attachmentIds = dynamicRecordParam.getAttachmentIds();
+    if (ObjectUtils.isNotEmpty(attachmentIds)
+        && attachmentIds.size() > CommonConstants.UPLOAD_ATTACHMENT_SIZE) {
+      throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_SIZE_ERROR);
+    }
+
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
     BeanUtils.copyProperties(dynamicRecordParam, dynamicRecordDTO);
+    if (ObjectUtils.isNotEmpty(attachmentIds)) {
+      List<FileUploadDTO> attachmentList =
+          ListBeanUtils.copyListProperties(attachmentIds, FileUploadDTO::new);
+      dynamicRecordDTO.setAttachmentFiles(attachmentList);
+    }
 
     DynamicRecordDO dynamicRecordDO = new DynamicRecordDO();
     BeanUtils.copyProperties(dynamicRecordDTO, dynamicRecordDO);
     dynamicRecordDO.setDrId(String.valueOf(snowflakeIdWorker.nextId()));
+
+    // TODO: dynamicRecord rel fileRecord
 
     UserInfoDTO userInfo = userInfoService.getUserInfo();
     dynamicRecordDO.setUserId(userInfo.getUserId());
@@ -70,8 +89,7 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
 
   @Override public Map<String, Object> getRecommendDynamicRecord(SearchParam searchParam) {
     PageHelper.startPage(searchParam);
-    List<DynamicRecordDO> dynamicRecordList =
-        dynamicRecordMapper.selectRecommendDynamicRecord();
+    List<DynamicRecordDO> dynamicRecordList = dynamicRecordMapper.selectRecommendDynamicRecord();
     PageInfo<DynamicRecordDO> pageInfo = new PageInfo<>(dynamicRecordList);
     if (ObjectUtils.isEmpty(pageInfo)) {
       return null;

@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.R;
-import org.moose.operator.model.dto.UploadInfoDTO;
+import org.moose.operator.model.dto.ExcelUploadInfoDTO;
 import org.moose.operator.web.service.impl.ExcelInfoServiceImpl;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,13 +34,13 @@ public class ExcelImportController {
   @Resource private ObjectMapper objectMapper;
 
   /**
-   * @param uploadInfoDTO 上传文件表单
+   * @param excelUploadInfoDTO 上传文件表单
    */
   @PostMapping(value = "/import")
   public R<Integer> importFile(
       @RequestParam(value = "file") MultipartFile file,
-      @Valid UploadInfoDTO uploadInfoDTO, BindingResult result) throws Exception {
-    log.info(file.getOriginalFilename(), objectMapper.writeValueAsString(uploadInfoDTO));
-    return R.ok(importExcelService.addBatchImportExcelRecord(file, uploadInfoDTO));
+      @Valid ExcelUploadInfoDTO excelUploadInfoDTO, BindingResult result) throws Exception {
+    log.info(file.getOriginalFilename(), objectMapper.writeValueAsString(excelUploadInfoDTO));
+    return R.ok(importExcelService.addBatchImportExcelRecord(file, excelUploadInfoDTO));
   }
 }

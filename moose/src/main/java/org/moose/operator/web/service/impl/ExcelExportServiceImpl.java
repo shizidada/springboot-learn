@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.ResultCode;
@@ -39,7 +40,8 @@ public class ExcelExportServiceImpl implements ExcelExportService {
   private ExcelInfoServiceImpl excelInfoService;
 
   @Override
-  public void downLoadExportExcelFile(HttpServletResponse response, String type) {
+  public void downLoadExportExcelFile(HttpServletResponse response, HttpServletRequest request) {
+    String type = request.getParameter("type");
     response.setContentType("application/vnd.ms-excel");
     response.setCharacterEncoding("utf-8");
     List<ImportExcelDTO> exportList = new ArrayList<>();

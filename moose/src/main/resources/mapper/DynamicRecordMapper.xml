@@ -31,8 +31,7 @@
     ORDER BY `create_time` DESC
   </select>
 
-  <insert id="insertDynamicRecord" parameterType="org.moose.operator.model.domain.DynamicRecordDO"
-      useGeneratedKeys="true">
+  <insert id="insertDynamicRecord" parameterType="org.moose.operator.model.domain.DynamicRecordDO">
     INSERT INTO `t_dynamic_record`(dr_id, user_id, title, content)
     VALUES (#{drId}, #{userId}, #{title}, #{content})
   </insert>

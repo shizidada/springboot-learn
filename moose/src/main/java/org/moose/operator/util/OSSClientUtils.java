@@ -9,7 +9,6 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -20,8 +19,9 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.configure.properties.OSSProperties;
+import org.moose.operator.constant.CommonConstants;
 import org.moose.operator.constant.OSSConstants;
-import org.moose.operator.exception.BusinessException;
+import org.moose.operator.model.dto.FileUploadDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -37,12 +37,16 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class OSSClientUtils {
 
-  private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
   private OSSProperties ossProperties;
+
+  private SnowflakeIdWorker snowflakeIdWorker;
 
   public void setOssProperties(OSSProperties ossProperties) {
     this.ossProperties = ossProperties;
+  }
+
+  public void setSnowflakeIdWorker(SnowflakeIdWorker snowflakeIdWorker) {
+    this.snowflakeIdWorker = snowflakeIdWorker;
   }
 
   private OSS getOssClient() {
@@ -51,7 +55,7 @@ public class OSSClientUtils {
         ossProperties.getAccessKeySecret());
   }
 
-  public String uploadFile(MultipartFile file, String fileName) {
+  public FileUploadDTO uploadFile(MultipartFile file, String fileName) {
     return this.uploadFile(file, OSSConstants.ROOT_BUCKET_NAME_KEY, fileName);
   }
 
@@ -59,9 +63,11 @@ public class OSSClientUtils {
    * 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。 强烈建议您创建并使用RAM账号进行API访问或日常运维， 请登录
    * https://ram.console.aliyun.com 创建RAM账号。
    */
-  public String uploadFile(MultipartFile file, String bucketName, String fileName) {
+  public FileUploadDTO uploadFile(MultipartFile file, String bucketName, String fileName) {
     // 创建OSSClient实例。
     OSS ossClient = this.getOssClient();
+
+    FileUploadDTO fileUploadDTO = new FileUploadDTO();
 
     // 创建PutObjectRequest对象。
     try {
@@ -69,7 +75,9 @@ public class OSSClientUtils {
 
       String uuid = UUID.randomUUID().toString();
       String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-      String fileDir = bucketName + uuid + "." + suffix;
+      String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+      // 用户上传文件时指定的前缀。
+      String fileDir = bucketName + format + "/" + uuid + "." + suffix;
 
       PutObjectRequest putObjectRequest =
           new PutObjectRequest(ossProperties.getBucketName(), fileDir, inputStream);
@@ -78,16 +86,24 @@ public class OSSClientUtils {
       objectMetadata.setObjectAcl(CannedAccessControlList.PublicRead);
       putObjectRequest.setMetadata(objectMetadata);
       PutObjectResult putObjectResult = ossClient.putObject(putObjectRequest);
-      return "https://moose-plus.oss-cn-shenzhen.aliyuncs.com/" + fileDir;
+      String fileUrl = "https://moose-plus.oss-cn-shenzhen.aliyuncs.com/" + fileDir;
+      fileUploadDTO.setAttachmentUrl(fileUrl);
+      fileUploadDTO.setTag(putObjectResult.getETag());
+      fileUploadDTO.setAttachmentId(String.valueOf(snowflakeIdWorker.nextId()));
+      fileUploadDTO.setSuccess(CommonConstants.SUCCESS);
     } catch (Exception e) {
-      e.printStackTrace();
-      String message =
-          String.format("[%s %s]", ResultCode.FILE_UPLOAD_ERROR.getMessage(), e.getMessage());
-      throw new BusinessException(message, ResultCode.FILE_UPLOAD_ERROR.getCode());
+      log.error("upload file to oss fail : {}", e.getMessage());
+      // throw new BusinessException(message, ResultCode.FILE_UPLOAD_ERROR.getCode());
+      // TODO: throw error or other
+      String errorMessage = ResultCode.FILE_UPLOAD_ERROR.getMessage();
+      String message = String.format("[%s %s]", errorMessage, e.getMessage());
+      fileUploadDTO.setSuccess(CommonConstants.FAIL);
+      fileUploadDTO.setErrMessage(message);
     } finally {
       // 关闭 OSSClient
       ossClient.shutdown();
     }
+    return fileUploadDTO;
   }
 
   public Map<String, String> getSignature() {

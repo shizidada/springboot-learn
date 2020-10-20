@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.moose.operator.mapper.FileRecordMapper">
+
+  <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.FileRecordDO">
+    <result column="f_id" jdbcType="VARCHAR" property="fId"/>
+    <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    <result column="e_tag" jdbcType="VARCHAR" property="eTag"/>
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+  </resultMap>
+
+  <sql id="Base_Column">
+    f_id, user_id, file_url, e_tag, create_time
+  </sql>
+
+  <sql id="Fr_Id_Column">fr_id</sql>
+
+  <select id="selectById">
+    SELECT
+    <include refid="Fr_Id_Column"/>
+    FROM `t_file_record` WHERE `fr_id`=#{frId}
+  </select>
+
+  <insert id="batchSaveFileRecord" parameterType="java.util.List">
+    INSERT INTO `t_file_record`(f_id, user_id, e_tag, file_url)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.fId}, #{item.userId}, #{item.eTag}, #{item.fileUrl})
+    </foreach>
+  </insert>
+
+</mapper>

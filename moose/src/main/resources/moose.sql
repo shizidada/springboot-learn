@@ -133,9 +133,9 @@ CREATE TABLE `t_account` (
   `phone` varchar(11) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '手机号',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  UNIQUE KEY `idx_account_id` (`account_id`),
-  UNIQUE KEY `idx_account_name` (`account_name`) USING BTREE,
-  KEY `account_id` (`account_id`)
+  UNIQUE KEY `uniq_account_id` (`account_id`),
+  UNIQUE KEY `uniq_account_name` (`account_name`) USING BTREE,
+  KEY `idx_account_id` (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
 
 -- ----------------------------
@@ -148,10 +148,10 @@ CREATE TABLE `t_password` (
   `password` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '密码',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  UNIQUE KEY `idx_password_id` (`password_id`),
-  UNIQUE KEY `idx_account_id` (`account_id`),
+  UNIQUE KEY `uniq_password_id` (`password_id`),
+  UNIQUE KEY `uniq_account_id` (`account_id`),
   KEY `t_account_password_ibfk_1` (`account_id`),
-  KEY `password_id` (`password_id`),
+  KEY `idx_password_id` (`password_id`),
   CONSTRAINT `t_account_password_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `t_account` (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='密码表';
 
@@ -163,8 +163,9 @@ CREATE TABLE `t_sms_verify` (
   `code` char(6) COLLATE utf8_bin NOT NULL COMMENT '验证码',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  KEY `phone` (`phone`),
-  KEY `type` (`type`)
+  KEY `idx_phone` (`phone`),
+  KEY `idx_type` (`type`),
+  KEY `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='短信验证码表';
 
 DROP TABLE IF EXISTS `t_user_info`;
@@ -182,8 +183,13 @@ CREATE TABLE `t_user_info` (
   `description` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  KEY `user_id` (`user_id`),
-  KEY `username` (`username`)
+  UNIQUE KEY `uniq_phone` (`phone`),
+  UNIQUE KEY `uniq_user_id` (`user_id`),
+  UNIQUE KEY `uniq_username` (`username`),
+  UNIQUE KEY `uniq_account_id` (`account_id`),
+  UNIQUE KEY `uniq_account_name` (`account_name`),
+  KEY `idx_create_time` (`create_time`),
+  KEY `idx_update_time` (`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息表';
 
 DROP TABLE IF EXISTS `t_dynamic_record`;
@@ -194,8 +200,25 @@ CREATE TABLE `t_dynamic_record` (
   `content` varchar(500) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT '动态描述',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  KEY `dr_id` (`dr_id`),
-  KEY `user_id` (`user_id`)
+  KEY `idx_dr_id` (`dr_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_create_time` (`create_time`),
+  KEY `idx_update_time` (`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='发布动态记录表';
+
+DROP TABLE IF EXISTS `t_file_record`;
+CREATE TABLE `t_file_record` (
+  `fr_id` char(64) PRIMARY KEY NOT NULL COMMENT '文件Id',
+  `user_id` char(64) NOT NULL COMMENT '用户Id',
+  `e_tag` char(32) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT 'oss 上传标记',
+  `file_url` varchar(120) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT 'oss 文件路径',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  KEY `idx_f_id` (`f_id`),
+  KEY `idx_e_tag` (`e_tag`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_create_time` (`create_time`),
+  KEY `idx_update_time` (`update_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='文件记录表';
 
 SET FOREIGN_KEY_CHECKS = 1;

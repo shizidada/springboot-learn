@@ -13,14 +13,16 @@ import lombok.Data;
  * @see org.moose.operator.model.dto
  */
 @Data
-public class UploadFileDTO {
+public class FileUploadDTO {
 
-  private String fileName;
+  private String attachmentUrl;
 
-  private String iId;
+  private String attachmentId;
 
-  private String eTag;
+  private String tag;
 
-  private Boolean isSuccess;
+  private Integer success;
+
+  private String errMessage;
 
 }
