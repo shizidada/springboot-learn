@@ -69,7 +69,9 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     UserInfoDTO userInfo = userInfoService.getUserInfo();
     String userId = userInfo.getUserId();
 
-    this.checkAttachment(attachmentIds, userId);
+    if (ObjectUtils.isNotEmpty(attachmentIds)) {
+      this.checkAttachment(attachmentIds, userId);
+    }
 
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
     BeanUtils.copyProperties(dynamicRecordParam, dynamicRecordDTO);
