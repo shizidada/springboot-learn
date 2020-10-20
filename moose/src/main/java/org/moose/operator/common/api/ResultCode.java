@@ -70,6 +70,7 @@ public enum ResultCode {
   FILE_UPLOAD_ERROR(30005, "文件上传失败"),
 
   UPLOAD_ATTACHMENT_SIZE_ERROR(300100, "上传的文件超过6个"),
+  UPLOAD_ATTACHMENT_RECORD_NOT_EXIST(300101, "文件记录不存在"),
 
   /**
    * Excel 导出失败

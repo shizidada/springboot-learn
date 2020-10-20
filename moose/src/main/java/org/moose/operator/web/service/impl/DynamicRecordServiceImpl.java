@@ -12,7 +12,9 @@ import org.moose.operator.constant.CommonConstants;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.DynamicRecordMapper;
+import org.moose.operator.mapper.FileRecordMapper;
 import org.moose.operator.model.domain.DynamicRecordDO;
+import org.moose.operator.model.domain.FileRecordDO;
 import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.DynamicRecordDTO;
 import org.moose.operator.model.dto.FileUploadDTO;
@@ -51,6 +53,9 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
   private DynamicRecordMapper dynamicRecordMapper;
 
   @Resource
+  private FileRecordMapper fileRecordMapper;
+
+  @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
   @Transactional(rollbackFor = Exception.class)
@@ -60,6 +65,11 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
         && attachmentIds.size() > CommonConstants.UPLOAD_ATTACHMENT_SIZE) {
       throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_SIZE_ERROR);
     }
+
+    UserInfoDTO userInfo = userInfoService.getUserInfo();
+    String userId = userInfo.getUserId();
+
+    this.checkAttachment(attachmentIds, userId);
 
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
     BeanUtils.copyProperties(dynamicRecordParam, dynamicRecordDTO);
@@ -71,13 +81,13 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
 
     DynamicRecordDO dynamicRecordDO = new DynamicRecordDO();
     BeanUtils.copyProperties(dynamicRecordDTO, dynamicRecordDO);
+    dynamicRecordDO.setUserId(userId);
     dynamicRecordDO.setDrId(String.valueOf(snowflakeIdWorker.nextId()));
 
     // TODO: dynamicRecord rel fileRecord
 
-    UserInfoDTO userInfo = userInfoService.getUserInfo();
-    dynamicRecordDO.setUserId(userInfo.getUserId());
-    return dynamicRecordMapper.insertDynamicRecord(dynamicRecordDO);
+    dynamicRecordMapper.insertDynamicRecord(dynamicRecordDO);
+    return Boolean.TRUE;
   }
 
   @Override public List<DynamicRecordDTO> getMyDynamicRecord() {
@@ -99,6 +109,20 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(pageInfo);
     basePageInfo.put("lists", dynamicRecordDTOList);
     return basePageInfo;
+  }
+
+  private void checkAttachment(List<AttachmentParam> attachmentIds, String userId) {
+    if (attachmentIds.size() > 0) {
+      for (AttachmentParam attachmentParam : attachmentIds) {
+        String attachmentId = attachmentParam.getAttachmentId();
+        String tag = attachmentParam.getTag();
+        FileRecordDO fileRecordDO =
+            fileRecordMapper.selectByUserIdAndFrIdAndEtag(userId, attachmentId, tag);
+        if (ObjectUtils.isEmpty(fileRecordDO)) {
+          throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_RECORD_NOT_EXIST);
+        }
+      }
+    }
   }
 
   /**

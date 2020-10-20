@@ -214,7 +214,7 @@ CREATE TABLE `t_file_record` (
   `file_url` varchar(120) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT 'oss 文件路径',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  KEY `idx_f_id` (`f_id`),
+  KEY `idx_fr_id` (`fr_id`),
   KEY `idx_e_tag` (`e_tag`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_create_time` (`create_time`),

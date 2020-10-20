@@ -2,6 +2,7 @@ package org.moose.operator.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.moose.operator.model.domain.FileRecordDO;
 
 /**
@@ -12,10 +13,15 @@ public interface FileRecordMapper {
   /**
    * select file record
    *
-   * @param frId file record id
+   * @param userId user id
+   * @param frId   file record id
+   * @param tag    file record eTag
    * @return FileRecordDO
    */
-  FileRecordDO selectById(String frId);
+  FileRecordDO selectByUserIdAndFrIdAndEtag(
+      @Param("userId") String userId,
+      @Param("frId") String frId,
+      @Param("eTag") String tag);
 
   /**
    * save upload file info
@@ -23,5 +29,5 @@ public interface FileRecordMapper {
    * @param fileRecordDOList List<FileRecordDO>
    * @return is success
    */
-  boolean batchSaveFileRecord(List<FileRecordDO> fileRecordDOList);
+  boolean batchInsertFileRecord(List<FileRecordDO> fileRecordDOList);
 }
