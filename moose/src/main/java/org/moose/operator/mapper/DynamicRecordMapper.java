@@ -31,12 +31,12 @@ public interface DynamicRecordMapper {
    *
    * @return all record
    */
-  List<DynamicRecordDO> selectRecommendDynamicRecord();
+  List<DynamicRecordDO> selectBaseDynamicRecordInfo();
 
   /**
    * select dynamic record order by createTime
    *
    * @return all record
    */
-  List<DynamicRecordDO> selectRecommendDynamicRecord2();
+  List<DynamicRecordDO> selectDynamicRecordWithAssociationInfo();
 }

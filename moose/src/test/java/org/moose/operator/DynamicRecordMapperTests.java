@@ -23,7 +23,7 @@ public class DynamicRecordMapperTests {
 
   @Test
   public void testSelectRecommendDynamicRecord() {
-    List<DynamicRecordDO> recordDOList = dynamicRecordMapper.selectRecommendDynamicRecord2();
+    List<DynamicRecordDO> recordDOList = dynamicRecordMapper.selectDynamicRecordWithAssociationInfo();
     log.info("{}", recordDOList);
   }
 }

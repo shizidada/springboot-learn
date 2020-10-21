@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.moose.operator.mapper.DynamicRecordAttachmentRelationMapper">
+
+  <insert id="batchInsertDynamicRecordRelation">
+    INSERT INTO `t_dynamic_record_attachment_relation`(dra_id, fr_id, dr_id)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.draId}, #{item.frId}, #{item.drId})
+    </foreach>
+  </insert>
+
+</mapper>

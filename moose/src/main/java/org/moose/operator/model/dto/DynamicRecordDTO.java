@@ -34,5 +34,5 @@ public class DynamicRecordDTO extends BaseDTO {
    */
   private Integer like;
 
-  List<FileUploadDTO> attachmentFiles;
+  List<FileUploadDTO> attachments;
 }

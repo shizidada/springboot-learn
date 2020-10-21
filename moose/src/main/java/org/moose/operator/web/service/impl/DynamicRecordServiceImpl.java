@@ -2,6 +2,7 @@ package org.moose.operator.web.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,8 +12,10 @@ import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.CommonConstants;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.exception.BusinessException;
+import org.moose.operator.mapper.DynamicRecordAttachmentRelationMapper;
 import org.moose.operator.mapper.DynamicRecordMapper;
 import org.moose.operator.mapper.FileRecordMapper;
+import org.moose.operator.model.domain.DynamicRecordAttachmentRelationDO;
 import org.moose.operator.model.domain.DynamicRecordDO;
 import org.moose.operator.model.domain.FileRecordDO;
 import org.moose.operator.model.domain.UserInfoDO;
@@ -53,6 +56,9 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
   private DynamicRecordMapper dynamicRecordMapper;
 
   @Resource
+  private DynamicRecordAttachmentRelationMapper dynamicRecordAttachmentRelationMapper;
+
+  @Resource
   private FileRecordMapper fileRecordMapper;
 
   @Resource
@@ -69,26 +75,40 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     UserInfoDTO userInfo = userInfoService.getUserInfo();
     String userId = userInfo.getUserId();
 
-    if (ObjectUtils.isNotEmpty(attachmentIds)) {
+    if (ObjectUtils.isNotEmpty(attachmentIds) && attachmentIds.size() > 0) {
       this.checkAttachment(attachmentIds, userId);
     }
 
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
     BeanUtils.copyProperties(dynamicRecordParam, dynamicRecordDTO);
-    if (ObjectUtils.isNotEmpty(attachmentIds)) {
-      List<FileUploadDTO> attachmentList =
-          ListBeanUtils.copyListProperties(attachmentIds, FileUploadDTO::new);
-      dynamicRecordDTO.setAttachmentFiles(attachmentList);
-    }
 
     DynamicRecordDO dynamicRecordDO = new DynamicRecordDO();
     BeanUtils.copyProperties(dynamicRecordDTO, dynamicRecordDO);
     dynamicRecordDO.setUserId(userId);
     dynamicRecordDO.setDrId(String.valueOf(snowflakeIdWorker.nextId()));
-
-    // TODO: dynamicRecord rel fileRecord
-
     dynamicRecordMapper.insertDynamicRecord(dynamicRecordDO);
+
+    if (ObjectUtils.isNotEmpty(attachmentIds)) {
+      List<FileUploadDTO> attachDTOList =
+          ListBeanUtils.copyListProperties(attachmentIds, FileUploadDTO::new);
+      dynamicRecordDTO.setAttachments(attachDTOList);
+
+      List<DynamicRecordAttachmentRelationDO> attachRelaDOList =
+          new ArrayList<>(attachDTOList.size());
+
+      // dynamicRecord rela fileRecord
+      for (FileUploadDTO fileUploadDTO : attachDTOList) {
+        DynamicRecordAttachmentRelationDO attachRelaDO = new DynamicRecordAttachmentRelationDO();
+        attachRelaDO.setFrId(fileUploadDTO.getAttachmentId());
+        attachRelaDO.setDrId(dynamicRecordDO.getDrId());
+        attachRelaDO.setDraId(String.valueOf(snowflakeIdWorker.nextId()));
+        attachRelaDOList.add(attachRelaDO);
+      }
+
+      if (attachRelaDOList.size() > 0) {
+        dynamicRecordAttachmentRelationMapper.batchInsertDynamicRecordRelation(attachRelaDOList);
+      }
+    }
     return Boolean.TRUE;
   }
 
@@ -101,7 +121,8 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
 
   @Override public Map<String, Object> getRecommendDynamicRecord(SearchParam searchParam) {
     PageHelper.startPage(searchParam);
-    List<DynamicRecordDO> dynamicRecordList = dynamicRecordMapper.selectRecommendDynamicRecord();
+    List<DynamicRecordDO> dynamicRecordList =
+        dynamicRecordMapper.selectDynamicRecordWithAssociationInfo();
     PageInfo<DynamicRecordDO> pageInfo = new PageInfo<>(dynamicRecordList);
     if (ObjectUtils.isEmpty(pageInfo)) {
       return null;
@@ -148,6 +169,20 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
       BeanUtils.copyProperties(author, userBaseInfo);
       dynamicRecordDTO.setAuthor(userBaseInfo);
     }
+
+    List<FileRecordDO> fileRecords = dynamicRecordDO.getFileRecords();
+    if (ObjectUtils.isNotEmpty(fileRecords) && fileRecords.size() > 0) {
+      List<FileUploadDTO> fileUploadDTOList = new ArrayList<>(fileRecords.size());
+      for (FileRecordDO fileRecordDO : fileRecords) {
+        FileUploadDTO fileUploadDTO = new FileUploadDTO();
+        fileUploadDTO.setAttachmentId(fileRecordDO.getFrId());
+        fileUploadDTO.setAttachmentUrl(fileRecordDO.getFileUrl());
+        fileUploadDTO.setTag(fileRecordDO.getETag());
+        fileUploadDTOList.add(fileUploadDTO);
+      }
+      dynamicRecordDTO.setAttachments(fileUploadDTOList);
+    }
+
     String likedKey = String.format(RedisKeyConstants.USER_LIKED_KEY, userId);
     Integer liked = (Integer) redisTemplate.opsForHash().get(likedKey, drId);
     dynamicRecordDTO.setLike((null == liked || liked == 0) ? 0 : 1);

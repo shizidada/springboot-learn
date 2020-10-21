@@ -223,7 +223,7 @@ CREATE TABLE `t_file_record` (
 
 DROP TABLE IF EXISTS `t_dynamic_record_attachment_rela`;
 CREATE TABLE `t_dynamic_record_attachment_rela` (
-  `r_id` char(64) NOT NULL COMMENT '关联表Id',
+  `dra_id` char(64) NOT NULL COMMENT '关联表Id',
   `fr_id` char(64) NOT NULL COMMENT '文件Id',
   `dr_id` char(64) NOT NULL COMMENT '记录Id',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
