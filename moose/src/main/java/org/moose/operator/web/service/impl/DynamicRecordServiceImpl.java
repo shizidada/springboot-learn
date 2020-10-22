@@ -173,7 +173,6 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
       return null;
     }
 
-    String userId = dynamicRecordDO.getUserId();
     String drId = dynamicRecordDO.getDrId();
 
     List<DynamicRecordAttachmentRelationDO> attachmentRelationDOList =
@@ -204,9 +203,15 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
       dynamicRecordDTO.setAuthor(userBaseInfo);
     }
 
-    String likedKey = String.format(RedisKeyConstants.USER_LIKED_KEY, userId);
-    Integer liked = (Integer) redisTemplate.opsForHash().get(likedKey, drId);
-    dynamicRecordDTO.setLike((null == liked || liked == 0) ? 0 : 1);
+    // setting liked
+    if (accountService.isLogin()) {
+      UserInfoDTO userInfo = userInfoService.getUserInfo();
+      String likedKey = String.format(RedisKeyConstants.USER_LIKED_KEY, userInfo.getUserId());
+      Integer liked = (Integer) redisTemplate.opsForHash().get(likedKey, drId);
+      dynamicRecordDTO.setLike((null == liked || liked == 0) ? 0 : 1);
+    } else {
+      dynamicRecordDTO.setLike(0);
+    }
     return dynamicRecordDTO;
   }
 }
