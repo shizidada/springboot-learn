@@ -9,11 +9,13 @@
     <result column="title" jdbcType="VARCHAR" property="title"/>
     <result column="content" jdbcType="VARCHAR" property="content"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+
     <association
         property="author"
         column="user_id"
         javaType="org.moose.operator.model.domain.UserInfoDO"
         select="org.moose.operator.mapper.UserInfoMapper.findUserBaseInfoByUserId"/>
+
     <collection property="fileRecords" ofType="org.moose.operator.model.domain.FileRecordDO">
       <id column="fr_id" property="frId"/>
       <result column="e_tag" jdbcType="VARCHAR" property="eTag"/>

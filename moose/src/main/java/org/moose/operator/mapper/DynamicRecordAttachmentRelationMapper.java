@@ -21,8 +21,15 @@ public interface DynamicRecordAttachmentRelationMapper {
    * dynamic record and file record relation
    *
    * @param attachmentRelationDOList List<DynamicRecordAttachmentRelationDO>
-   * @return is success
    */
-  boolean batchInsertDynamicRecordRelation(
+  void batchInsertDynamicRecordRelation(
       List<DynamicRecordAttachmentRelationDO> attachmentRelationDOList);
+
+  /**
+   * select dynamic record bind attachment file
+   *
+   * @param drId dynamic record id
+   * @return DynamicRecordAttachmentRelationDO
+   */
+  List<DynamicRecordAttachmentRelationDO> selectByDynamicRecordId(String drId);
 }

@@ -16,7 +16,7 @@ public interface FileRecordService {
    * @param frId   file record id
    * @return FileUploadDTO
    */
-  FileUploadDTO findFileRecord(String userId, String tag, String frId);
+  FileUploadDTO getFileRecord(String userId, String frId, String tag);
 
   /**
    * batch save file upload info

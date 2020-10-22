@@ -29,5 +29,13 @@ public interface FileRecordMapper {
    * @param fileRecordDOList List<FileRecordDO>
    * @return is success
    */
-  boolean batchInsertFileRecord(List<FileRecordDO> fileRecordDOList);
+  void batchInsertFileRecord(List<FileRecordDO> fileRecordDOList);
+
+  /**
+   * select file record by file record id
+   *
+   * @param frId file record id
+   * @return FileRecordDO
+   */
+  FileRecordDO selectByFrId(String frId);
 }

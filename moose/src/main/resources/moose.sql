@@ -221,8 +221,8 @@ CREATE TABLE `t_file_record` (
   KEY `idx_update_time` (`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='文件记录表';
 
-DROP TABLE IF EXISTS `t_dynamic_record_attachment_rela`;
-CREATE TABLE `t_dynamic_record_attachment_rela` (
+DROP TABLE IF EXISTS `t_dynamic_record_attachment_relation`;
+CREATE TABLE `t_dynamic_record_attachment_relation` (
   `dra_id` char(64) NOT NULL COMMENT '关联表Id',
   `fr_id` char(64) NOT NULL COMMENT '文件Id',
   `dr_id` char(64) NOT NULL COMMENT '记录Id',

@@ -23,6 +23,12 @@
     FROM `t_file_record` WHERE `user_id`=#{userId} and `fr_id`=#{frId} and `e_tag`=#{eTag}
   </select>
 
+  <select id="selectByFrId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column"/>
+    FROM `t_file_record` WHERE `fr_id`=#{frId}
+  </select>
+
   <insert id="batchInsertFileRecord" parameterType="java.util.List">
     INSERT INTO `t_file_record`(fr_id, user_id, e_tag, file_url)
     VALUES

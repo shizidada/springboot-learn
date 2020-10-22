@@ -3,6 +3,7 @@ package org.moose.operator.web.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.apache.commons.lang3.ObjectUtils;
 import org.moose.operator.constant.CommonConstants;
 import org.moose.operator.mapper.FileRecordMapper;
 import org.moose.operator.model.domain.FileRecordDO;
@@ -24,8 +25,16 @@ public class FileRecordServiceImpl implements FileRecordService {
   @Resource
   private FileRecordMapper fileRecordMapper;
 
-  @Override public FileUploadDTO findFileRecord(String userId, String tag, String frId) {
-    return null;
+  @Override public FileUploadDTO getFileRecord(String userId, String frId, String tag) {
+    FileRecordDO fileRecordDO = fileRecordMapper.selectByUserIdAndFrIdAndEtag(userId, frId, tag);
+    if (ObjectUtils.isEmpty(fileRecordDO)) {
+      return null;
+    }
+    FileUploadDTO fileUploadDTO = new FileUploadDTO();
+    fileUploadDTO.setTag(fileRecordDO.getETag());
+    fileUploadDTO.setAttachmentUrl(fileRecordDO.getFileUrl());
+    fileUploadDTO.setAttachmentId(fileRecordDO.getFrId());
+    return fileUploadDTO;
   }
 
   @Override public void batchSaveFileRecord(List<FileUploadDTO> fileUploadDTOList) {

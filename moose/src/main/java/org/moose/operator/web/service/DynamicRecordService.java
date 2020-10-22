@@ -33,4 +33,12 @@ public interface DynamicRecordService {
    * @param searchParam search param
    */
   Map<String, Object> getRecommendDynamicRecord(SearchParam searchParam);
+
+  /**
+   * get recommend dynamic record by step
+   *
+   * @return list of recommend dynamic record
+   * @param searchParam search param
+   */
+  Map<String, Object> getRecommendDynamicRecordByStep(SearchParam searchParam);
 }

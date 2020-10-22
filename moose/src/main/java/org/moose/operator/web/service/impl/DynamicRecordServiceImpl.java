@@ -31,6 +31,7 @@ import org.moose.operator.util.PageInfoUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.DynamicRecordService;
+import org.moose.operator.web.service.FileRecordService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -56,16 +57,20 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
   private DynamicRecordMapper dynamicRecordMapper;
 
   @Resource
-  private DynamicRecordAttachmentRelationMapper dynamicRecordAttachmentRelationMapper;
+  private DynamicRecordAttachmentRelationMapper attachmentRelationMapper;
 
   @Resource
   private FileRecordMapper fileRecordMapper;
 
   @Resource
+  private FileRecordService fileRecordService;
+
+  @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
   @Transactional(rollbackFor = Exception.class)
-  @Override public boolean saveDynamicRecord(DynamicRecordParam dynamicRecordParam) {
+  @Override
+  public boolean saveDynamicRecord(DynamicRecordParam dynamicRecordParam) {
     List<AttachmentParam> attachmentIds = dynamicRecordParam.getAttachmentIds();
     if (ObjectUtils.isNotEmpty(attachmentIds)
         && attachmentIds.size() > CommonConstants.UPLOAD_ATTACHMENT_SIZE) {
@@ -106,13 +111,14 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
       }
 
       if (attachRelaDOList.size() > 0) {
-        dynamicRecordAttachmentRelationMapper.batchInsertDynamicRecordRelation(attachRelaDOList);
+        attachmentRelationMapper.batchInsertDynamicRecordRelation(attachRelaDOList);
       }
     }
     return Boolean.TRUE;
   }
 
-  @Override public List<DynamicRecordDTO> getMyDynamicRecord() {
+  @Override
+  public List<DynamicRecordDTO> getMyDynamicRecord() {
     UserInfoDTO userInfo = userInfoService.getUserInfo();
     List<DynamicRecordDO> dynamicRecordList =
         dynamicRecordMapper.selectByUserId(userInfo.getUserId());
@@ -121,8 +127,7 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
 
   @Override public Map<String, Object> getRecommendDynamicRecord(SearchParam searchParam) {
     PageHelper.startPage(searchParam);
-    List<DynamicRecordDO> dynamicRecordList =
-        dynamicRecordMapper.selectDynamicRecordWithAssociationInfo();
+    List<DynamicRecordDO> dynamicRecordList = dynamicRecordMapper.selectBaseDynamicRecordInfo();
     PageInfo<DynamicRecordDO> pageInfo = new PageInfo<>(dynamicRecordList);
     if (ObjectUtils.isEmpty(pageInfo)) {
       return null;
@@ -134,16 +139,25 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     return basePageInfo;
   }
 
+  @Override public Map<String, Object> getRecommendDynamicRecordByStep(SearchParam searchParam) {
+    PageHelper.startPage(searchParam);
+    List<DynamicRecordDO> dynamicRecordList = dynamicRecordMapper.selectBaseDynamicRecordInfo();
+    PageInfo<DynamicRecordDO> pageInfo = new PageInfo<>(dynamicRecordList);
+    List<DynamicRecordDO> dynamicRecordDOList = pageInfo.getList();
+    List<DynamicRecordDTO> dynamicRecordDTOList =
+        dynamicRecordDOList.stream().map(this::convertDTOFromDO).collect(Collectors.toList());
+    Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(pageInfo);
+    basePageInfo.put("lists", dynamicRecordDTOList);
+    return basePageInfo;
+  }
+
   private void checkAttachment(List<AttachmentParam> attachmentIds, String userId) {
-    if (attachmentIds.size() > 0) {
-      for (AttachmentParam attachmentParam : attachmentIds) {
-        String attachmentId = attachmentParam.getAttachmentId();
-        String tag = attachmentParam.getTag();
-        FileRecordDO fileRecordDO =
-            fileRecordMapper.selectByUserIdAndFrIdAndEtag(userId, attachmentId, tag);
-        if (ObjectUtils.isEmpty(fileRecordDO)) {
-          throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_RECORD_NOT_EXIST);
-        }
+    for (AttachmentParam attachmentParam : attachmentIds) {
+      String attachmentId = attachmentParam.getAttachmentId();
+      String tag = attachmentParam.getTag();
+      FileUploadDTO fileRecord = fileRecordService.getFileRecord(userId, attachmentId, tag);
+      if (ObjectUtils.isEmpty(fileRecord)) {
+        throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_RECORD_NOT_EXIST);
       }
     }
   }
@@ -158,29 +172,36 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     if (ObjectUtils.isEmpty(dynamicRecordDO)) {
       return null;
     }
-    DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
-    BeanUtils.copyProperties(dynamicRecordDO, dynamicRecordDTO);
+
     String userId = dynamicRecordDO.getUserId();
     String drId = dynamicRecordDO.getDrId();
+
+    List<DynamicRecordAttachmentRelationDO> attachmentRelationDOList =
+        attachmentRelationMapper.selectByDynamicRecordId(drId);
+
+    List<FileUploadDTO> uploadDTOList =
+        attachmentRelationDOList.stream().map((attachmentRelationDO) -> {
+          String frId = attachmentRelationDO.getFrId();
+          FileRecordDO fileRecordDO = fileRecordMapper.selectByFrId(frId);
+          if (ObjectUtils.isEmpty(fileRecordDO)) {
+            return null;
+          }
+          FileUploadDTO fileUploadDTO = new FileUploadDTO();
+          fileUploadDTO.setAttachmentId(fileRecordDO.getFrId());
+          fileUploadDTO.setAttachmentUrl(fileRecordDO.getFileUrl());
+          fileUploadDTO.setTag(fileRecordDO.getETag());
+          return fileUploadDTO;
+        }).collect(Collectors.toList());
+
+    DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
+    BeanUtils.copyProperties(dynamicRecordDO, dynamicRecordDTO);
+    dynamicRecordDTO.setAttachments(uploadDTOList);
 
     UserInfoDO author = dynamicRecordDO.getAuthor();
     if (ObjectUtils.isNotEmpty(author)) {
       UserBaseInfoDTO userBaseInfo = new UserBaseInfoDTO();
       BeanUtils.copyProperties(author, userBaseInfo);
       dynamicRecordDTO.setAuthor(userBaseInfo);
-    }
-
-    List<FileRecordDO> fileRecords = dynamicRecordDO.getFileRecords();
-    if (ObjectUtils.isNotEmpty(fileRecords) && fileRecords.size() > 0) {
-      List<FileUploadDTO> fileUploadDTOList = new ArrayList<>(fileRecords.size());
-      for (FileRecordDO fileRecordDO : fileRecords) {
-        FileUploadDTO fileUploadDTO = new FileUploadDTO();
-        fileUploadDTO.setAttachmentId(fileRecordDO.getFrId());
-        fileUploadDTO.setAttachmentUrl(fileRecordDO.getFileUrl());
-        fileUploadDTO.setTag(fileRecordDO.getETag());
-        fileUploadDTOList.add(fileUploadDTO);
-      }
-      dynamicRecordDTO.setAttachments(fileUploadDTOList);
     }
 
     String likedKey = String.format(RedisKeyConstants.USER_LIKED_KEY, userId);
