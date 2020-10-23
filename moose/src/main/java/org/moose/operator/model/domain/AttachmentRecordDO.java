@@ -6,9 +6,9 @@ import lombok.Data;
  * @author taohua
  */
 @Data
-public class FileRecordDO extends BaseDO {
+public class AttachmentRecordDO extends BaseDO {
 
-  private String frId;
+  private String attachId;
 
   private String userId;
 

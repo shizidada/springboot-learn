@@ -2,7 +2,7 @@ package org.moose.operator.web.service;
 
 import java.util.List;
 import java.util.Map;
-import org.moose.operator.model.dto.FileUploadDTO;
+import org.moose.operator.model.dto.AttachmentUploadDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -14,7 +14,7 @@ public interface FileUploadService {
    * @param file 文件
    * @return List<UploadInfoDTO> upload data
    */
-  List<FileUploadDTO> uploadFile(MultipartFile [] file);
+  List<AttachmentUploadDTO> uploadFile(MultipartFile [] file);
 
   /**
    *  create signature

@@ -11,10 +11,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.model.domain.DynamicRecordDO;
-import org.moose.operator.model.domain.FileRecordDO;
-import org.moose.operator.model.dto.FileUploadDTO;
+import org.moose.operator.model.domain.AttachmentRecordDO;
+import org.moose.operator.model.dto.AttachmentUploadDTO;
 import org.moose.operator.util.OSSClientUtils;
-import org.moose.operator.web.service.FileRecordService;
+import org.moose.operator.web.service.AttachmentRecordService;
 import org.moose.operator.web.service.FileUploadService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class FileUploadServiceImpl implements FileUploadService {
   private UserInfoService userInfoService;
 
   @Resource
-  private FileRecordService fileRecordService;
+  private AttachmentRecordService attachmentRecordService;
 
   @Resource
   private ObjectMapper objectMapper;
@@ -39,11 +39,11 @@ public class FileUploadServiceImpl implements FileUploadService {
   @Resource
   private OSSClientUtils ossClientUtils;
 
-  @Override public List<FileUploadDTO> uploadFile(MultipartFile[] files) {
+  @Override public List<AttachmentUploadDTO> uploadFile(MultipartFile[] files) {
     if (ObjectUtils.isEmpty(files)) {
       throw new BusinessException(ResultCode.FILE_NOT_EMPTY);
     }
-    List<FileUploadDTO> fileUploadDTOList = new ArrayList<>();
+    List<AttachmentUploadDTO> attachmentUploadDTOList = new ArrayList<>();
 
     for (MultipartFile file : files) {
       String originalFilename = file.getOriginalFilename();
@@ -52,15 +52,15 @@ public class FileUploadServiceImpl implements FileUploadService {
       }
 
       // OSSConstants.USER_AVATAR_BUCKET_NAME_KEY,
-      FileUploadDTO fileUploadDTO = ossClientUtils.uploadFile(file, originalFilename);
-      fileUploadDTOList.add(fileUploadDTO);
-      log.info("文件上传成功 : {} ", fileUploadDTO);
+      AttachmentUploadDTO attachmentUploadDTO = ossClientUtils.uploadFile(file, originalFilename);
+      attachmentUploadDTOList.add(attachmentUploadDTO);
+      log.info("文件上传成功 : {} ", attachmentUploadDTO);
     }
 
-    if (fileUploadDTOList.size() > 0) {
-      fileRecordService.batchSaveFileRecord(fileUploadDTOList);
+    if (attachmentUploadDTOList.size() > 0) {
+      attachmentRecordService.batchSaveAttachmentRecord(attachmentUploadDTOList);
     }
-    return fileUploadDTOList;
+    return attachmentUploadDTOList;
   }
 
   @Override public Map<String, String> crateSignature() {
@@ -73,7 +73,7 @@ public class FileUploadServiceImpl implements FileUploadService {
    * @param dynamicRecordDO data object
    * @return dto
    */
-  private FileRecordDO convertDTOFromDO(DynamicRecordDO dynamicRecordDO) {
+  private AttachmentRecordDO convertDTOFromDO(DynamicRecordDO dynamicRecordDO) {
     return null;
   }
 }

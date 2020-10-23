@@ -30,7 +30,7 @@ public class DynamicController {
 
   @PostMapping("/getRecommendList")
   public R<Object> recommendList(SearchParam searchParam) {
-    return R.ok(dynamicRecordService.getRecommendDynamicRecord(searchParam), "获取推荐动态列表");
+    return R.ok(dynamicRecordService.getRecommendDynamicRecordByStep(searchParam), "获取推荐动态列表");
   }
 
   @PostMapping("/my")

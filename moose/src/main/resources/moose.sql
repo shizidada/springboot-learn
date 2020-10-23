@@ -206,15 +206,15 @@ CREATE TABLE `t_dynamic_record` (
   KEY `idx_update_time` (`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='发布动态记录表';
 
-DROP TABLE IF EXISTS `t_file_record`;
-CREATE TABLE `t_file_record` (
-  `fr_id` char(64) PRIMARY KEY NOT NULL COMMENT '文件Id',
+DROP TABLE IF EXISTS `t_attachment_record`;
+CREATE TABLE `t_attachment_record` (
+  `attach_id` char(64) PRIMARY KEY NOT NULL COMMENT '附件文件Id',
   `user_id` char(64) NOT NULL COMMENT '用户Id',
   `e_tag` char(32) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT 'oss 上传标记',
   `file_url` varchar(120) COLLATE utf8_bin NOT NULL DEFAULT "" COMMENT 'oss 文件路径',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  KEY `idx_fr_id` (`fr_id`),
+  KEY `idx_attach_id` (`attach_id`),
   KEY `idx_e_tag` (`e_tag`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_create_time` (`create_time`),
@@ -224,12 +224,12 @@ CREATE TABLE `t_file_record` (
 DROP TABLE IF EXISTS `t_dynamic_record_attachment_relation`;
 CREATE TABLE `t_dynamic_record_attachment_relation` (
   `dra_id` char(64) NOT NULL COMMENT '关联表Id',
-  `fr_id` char(64) NOT NULL COMMENT '文件Id',
+  `attach_id` char(64) NOT NULL COMMENT '附件文件Id',
   `dr_id` char(64) NOT NULL COMMENT '记录Id',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY `idx_r_id` (`r_id`),
-  KEY `idx_fr_id` (`fr_id`),
+  PRIMARY KEY `idx_dra_id` (`dra_id`),
+  KEY `idx_attach_id` (`attach_id`),
   KEY `idx_dr_id` (`dr_id`),
   KEY `idx_create_time` (`create_time`),
   KEY `idx_update_time` (`update_time`)

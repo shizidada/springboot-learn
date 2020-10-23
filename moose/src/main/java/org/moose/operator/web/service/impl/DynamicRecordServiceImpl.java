@@ -12,15 +12,15 @@ import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.constant.CommonConstants;
 import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.exception.BusinessException;
+import org.moose.operator.mapper.AttachmentRecordMapper;
 import org.moose.operator.mapper.DynamicRecordAttachmentRelationMapper;
 import org.moose.operator.mapper.DynamicRecordMapper;
-import org.moose.operator.mapper.FileRecordMapper;
+import org.moose.operator.model.domain.AttachmentRecordDO;
 import org.moose.operator.model.domain.DynamicRecordAttachmentRelationDO;
 import org.moose.operator.model.domain.DynamicRecordDO;
-import org.moose.operator.model.domain.FileRecordDO;
 import org.moose.operator.model.domain.UserInfoDO;
+import org.moose.operator.model.dto.AttachmentUploadDTO;
 import org.moose.operator.model.dto.DynamicRecordDTO;
-import org.moose.operator.model.dto.FileUploadDTO;
 import org.moose.operator.model.dto.UserBaseInfoDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
 import org.moose.operator.model.params.AttachmentParam;
@@ -30,8 +30,8 @@ import org.moose.operator.util.ListBeanUtils;
 import org.moose.operator.util.PageInfoUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
 import org.moose.operator.web.service.AccountService;
+import org.moose.operator.web.service.AttachmentRecordService;
 import org.moose.operator.web.service.DynamicRecordService;
-import org.moose.operator.web.service.FileRecordService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -60,10 +60,10 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
   private DynamicRecordAttachmentRelationMapper attachmentRelationMapper;
 
   @Resource
-  private FileRecordMapper fileRecordMapper;
+  private AttachmentRecordMapper attachmentRecordMapper;
 
   @Resource
-  private FileRecordService fileRecordService;
+  private AttachmentRecordService attachmentRecordService;
 
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
@@ -94,17 +94,17 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     dynamicRecordMapper.insertDynamicRecord(dynamicRecordDO);
 
     if (ObjectUtils.isNotEmpty(attachmentIds)) {
-      List<FileUploadDTO> attachDTOList =
-          ListBeanUtils.copyListProperties(attachmentIds, FileUploadDTO::new);
+      List<AttachmentUploadDTO> attachDTOList =
+          ListBeanUtils.copyListProperties(attachmentIds, AttachmentUploadDTO::new);
       dynamicRecordDTO.setAttachments(attachDTOList);
 
       List<DynamicRecordAttachmentRelationDO> attachRelaDOList =
           new ArrayList<>(attachDTOList.size());
 
-      // dynamicRecord rela fileRecord
-      for (FileUploadDTO fileUploadDTO : attachDTOList) {
+      // dynamicRecord rela attachmentRecord
+      for (AttachmentUploadDTO attachmentUploadDTO : attachDTOList) {
         DynamicRecordAttachmentRelationDO attachRelaDO = new DynamicRecordAttachmentRelationDO();
-        attachRelaDO.setFrId(fileUploadDTO.getAttachmentId());
+        attachRelaDO.setAttachId(attachmentUploadDTO.getAttachmentId());
         attachRelaDO.setDrId(dynamicRecordDO.getDrId());
         attachRelaDO.setDraId(String.valueOf(snowflakeIdWorker.nextId()));
         attachRelaDOList.add(attachRelaDO);
@@ -155,8 +155,8 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     for (AttachmentParam attachmentParam : attachmentIds) {
       String attachmentId = attachmentParam.getAttachmentId();
       String tag = attachmentParam.getTag();
-      FileUploadDTO fileRecord = fileRecordService.getFileRecord(userId, attachmentId, tag);
-      if (ObjectUtils.isEmpty(fileRecord)) {
+      AttachmentUploadDTO attachmentRecord = attachmentRecordService.getAttachmentRecord(userId, attachmentId, tag);
+      if (ObjectUtils.isEmpty(attachmentRecord)) {
         throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_RECORD_NOT_EXIST);
       }
     }
@@ -179,19 +179,19 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     List<DynamicRecordAttachmentRelationDO> attachmentRelationDOList =
         attachmentRelationMapper.selectByDynamicRecordId(drId);
 
-    List<FileUploadDTO> uploadDTOList =
+    List<AttachmentUploadDTO> uploadDTOList =
         attachmentRelationDOList.stream().map((attachmentRelationDO) -> {
-          String frId = attachmentRelationDO.getFrId();
-          FileRecordDO fileRecordDO = fileRecordMapper.selectByFrId(frId);
-          if (ObjectUtils.isEmpty(fileRecordDO)) {
+          String attachId = attachmentRelationDO.getAttachId();
+          AttachmentRecordDO attachmentRecordDO = attachmentRecordMapper.selectByFrId(attachId);
+          if (ObjectUtils.isEmpty(attachmentRecordDO)) {
             return null;
           }
-          FileUploadDTO fileUploadDTO = new FileUploadDTO();
-          fileUploadDTO.setAttachmentId(fileRecordDO.getFrId());
-          fileUploadDTO.setAttachmentUrl(fileRecordDO.getFileUrl());
-          fileUploadDTO.setTag(fileRecordDO.getETag());
-          return fileUploadDTO;
-        }).collect(Collectors.toList());
+          AttachmentUploadDTO attachmentUploadDTO = new AttachmentUploadDTO();
+          attachmentUploadDTO.setAttachmentId(attachmentRecordDO.getAttachId());
+          attachmentUploadDTO.setAttachmentUrl(attachmentRecordDO.getFileUrl());
+          attachmentUploadDTO.setTag(attachmentRecordDO.getETag());
+          return attachmentUploadDTO;
+        }).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList());
 
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
     BeanUtils.copyProperties(dynamicRecordDO, dynamicRecordDTO);

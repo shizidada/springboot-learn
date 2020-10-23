@@ -13,7 +13,7 @@ import lombok.Data;
  * @see org.moose.operator.model.dto
  */
 @Data
-public class FileUploadDTO {
+public class AttachmentUploadDTO {
 
   private String attachmentUrl;
 

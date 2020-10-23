@@ -19,5 +19,5 @@ public class DynamicRecordDO extends BaseDO {
 
   private UserInfoDO author;
 
-  private List<FileRecordDO> fileRecords;
+  private List<AttachmentRecordDO> attachmentRecords;
 }

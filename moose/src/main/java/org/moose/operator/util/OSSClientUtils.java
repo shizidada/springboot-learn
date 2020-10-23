@@ -21,7 +21,7 @@ import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.configure.properties.OSSProperties;
 import org.moose.operator.constant.CommonConstants;
 import org.moose.operator.constant.OSSConstants;
-import org.moose.operator.model.dto.FileUploadDTO;
+import org.moose.operator.model.dto.AttachmentUploadDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -55,7 +55,7 @@ public class OSSClientUtils {
         ossProperties.getAccessKeySecret());
   }
 
-  public FileUploadDTO uploadFile(MultipartFile file, String fileName) {
+  public AttachmentUploadDTO uploadFile(MultipartFile file, String fileName) {
     return this.uploadFile(file, OSSConstants.ROOT_BUCKET_NAME_KEY, fileName);
   }
 
@@ -63,11 +63,11 @@ public class OSSClientUtils {
    * 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。 强烈建议您创建并使用RAM账号进行API访问或日常运维， 请登录
    * https://ram.console.aliyun.com 创建RAM账号。
    */
-  public FileUploadDTO uploadFile(MultipartFile file, String bucketName, String fileName) {
+  public AttachmentUploadDTO uploadFile(MultipartFile file, String bucketName, String fileName) {
     // 创建OSSClient实例。
     OSS ossClient = this.getOssClient();
 
-    FileUploadDTO fileUploadDTO = new FileUploadDTO();
+    AttachmentUploadDTO attachmentUploadDTO = new AttachmentUploadDTO();
 
     // 创建PutObjectRequest对象。
     try {
@@ -87,23 +87,23 @@ public class OSSClientUtils {
       putObjectRequest.setMetadata(objectMetadata);
       PutObjectResult putObjectResult = ossClient.putObject(putObjectRequest);
       String fileUrl = "https://moose-plus.oss-cn-shenzhen.aliyuncs.com/" + fileDir;
-      fileUploadDTO.setAttachmentUrl(fileUrl);
-      fileUploadDTO.setTag(putObjectResult.getETag());
-      fileUploadDTO.setAttachmentId(String.valueOf(snowflakeIdWorker.nextId()));
-      fileUploadDTO.setSuccess(CommonConstants.SUCCESS);
+      attachmentUploadDTO.setAttachmentUrl(fileUrl);
+      attachmentUploadDTO.setTag(putObjectResult.getETag());
+      attachmentUploadDTO.setAttachmentId(String.valueOf(snowflakeIdWorker.nextId()));
+      attachmentUploadDTO.setSuccess(CommonConstants.SUCCESS);
     } catch (Exception e) {
       log.error("upload file to oss fail : {}", e.getMessage());
       // throw new BusinessException(message, ResultCode.FILE_UPLOAD_ERROR.getCode());
       // TODO: throw error or other
       String errorMessage = ResultCode.FILE_UPLOAD_ERROR.getMessage();
       String message = String.format("[%s %s]", errorMessage, e.getMessage());
-      fileUploadDTO.setSuccess(CommonConstants.FAIL);
-      fileUploadDTO.setErrMessage(message);
+      attachmentUploadDTO.setSuccess(CommonConstants.FAIL);
+      attachmentUploadDTO.setErrMessage(message);
     } finally {
       // 关闭 OSSClient
       ossClient.shutdown();
     }
-    return fileUploadDTO;
+    return attachmentUploadDTO;
   }
 
   public Map<String, String> getSignature() {

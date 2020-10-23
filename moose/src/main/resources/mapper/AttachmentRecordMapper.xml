@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.moose.operator.mapper.FileRecordMapper">
+<mapper namespace="org.moose.operator.mapper.AttachmentRecordMapper">
 
-  <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.FileRecordDO">
-    <result column="fr_id" jdbcType="VARCHAR" property="frId"/>
+  <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.AttachmentRecordDO">
+    <result column="attach_id" jdbcType="VARCHAR" property="attachId"/>
     <result column="user_id" jdbcType="VARCHAR" property="userId"/>
     <result column="e_tag" jdbcType="VARCHAR" property="eTag"/>
     <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
@@ -12,28 +12,28 @@
   </resultMap>
 
   <sql id="Base_Column">
-    fr_id, user_id, file_url, e_tag, create_time
+    attach_id, user_id, file_url, e_tag, create_time
   </sql>
 
-  <sql id="Fr_Id_Column">fr_id</sql>
+  <sql id="Attach_Id_Column">attach_id</sql>
 
   <select id="selectByUserIdAndFrIdAndEtag" resultMap="BaseResultMap">
     SELECT
-    <include refid="Fr_Id_Column"/>
-    FROM `t_file_record` WHERE `user_id`=#{userId} and `fr_id`=#{frId} and `e_tag`=#{eTag}
+    <include refid="Attach_Id_Column"/>
+    FROM `t_attachment_record` WHERE `user_id`=#{userId} and `attach_id`=#{attachId} and `e_tag`=#{eTag}
   </select>
 
   <select id="selectByFrId" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column"/>
-    FROM `t_file_record` WHERE `fr_id`=#{frId}
+    FROM `t_attachment_record` WHERE `attach_id`=#{attachId}
   </select>
 
-  <insert id="batchInsertFileRecord" parameterType="java.util.List">
-    INSERT INTO `t_file_record`(fr_id, user_id, e_tag, file_url)
+  <insert id="batchInsertAttachmentRecord" parameterType="java.util.List">
+    INSERT INTO `t_attachment_record`(attach_id, user_id, e_tag, file_url)
     VALUES
     <foreach collection="list" item="item" index="index" separator=",">
-      (#{item.frId}, #{item.userId}, #{item.eTag}, #{item.fileUrl})
+      (#{item.attachId}, #{item.userId}, #{item.eTag}, #{item.fileUrl})
     </foreach>
   </insert>
 

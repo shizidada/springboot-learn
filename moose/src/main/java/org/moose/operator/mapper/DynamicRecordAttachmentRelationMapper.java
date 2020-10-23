@@ -18,7 +18,7 @@ import org.moose.operator.model.domain.DynamicRecordAttachmentRelationDO;
 public interface DynamicRecordAttachmentRelationMapper {
 
   /**
-   * dynamic record and file record relation
+   * dynamic record and attachment record relation
    *
    * @param attachmentRelationDOList List<DynamicRecordAttachmentRelationDO>
    */

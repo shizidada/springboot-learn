@@ -16,7 +16,7 @@ import lombok.Data;
 public class DynamicRecordAttachmentRelationDO extends BaseDO {
   String draId;
 
-  String frId;
+  String attachId;
 
   String drId;
 }

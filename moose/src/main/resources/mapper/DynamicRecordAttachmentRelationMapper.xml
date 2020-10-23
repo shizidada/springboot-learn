@@ -5,19 +5,19 @@
   <resultMap id="BaseResultMap"
       type="org.moose.operator.model.domain.DynamicRecordAttachmentRelationDO">
     <id column="dra_id" property="draId"/>
-    <result column="fr_id" jdbcType="VARCHAR" property="frId"/>
+    <result column="attach_id" jdbcType="VARCHAR" property="attachId"/>
     <result column="dr_id" jdbcType="VARCHAR" property="drId"/>
   </resultMap>
 
   <sql id="Base_Column">
-    fr_id, dr_id
+    attach_id, dr_id
   </sql>
 
   <insert id="batchInsertDynamicRecordRelation">
-    INSERT INTO `t_dynamic_record_attachment_relation`(dra_id, fr_id, dr_id)
+    INSERT INTO `t_dynamic_record_attachment_relation`(dra_id, attach_id, dr_id)
     VALUES
     <foreach collection="list" item="item" index="index" separator=",">
-      (#{item.draId}, #{item.frId}, #{item.drId})
+      (#{item.draId}, #{item.attachId}, #{item.drId})
     </foreach>
   </insert>
 
