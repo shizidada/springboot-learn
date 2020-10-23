@@ -14,7 +14,7 @@ import lombok.Data;
  * @see org.moose.operator.model.dto
  */
 @Data
-public class ImportExcelDTO extends BaseSearchDTO implements Serializable {
+public class ImportExcelInfoDTO extends BaseSearchDTO implements Serializable {
 
   private static final long serialVersionUID = -4965876569583536645L;
   /**

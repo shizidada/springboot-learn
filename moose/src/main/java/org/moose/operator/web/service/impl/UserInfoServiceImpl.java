@@ -11,13 +11,14 @@ import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.SmsCodeDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
-import org.moose.operator.model.params.UserInfoParam;
+import org.moose.operator.model.vo.UserInfoVO;
 import org.moose.operator.web.security.component.CustomUserDetails;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.SmsCodeSenderService;
 import org.moose.operator.web.service.UserInfoCacheService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,13 +98,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public boolean updateUserInfo(UserInfoParam userInfoParam) {
-    if (ObjectUtils.isEmpty(userInfoParam)) {
+  public boolean updateUserInfo(UserInfoVO userInfoVO) {
+    if (ObjectUtils.isEmpty(userInfoVO)) {
       throw new BusinessException(ResultCode.USER_INFO_NOT_EXIST);
     }
 
     UserInfoDTO userInfoDTO = new UserInfoDTO();
-    BeanUtils.copyProperties(userInfoParam, userInfoDTO);
+    BeanUtils.copyProperties(userInfoVO, userInfoDTO);
 
     Object principal = accountService.getPrincipal();
     CustomUserDetails userDetails = (CustomUserDetails) principal;
@@ -123,12 +124,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     // update cache user info
     UserInfoDTO userInfoFromCache = userInfoCacheService.getUserInfoFromCacheByAccountId(accountId);
-    userInfoFromCache.setUserName(userInfoParam.getUserName());
-    userInfoFromCache.setAvatar(userInfoParam.getAvatar());
-    userInfoFromCache.setAddress(userInfoParam.getAddress());
-    userInfoFromCache.setDescription(userInfoParam.getDescription());
-    userInfoFromCache.setGender(userInfoParam.getGender());
-    userInfoFromCache.setJob(userInfoParam.getJob());
+    userInfoFromCache.setUserName(userInfoVO.getUserName());
+    userInfoFromCache.setAvatar(userInfoVO.getAvatar());
+    userInfoFromCache.setAddress(userInfoVO.getAddress());
+    userInfoFromCache.setDescription(userInfoVO.getDescription());
+    userInfoFromCache.setGender(userInfoVO.getGender());
+    userInfoFromCache.setJob(userInfoVO.getJob());
     userInfoCacheService.saveUserInfoToCacheByAccountId(accountId, userInfoFromCache);
     return Boolean.TRUE;
   }

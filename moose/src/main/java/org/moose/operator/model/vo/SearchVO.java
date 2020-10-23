@@ -1,4 +1,4 @@
-package org.moose.operator.model.params;
+package org.moose.operator.model.vo;
 
 import lombok.Data;
 
@@ -10,10 +10,10 @@ import lombok.Data;
  * @author taohua
  * @version v1.0.0
  * @date 2020-10-19 22:56:22:56
- * @see org.moose.operator.model.params
+ * @see org.moose.operator.model.vo
  */
 @Data
-public class SearchParam {
+public class SearchVO {
   int pageNum = 1;
   int pageSize = 10;
 }

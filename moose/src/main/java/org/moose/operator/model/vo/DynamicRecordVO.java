@@ -1,4 +1,4 @@
-package org.moose.operator.model.params;
+package org.moose.operator.model.vo;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -9,7 +9,7 @@ import lombok.Data;
  * @author taohua
  */
 @Data
-public class DynamicRecordParam {
+public class DynamicRecordVO {
 
   /**
    * 动态标题
@@ -27,5 +27,5 @@ public class DynamicRecordParam {
    * JSR 303 且套校验
    */
   @Valid
-  private List<AttachmentParam> attachmentIds;
+  private List<AttachmentVO> attachments;
 }

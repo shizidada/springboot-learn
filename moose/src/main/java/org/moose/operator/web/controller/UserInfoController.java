@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.R;
-import org.moose.operator.model.params.UserInfoParam;
+import org.moose.operator.model.vo.UserInfoVO;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.UserInfoService;
 import org.springframework.validation.BindingResult;
@@ -32,8 +32,8 @@ public class UserInfoController {
   }
 
   @PostMapping(value = "/update")
-  public R<Object> update(@Valid UserInfoParam userInfoParam, BindingResult result) {
-    return R.ok(userInfoService.updateUserInfo(userInfoParam), "更新用户信息");
+  public R<Object> update(@Valid UserInfoVO userInfoVO, BindingResult result) {
+    return R.ok(userInfoService.updateUserInfo(userInfoVO), "更新用户信息");
   }
 
   @PostMapping(value = "/resetPhone")

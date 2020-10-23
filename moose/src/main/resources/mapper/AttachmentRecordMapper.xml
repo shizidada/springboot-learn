@@ -15,17 +15,26 @@
     attach_id, user_id, file_url, e_tag, create_time
   </sql>
 
-  <sql id="Attach_Id_Column">attach_id</sql>
+  <sql id="AttachIdColumn">attach_id</sql>
 
-  <select id="selectByUserIdAndFrIdAndEtag" resultMap="BaseResultMap">
+  <sql id="FileUrlColumn">file_url</sql>
+
+  <select id="selectByUserIdAndAttachIdAndEtag" resultMap="BaseResultMap">
     SELECT
-    <include refid="Attach_Id_Column"/>
-    FROM `t_attachment_record` WHERE `user_id`=#{userId} and `attach_id`=#{attachId} and `e_tag`=#{eTag}
+    <include refid="AttachIdColumn"/>
+    FROM `t_attachment_record` WHERE `user_id`=#{userId} and `attach_id`=#{attachId} and
+    `e_tag`=#{eTag}
   </select>
 
-  <select id="selectByFrId" resultMap="BaseResultMap">
+  <select id="selectByAttachId" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column"/>
+    FROM `t_attachment_record` WHERE `attach_id`=#{attachId}
+  </select>
+
+  <select id="selectFileUrlByAttachId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="FileUrlColumn"/>
     FROM `t_attachment_record` WHERE `attach_id`=#{attachId}
   </select>
 

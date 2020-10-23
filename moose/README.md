@@ -7,8 +7,9 @@
 - 
 
 
-```mysql
-  SELECT
+```xml
+  <select id="selectDynamicRecordWithAssociationInfo" resultMap="BaseResultMap">
+    SELECT
       dynamic_record.dr_id dr_id,
       dynamic_record.user_id user_id,
       dynamic_record.title,
@@ -24,7 +25,7 @@
     WHERE
       dynamic_record.dr_id = dynamic_record_attachment_relation.dr_id
       AND dynamic_record_attachment_relation.attach_id = attachment_record.attach_id
-      AND dynamic_record.user_id=#{userId}
     ORDER BY
       dynamic_record.create_time DESC
+  </select>
 ```

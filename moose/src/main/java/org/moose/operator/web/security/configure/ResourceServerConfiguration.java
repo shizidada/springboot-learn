@@ -2,7 +2,6 @@ package org.moose.operator.web.security.configure;
 
 import javax.annotation.Resource;
 import org.moose.operator.constant.PermitAllConstants;
-import org.moose.operator.constant.SecurityConstants;
 import org.moose.operator.web.filter.LoginVerifyLimitFilter;
 import org.moose.operator.web.filter.SmsVerifyLimitFilter;
 import org.moose.operator.web.security.component.CustomAccessDeniedHandler;
@@ -64,7 +63,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             PermitAllConstants.GET_REFRESH_TOKEN_URL,
             PermitAllConstants.REFRESH_TOKEN_URL,
 
-            PermitAllConstants.DYNAMIC_GET_LIST
+            PermitAllConstants.DYNAMIC_RECOMMEND_LIST,
+            PermitAllConstants.DYNAMIC_DETAIL
         ).permitAll();
 
     // add filter

@@ -15,77 +15,45 @@
         column="user_id"
         javaType="org.moose.operator.model.domain.UserInfoDO"
         select="org.moose.operator.mapper.UserInfoMapper.findUserBaseInfoByUserId"/>
-
-    <collection property="attachmentRecords" ofType="org.moose.operator.model.domain.AttachmentRecordDO">
-      <id column="attach_id" property="attachId"/>
-      <result column="e_tag" jdbcType="VARCHAR" property="eTag"/>
-      <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
-    </collection>
   </resultMap>
 
-  <resultMap id="MyDynamicBaseResultMap" type="org.moose.operator.model.domain.DynamicRecordDO">
+  <resultMap id="MyBaseResultMap" type="org.moose.operator.model.domain.DynamicRecordDO">
     <result column="dr_id" jdbcType="VARCHAR" property="drId"/>
     <result column="user_id" jdbcType="VARCHAR" property="userId"/>
     <result column="title" jdbcType="VARCHAR" property="title"/>
     <result column="content" jdbcType="VARCHAR" property="content"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <collection property="attachmentRecords" ofType="org.moose.operator.model.domain.AttachmentRecordDO">
-      <id column="attach_id" property="attachId"/>
-      <result column="e_tag" jdbcType="VARCHAR" property="eTag"/>
-      <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
-    </collection>
   </resultMap>
 
   <sql id="Base_Column">
     dr_id, user_id, title, content, create_time
   </sql>
 
-  <select id="selectByUserId" resultMap="MyDynamicBaseResultMap">
+  <select id="selectByUserId" resultMap="MyBaseResultMap">
     SELECT
-      dynamic_record.dr_id dr_id,
-      dynamic_record.user_id user_id,
-      dynamic_record.title,
-      dynamic_record.content,
-      dynamic_record.create_time,
-      attachment_record.file_url file_url,
-      attachment_record.attach_id attach_id,
-      attachment_record.e_tag e_tag
+      <include refid="Base_Column"/>
     FROM
-      t_dynamic_record dynamic_record,
-      t_dynamic_record_attachment_relation dynamic_record_attachment_relation,
-      t_attachment_record attachment_record
+      `t_dynamic_record`
     WHERE
-      dynamic_record.dr_id = dynamic_record_attachment_relation.dr_id
-      AND dynamic_record_attachment_relation.attach_id = attachment_record.attach_id
-      AND dynamic_record.user_id=#{userId}
-    ORDER BY
-      dynamic_record.create_time DESC
-  </select>
-
-  <select id="selectBaseDynamicRecordInfo" resultMap="BaseResultMap">
-    SELECT dr.dr_id, dr.user_id, dr.title, dr.content, dr.create_time FROM `t_dynamic_record` dr
+      `user_id`=#{userId}
     ORDER BY `create_time` DESC
   </select>
 
-  <select id="selectDynamicRecordWithAssociationInfo" resultMap="BaseResultMap">
+  <select id="selectBaseDynamicRecordInfo" resultMap="BaseResultMap">
     SELECT
-      dynamic_record.dr_id dr_id,
-      dynamic_record.user_id user_id,
-      dynamic_record.title,
-      dynamic_record.content,
-      dynamic_record.create_time,
-      attachment_record.file_url file_url,
-      attachment_record.attach_id attach_id,
-      attachment_record.e_tag e_tag
+      <include refid="Base_Column"/>
     FROM
-      t_dynamic_record dynamic_record,
-      t_dynamic_record_attachment_relation dynamic_record_attachment_relation,
-      t_attachment_record attachment_record
+      `t_dynamic_record`
+    ORDER BY `create_time` DESC
+  </select>
+
+  <select id="selectDynamicRecordByDynamicId" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column"/>
+    FROM
+      `t_dynamic_record`
     WHERE
-      dynamic_record.dr_id = dynamic_record_attachment_relation.dr_id
-      AND dynamic_record_attachment_relation.attach_id = attachment_record.attach_id
-    ORDER BY
-      dynamic_record.create_time DESC
+      `dr_id`=${dynamicId}
   </select>
 
   <insert id="insertDynamicRecord" parameterType="org.moose.operator.model.domain.DynamicRecordDO">

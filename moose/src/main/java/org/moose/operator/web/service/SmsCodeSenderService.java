@@ -1,7 +1,7 @@
 package org.moose.operator.web.service;
 
 import org.moose.operator.model.dto.SmsCodeDTO;
-import org.moose.operator.model.params.SmsCodeParam;
+import org.moose.operator.model.vo.SmsCodeVO;
 
 /**
  * <p>
@@ -17,9 +17,9 @@ public interface SmsCodeSenderService {
   /**
    * 发送短信
    *
-   * @param smsCodeParam 短信
+   * @param smsCodeVO 短信
    */
-  void sendSmsCode(SmsCodeParam smsCodeParam);
+  void sendSmsCode(SmsCodeVO smsCodeVO);
 
   /**
    * 设置短信验证码过期

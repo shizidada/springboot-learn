@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moose.operator.mapper.DynamicRecordAttachmentRelationMapper;
 import org.moose.operator.mapper.DynamicRecordMapper;
-import org.moose.operator.model.params.SearchParam;
+import org.moose.operator.model.vo.SearchVO;
 import org.moose.operator.web.service.DynamicRecordService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -42,8 +42,9 @@ public class DynamicRecordMapperTests {
     //List<DynamicRecordAttachmentRelationDO> attachmentRelationDOS =
     //    recordAttachmentRelationMapper.selectByDynamicRecordId("766462045200580606");
 
-    SearchParam searchParam = new SearchParam();
-    Map<String, Object> recommendDynamicRecordList = dynamicRecordService.getRecommendDynamicRecordByStep(searchParam);
+    SearchVO searchVO = new SearchVO();
+    Map<String, Object> recommendDynamicRecordList = dynamicRecordService.getRecommendDynamicRecord(
+        searchVO);
     log.info("{}", objectMapper.writeValueAsString(recommendDynamicRecordList));
   }
 }

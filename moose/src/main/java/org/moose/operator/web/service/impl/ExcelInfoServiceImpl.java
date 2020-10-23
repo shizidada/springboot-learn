@@ -14,7 +14,7 @@ import org.moose.operator.repository.ExcelInfoRepository;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.ExcelInfoMapper;
 import org.moose.operator.model.domain.ExcelInfoDO;
-import org.moose.operator.model.dto.ImportExcelDTO;
+import org.moose.operator.model.dto.ImportExcelInfoDTO;
 import org.moose.operator.model.dto.ExcelUploadInfoDTO;
 import org.moose.operator.poi.ExcelOperator;
 import org.moose.operator.util.PageInfoUtils;
@@ -50,29 +50,29 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
 
-  @Override public Map<String, Object> selectAll(ImportExcelDTO importExcelDTO) {
-    if (importExcelDTO.getPageNum() > 0 && importExcelDTO.getPageSize() > 0) {
-      PageHelper.startPage(importExcelDTO.getPageNum(), importExcelDTO.getPageSize());
+  @Override public Map<String, Object> selectAll(ImportExcelInfoDTO importExcelInfoDTO) {
+    if (importExcelInfoDTO.getPageNum() > 0 && importExcelInfoDTO.getPageSize() > 0) {
+      PageHelper.startPage(importExcelInfoDTO.getPageNum(), importExcelInfoDTO.getPageSize());
     }
-    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelDTO);
+    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelInfoDTO);
     List<ExcelInfoDO> list = excelInfoMapper.selectAll(excelInfoDO);
     PageInfo<ExcelInfoDO> page = new PageInfo<>(list);
     return PageInfoUtils.getBasePageInfo(page);
   }
 
-  @Override public ImportExcelDTO selectByPrimaryKey(Long id) {
+  @Override public ImportExcelInfoDTO selectByPrimaryKey(Long id) {
     ExcelInfoDO excelInfoDO = excelInfoMapper.selectByPrimaryKey(id);
     return this.convertDTOFromDataObject(excelInfoDO);
   }
 
-  @Override public ImportExcelDTO selectByImportExcel(ImportExcelDTO importExcelDTO) {
-    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelDTO);
+  @Override public ImportExcelInfoDTO selectByImportExcel(ImportExcelInfoDTO importExcelInfoDTO) {
+    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelInfoDTO);
     excelInfoDO = excelInfoMapper.selectByImportExcel(excelInfoDO);
     return this.convertDTOFromDataObject(excelInfoDO);
   }
 
-  @Override public int addImportExcelRecord(ImportExcelDTO importExcelDTO) {
-    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelDTO);
+  @Override public int addImportExcelRecord(ImportExcelInfoDTO importExcelInfoDTO) {
+    ExcelInfoDO excelInfoDO = this.convertImportExcelDTO2ImportExcelDO(importExcelInfoDTO);
     return excelInfoMapper.addImportExcelRecord(excelInfoDO);
   }
 
@@ -83,7 +83,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
      */
     this.checkUploadFile(file);
 
-    List<ImportExcelDTO> importExcelList = null;
+    List<ImportExcelInfoDTO> importExcelList = null;
     try {
       importExcelList = this.convertReadExcelToDTO(file, excelUploadInfoDTO);
     } catch (IOException e) {
@@ -102,18 +102,18 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
     return result;
   }
 
-  @Override public List<ImportExcelDTO> exportSameReceiverAndPhoneAndAddress() {
+  @Override public List<ImportExcelInfoDTO> exportSameReceiverAndPhoneAndAddress() {
     List<ExcelInfoDO> excelInfoDOList =
         excelInfoMapper.selectSameReceiverAndPhoneAndAddress();
 
     return excelInfoDOList.stream().map(excelInfoDO -> {
-      ImportExcelDTO importExcelDTO = new ImportExcelDTO();
-      BeanUtils.copyProperties(excelInfoDO, importExcelDTO);
-      return importExcelDTO;
+      ImportExcelInfoDTO importExcelInfoDTO = new ImportExcelInfoDTO();
+      BeanUtils.copyProperties(excelInfoDO, importExcelInfoDTO);
+      return importExcelInfoDTO;
     }).collect(Collectors.toList());
   }
 
-  @Override public List<ImportExcelDTO> exportDiffReceiverAndPhoneAndAddress() {
+  @Override public List<ImportExcelInfoDTO> exportDiffReceiverAndPhoneAndAddress() {
     List<ExcelInfoDO> excelInfoDOList =
         excelInfoMapper.selectDiffReceiverAndPhoneAndAddress();
     return excelInfoDOList.stream()
@@ -126,12 +126,12 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
    *
    * @return ExcelInfoDO
    */
-  private ExcelInfoDO convertImportExcelDTO2ImportExcelDO(ImportExcelDTO importExcelDTO) {
-    if (importExcelDTO == null) {
+  private ExcelInfoDO convertImportExcelDTO2ImportExcelDO(ImportExcelInfoDTO importExcelInfoDTO) {
+    if (importExcelInfoDTO == null) {
       return null;
     }
     ExcelInfoDO excelInfoDO = new ExcelInfoDO();
-    BeanUtils.copyProperties(importExcelDTO, excelInfoDO);
+    BeanUtils.copyProperties(importExcelInfoDTO, excelInfoDO);
     return excelInfoDO;
   }
 
@@ -140,10 +140,10 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
    *
    * @return ImportExcelDTO
    */
-  private ImportExcelDTO convertDTOFromDataObject(ExcelInfoDO excelInfoDO) {
-    ImportExcelDTO importExcelDTO = new ImportExcelDTO();
-    BeanUtils.copyProperties(excelInfoDO, importExcelDTO);
-    return importExcelDTO;
+  private ImportExcelInfoDTO convertDTOFromDataObject(ExcelInfoDO excelInfoDO) {
+    ImportExcelInfoDTO importExcelInfoDTO = new ImportExcelInfoDTO();
+    BeanUtils.copyProperties(excelInfoDO, importExcelInfoDTO);
+    return importExcelInfoDTO;
   }
 
   /**
@@ -169,7 +169,7 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
    *
    * @throws IOException
    */
-  private List<ImportExcelDTO> convertReadExcelToDTO(MultipartFile file,
+  private List<ImportExcelInfoDTO> convertReadExcelToDTO(MultipartFile file,
       ExcelUploadInfoDTO excelUploadInfoDTO)
       throws IOException {
 

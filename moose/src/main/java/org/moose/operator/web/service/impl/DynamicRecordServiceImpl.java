@@ -23,9 +23,9 @@ import org.moose.operator.model.dto.AttachmentUploadDTO;
 import org.moose.operator.model.dto.DynamicRecordDTO;
 import org.moose.operator.model.dto.UserBaseInfoDTO;
 import org.moose.operator.model.dto.UserInfoDTO;
-import org.moose.operator.model.params.AttachmentParam;
-import org.moose.operator.model.params.DynamicRecordParam;
-import org.moose.operator.model.params.SearchParam;
+import org.moose.operator.model.vo.AttachmentVO;
+import org.moose.operator.model.vo.DynamicRecordVO;
+import org.moose.operator.model.vo.SearchVO;
 import org.moose.operator.util.ListBeanUtils;
 import org.moose.operator.util.PageInfoUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
@@ -70,22 +70,22 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public boolean saveDynamicRecord(DynamicRecordParam dynamicRecordParam) {
-    List<AttachmentParam> attachmentIds = dynamicRecordParam.getAttachmentIds();
-    if (ObjectUtils.isNotEmpty(attachmentIds)
-        && attachmentIds.size() > CommonConstants.UPLOAD_ATTACHMENT_SIZE) {
+  public boolean saveDynamicRecord(DynamicRecordVO dynamicRecordVO) {
+    List<AttachmentVO> attachments = dynamicRecordVO.getAttachments();
+    if (ObjectUtils.isNotEmpty(attachments)
+        && attachments.size() > CommonConstants.UPLOAD_ATTACHMENT_SIZE) {
       throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_SIZE_ERROR);
     }
 
     UserInfoDTO userInfo = userInfoService.getUserInfo();
     String userId = userInfo.getUserId();
 
-    if (ObjectUtils.isNotEmpty(attachmentIds) && attachmentIds.size() > 0) {
-      this.checkAttachment(attachmentIds, userId);
+    if (ObjectUtils.isNotEmpty(attachments) && attachments.size() > 0) {
+      this.checkAttachment(attachments, userId);
     }
 
     DynamicRecordDTO dynamicRecordDTO = new DynamicRecordDTO();
-    BeanUtils.copyProperties(dynamicRecordParam, dynamicRecordDTO);
+    BeanUtils.copyProperties(dynamicRecordVO, dynamicRecordDTO);
 
     DynamicRecordDO dynamicRecordDO = new DynamicRecordDO();
     BeanUtils.copyProperties(dynamicRecordDTO, dynamicRecordDO);
@@ -93,9 +93,9 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     dynamicRecordDO.setDrId(String.valueOf(snowflakeIdWorker.nextId()));
     dynamicRecordMapper.insertDynamicRecord(dynamicRecordDO);
 
-    if (ObjectUtils.isNotEmpty(attachmentIds)) {
+    if (ObjectUtils.isNotEmpty(attachments)) {
       List<AttachmentUploadDTO> attachDTOList =
-          ListBeanUtils.copyListProperties(attachmentIds, AttachmentUploadDTO::new);
+          ListBeanUtils.copyListProperties(attachments, AttachmentUploadDTO::new);
       dynamicRecordDTO.setAttachments(attachDTOList);
 
       List<DynamicRecordAttachmentRelationDO> attachRelaDOList =
@@ -118,44 +118,41 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
   }
 
   @Override
-  public List<DynamicRecordDTO> getMyDynamicRecord() {
+  public Map<String, Object>  getMyDynamicRecord(SearchVO searchVO) {
+    PageHelper.startPage(searchVO);
     UserInfoDTO userInfo = userInfoService.getUserInfo();
-    List<DynamicRecordDO> dynamicRecordList =
-        dynamicRecordMapper.selectByUserId(userInfo.getUserId());
-    return dynamicRecordList.stream().map(this::convertDTOFromDO).collect(Collectors.toList());
-  }
-
-  @Override public Map<String, Object> getRecommendDynamicRecord(SearchParam searchParam) {
-    PageHelper.startPage(searchParam);
-    List<DynamicRecordDO> dynamicRecordList = dynamicRecordMapper.selectBaseDynamicRecordInfo();
+    List<DynamicRecordDO> dynamicRecordList = dynamicRecordMapper.selectByUserId(userInfo.getUserId());
     PageInfo<DynamicRecordDO> pageInfo = new PageInfo<>(dynamicRecordList);
-    if (ObjectUtils.isEmpty(pageInfo)) {
-      return null;
-    }
     List<DynamicRecordDTO> dynamicRecordDTOList =
         pageInfo.getList().stream().map(this::convertDTOFromDO).collect(Collectors.toList());
-    Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(pageInfo);
-    basePageInfo.put("lists", dynamicRecordDTOList);
-    return basePageInfo;
+    Map<String, Object> result = PageInfoUtils.getBasePageInfo(pageInfo);
+    result.put("lists", dynamicRecordDTOList);
+    return result;
   }
 
-  @Override public Map<String, Object> getRecommendDynamicRecordByStep(SearchParam searchParam) {
-    PageHelper.startPage(searchParam);
+  @Override public Map<String, Object> getRecommendDynamicRecord(SearchVO searchVO) {
+    PageHelper.startPage(searchVO);
     List<DynamicRecordDO> dynamicRecordList = dynamicRecordMapper.selectBaseDynamicRecordInfo();
     PageInfo<DynamicRecordDO> pageInfo = new PageInfo<>(dynamicRecordList);
     List<DynamicRecordDO> dynamicRecordDOList = pageInfo.getList();
     List<DynamicRecordDTO> dynamicRecordDTOList =
         dynamicRecordDOList.stream().map(this::convertDTOFromDO).collect(Collectors.toList());
-    Map<String, Object> basePageInfo = PageInfoUtils.getBasePageInfo(pageInfo);
-    basePageInfo.put("lists", dynamicRecordDTOList);
-    return basePageInfo;
+    Map<String, Object> result = PageInfoUtils.getBasePageInfo(pageInfo);
+    result.put("lists", dynamicRecordDTOList);
+    return result;
   }
 
-  private void checkAttachment(List<AttachmentParam> attachmentIds, String userId) {
-    for (AttachmentParam attachmentParam : attachmentIds) {
-      String attachmentId = attachmentParam.getAttachmentId();
-      String tag = attachmentParam.getTag();
-      AttachmentUploadDTO attachmentRecord = attachmentRecordService.getAttachmentRecord(userId, attachmentId, tag);
+  @Override public DynamicRecordDTO getDetailDynamicRecord(String dynamicId) {
+    DynamicRecordDO dynamicRecordDO = dynamicRecordMapper.selectDynamicRecordByDynamicId(dynamicId);
+    return this.convertDTOFromDO(dynamicRecordDO);
+  }
+
+  private void checkAttachment(List<AttachmentVO> attachmentIds, String userId) {
+    for (AttachmentVO attachmentVO : attachmentIds) {
+      String attachmentId = attachmentVO.getAttachmentId();
+      String tag = attachmentVO.getTag();
+      AttachmentUploadDTO attachmentRecord =
+          attachmentRecordService.getAttachmentRecord(userId, attachmentId, tag);
       if (ObjectUtils.isEmpty(attachmentRecord)) {
         throw new BusinessException(ResultCode.UPLOAD_ATTACHMENT_RECORD_NOT_EXIST);
       }
@@ -181,14 +178,13 @@ public class DynamicRecordServiceImpl implements DynamicRecordService {
     List<AttachmentUploadDTO> uploadDTOList =
         attachmentRelationDOList.stream().map((attachmentRelationDO) -> {
           String attachId = attachmentRelationDO.getAttachId();
-          AttachmentRecordDO attachmentRecordDO = attachmentRecordMapper.selectByFrId(attachId);
+          AttachmentRecordDO attachmentRecordDO =
+              attachmentRecordMapper.selectFileUrlByAttachId(attachId);
           if (ObjectUtils.isEmpty(attachmentRecordDO)) {
             return null;
           }
           AttachmentUploadDTO attachmentUploadDTO = new AttachmentUploadDTO();
-          attachmentUploadDTO.setAttachmentId(attachmentRecordDO.getAttachId());
           attachmentUploadDTO.setAttachmentUrl(attachmentRecordDO.getFileUrl());
-          attachmentUploadDTO.setTag(attachmentRecordDO.getETag());
           return attachmentUploadDTO;
         }).filter(ObjectUtils::isNotEmpty).collect(Collectors.toList());
 

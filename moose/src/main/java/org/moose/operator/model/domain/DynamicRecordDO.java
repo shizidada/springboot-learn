@@ -1,6 +1,5 @@
 package org.moose.operator.model.domain;
 
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -18,6 +17,4 @@ public class DynamicRecordDO extends BaseDO {
   private String content;
 
   private UserInfoDO author;
-
-  private List<AttachmentRecordDO> attachmentRecords;
 }

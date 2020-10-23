@@ -21,9 +21,9 @@ import org.moose.operator.model.domain.UserInfoDO;
 import org.moose.operator.model.dto.AccountDTO;
 import org.moose.operator.model.dto.PasswordDTO;
 import org.moose.operator.model.emun.LoginTypeEnum;
-import org.moose.operator.model.params.AuthTokenParam;
-import org.moose.operator.model.params.LoginInfoParam;
-import org.moose.operator.model.params.RegisterInfoParam;
+import org.moose.operator.model.vo.AuthTokenVO;
+import org.moose.operator.model.vo.LoginInfoVO;
+import org.moose.operator.model.vo.RegisterInfoVO;
 import org.moose.operator.util.MapperUtils;
 import org.moose.operator.util.OkHttpClientUtils;
 import org.moose.operator.util.SnowflakeIdWorker;
@@ -113,7 +113,7 @@ public class AccountServiceImpl implements AccountService {
   @Transactional(rollbackFor = Exception.class)
   @Override
   public Boolean saveAccount(HttpServletRequest request,
-      RegisterInfoParam registerInfo) {
+      RegisterInfoVO registerInfo) {
     String password = registerInfo.getPassword();
     String rePassword = registerInfo.getRePassword();
     String url = request.getRequestURL().toString();
@@ -205,24 +205,24 @@ public class AccountServiceImpl implements AccountService {
    * localhost:7000/oauth/token?grant_type=sms_code&client_id=client&client_secret=secret&phone=13500181521&smsCode=123456
    * localhost:7000/oauth/token?grant_type=password&client_id=client&client_secret=secret&accountName=tom&password=123456
    */
-  @Override public String getToken(LoginInfoParam loginInfoParam) {
+  @Override public String getToken(LoginInfoVO loginInfoVO) {
     // 通过 HTTP 客户端请求登录接口
     Map<String, String> params = Maps.newHashMap();
 
     // 登录方式
-    String loginType = loginInfoParam.getLoginType();
+    String loginType = loginInfoVO.getLoginType();
     if (StringUtils.isEmpty(loginType)) {
       throw new BusinessException(ResultCode.LOGIN_METHOD_IS_EMPTY);
     }
 
     // 密码方式登录
     if (LoginTypeEnum.PASSWORD.getValue().equals(loginType)) {
-      String accountName = loginInfoParam.getAccountName();
+      String accountName = loginInfoVO.getAccountName();
       if (StringUtils.isEmpty(accountName)) {
         throw new BusinessException(ResultCode.ACCOUNT_IS_EMPTY);
       }
 
-      String password = loginInfoParam.getPassword();
+      String password = loginInfoVO.getPassword();
       if (StringUtils.isEmpty(password)) {
         throw new BusinessException(ResultCode.PASSWORD_IS_EMPTY);
       }
@@ -235,12 +235,12 @@ public class AccountServiceImpl implements AccountService {
     // 短信方式登录
     if (LoginTypeEnum.SMS_CODE.getValue().equals(loginType)) {
 
-      String phoneNumber = loginInfoParam.getPhone();
+      String phoneNumber = loginInfoVO.getPhone();
       if (StringUtils.isEmpty(phoneNumber)) {
         throw new BusinessException(ResultCode.PHONE_NUMBER_IS_EMPTY);
       }
 
-      String smsCode = loginInfoParam.getSmsCode();
+      String smsCode = loginInfoVO.getSmsCode();
       if (StringUtils.isEmpty(smsCode)) {
         throw new BusinessException(ResultCode.SMS_CODE_IS_EMPTY);
       }
@@ -294,7 +294,7 @@ public class AccountServiceImpl implements AccountService {
     return accountDTO;
   }
 
-  @Override public String getRefreshTokenByAccessToken(AuthTokenParam tokenParam) {
+  @Override public String getRefreshTokenByAccessToken(AuthTokenVO tokenParam) {
     String accessToken = tokenParam.getAccessToken();
     if (StringUtils.isEmpty(accessToken)) {
       throw new BusinessException(ResultCode.ACCESS_TOKEN_IS_EMPTY);
@@ -316,7 +316,7 @@ public class AccountServiceImpl implements AccountService {
   /**
    * http://localhost:7000/oauth/token?grant_type=refresh_token&refresh_token=bc3721b0-9611-471f-867c-1259022614bc&client_id=client&client_secret=secret
    */
-  @Override public String getAccessTokenByRefreshToken(AuthTokenParam tokenParam) {
+  @Override public String getAccessTokenByRefreshToken(AuthTokenVO tokenParam) {
     String refreshTokenParam = tokenParam.getRefreshToken();
 
     if (StringUtils.isEmpty(refreshTokenParam)) {

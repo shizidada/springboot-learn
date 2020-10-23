@@ -2,7 +2,7 @@ package org.moose.operator.web.service;
 
 import java.util.List;
 import java.util.Map;
-import org.moose.operator.model.dto.ImportExcelDTO;
+import org.moose.operator.model.dto.ImportExcelInfoDTO;
 import org.moose.operator.model.dto.ExcelUploadInfoDTO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,10 +21,10 @@ public interface ExcelInfoService {
   /**
    * 根据对应条件查询数据
    *
-   * @param importExcelDTO 搜索参数
+   * @param importExcelInfoDTO 搜索参数
    * @return Map<String, Object>
    */
-  Map<String, Object> selectAll(ImportExcelDTO importExcelDTO);
+  Map<String, Object> selectAll(ImportExcelInfoDTO importExcelInfoDTO);
 
   /**
    * 根据主键查询
@@ -32,7 +32,7 @@ public interface ExcelInfoService {
    * @param id 主键
    * @return ExcelInfoDO
    */
-  ImportExcelDTO selectByPrimaryKey(Long id);
+  ImportExcelInfoDTO selectByPrimaryKey(Long id);
 
   /**
    * 根据 importExcelDO 查询
@@ -40,7 +40,7 @@ public interface ExcelInfoService {
    * @param model 实体
    * @return ExcelInfoDO
    */
-  ImportExcelDTO selectByImportExcel(ImportExcelDTO model);
+  ImportExcelInfoDTO selectByImportExcel(ImportExcelInfoDTO model);
 
   /**
    * 添加一条 excel 数据
@@ -48,7 +48,7 @@ public interface ExcelInfoService {
    * @param model 实体
    * @return 添加成功
    */
-  int addImportExcelRecord(ImportExcelDTO model);
+  int addImportExcelRecord(ImportExcelInfoDTO model);
 
   /**
    * 批量添加 excel 数据
@@ -64,12 +64,12 @@ public interface ExcelInfoService {
    *
    * @return 导出成功
    */
-  List<ImportExcelDTO> exportSameReceiverAndPhoneAndAddress();
+  List<ImportExcelInfoDTO> exportSameReceiverAndPhoneAndAddress();
 
   /**
    * 批量导出不同 excel 数据 Receiver Phone Address
    *
    * @return 导出成功
    */
-  List<ImportExcelDTO> exportDiffReceiverAndPhoneAndAddress();
+  List<ImportExcelInfoDTO> exportDiffReceiverAndPhoneAndAddress();
 }

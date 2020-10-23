@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.ResultCode;
 import org.moose.operator.exception.BusinessException;
-import org.moose.operator.model.dto.ImportExcelDTO;
+import org.moose.operator.model.dto.ImportExcelInfoDTO;
 import org.moose.operator.poi.ExcelOperator;
 import org.moose.operator.web.service.ExcelExportService;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class ExcelExportServiceImpl implements ExcelExportService {
     String type = request.getParameter("type");
     response.setContentType("application/vnd.ms-excel");
     response.setCharacterEncoding("utf-8");
-    List<ImportExcelDTO> exportList = new ArrayList<>();
+    List<ImportExcelInfoDTO> exportList = new ArrayList<>();
     try {
       String fileName = URLEncoder.encode(UUID.randomUUID().toString(), "UTF-8");
       response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");

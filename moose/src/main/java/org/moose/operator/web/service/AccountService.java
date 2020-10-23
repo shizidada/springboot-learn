@@ -2,9 +2,9 @@ package org.moose.operator.web.service;
 
 import javax.servlet.http.HttpServletRequest;
 import org.moose.operator.model.dto.AccountDTO;
-import org.moose.operator.model.params.AuthTokenParam;
-import org.moose.operator.model.params.LoginInfoParam;
-import org.moose.operator.model.params.RegisterInfoParam;
+import org.moose.operator.model.vo.AuthTokenVO;
+import org.moose.operator.model.vo.LoginInfoVO;
+import org.moose.operator.model.vo.RegisterInfoVO;
 
 /**
  * <p>
@@ -21,20 +21,20 @@ public interface AccountService {
   /**
    * 注册
    *
-   * @param registerInfoParam 注册信息
+   * @param registerInfoVO 注册信息
    * @param request           #HttpServletRequest
    * @return 是否注册成功
    */
   Boolean saveAccount(HttpServletRequest request,
-      RegisterInfoParam registerInfoParam);
+      RegisterInfoVO registerInfoVO);
 
   /**
    * 登录 获取 Token
    *
-   * @param loginInfoParam 登录信息
+   * @param loginInfoVO 登录信息
    * @return 是否登录成功信息
    */
-  String getToken(LoginInfoParam loginInfoParam);
+  String getToken(LoginInfoVO loginInfoVO);
 
   /**
    * 退出登录 删除 Token
@@ -84,18 +84,18 @@ public interface AccountService {
   /**
    * 刷新 token
    *
-   * @param authTokenParam authTokenParam
+   * @param authTokenVO authTokenParam
    * @return refreshToken
    */
-  String getRefreshTokenByAccessToken(AuthTokenParam authTokenParam);
+  String getRefreshTokenByAccessToken(AuthTokenVO authTokenVO);
 
   /**
    * 刷新 token
    *
-   * @param authTokenParam authTokenParam
+   * @param authTokenVO authTokenParam
    * @return accessToken
    */
-  String getAccessTokenByRefreshToken(AuthTokenParam authTokenParam);
+  String getAccessTokenByRefreshToken(AuthTokenVO authTokenVO);
 
   /**
    * 更新账号手机号码

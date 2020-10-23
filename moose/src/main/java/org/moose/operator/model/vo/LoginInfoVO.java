@@ -1,4 +1,4 @@
-package org.moose.operator.model.params;
+package org.moose.operator.model.vo;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -9,7 +9,7 @@ import org.moose.operator.model.emun.LoginTypeEnum;
  * @author taohua
  */
 @Data
-public class LoginInfoParam {
+public class LoginInfoVO {
 
   /**
    * 账号

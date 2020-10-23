@@ -13,12 +13,12 @@ public interface AttachmentRecordMapper {
   /**
    * select attachment record
    *
-   * @param userId user id
-   * @param attachId   attachment record id
-   * @param tag    attachment record eTag
+   * @param userId   user id
+   * @param attachId attachment record id
+   * @param tag      attachment record eTag
    * @return AttachmentRecordDO
    */
-  AttachmentRecordDO selectByUserIdAndFrIdAndEtag(
+  AttachmentRecordDO selectByUserIdAndAttachIdAndEtag(
       @Param("userId") String userId,
       @Param("attachId") String attachId,
       @Param("eTag") String tag);
@@ -37,5 +37,13 @@ public interface AttachmentRecordMapper {
    * @param attachId attachment record id
    * @return AttachmentRecordDO
    */
-  AttachmentRecordDO selectByFrId(String attachId);
+  AttachmentRecordDO selectByAttachId(String attachId);
+
+  /**
+   * select attachment file url by attachment id
+   *
+   * @param attachId attach id
+   * @return AttachmentRecordDO
+   */
+  AttachmentRecordDO selectFileUrlByAttachId(String attachId);
 }

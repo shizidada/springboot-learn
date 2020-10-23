@@ -27,7 +27,7 @@ public class AttachmentRecordServiceImpl implements AttachmentRecordService {
 
   @Override public AttachmentUploadDTO getAttachmentRecord(String userId, String attachId, String tag) {
     AttachmentRecordDO
-        attachmentRecordDO = attachmentRecordMapper.selectByUserIdAndFrIdAndEtag(userId, attachId, tag);
+        attachmentRecordDO = attachmentRecordMapper.selectByUserIdAndAttachIdAndEtag(userId, attachId, tag);
     if (ObjectUtils.isEmpty(attachmentRecordDO)) {
       return null;
     }

@@ -2,6 +2,7 @@ package org.moose.operator.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.moose.operator.model.domain.DynamicRecordDO;
 
 /**
@@ -32,6 +33,15 @@ public interface DynamicRecordMapper {
    * @return all record
    */
   List<DynamicRecordDO> selectBaseDynamicRecordInfo();
+
+  /**
+   * select dynamic record by dynamicId
+   *
+   * @param dynamicId dynamicId
+   * @return DynamicRecordDO
+   */
+  DynamicRecordDO selectDynamicRecordByDynamicId(@Param("dynamicId") String dynamicId);
+
 
   /**
    * select dynamic record order by createTime

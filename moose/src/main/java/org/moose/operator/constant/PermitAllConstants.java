@@ -26,5 +26,7 @@ public interface PermitAllConstants {
 
   String SEND_SMS_CODE_URL = "/api/v1/sms/send";
 
-  String DYNAMIC_GET_LIST = "/api/v1/dynamic/getRecommendList";
+  String DYNAMIC_RECOMMEND_LIST = "/api/v1/dynamic/recommend/list";
+
+  String DYNAMIC_DETAIL = "/api/v1/dynamic/detail/*";
 }

@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.moose.operator.common.api.R;
-import org.moose.operator.model.dto.ImportExcelDTO;
+import org.moose.operator.model.dto.ImportExcelInfoDTO;
 import org.moose.operator.web.service.impl.ExcelExportServiceImpl;
 import org.moose.operator.web.service.impl.ExcelInfoServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +33,8 @@ public class ExcelExportController {
   private ExcelExportServiceImpl excelExportService;
 
   @GetMapping(value = "/list")
-  public R<Map<String, Object>> list(ImportExcelDTO importExcelDTO) {
-    return R.ok(excelInfoService.selectAll(importExcelDTO));
+  public R<Map<String, Object>> list(ImportExcelInfoDTO importExcelInfoDTO) {
+    return R.ok(excelInfoService.selectAll(importExcelInfoDTO));
   }
 
   @RequestMapping(value = "/export")

@@ -1,4 +1,4 @@
-package org.moose.operator.model.params;
+package org.moose.operator.model.vo;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -13,10 +13,10 @@ import org.moose.operator.model.emun.SmsCodeEnum;
  * @author taohua
  * @version v1.0.0
  * @date 2020-04-01 17:15:17:15
- * @see org.moose.operator.model.params
+ * @see org.moose.operator.model.vo
  */
 @Data
-public class SmsCodeParam {
+public class SmsCodeVO {
 
   @NotBlank(message = "手机号码不能为空")
   private String phone;

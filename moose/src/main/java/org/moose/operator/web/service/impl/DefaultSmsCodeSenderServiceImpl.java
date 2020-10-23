@@ -11,7 +11,7 @@ import org.moose.operator.constant.SmsTypeConstants;
 import org.moose.operator.mapper.SmsCodeMapper;
 import org.moose.operator.model.domain.SmsCodeDO;
 import org.moose.operator.model.dto.SmsCodeDTO;
-import org.moose.operator.model.params.SmsCodeParam;
+import org.moose.operator.model.vo.SmsCodeVO;
 import org.moose.operator.web.service.AccountService;
 import org.moose.operator.web.service.SmsCodeSenderService;
 import org.moose.operator.web.service.UserInfoService;
@@ -55,10 +55,10 @@ public class DefaultSmsCodeSenderServiceImpl implements SmsCodeSenderService {
   //}
 
   @Transactional(rollbackFor = Exception.class)
-  @Override public void sendSmsCode(SmsCodeParam smsCodeParam) {
+  @Override public void sendSmsCode(SmsCodeVO smsCodeVO) {
 
     // 发送短信
-    sendAndSaveSmsCode(smsCodeParam);
+    sendAndSaveSmsCode(smsCodeVO);
   }
 
   @Override public void setSmsCodeCacheExpire(String phone) {
@@ -73,13 +73,13 @@ public class DefaultSmsCodeSenderServiceImpl implements SmsCodeSenderService {
     return (SmsCodeDTO) redisTemplate.opsForValue().get(smsCodeKey);
   }
 
-  private void sendAndSaveSmsCode(SmsCodeParam smsCodeParam) {
+  private void sendAndSaveSmsCode(SmsCodeVO smsCodeVO) {
     // 生成短信验证码
     String smsCode = RandomStringUtils.randomNumeric(6);
 
-    String phoneNumber = smsCodeParam.getPhone();
+    String phoneNumber = smsCodeVO.getPhone();
 
-    String smsType = smsCodeParam.getType();
+    String smsType = smsCodeVO.getType();
 
     // reset save sms code to redis
     String smsCodeKey = String.format(RedisKeyConstants.SMS_CODE_KEY, smsType, phoneNumber);

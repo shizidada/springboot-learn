@@ -1,4 +1,4 @@
-package org.moose.operator.model.params;
+package org.moose.operator.model.vo;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
  * @author taohua
  */
 @Data
-public class AttachmentParam {
+public class AttachmentVO {
 
   @NotBlank(message = "附件Id不能为空")
   String attachmentId;

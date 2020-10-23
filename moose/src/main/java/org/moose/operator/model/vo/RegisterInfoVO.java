@@ -1,4 +1,4 @@
-package org.moose.operator.model.params;
+package org.moose.operator.model.vo;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -9,7 +9,7 @@ import org.moose.operator.model.emun.GenderEnum;
  * @author taohua
  */
 @Data
-public class RegisterInfoParam {
+public class RegisterInfoVO {
 
   @NotBlank(message = "账号不能为空")
   private String accountName;

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -14,7 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.moose.operator.model.dto.ImportExcelDTO;
+import org.moose.operator.model.dto.ImportExcelInfoDTO;
 import org.moose.operator.util.SnowflakeIdWorker;
 
 /**
@@ -43,7 +42,7 @@ public class ExcelOperator {
   /**
    * 读取 excel 数据
    */
-  public List<ImportExcelDTO> importExcelFile(InputStream inputStream, String platform) {
+  public List<ImportExcelInfoDTO> importExcelFile(InputStream inputStream, String platform) {
 
     XSSFWorkbook workbook = null;
     try {
@@ -53,7 +52,7 @@ public class ExcelOperator {
       // 获取第 0 个 Sheet
       XSSFSheet sheet = workbook.getSheetAt(0);
 
-      List<ImportExcelDTO> importExcelInfoList = new ArrayList<>();
+      List<ImportExcelInfoDTO> importExcelInfoList = new ArrayList<>();
 
       for (Row row : sheet) {
         // header
@@ -61,7 +60,7 @@ public class ExcelOperator {
           continue;
         }
 
-        ImportExcelDTO importExcelDTO = new ImportExcelDTO();
+        ImportExcelInfoDTO importExcelInfoDTO = new ImportExcelInfoDTO();
 
         Cell iccIdCell = row.getCell(0);
         Cell operatorsCell = row.getCell(1);
@@ -83,52 +82,52 @@ public class ExcelOperator {
           // SIM卡卡号
           iccIdCell.setCellType(CellType.STRING);
           String iccId = iccIdCell.getStringCellValue();
-          importExcelDTO.setIccid(iccId);
+          importExcelInfoDTO.setIccid(iccId);
         }
         if (operatorsCell != null) {
           // 运营商
           operatorsCell.setCellType(CellType.STRING);
           String operators = operatorsCell.getStringCellValue();
-          importExcelDTO.setOperators(operators);
+          importExcelInfoDTO.setOperators(operators);
         }
 
         if (receiverCell != null) {
           // 收货人
           String receiver = receiverCell.getStringCellValue();
-          importExcelDTO.setReceiver(receiver);
+          importExcelInfoDTO.setReceiver(receiver);
         }
 
         if (phoneCell != null) {
           // 收货手机号
           phoneCell.setCellType(CellType.STRING);
           String phone = phoneCell.getStringCellValue();
-          importExcelDTO.setPhone(phone);
+          importExcelInfoDTO.setPhone(phone);
         }
         if (addressCell != null) {
           // 收货地址
           addressCell.setCellType(CellType.STRING);
           String address = addressCell.getStringCellValue();
-          importExcelDTO.setAddress(address);
+          importExcelInfoDTO.setAddress(address);
         }
 
         /**
          * 设置 ID
          */
-        importExcelDTO.setId(snowflakeIdWorker.nextId());
+        importExcelInfoDTO.setId(snowflakeIdWorker.nextId());
 
         /**
          * 设置平台
          */
-        importExcelDTO.setPlatform(platform);
+        importExcelInfoDTO.setPlatform(platform);
 
         //importExcelDO.setCreateTime(dateFormat.format(new Date()));
-        importExcelDTO.setCreateTime(LocalDateTime.now());
+        importExcelInfoDTO.setCreateTime(LocalDateTime.now());
 
         //importExcelDO.setUpdateTime(dateFormat.format(new Date()));
-        importExcelDTO.setUpdateTime(LocalDateTime.now());
+        importExcelInfoDTO.setUpdateTime(LocalDateTime.now());
 
         // add to list, need to optimize list add any more data
-        importExcelInfoList.add(importExcelDTO);
+        importExcelInfoList.add(importExcelInfoDTO);
       }
       return importExcelInfoList;
     } catch (Exception e) {
@@ -143,7 +142,7 @@ public class ExcelOperator {
   /**
    * 写出 excel
    */
-  public void exportExcelFile(List<ImportExcelDTO> importExcelDTOList, OutputStream outputStream) {
+  public void exportExcelFile(List<ImportExcelInfoDTO> importExcelInfoDTOList, OutputStream outputStream) {
     XSSFWorkbook workbook = new XSSFWorkbook();
 
     // 设置 XSSFCellStyle 样式
@@ -161,15 +160,15 @@ public class ExcelOperator {
     titleRow.createCell(3).setCellValue("收货手机号");
     titleRow.createCell(4).setCellValue("收货地址");
 
-    for (ImportExcelDTO importExcelDTO : importExcelDTOList) {
+    for (ImportExcelInfoDTO importExcelInfoDTO : importExcelInfoDTOList) {
       // 填充内容
       int lastRowNum = sheet.getLastRowNum();
       XSSFRow dataRow = sheet.createRow(lastRowNum + 1);
-      dataRow.createCell(0).setCellValue(importExcelDTO.getIccid());
-      dataRow.createCell(1).setCellValue(importExcelDTO.getOperators());
-      dataRow.createCell(2).setCellValue(importExcelDTO.getReceiver());
-      dataRow.createCell(3).setCellValue(importExcelDTO.getPhone());
-      dataRow.createCell(4).setCellValue(importExcelDTO.getAddress());
+      dataRow.createCell(0).setCellValue(importExcelInfoDTO.getIccid());
+      dataRow.createCell(1).setCellValue(importExcelInfoDTO.getOperators());
+      dataRow.createCell(2).setCellValue(importExcelInfoDTO.getReceiver());
+      dataRow.createCell(3).setCellValue(importExcelInfoDTO.getPhone());
+      dataRow.createCell(4).setCellValue(importExcelInfoDTO.getAddress());
     }
     try {
       workbook.write(outputStream);
