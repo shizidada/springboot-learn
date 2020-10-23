@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moose.operator.constant.RedisKeyConstants;
 import org.moose.operator.model.dto.DynamicRecordDTO;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -73,5 +74,12 @@ public class RedisTemplateTests {
     });
 
     log.info("recordDTOList :: {} ", objectMapper.writeValueAsString(recordDTOList));
+  }
+
+  // hash
+  @Test
+  public void testRedisHashOps() {
+    String likedKey = String.format(RedisKeyConstants.USER_LIKED_KEY, "768950066575572992");
+    redisTemplate.opsForHash().put(likedKey, "768611775963725824", 1);
   }
 }
