@@ -7,6 +7,7 @@ import org.moose.operator.web.filter.SmsVerifyLimitFilter;
 import org.moose.operator.web.security.component.CustomAccessDeniedHandler;
 import org.moose.operator.web.security.component.CustomAuthenticationEntryPoint;
 import org.moose.operator.web.security.component.CustomAuthenticationFailureHandler;
+import org.moose.operator.web.security.component.CustomBearerTokenExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +38,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
   @Resource
   private RedisTemplate<String, Object> redisTemplate;
 
+  //@Resource
+  //private CustomBearerTokenExtractor tokenExtractor;
+
   @Bean LoginVerifyLimitFilter loginLimitFilter() {
     return new LoginVerifyLimitFilter(redisTemplate, customAuthenticationFailureHandler);
   }
@@ -50,6 +54,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
   public void configure(HttpSecurity http) throws Exception {
 
     http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+
+    //ResourceServerSecurityConfigurer resourceServerSecurityConfigurer =
+    //    http.getConfigurer(ResourceServerSecurityConfigurer.class);
+    //resourceServerSecurityConfigurer.tokenExtractor(tokenExtractor);
 
     // 对登录注册要允许匿名访问
     http

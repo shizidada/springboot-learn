@@ -40,6 +40,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
   @Override public void commence(HttpServletRequest request,
       HttpServletResponse response, AuthenticationException e)
       throws IOException, ServletException {
+    e.printStackTrace();
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
     ServletOutputStream writer = response.getOutputStream();
