@@ -266,8 +266,12 @@ public class AccountServiceImpl implements AccountService {
 
       // save refresh token redis
       String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
-      redisTemplate.opsForValue()
-          .set(String.format(RedisKeyConstants.REFRESH_TOKEN_KEY, accessToken), refreshToken);
+      redisTemplate.opsForValue().set(
+          String.format(RedisKeyConstants.REFRESH_TOKEN_KEY, accessToken),
+          refreshToken,
+          SecurityConstants.ACCESS_TOKEN_VALIDITY,
+          TimeUnit.SECONDS
+      );
       return accessToken;
     } catch (Exception e) {
       log.info("调用 /oauth/token get token 失败; {}", e.getMessage());
@@ -352,9 +356,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     // save redis
-    String refreshTokenKey = String.format(RedisKeyConstants.REFRESH_TOKEN_KEY, accessToken);
     String refreshToken = (String) authInfo.get(OAuth2AccessToken.REFRESH_TOKEN);
-    redisTemplate.opsForValue().set(refreshTokenKey, refreshToken);
+    redisTemplate.opsForValue().set(
+        String.format(RedisKeyConstants.REFRESH_TOKEN_KEY, accessToken),
+        refreshToken,
+        SecurityConstants.ACCESS_TOKEN_VALIDITY,
+        TimeUnit.SECONDS
+    );
 
     return accessToken;
   }

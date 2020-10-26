@@ -21,13 +21,15 @@ public interface SecurityConstants {
 
   /**
    * access token 有效时间
+   * 1 day
    */
-  Integer ACCESS_TOKEN_VALIDITY = 86400;
+  Integer ACCESS_TOKEN_VALIDITY = 60 * 60 * 24;
 
   /**
    * refresh token 有效时间
+   * 15 day
    */
-  Integer REFRESH_TOKEN_VALIDITY = 2592000;
+  Integer REFRESH_TOKEN_VALIDITY = 60 * 60 * 24 * 15;
 
   String OAUTH2_CLIENT = "client";
 

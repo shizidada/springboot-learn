@@ -70,31 +70,4 @@ public class GlobalExceptionController extends AbstractErrorController {
     // 从枚举类中取出自定义的错误码和错误信息
     return R.failed(ResultCode.UN_KNOWN_ERROR.getCode(), e.getMessage());
   }
-
-  //@ExceptionHandler(Exception.class)
-  //@ResponseStatus(HttpStatus.OK)
-  //@ResponseBody
-  //public Object handleException(HttpServletRequest request, Exception ex) {
-  //
-  //  log.error("全局异常捕获. ", ex);
-  //
-  //  //创建一个Map进行封装
-  //  Map<String, Object> responseData = new HashMap<>(16);
-  //
-  //  //如果捕获到的异常是我们抛出的异常对象
-  //  if (ex instanceof BusinessException) {
-  //    //强转为自定义类型
-  //    BusinessException businessException = (BusinessException) ex;
-  //
-  //    responseData.put("errCode", businessException.getCode());
-  //    responseData.put("errMsg", businessException.getMessage());
-  //  } else {
-  //    // 从枚举类中取出自定义的错误码和错误信息
-  //    responseData.put("errCode", ResultCode.KNOWN_ERROR.getCode());
-  //    responseData.put("errMsg", ex.getMessage());
-  //  }
-  //
-  //  //将map封装后的错误信息传入，统一返回
-  //  return R.fail(responseData);
-  //}
 }
