@@ -20,4 +20,10 @@ public class IndexController {
   public String index() {
     return "Excel Operator Service " + LocalDate.now();
   }
+
+  //@GetMapping("/admin")
+  //@PreAuthorize("hasRole('ADMIN')")
+  //public String admin() {
+  //  return "Excel Operator Service admin permission";
+  //}
 }

@@ -1,7 +1,6 @@
 package org.moose.operator.common.api;
 
 import java.io.Serializable;
-import org.springframework.http.HttpStatus;
 
 /**
  * <p>
@@ -40,20 +39,16 @@ public class R<T> implements Serializable {
     return createResult(data, ResultCode.SUCCESS.getCode(), message);
   }
 
+  public static <T> R<T> failed(ResultCode resultCode) {
+    return createResult(null, resultCode.getCode(), resultCode.getMessage());
+  }
+
   public static <T> R<T> failed(ResultCode resultCode, T data) {
     return createResult(data, resultCode.getCode(), resultCode.getMessage());
   }
 
   public static <T> R<T> failed(Integer code, String message) {
     return createResult(null, code, message);
-  }
-
-  public static <T> R<T> unauthorized(String message) {
-    return createResult(null, HttpStatus.UNAUTHORIZED.value(), message);
-  }
-
-  public static <T> R<T> forbidden(String message) {
-    return createResult(null, HttpStatus.FORBIDDEN.value(), message);
   }
 
   private static <T> R<T> createResult(T data, Integer code, String message) {

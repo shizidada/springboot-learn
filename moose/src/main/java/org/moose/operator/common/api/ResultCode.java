@@ -69,8 +69,8 @@ public enum ResultCode {
   FILE_LEGITIMATE_ERROR(30004, "文件不合法"),
   FILE_UPLOAD_ERROR(30005, "文件上传失败"),
 
-  UPLOAD_ATTACHMENT_SIZE_ERROR(300100, "上传的文件超过6个"),
-  UPLOAD_ATTACHMENT_RECORD_NOT_EXIST(300101, "文件记录不存在"),
+  UPLOAD_ATTACHMENT_SIZE_ERROR(30100, "上传的文件超过6个"),
+  UPLOAD_ATTACHMENT_RECORD_NOT_EXIST(30101, "文件记录不存在"),
 
   /**
    * Excel 导出失败
@@ -79,14 +79,23 @@ public enum ResultCode {
   EXCEL_EXPORT_FAIL(40002, "excel 导出失败"),
 
   /**
+   * permission
+   */
+  PERMISSION_ACCESS_DENIED(50001, "permission access denied"),
+
+  /**
    * 参数校验
    */
   PARAMS_VALIDATE_FAIL(-10000, "参数校验失败"),
-  TOKEN_IS_EMPTY(-10001, "token must not be null"),
-  TOKEN_VALIDATE_FAIL(-10002, "token check fail"),
-  TOKEN_INVALID(-10003, "invalid access token"),
-  REFRESH_TOKEN_NOT_EXIST(-10004, "refresh token not exist"),
-  ACCESS_TOKEN_IS_EMPTY(-10005, "access token is empty"),
+
+  /**
+   * token
+   */
+  TOKEN_IS_EMPTY(-10101, "token must not be null"),
+  TOKEN_VALIDATE_FAIL(-10102, "token check fail"),
+  TOKEN_INVALID(-10103, "invalid access token"),
+  REFRESH_TOKEN_NOT_EXIST(-10104, "refresh token not exist"),
+  ACCESS_TOKEN_IS_EMPTY(-10105, "access token is empty"),
 
   /**
    * 未知错误

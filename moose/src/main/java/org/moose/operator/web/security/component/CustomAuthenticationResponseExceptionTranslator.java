@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -37,6 +38,12 @@ public class CustomAuthenticationResponseExceptionTranslator
           .status(HttpStatus.BAD_REQUEST)
           .body(
               new BusinessAuthenticationException(e.getMessage(), ResultCode.NOT_LOGIN.getCode()));
+    }
+
+    if (e instanceof InvalidTokenException) {
+      return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .body(new BusinessAuthenticationException(e.getMessage(), ResultCode.TOKEN_INVALID.getCode()));
     }
 
     if (e instanceof InternalAuthenticationServiceException ||

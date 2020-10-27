@@ -25,13 +25,9 @@ public class CustomAuthenticationExceptionSerializer
 
   @Override public void serialize(BusinessAuthenticationException e, JsonGenerator jsonGenerator,
       SerializerProvider serializerProvider) throws IOException {
-    //HttpServletRequest request =
-    //    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     jsonGenerator.writeStartObject();
     jsonGenerator.writeNumberField("code", e.getCode());
     jsonGenerator.writeStringField("message", e.getMessage());
-    //jsonGenerator.writeStringField("path", request.getServletPath());
-    //jsonGenerator.writeNumberField("timestamp", System.currentTimeMillis());
     if (e.getAdditionalInformation() != null) {
       for (Map.Entry<String, String> entry : e.getAdditionalInformation().entrySet()) {
         String key = entry.getKey();

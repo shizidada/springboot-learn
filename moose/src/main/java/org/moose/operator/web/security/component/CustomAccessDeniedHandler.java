@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.moose.operator.common.api.R;
+import org.moose.operator.common.api.ResultCode;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter writer = response.getWriter();
     log.info("CustomAccessDeniedHandler 用户无权访问 [{}]", e.getMessage());
-    objectMapper.writeValue(writer, R.forbidden(e.getMessage()));
+    objectMapper.writeValue(writer, R.failed(ResultCode.PERMISSION_ACCESS_DENIED));
   }
 }
