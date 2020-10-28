@@ -235,4 +235,17 @@ CREATE TABLE `t_dynamic_record_attachment_relation` (
   KEY `idx_update_time` (`update_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='动态记录附件关联表';
 
+DROP TABLE IF EXISTS `t_user_growth`;
+CREATE TABLE `t_user_growth` (
+  `ug_id` char(64) NOT NULL COMMENT '成才值 Id',
+  `user_id` char(64) NOT NULL COMMENT '用户 Id',
+  `growth` int(20) NOT NULL COMMENT '成才值',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  KEY `idx_g_id` (`ug_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_create_time` (`create_time`),
+  KEY `idx_update_time` (`update_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户成才值表';
+
 SET FOREIGN_KEY_CHECKS = 1;

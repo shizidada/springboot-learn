@@ -38,10 +38,10 @@
   </insert>
 
   <update id="updateAccountNameByAccountId">
-    UPDATE `t_account` set `account_name`=#{accountName} where `account_id`=#{accountId}
+    UPDATE `t_account` SET `account_name`=#{accountName} where `account_id`=#{accountId}
   </update>
 
   <update id="updatePhoneByAccountId">
-    UPDATE `t_account` set `phone`=#{phone} where `account_id`=#{accountId}
+    UPDATE `t_account` SET `phone`=#{phone} WHERE `account_id`=#{accountId}
   </update>
 </mapper>

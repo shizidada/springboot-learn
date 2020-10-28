@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.moose.operator.mapper.UserGrowthMapper">
+  <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.UserGrowthDO">
+    <id column="ug_id" jdbcType="VARCHAR" property="ugId"/>
+    <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    <result column="growth" jdbcType="VARCHAR" property="growth"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <sql id="Base_Column">
+    user_id, ug_id, growth
+  </sql>
+
+  <insert id="insertGrowth" parameterType="org.moose.operator.model.domain.UserGrowthDO">
+    INSERT INTO `t_user_growth`(`ug_id`, `user_id`, `growth`) VALUES (#{ugId}, #{userId}, #{growth})
+  </insert>
+
+  <update id="updateGrowth" parameterType="org.moose.operator.model.domain.UserGrowthDO">
+    UPDATE `t_user_growth` SET `growth` = `growth` + #{growth} WHERE `user_id` = #{userId}
+  </update>
+
+</mapper>
