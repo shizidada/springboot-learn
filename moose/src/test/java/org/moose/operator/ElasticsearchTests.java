@@ -1,29 +1,27 @@
 package org.moose.operator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moose.operator.model.entity.ExcelInfoEntity;
 import org.moose.operator.model.entity.OrderEntity;
-import org.moose.operator.model.entity.PoetryEntity;
-import org.moose.operator.repository.PoetryRepository;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.Criteria;
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.StringQuery;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -35,32 +33,30 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ElasticsearchTests {
 
   @Resource
-  private ElasticsearchTemplate elasticsearchTemplate;
+  private RestHighLevelClient client;
+
+  @Resource
+  private RequestOptions defaultRequestOptions;
 
   @Resource
   private ObjectMapper objectMapper;
 
   @Test
-  public void testCreateIndex() {
+  public void ping() throws IOException {
+    log.info("ping {}", client.ping(defaultRequestOptions));
+  }
+
+  @Test
+  public void testCreateIndex() throws IOException {
     // -Des.set.netty.runtime.available.processors=false
     //System.setProperty("es.set.netty.runtime.available.processors", "false");
-    //boolean index = elasticsearchTemplate.createIndex(ExcelInfoEntity.class);
-    //boolean mapping = elasticsearchTemplate.putMapping(ExcelInfoEntity.class);
-    //log.info("create index :: {} :: {} ", index, mapping);
-    boolean index = elasticsearchTemplate.createIndex(OrderEntity.class);
-    boolean mapping = elasticsearchTemplate.putMapping(OrderEntity.class);
-    log.info("create index :: {} :: {} ", index, mapping);
+    IndexRequest indexRequest = new IndexRequest("order_info_service", "excel_record");
+    IndexResponse index = client.index(indexRequest, defaultRequestOptions);
+    log.info("testCreateIndex {}", index);
   }
 
   @Test
-  public void getMapping() {
-    Map<String, Object> mapping = elasticsearchTemplate.getMapping(ExcelInfoEntity.class);
-    log.info("get mapping :: {}", mapping);
-  }
-
-  @Test
-  public void testInsertExcelInfo() {
-
+  public void testBulkRequest() throws IOException {
     ExcelInfoEntity infoEntity = new ExcelInfoEntity();
     infoEntity.setId(12132121321321321L);
     infoEntity.setIccid("123456");
@@ -71,24 +67,39 @@ public class ElasticsearchTests {
     infoEntity.setOperators("dianxin");
     infoEntity.setCreateTime(LocalDateTime.now());
     infoEntity.setUpdateTime(LocalDateTime.now());
-    IndexQuery indexQuery = new IndexQuery();
-    indexQuery.setObject(infoEntity);
-
-    ArrayList<IndexQuery> queries = new ArrayList<>();
-    queries.add(indexQuery);
-
-    elasticsearchTemplate.bulkIndex(queries);
+    IndexRequest indexRequest = new IndexRequest("excel_info_service", "excel_record");
+    indexRequest.source(objectMapper.writeValueAsString(infoEntity), XContentType.JSON);
+    BulkRequest bulkRequest = new BulkRequest();
+    bulkRequest.add(indexRequest);
+    BulkResponse bulk = client.bulk(bulkRequest, defaultRequestOptions);
+    log.info("testInsertExcelInfo {}", bulk);
   }
 
   @Test
-  public void testDeleteIndex() {
-    boolean deleteExcelInfoIndex = elasticsearchTemplate.deleteIndex(ExcelInfoEntity.class);
-    boolean deleteOrderIndex = elasticsearchTemplate.deleteIndex(OrderEntity.class);
-    log.info("delete {} {} ", deleteExcelInfoIndex, deleteOrderIndex);
+  public void testBulkRequest2() throws Exception {
+    OrderEntity orderEntity = new OrderEntity();
+    orderEntity.setReceiver("taohua");
+    orderEntity.setPhone("13659878265");
+    orderEntity.setAddress("广西壮族自治区桂林市大厦国门");
+    orderEntity.setCreateTime(LocalDateTime.now());
+    orderEntity.setUpdateTime(LocalDateTime.now());
+    IndexRequest indexRequest = new IndexRequest("order_info_service", "order_record");
+    indexRequest.source(objectMapper.writeValueAsString(orderEntity), XContentType.JSON);
 
-    //this.testCreateIndex();
+    OrderEntity orderEntity2 = new OrderEntity();
+    orderEntity2.setReceiver("tom");
+    orderEntity2.setPhone("13963257412");
+    orderEntity2.setAddress("黑龙江黑河赵各庄");
+    orderEntity2.setCreateTime(LocalDateTime.now());
+    orderEntity2.setUpdateTime(LocalDateTime.now());
+    IndexRequest indexRequest2 = new IndexRequest("order_info", "order");
+    indexRequest2.source(objectMapper.writeValueAsString(orderEntity2), XContentType.JSON);
+    BulkRequest bulkRequest = new BulkRequest();
+    bulkRequest.add(indexRequest);
+    bulkRequest.add(indexRequest2);
 
-    //this.testInsertExcelInfo();
+    BulkResponse bulk = client.bulk(bulkRequest, defaultRequestOptions);
+    log.info("testCreateOrder {}", objectMapper.writeValueAsString(bulk));
   }
 
   /**
@@ -98,87 +109,42 @@ public class ElasticsearchTests {
    */
 
   @Test
-  public void testCriteriaQuery() {
-    Criteria address = Criteria.where("phone").is("13654789658");
-    CriteriaQuery criteriaQuery = new CriteriaQuery(address);
-
-    //ExcelInfoEntity infoEntity =
-    //    elasticsearchTemplate.queryForObject(criteriaQuery, ExcelInfoEntity.class);
-
-    Page<ExcelInfoEntity> excelInfoEntities =
-        elasticsearchTemplate.queryForPage(criteriaQuery, ExcelInfoEntity.class);
-
-    List<ExcelInfoEntity> excelInfoEntityList = excelInfoEntities.getContent();
-    log.info("search excel info :: {} ", excelInfoEntities);
-    log.info("search excel info excelInfoEntityList :: {} ", excelInfoEntityList);
+  public void testSearchRequest() throws IOException {
+    SearchRequest searchRequest = new SearchRequest("order_info");
+    SearchSourceBuilder searchBuilder = new SearchSourceBuilder();
+    searchBuilder.query(QueryBuilders.matchQuery("phone", "13654789658"));
+    searchRequest.source(searchBuilder);
+    SearchResponse search = client.search(searchRequest, defaultRequestOptions);
+    log.info("testCriteriaQuery {} ", search);
   }
 
   @Test
-  public void testStringQuery() throws JsonProcessingException {
-    String string = QueryBuilders.termQuery("platform", "xiaomi").toString();
-    StringQuery stringQuery = new StringQuery(string);
-    Page<ExcelInfoEntity> excelInfoEntities =
-        elasticsearchTemplate.queryForPage(stringQuery, ExcelInfoEntity.class);
-    log.info("search excel info testStringQuery :: {} ",
-        objectMapper.writeValueAsString(excelInfoEntities));
+  public void testSearchRequest2() throws IOException {
+    SearchSourceBuilder searchBuilder = new SearchSourceBuilder();
+    searchBuilder.query(QueryBuilders.termQuery("platform", "xiaomi"));
+    SearchRequest searchRequest = new SearchRequest(new String[] {"order_info"}, searchBuilder);
+    SearchResponse search = client.search(searchRequest, defaultRequestOptions);
+    log.info("search excel info testStringQuery :: {} ", objectMapper.writeValueAsString(search));
   }
 
   @Test
-  public void testCreateOrder() {
-
-    OrderEntity orderEntity = new OrderEntity();
-    orderEntity.setReceiver("taohua");
-    orderEntity.setPhone("13659878265");
-    orderEntity.setAddress("广西壮族自治区桂林市大厦国门");
-    orderEntity.setCreateTime(LocalDateTime.now());
-    orderEntity.setUpdateTime(LocalDateTime.now());
-    IndexQuery indexQuery = new IndexQueryBuilder().withObject(orderEntity).build();
-
-    OrderEntity orderEntity2 = new OrderEntity();
-    orderEntity2.setReceiver("tom");
-    orderEntity2.setPhone("13963257412");
-    orderEntity2.setAddress("黑龙江黑河赵各庄");
-    orderEntity2.setCreateTime(LocalDateTime.now());
-    orderEntity2.setUpdateTime(LocalDateTime.now());
-    IndexQuery indexQuery2 = new IndexQueryBuilder().withObject(orderEntity2).build();
-
-    List<IndexQuery> queries = new ArrayList<>();
-    queries.add(indexQuery);
-    queries.add(indexQuery2);
-
-    elasticsearchTemplate.bulkIndex(queries);
+  public void testQueryPoetry() throws IOException {
+    SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+    sourceBuilder.query(QueryBuilders.matchQuery("poetry_author", "李白"));
+    SearchRequest searchRequest = new SearchRequest(new String[] {"shi_ci_ming_ju"}, sourceBuilder);
+    SearchResponse search = client.search(searchRequest, defaultRequestOptions);
+    log.info("testQueryPoetry {}", objectMapper.writeValueAsString(search));
   }
 
   @Test
-  public void testStringQueryPoetry() throws JsonProcessingException {
-    String string = QueryBuilders.termQuery("poetry_author", "李白").toString();
-    StringQuery stringQuery = new StringQuery(string);
-    Page<PoetryEntity> poetryEntities =
-        elasticsearchTemplate.queryForPage(stringQuery, PoetryEntity.class);
-    log.info(objectMapper.writeValueAsString(poetryEntities));
-  }
-
-  @Test
-  public void testQueryPoetry() throws JsonProcessingException {
-    Criteria address = Criteria.where("poetry_author").is("李白");
-    CriteriaQuery criteriaQuery = new CriteriaQuery(address);
-    Page<PoetryEntity> poetryEntities =
-        elasticsearchTemplate.queryForPage(criteriaQuery, PoetryEntity.class);
-    log.info(objectMapper.writeValueAsString(poetryEntities));
-  }
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////
-  @Resource
-  private PoetryRepository poetryRepository;
-
-  @Test
-  public void testPoetryRepository() throws JsonProcessingException {
+  public void testBoolQuery() throws IOException {
     BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
         .must(QueryBuilders.matchQuery("poetry_author", "李白"))
         .must(QueryBuilders.matchQuery("poetry_num", 117));
-
-    Iterable<PoetryEntity> search = poetryRepository.search(boolQueryBuilder);
-
-    log.info(objectMapper.writeValueAsString(search));
+    SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+    sourceBuilder.query(boolQueryBuilder);
+    SearchRequest searchRequest = new SearchRequest(new String[] {"shi_ci_ming_ju"}, sourceBuilder);
+    SearchResponse search = client.search(searchRequest, defaultRequestOptions);
+    log.info("testBoolQuery {}", objectMapper.writeValueAsString(search));
   }
 }

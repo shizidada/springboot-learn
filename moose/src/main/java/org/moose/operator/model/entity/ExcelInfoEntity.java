@@ -3,9 +3,6 @@ package org.moose.operator.model.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
  * <p>
@@ -19,7 +16,6 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Document(indexName = "excel", type = "excel_info")
 public class ExcelInfoEntity extends BaseEntity {
 
   /**
@@ -31,36 +27,30 @@ public class ExcelInfoEntity extends BaseEntity {
   /**
    * iccid SIM卡卡号
    */
-  @Field(type = FieldType.Keyword)
   private String iccid;
 
   /**
    * 运营商
    */
-  @Field(type = FieldType.Keyword)
   private String operators;
 
   /**
    * 收货人
    */
-  @Field(type = FieldType.Text, analyzer = "ik_max_word")
   private String receiver;
 
   /**
    * 收货手机号
    */
-  @Field(type = FieldType.Keyword)
   private String phone;
 
   /**
    * 收货地址
    */
-  @Field(type = FieldType.Text, analyzer = "ik_max_word")
   private String address;
 
   /**
    * 平台
    */
-  @Field(type = FieldType.Keyword)
   private String platform;
 }

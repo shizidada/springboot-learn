@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.moose.operator.common.api.ResultCode;
-import org.moose.operator.repository.ExcelInfoRepository;
 import org.moose.operator.exception.BusinessException;
 import org.moose.operator.mapper.ExcelInfoMapper;
 import org.moose.operator.model.domain.ExcelInfoDO;
@@ -43,9 +42,6 @@ public class ExcelInfoServiceImpl implements ExcelInfoService {
 
   @Resource
   private ExcelInfoMapper excelInfoMapper;
-
-  @Resource
-  private ExcelInfoRepository excelInfoRepository;
 
   @Resource
   private SnowflakeIdWorker snowflakeIdWorker;
