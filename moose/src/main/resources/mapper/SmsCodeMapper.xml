@@ -4,7 +4,7 @@
 <mapper namespace="org.moose.operator.mapper.SmsCodeMapper">
 
   <resultMap id="BaseResultMap" type="org.moose.operator.model.domain.SmsCodeDO">
-    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <id column="id" jdbcType="VARCHAR" property="smsId"/>
     <result column="phone" jdbcType="VARCHAR" property="phone"/>
     <result column="type" jdbcType="VARCHAR" property="type"/>
     <result column="code" jdbcType="VARCHAR" property="code"/>
