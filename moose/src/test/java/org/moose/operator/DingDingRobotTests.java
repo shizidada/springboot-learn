@@ -1,20 +1,26 @@
 package org.moose.operator;
 
+import com.dingtalk.api.DefaultDingTalkClient;
+import com.dingtalk.api.DingTalkClient;
+import com.dingtalk.api.request.OapiRobotSendRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.codec.binary.Base64;
+import org.moose.operator.model.vo.WebErrorReportInfoVO;
 
 /**
  * <p>
@@ -26,12 +32,164 @@ import org.apache.commons.codec.binary.Base64;
  * @date 2020-05-30 18:41:18:41
  * @see org.moose.operator
  */
+@Slf4j
 public class DingDingRobotTests {
   private static final OkHttpClient client = new OkHttpClient();
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
+    sendErrorMessageByDefaultClient();
+  }
+
+  public static void sendErrorMessageByDefaultClient() throws Exception {
+    String finalUrl = getDingDingUrl();
+    DingTalkClient client = new DefaultDingTalkClient(finalUrl);
+
+    OapiRobotSendRequest request = new OapiRobotSendRequest();
+    request.setMsgtype("markdown");
+    OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
+
+    WebErrorReportInfoVO errorInfo = buildErrorInfo();
+
+    markdown.setTitle(errorInfo.getErrorMessage());
+
+    StringBuilder text = new StringBuilder();
+
+    if (null != errorInfo.getAppName()) {
+      text.append("应用名称 ").append(errorInfo.getAppName()).append(" \n");
+    }
+
+    if (null != errorInfo.getErrorMessage()) {
+      text.append("### ").append(errorInfo.getErrorMessage()).append(" \n");
+    }
+
+    if (null != errorInfo.getErrorStack()) {
+      text.append("错误栈信息 ").append("\n");
+      text.append("> ").append(errorInfo.getErrorStack()).append("\r\n");
+    }
+
+    if (null != errorInfo.getErrorFrom()) {
+      text.append("错误来源 ").append(errorInfo.getErrorFrom()).append(" \n");
+    }
+
+    if (null != errorInfo.getHref()) {
+      text.append("错误界面 ").append(errorInfo.getHref()).append(" \n");
+    }
+
+    if (null != errorInfo.getComponentStack()) {
+      text.append("渲染组件栈 ")
+          .append("**")
+          .append(errorInfo.getComponentStack())
+          .append("**")
+          .append(" \n");
+    }
+
+    if (null != errorInfo.getSource()) {
+      text.append("错误资源 ").append("**").append(errorInfo.getSource()).append("**").append(" \n");
+    }
+
+    if (null != errorInfo.getRow()) {
+      text.append("错误行 ").append("**").append(errorInfo.getRow()).append("**").append(" \n");
+    }
+
+    if (null != errorInfo.getCol()) {
+      text.append("错误列 ").append("**").append(errorInfo.getCol()).append("**").append(" \n");
+    }
+
+    if (null != errorInfo.getBrowerName()) {
+      text.append("浏览器名称 ")
+          .append("**")
+          .append(errorInfo.getBrowerName())
+          .append("**")
+          .append(" \n");
+    }
+
+    if (null != errorInfo.getBrowerPlatform()) {
+      text.append("浏览器平台 ")
+          .append("**")
+          .append(errorInfo.getBrowerPlatform())
+          .append("**")
+          .append(" \n");
+    }
+
+    if (null != errorInfo.getBrowerCodeName()) {
+      text.append("浏览器代码名 ")
+          .append("**")
+          .append(errorInfo.getBrowerCodeName())
+          .append("**")
+          .append(" \n");
+    }
+
+    if (null != errorInfo.getBrowerUserAgent()) {
+      text.append("浏览器 agent ")
+          .append("**")
+          .append(errorInfo.getBrowerUserAgent())
+          .append("**")
+          .append(" \n");
+    }
+
+    if (null != errorInfo.getBrowerLanguage()) {
+      text.append("浏览器当前语言 ")
+          .append("**")
+          .append(errorInfo.getBrowerLanguage())
+          .append("**")
+          .append(" \n");
+    }
+
+    //markdown.setText(text.toString());
+    log.info(text.toString());
+
+    //request.setMarkdown(markdown);
+    //
+    //OapiRobotSendResponse response = client.execute(request);
+    //
+    //log.info(objectMapper.writeValueAsString(response));
+  }
+
+  public static void sendErrorMessage() throws Exception {
+    String finalUrl = getDingDingUrl();
+
+    TextEntity textEntity = new TextEntity();
+    textEntity.setMsgType("markdown");
+    textEntity.setAtAll(Boolean.FALSE);
+
+    WebErrorReportInfoVO webErrorReportInfoVO = buildErrorInfo();
+    String reportInfo = objectMapper.writeValueAsString(webErrorReportInfoVO);
+    log.info(reportInfo);
+
+    textEntity.setContent(reportInfo);
+    sendToDingDing(textEntity.getJSONObjectString(), finalUrl);
+  }
+
+  public static String getDingDingUrl() throws Exception {
+    String secret = "";
+    String url = "";
+    Long timestamp = System.currentTimeMillis();
+    String sign = getSign(secret, timestamp);
+    String finalUrl = String.format(url, timestamp, sign);
+    log.info(finalUrl);
+    return finalUrl;
+  }
+
+  public static void sendToDingDing(String jsonString, String webhook) {
+    log.info(jsonString);
+    try {
+      String type = "application/json; charset=utf-8";
+      RequestBody body = RequestBody.create(MediaType.parse(type), jsonString);
+      Request.Builder builder = new Request.Builder().url(webhook);
+      builder.addHeader("Content-Type", type).post(body);
+
+      Request request = builder.build();
+      Response response = client.newCall(request).execute();
+      String string = response.body().string();
+      System.out.println(String.format("send ding message:%s", string));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void sendTest() {
     String url = "";
     TextEntity textEntity = new TextEntity();
     textEntity.setMsgType("text");
@@ -46,31 +204,32 @@ public class DingDingRobotTests {
     sendToDingDing(textEntity.getJSONObjectString(), url);
   }
 
-  public static String getSign() throws Exception {
-    Long timestamp = System.currentTimeMillis();
-    String secret = "";
+  public static String getSign(String secret, Long timestamp) throws Exception {
     String stringToSign = timestamp + "\n" + secret;
     Mac mac = Mac.getInstance("HmacSHA256");
-    mac.init(new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256"));
-    byte[] signData = mac.doFinal(stringToSign.getBytes("UTF-8"));
+    mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+    byte[] signData = mac.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8));
     return URLEncoder.encode(new String(Base64.encodeBase64(signData)), "UTF-8");
   }
 
-  public static void sendToDingDing(String jsonString, String webhook) {
-    System.out.println(String.format("jsonString :%s", jsonString));
-    try {
-      String type = "application/json; charset=utf-8";
-      RequestBody body = RequestBody.create(MediaType.parse(type), jsonString);
-      Request.Builder builder = new Request.Builder().url(webhook);
-      builder.addHeader("Content-Type", type).post(body);
+  public static WebErrorReportInfoVO buildErrorInfo() throws JsonProcessingException {
+    WebErrorReportInfoVO webErrorReportInfoVO = new WebErrorReportInfoVO();
+    webErrorReportInfoVO.setAppName("user");
+    webErrorReportInfoVO.setBrowerCodeName("Mozilla");
+    webErrorReportInfoVO.setBrowerLanguage("zh-CN");
+    webErrorReportInfoVO.setBrowerName("Netscape");
+    webErrorReportInfoVO.setBrowerVersion(
+        "5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.193 Safari/537.36");
+    webErrorReportInfoVO.setBrowerUserAgent(
+        "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.193 Safari/537.36");
+    webErrorReportInfoVO.setBrowerPlatform("Win32");
 
-      Request request = builder.build();
-      Response response = client.newCall(request).execute();
-      String string = response.body().string();
-      System.out.println(String.format("send ding message:%s", string));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    webErrorReportInfoVO.setErrorFrom("测试数据");
+    webErrorReportInfoVO.setErrorMessage("a is not defined");
+    webErrorReportInfoVO.setErrorStack(
+        "ReferenceError: a is not defined↵    at Home.render (webpack-internal:///38Hv:114:1674)↵    at finishClassComponent (webpack-internal:///Ybsr:17160:31)↵    at updateClassComponent (webpack-internal:///Ybsr:17110:24)↵    at beginWork (webpack-internal:///Ybsr:18620:16)↵    at HTMLUnknownElement.callCallback (webpack-internal:///Ybsr:188:14)↵    at Object.invokeGuardedCallbackDev (webpack-internal:///Ybsr:237:16)↵    at invokeGuardedCallback (webpack-internal:///Ybsr:292:31)↵    at beginWork$1 (webpack-internal:///Ybsr:23203:7)↵    at performUnitOfWork (webpack-internal:///Ybsr:22154:12)↵    at workLoopSync (webpack-internal:///Ybsr:22130:22)");
+    webErrorReportInfoVO.setHref("http://local-user.wanshifu.com:8080/");
+    return webErrorReportInfoVO;
   }
 
   public static class TextEntity {
@@ -123,7 +282,7 @@ public class DingDingRobotTests {
 
       // at some body
       Map<String, Object> atMobile = Maps.newHashMap();
-      if (this.getAtMobiles().size() > 0) {
+      if (null != this.getAtMobiles() && this.getAtMobiles().size() > 0) {
         List<String> mobiles = new ArrayList<String>();
         for (int i = 0; i < this.getAtMobiles().size(); i++) {
           mobiles.add(this.getAtMobiles().get(i));
