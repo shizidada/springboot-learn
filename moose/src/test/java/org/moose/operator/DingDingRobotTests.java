@@ -56,94 +56,129 @@ public class DingDingRobotTests {
 
     StringBuilder text = new StringBuilder();
 
+    text.append("【错误提醒】").append("\n\n\n");
+
     if (null != errorInfo.getAppName()) {
-      text.append("应用名称 ").append(errorInfo.getAppName()).append(" \n");
+      text.append("应用名称: ").append(errorInfo.getAppName())
+          .append(" \n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getErrorMessage()) {
-      text.append("### ").append(errorInfo.getErrorMessage()).append(" \n");
+      text.append("### ").append(errorInfo.getErrorMessage())
+          .append(" \n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getErrorStack()) {
-      text.append("错误栈信息 ").append("\n");
-      text.append("> ").append(errorInfo.getErrorStack()).append("\r\n");
+      text.append("错误栈信息: ");
+      text.append(errorInfo.getErrorStack())
+          .append("      ")
+          .append(" \r\n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getErrorFrom()) {
-      text.append("错误来源 ").append(errorInfo.getErrorFrom()).append(" \n");
+      text.append("错误来源: ").append(errorInfo.getErrorFrom())
+          .append(" \n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getHref()) {
-      text.append("错误界面 ").append(errorInfo.getHref()).append(" \n");
+      text.append("错误界面: ").append(errorInfo.getHref())
+          .append(" \n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getComponentStack()) {
-      text.append("渲染组件栈 ")
-          .append("**")
-          .append(errorInfo.getComponentStack())
-          .append("**")
+      text.append("渲染组件栈: ");
+      text.append(errorInfo.getComponentStack())
+          .append("      ")
+          .append(" \n")
+          .append(" \n")
           .append(" \n");
     }
 
     if (null != errorInfo.getSource()) {
-      text.append("错误资源 ").append("**").append(errorInfo.getSource()).append("**").append(" \n");
+      text.append("错误资源: ").append("**").append(errorInfo.getSource()).append("**")
+          .append(" \n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getRow()) {
-      text.append("错误行 ").append("**").append(errorInfo.getRow()).append("**").append(" \n");
+      text.append("错误行: ").append("**").append(errorInfo.getRow()).append("**")
+          .append(" \n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getCol()) {
-      text.append("错误列 ").append("**").append(errorInfo.getCol()).append("**").append(" \n");
+      text.append("错误列: ").append("**").append(errorInfo.getCol()).append("**")
+          .append(" \n")
+          .append(" \n")
+          .append(" \n");
     }
 
     if (null != errorInfo.getBrowerName()) {
-      text.append("浏览器名称 ")
+      text.append("浏览器名称: ")
           .append("**")
           .append(errorInfo.getBrowerName())
           .append("**")
+          .append(" \n")
+          .append(" \n")
           .append(" \n");
     }
 
     if (null != errorInfo.getBrowerPlatform()) {
-      text.append("浏览器平台 ")
+      text.append("浏览器平台: ")
           .append("**")
           .append(errorInfo.getBrowerPlatform())
           .append("**")
+          .append(" \n")
+          .append(" \n")
           .append(" \n");
     }
 
     if (null != errorInfo.getBrowerCodeName()) {
-      text.append("浏览器代码名 ")
+      text.append("浏览器代码名: ")
           .append("**")
           .append(errorInfo.getBrowerCodeName())
           .append("**")
+          .append(" \n")
+          .append(" \n")
           .append(" \n");
     }
 
     if (null != errorInfo.getBrowerUserAgent()) {
-      text.append("浏览器 agent ")
+      text.append("浏览器 agent: ")
           .append("**")
           .append(errorInfo.getBrowerUserAgent())
           .append("**")
+          .append(" \n")
+          .append(" \n")
           .append(" \n");
     }
 
     if (null != errorInfo.getBrowerLanguage()) {
-      text.append("浏览器当前语言 ")
+      text.append("浏览器当前语言: ")
           .append("**")
           .append(errorInfo.getBrowerLanguage())
           .append("**")
+          .append(" \n")
+          .append(" \n")
           .append(" \n");
     }
 
-    //markdown.setText(text.toString());
+    markdown.setText(text.toString());
     log.info(text.toString());
-
     //request.setMarkdown(markdown);
-    //
     //OapiRobotSendResponse response = client.execute(request);
-    //
     //log.info(objectMapper.writeValueAsString(response));
   }
 
@@ -163,13 +198,12 @@ public class DingDingRobotTests {
   }
 
   public static String getDingDingUrl() throws Exception {
-    String secret = "";
-    String url = "";
-    Long timestamp = System.currentTimeMillis();
-    String sign = getSign(secret, timestamp);
-    String finalUrl = String.format(url, timestamp, sign);
-    log.info(finalUrl);
-    return finalUrl;
+    //String secret = "";
+    //Long timestamp = System.currentTimeMillis();
+    //String sign = getSign(secret, timestamp);
+    //String finalUrl = String.format(url, timestamp, sign);
+    //log.info(finalUrl);
+    return "";
   }
 
   public static void sendToDingDing(String jsonString, String webhook) {
@@ -228,7 +262,10 @@ public class DingDingRobotTests {
     webErrorReportInfoVO.setErrorMessage("a is not defined");
     webErrorReportInfoVO.setErrorStack(
         "ReferenceError: a is not defined↵    at Home.render (webpack-internal:///38Hv:114:1674)↵    at finishClassComponent (webpack-internal:///Ybsr:17160:31)↵    at updateClassComponent (webpack-internal:///Ybsr:17110:24)↵    at beginWork (webpack-internal:///Ybsr:18620:16)↵    at HTMLUnknownElement.callCallback (webpack-internal:///Ybsr:188:14)↵    at Object.invokeGuardedCallbackDev (webpack-internal:///Ybsr:237:16)↵    at invokeGuardedCallback (webpack-internal:///Ybsr:292:31)↵    at beginWork$1 (webpack-internal:///Ybsr:23203:7)↵    at performUnitOfWork (webpack-internal:///Ybsr:22154:12)↵    at workLoopSync (webpack-internal:///Ybsr:22130:22)");
+    webErrorReportInfoVO.setComponentStack("Component Stack");
     webErrorReportInfoVO.setHref("http://local-user.wanshifu.com:8080/");
+    webErrorReportInfoVO.setRow(236L);
+    webErrorReportInfoVO.setCol(1L);
     return webErrorReportInfoVO;
   }
 
